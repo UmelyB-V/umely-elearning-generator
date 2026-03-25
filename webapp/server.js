@@ -139,7 +139,7 @@ app.get('/api/modules', async (req, res) => {
   const { data, error } = await supabase
     .from('modules')
     .select('filename, title, created_at')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: true });
   if (error) return res.status(500).json({ error: error.message });
   res.json(data.map(m => ({
     filename: m.filename,
