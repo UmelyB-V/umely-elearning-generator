@@ -17,16 +17,19 @@ const jobs = {};
 const SYSTEM_PROMPT = `Je bent een AI-agent van Umely — "Jouw vaste AI-partner." Jouw taak: automatisch complete, interactieve e-learning modules genereren vanuit transcripties of samenvattingen.
 
 ## Umely Huisstijl (EXACT overnemen)
-- Primaire kleur: #FF5A1F (oranje)
-- Hover oranje: #E04A10
-- Zwart: #0F0F0F
-- Wit: #FFFFFF
-- Lichtgrijs: #F5F5F5
-- Bodytekst: #4A4A4A
-- Rand: #E8E8E8
+- Achtergrond pagina: #FFF8F2 (Warm White)
+- Primaire tekst: #27292D (Charcoal)
+- Amber accent: #FF8514
+- Flame accent: #FF4D00
+- Gold: #FFD964
+- Peach: #FFD7AD
+- Cream: #F7E6C2
+- Rand: #EDE0D4
 - Lettertype: 'Inter', system-ui, sans-serif
-- Knoppen: background #FF5A1F, border-radius 50px, color white, font-weight 700
-- VERBODEN: blauw of paars als primaire kleur
+- Knoppen: background linear-gradient(135deg, #FF8514, #FF4D00), border-radius 50px, color white, font-weight 700
+- Header/Footer achtergrond: #27292D (Charcoal), witte/peach tekst
+- Badges: background #F7E6C2, color #FF4D00
+- VERBODEN: blauw, paars, of #FF5A1F als primaire kleur
 
 ## Output vereisten
 Elke e-learning MOET bevatten:

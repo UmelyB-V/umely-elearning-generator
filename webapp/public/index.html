@@ -7,36 +7,41 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --orange: #FF5A1F;
-    --orange-dark: #E04A10;
-    --black: #0F0F0F;
+    --amber: #FF8514;
+    --flame: #FF4D00;
+    --gold: #FFD964;
+    --charcoal: #27292D;
+    --warm-white: #FFF8F2;
     --white: #FFFFFF;
-    --gray-light: #F5F5F5;
+    --cream: #F7E6C2;
+    --peach: #FFD7AD;
     --gray-text: #4A4A4A;
-    --gray-border: #E8E8E8;
+    --gray-border: #EDE0D4;
     --green: #22C55E;
+    --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Inter', system-ui, sans-serif; background: var(--gray-light); color: var(--gray-text); min-height: 100vh; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--warm-white); color: var(--gray-text); min-height: 100vh; }
 
   header {
-    background: var(--white); border-bottom: 1px solid var(--gray-border);
+    background: var(--charcoal); border-bottom: none;
     padding: 0 32px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: var(--black); text-decoration: none; }
+  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: var(--warm-white); text-decoration: none; }
   .logo-icon { font-size: 22px; }
   .header-cta {
-    background: var(--orange); color: white; border: none;
+    background: var(--gradient); color: white; border: none;
     padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700;
     cursor: pointer; text-decoration: none;
   }
+  .header-cta:hover { opacity: 0.9; }
 
   main { max-width: 860px; margin: 0 auto; padding: 48px 20px; }
 
   .hero { text-align: center; margin-bottom: 48px; }
-  .hero h1 { font-size: 40px; font-weight: 800; color: var(--black); line-height: 1.15; margin-bottom: 12px; }
-  .hero h1 span { color: var(--orange); }
+  .hero h1 { font-size: 40px; font-weight: 800; color: var(--charcoal); line-height: 1.15; margin-bottom: 12px; }
+  .hero h1 span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .hero p { font-size: 16px; color: var(--gray-text); max-width: 520px; margin: 0 auto; }
 
   .card {
@@ -45,7 +50,7 @@
     box-shadow: 0 2px 16px rgba(0,0,0,0.06);
   }
 
-  label { display: block; font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 8px; }
+  label { display: block; font-size: 14px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
   .hint { font-size: 12px; color: var(--gray-text); margin-bottom: 12px; font-weight: 400; }
 
   textarea {
@@ -56,33 +61,33 @@
     transition: border-color 0.15s;
     outline: none;
   }
-  textarea:focus { border-color: var(--orange); }
+  textarea:focus { border-color: var(--amber); }
   textarea::placeholder { color: #aaa; }
 
   .btn {
     display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 32px; background: var(--orange); color: white;
+    padding: 14px 32px; background: var(--gradient); color: white;
     border: none; border-radius: 50px; font-size: 15px; font-weight: 700;
-    cursor: pointer; transition: background 0.2s, transform 0.1s;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s;
     margin-top: 20px; width: 100%; justify-content: center;
   }
-  .btn:hover:not(:disabled) { background: var(--orange-dark); transform: translateY(-1px); }
+  .btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
   .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
   /* STATUS */
   #status { margin-top: 24px; display: none; }
   .status-loading {
     display: flex; align-items: center; gap: 12px;
-    background: #FFF0EB; border: 1px solid #FFD4C2; border-radius: 10px;
+    background: var(--peach); border: 1px solid var(--cream); border-radius: 10px;
     padding: 14px 18px;
   }
   .spinner {
-    width: 20px; height: 20px; border: 3px solid #FFD4C2;
-    border-top-color: var(--orange); border-radius: 50%;
+    width: 20px; height: 20px; border: 3px solid var(--cream);
+    border-top-color: var(--flame); border-radius: 50%;
     animation: spin 0.8s linear infinite; flex-shrink: 0;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .status-loading p { font-size: 14px; font-weight: 600; color: var(--orange); margin: 0; }
+  .status-loading p { font-size: 14px; font-weight: 600; color: var(--flame); margin: 0; }
   .progress-text { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
 
   /* RESULT */
@@ -91,17 +96,17 @@
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
   }
-  .result-header h2 { font-size: 18px; font-weight: 700; color: var(--black); }
+  .result-header h2 { font-size: 18px; font-weight: 700; color: var(--charcoal); }
   .result-actions { display: flex; gap: 10px; }
   .btn-sm {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 700;
     cursor: pointer; border: none; transition: all 0.15s;
   }
-  .btn-download { background: var(--orange); color: white; }
-  .btn-download:hover { background: var(--orange-dark); }
-  .btn-preview { background: var(--white); color: var(--orange); border: 2px solid var(--orange); }
-  .btn-preview:hover { background: #FFF0EB; }
+  .btn-download { background: var(--gradient); color: white; }
+  .btn-download:hover { opacity: 0.88; }
+  .btn-preview { background: var(--white); color: var(--flame); border: 2px solid var(--amber); }
+  .btn-preview:hover { background: var(--peach); }
 
   iframe {
     width: 100%; height: 600px; border: 1px solid var(--gray-border);
@@ -114,9 +119,9 @@
   }
   .error-box p { font-size: 14px; color: #991B1B; font-weight: 500; margin: 0; }
 
-  footer { border-top: 1px solid var(--gray-border); padding: 24px 32px; text-align: center; background: var(--white); margin-top: 64px; }
-  footer p { font-size: 13px; color: var(--gray-text); }
-  footer a { color: var(--orange); font-weight: 600; text-decoration: none; }
+  footer { border-top: 1px solid var(--gray-border); padding: 24px 32px; text-align: center; background: var(--charcoal); margin-top: 64px; }
+  footer p { font-size: 13px; color: var(--peach); }
+  footer a { color: var(--gold); font-weight: 600; text-decoration: none; }
 
   @media(max-width:600px) {
     .hero h1 { font-size: 28px; }
