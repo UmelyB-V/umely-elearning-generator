@@ -23,11 +23,11 @@
   body { font-family: 'Inter', system-ui, sans-serif; background: var(--warm-white); color: var(--gray-text); min-height: 100vh; }
 
   header {
-    background: var(--charcoal); border-bottom: none;
+    background: var(--gradient); border-bottom: none;
     padding: 0 32px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: var(--warm-white); text-decoration: none; }
+  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: white; text-decoration: none; }
   .header-actions { display: flex; gap: 12px; align-items: center; }
   .btn-sm {
     display: inline-flex; align-items: center; gap: 6px;
@@ -37,8 +37,8 @@
   }
   .btn-primary { background: var(--gradient); color: white; }
   .btn-primary:hover { opacity: 0.88; }
-  .btn-ghost { background: transparent; color: var(--peach); border: 2px solid var(--peach); }
-  .btn-ghost:hover { background: rgba(255,215,173,0.15); }
+  .btn-ghost { background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.6); backdrop-filter: blur(4px); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.35); }
 
   main { max-width: 1000px; margin: 0 auto; padding: 48px 20px; }
 
@@ -97,9 +97,9 @@
 
   .loading { text-align: center; padding: 80px; color: var(--gray-text); font-size: 15px; }
 
-  footer { border-top: none; padding: 24px 32px; text-align: center; background: var(--charcoal); margin-top: 64px; }
-  footer p { font-size: 13px; color: var(--peach); }
-  footer a { color: var(--gold); font-weight: 600; text-decoration: none; }
+  footer { padding: 24px 32px; text-align: center; background: var(--gradient); margin-top: 64px; }
+  footer p { font-size: 13px; color: rgba(255,255,255,0.85); }
+  footer a { color: white; font-weight: 700; text-decoration: none; }
 
   @media(max-width:600px) {
     .grid { grid-template-columns: 1fr; }

@@ -24,18 +24,18 @@
   body { font-family: 'Inter', system-ui, sans-serif; background: var(--warm-white); color: var(--gray-text); min-height: 100vh; }
 
   header {
-    background: var(--charcoal); border-bottom: none;
+    background: var(--gradient); border-bottom: none;
     padding: 0 32px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: var(--warm-white); text-decoration: none; }
+  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: white; text-decoration: none; }
   .logo-icon { font-size: 22px; }
   .header-cta {
-    background: var(--gradient); color: white; border: none;
+    background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.6);
     padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700;
-    cursor: pointer; text-decoration: none;
+    cursor: pointer; text-decoration: none; backdrop-filter: blur(4px);
   }
-  .header-cta:hover { opacity: 0.9; }
+  .header-cta:hover { background: rgba(255,255,255,0.35); }
 
   main { max-width: 860px; margin: 0 auto; padding: 48px 20px; }
 
@@ -119,9 +119,9 @@
   }
   .error-box p { font-size: 14px; color: #991B1B; font-weight: 500; margin: 0; }
 
-  footer { border-top: 1px solid var(--gray-border); padding: 24px 32px; text-align: center; background: var(--charcoal); margin-top: 64px; }
-  footer p { font-size: 13px; color: var(--peach); }
-  footer a { color: var(--gold); font-weight: 600; text-decoration: none; }
+  footer { padding: 24px 32px; text-align: center; background: var(--gradient); margin-top: 64px; }
+  footer p { font-size: 13px; color: rgba(255,255,255,0.85); }
+  footer a { color: white; font-weight: 700; text-decoration: none; }
 
   @media(max-width:600px) {
     .hero h1 { font-size: 28px; }

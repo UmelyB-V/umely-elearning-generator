@@ -67,15 +67,15 @@ Gebruik onderstaande template. Vervang ALLE [PLACEHOLDERS] met echte inhoud uit 
   /* ── HEADER ── */
   header {
     position: sticky; top: 0; z-index: 100;
-    background: var(--charcoal); border-bottom: none;
+    background: var(--gradient); border-bottom: none;
     padding: 0 32px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: var(--warm-white); text-decoration: none; }
+  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: white; text-decoration: none; }
   .logo-icon { font-size: 22px; }
-  .header-tag { font-size: 12px; color: var(--peach); font-weight: 500; opacity: 0.85; }
-  .header-back { font-size: 12px; color: var(--peach); font-weight: 600; text-decoration: none; opacity: 0.85; transition: opacity 0.15s; }
-  .header-back:hover { opacity: 1; }
+  .header-tag { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 500; }
+  .header-back { font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; text-decoration: none; background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 50px; transition: background 0.15s; }
+  .header-back:hover { background: rgba(255,255,255,0.35); }
 
   /* ── VOORTGANGSBALK ── */
   .progress-track { height: 4px; background: var(--cream); }
@@ -195,9 +195,9 @@ Gebruik onderstaande template. Vervang ALLE [PLACEHOLDERS] met echte inhoud uit 
   .meta-item { font-size: 13px; color: var(--gray-text); display: flex; align-items: center; gap: 6px; }
 
   /* ── FOOTER ── */
-  footer { background: var(--charcoal); padding: 24px 32px; text-align: center; margin-top: 0; }
-  footer p { font-size: 13px; color: var(--peach); margin: 0; }
-  footer a { color: var(--gold); text-decoration: none; font-weight: 600; }
+  footer { background: var(--gradient); padding: 24px 32px; text-align: center; margin-top: 0; }
+  footer p { font-size: 13px; color: rgba(255,255,255,0.85); margin: 0; }
+  footer a { color: white; text-decoration: none; font-weight: 700; }
 
   @media(max-width:600px){ .card { padding: 24px 18px; } h1 { font-size: 24px; } }
 </style>
