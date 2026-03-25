@@ -1,15 +1,15 @@
 require('dotenv').config();
 const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
+const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
-const fs = require('fs');
 
 const app = express();
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const OUTPUT_DIR = path.join(__dirname, '..', 'output');
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 const SYSTEM_PROMPT = `Je bent een AI-agent van Umely — "Jouw vaste AI-partner." Jouw taak: automatisch complete, interactieve e-learning modules genereren vanuit transcripties of samenvattingen.
 
@@ -55,53 +55,43 @@ Elke e-learning MOET bevatten:
 
 Genereer ALLEEN de volledige HTML — geen uitleg, geen markdown, geen code blocks. Begin direct met <!DOCTYPE html>.`;
 
-// ── Haal metadata op uit een HTML-bestand ──
-function getModuleMeta(filename) {
-  const filepath = path.join(OUTPUT_DIR, filename);
-  const html = fs.readFileSync(filepath, 'utf8');
-  const titleMatch = html.match(/<title>([^<]+)<\/title>/i);
-  const title = titleMatch
-    ? titleMatch[1].replace(' | Umely E-learning', '').trim()
-    : filename.replace('.html', '');
-  const stat = fs.statSync(filepath);
-  return {
-    filename,
-    slug: filename.replace('.html', ''),
-    title,
-    date: stat.mtime.toISOString().slice(0, 10),
-    url: `/modules/${filename.replace('.html', '')}`
-  };
-}
-
 // ── API: lijst van alle modules ──
-app.get('/api/modules', (req, res) => {
-  if (!fs.existsSync(OUTPUT_DIR)) return res.json([]);
-  const files = fs.readdirSync(OUTPUT_DIR)
-    .filter(f => f.endsWith('.html'))
-    .sort((a, b) => {
-      const statA = fs.statSync(path.join(OUTPUT_DIR, a));
-      const statB = fs.statSync(path.join(OUTPUT_DIR, b));
-      return statB.mtime - statA.mtime; // nieuwste eerst
-    });
-  res.json(files.map(getModuleMeta));
+app.get('/api/modules', async (req, res) => {
+  const { data, error } = await supabase
+    .from('modules')
+    .select('filename, title, created_at')
+    .order('created_at', { ascending: false });
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data.map(m => ({
+    filename: m.filename,
+    slug: m.filename.replace('.html', ''),
+    title: m.title,
+    date: m.created_at.slice(0, 10),
+    url: `/modules/${m.filename.replace('.html', '')}`
+  })));
 });
 
 // ── Serveer een individuele module ──
-app.get('/modules/:slug', (req, res) => {
+app.get('/modules/:slug', async (req, res) => {
   const filename = req.params.slug + '.html';
-  const filepath = path.join(OUTPUT_DIR, filename);
-  if (!fs.existsSync(filepath)) {
-    return res.status(404).send('<h1>Module niet gevonden</h1>');
-  }
-  res.sendFile(filepath);
+  const { data, error } = await supabase
+    .from('modules')
+    .select('html')
+    .eq('filename', filename)
+    .single();
+  if (error || !data) return res.status(404).send('<h1>Module niet gevonden</h1>');
+  res.setHeader('Content-Type', 'text/html');
+  res.send(data.html);
 });
 
 // ── Verwijder een module ──
-app.delete('/api/modules/:slug', (req, res) => {
+app.delete('/api/modules/:slug', async (req, res) => {
   const filename = req.params.slug + '.html';
-  const filepath = path.join(OUTPUT_DIR, filename);
-  if (!fs.existsSync(filepath)) return res.status(404).json({ error: 'Niet gevonden' });
-  fs.unlinkSync(filepath);
+  const { error } = await supabase
+    .from('modules')
+    .delete()
+    .eq('filename', filename);
+  if (error) return res.status(500).json({ error: error.message });
   res.json({ ok: true });
 });
 
@@ -137,7 +127,7 @@ app.post('/generate', async (req, res) => {
       }
     }
 
-    // Automatisch opslaan in output/
+    // Opslaan in Supabase
     if (fullHtml.includes('<!DOCTYPE html>')) {
       const titleMatch = fullHtml.match(/<title>([^<]+)<\/title>/i);
       const rawTitle = titleMatch
@@ -150,8 +140,13 @@ app.post('/generate', async (req, res) => {
         .slice(0, 40);
       const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
       const filename = `elearning-${slug}-${date}.html`;
-      if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-      fs.writeFileSync(path.join(OUTPUT_DIR, filename), fullHtml, 'utf8');
+
+      await supabase.from('modules').insert({
+        filename,
+        title: rawTitle,
+        html: fullHtml
+      });
+
       res.write(`data: ${JSON.stringify({ done: true, slug: filename.replace('.html', ''), url: `/modules/${filename.replace('.html', '')}` })}\n\n`);
     } else {
       res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
