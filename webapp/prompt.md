@@ -526,18 +526,20 @@ function checkKC(nr, el, isCorrect, volgendeScherm) {
   document.querySelectorAll('#kc-' + nr + ' .kc-optie').forEach(o => o.style.pointerEvents = 'none');
   el.classList.add(isCorrect ? 'correct' : 'fout');
   const fb = document.getElementById('kc-feedback-' + nr);
+  const btnStijl = 'background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;';
+  const volgendeKnop = '<button style="' + btnStijl + '" onclick="goTo(\'' + volgendeScherm + '\')">Volgende vraag →</button>';
   if (isCorrect) {
     fb.className = 'kc-feedback correct';
     fb.innerHTML = '<span>✓ Correct!</span>'
       + '<div class="kc-knoppen">'
-      + '<button class="btn" onclick="goTo(\'' + volgendeScherm + '\')">Volgende →</button>'
+      + volgendeKnop
       + '</div>';
   } else {
     fb.className = 'kc-feedback fout';
     fb.innerHTML = '<span>✗ Niet correct.</span>'
       + '<div class="kc-knoppen">'
-      + '<button style="background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;" onclick="resetKC(' + nr + ')">↩ Probeer opnieuw</button>'
-      + '<button class="btn" onclick="goTo(\'' + volgendeScherm + '\')">Volgende vraag →</button>'
+      + '<button style="' + btnStijl + '" onclick="resetKC(' + nr + ')">↩ Probeer opnieuw</button>'
+      + volgendeKnop
       + '</div>';
   }
 }

@@ -13,18 +13,20 @@ function checkKC(nr, el, isCorrect) {
   const fb = document.getElementById('kc-feedback-' + nr);
   const volgendeBtn = document.getElementById('kc-volgende-' + nr);
   const volgendeOnclick = volgendeBtn ? volgendeBtn.getAttribute('onclick') : null;
+  const btnStijl = 'background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;';
+  const volgendeKnop = volgendeOnclick ? '<button style="' + btnStijl + '" onclick="' + volgendeOnclick + '">Volgende vraag \\u2192</button>' : '';
   if (isCorrect) {
     fb.className = 'kc-feedback correct';
     fb.innerHTML = '<span>\\u2713 Correct!</span>'
       + '<div class="kc-knoppen">'
-      + (volgendeOnclick ? '<button class="btn" onclick="' + volgendeOnclick + '">Volgende \\u2192</button>' : '')
+      + volgendeKnop
       + '</div>';
   } else {
     fb.className = 'kc-feedback fout';
     fb.innerHTML = '<span>\\u2717 Niet correct.</span>'
       + '<div class="kc-knoppen">'
-      + '<button style="background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;" onclick="resetKC(' + nr + ')">\\u21a9 Probeer opnieuw</button>'
-      + (volgendeOnclick ? '<button class="btn" onclick="' + volgendeOnclick + '">Volgende vraag \\u2192</button>' : '')
+      + '<button style="' + btnStijl + '" onclick="resetKC(' + nr + ')">\\u21a9 Probeer opnieuw</button>'
+      + volgendeKnop
       + '</div>';
   }
 }
