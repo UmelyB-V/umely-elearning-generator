@@ -536,7 +536,7 @@ function checkKC(nr, el, isCorrect, volgendeScherm) {
     fb.className = 'kc-feedback fout';
     fb.innerHTML = '<span>✗ Niet correct.</span>'
       + '<div class="kc-knoppen">'
-      + '<button class="btn-outline" onclick="resetKC(' + nr + ')">↩ Probeer opnieuw</button>'
+      + '<button style="background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;" onclick="resetKC(' + nr + ')">↩ Probeer opnieuw</button>'
       + '<button class="btn" onclick="goTo(\'' + volgendeScherm + '\')">Volgende vraag →</button>'
       + '</div>';
   }

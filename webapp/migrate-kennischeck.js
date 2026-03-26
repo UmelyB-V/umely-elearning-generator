@@ -23,7 +23,7 @@ function checkKC(nr, el, isCorrect) {
     fb.className = 'kc-feedback fout';
     fb.innerHTML = '<span>\\u2717 Niet correct.</span>'
       + '<div class="kc-knoppen">'
-      + '<button class="btn-outline" onclick="resetKC(' + nr + ')">\\u21a9 Probeer opnieuw</button>'
+      + '<button style="background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;" onclick="resetKC(' + nr + ')">\\u21a9 Probeer opnieuw</button>'
       + (volgendeOnclick ? '<button class="btn" onclick="' + volgendeOnclick + '">Volgende vraag \\u2192</button>' : '')
       + '</div>';
   }
