@@ -121,7 +121,7 @@ HEADER HTML (altijd exact zo):
 
 <header>
   <div class="header-inner">
-    <a class="logo" href="#">🧠 <span>Umely</span></a>
+    <a class="logo" href="#"><img src="/logo.png" alt="Umely" style="height:32px;"></a>
     <a class="header-back" href="/modules.html">← Bibliotheek</a>
   </div>
   <div style="max-width:860px;margin:0.75rem auto 0;background:var(--peach);border-radius:50px;height:6px;overflow:hidden;">
