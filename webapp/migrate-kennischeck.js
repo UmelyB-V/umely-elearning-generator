@@ -3,18 +3,33 @@ const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-// ── Nieuwe checkKC + resetKC ──
-// Leest het volgende scherm uit de bestaande kc-volgende-N knop in de HTML,
-// zodat de onclick-attributen op .kc-optie niet gewijzigd hoeven te worden.
+// Versie-marker — modules die dit bevatten zijn al up-to-date
+const MARKER = '// kc-v3-schermen-fallback';
+
+// ── Nieuwe checkKC + resetKC (v3) ──
+// Leest eerst kc-volgende-N (backwards compat), anders valt terug op SCHERMEN-array
 const NIEUWE_FUNCTIES = `
 function checkKC(nr, el, isCorrect) {
+  // kc-v3-schermen-fallback
   document.querySelectorAll('#kc-' + nr + ' .kc-optie').forEach(o => o.style.pointerEvents = 'none');
   el.classList.add(isCorrect ? 'correct' : 'fout');
   const fb = document.getElementById('kc-feedback-' + nr);
+  // Bepaal het volgende scherm: kc-volgende-N knop of SCHERMEN-array als fallback
   const volgendeBtn = document.getElementById('kc-volgende-' + nr);
-  const volgendeOnclick = volgendeBtn ? volgendeBtn.getAttribute('onclick') : null;
+  let volgendeOnclick = volgendeBtn ? volgendeBtn.getAttribute('onclick') : null;
+  if (!volgendeOnclick && typeof SCHERMEN !== 'undefined') {
+    const act = document.querySelector('.screen.active');
+    if (act) {
+      const idx = SCHERMEN.indexOf(act.id);
+      if (idx !== -1 && idx < SCHERMEN.length - 1) {
+        volgendeOnclick = "goTo('" + SCHERMEN[idx + 1] + "')";
+      }
+    }
+  }
   const btnStijl = 'background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;';
-  const volgendeKnop = volgendeOnclick ? '<button style="' + btnStijl + '" onclick="' + volgendeOnclick + '">Volgende vraag \\u2192</button>' : '';
+  const volgendeKnop = volgendeOnclick
+    ? '<button style="' + btnStijl + '" onclick="' + volgendeOnclick + '">Volgende vraag \\u2192</button>'
+    : '';
   if (isCorrect) {
     fb.className = 'kc-feedback correct';
     fb.innerHTML = '<span>\\u2713 Correct!</span>'
@@ -51,32 +66,64 @@ const KC_KNOPPEN_CSS = `
 }`;
 
 function migreerHTML(html) {
-  let gewijzigd = false;
-
-  // 1. Vervang de checkKC functie (match losjes op de functienaam)
-  const checkKCRegex = /function checkKC\s*\([\s\S]*?\{[\s\S]*?\n\}/;
-  if (checkKCRegex.test(html)) {
-    html = html.replace(checkKCRegex, NIEUWE_FUNCTIES.trim());
-    gewijzigd = true;
+  // Skip als al gemigreerd met v3
+  if (html.includes(MARKER)) {
+    return { html, gewijzigd: false };
   }
 
-  // 2. Voeg resetKC toe als die nog niet bestaat
-  if (!html.includes('function resetKC')) {
-    // Voeg toe na checkKC als de bovenstaande replace het niet al deed
-    if (!gewijzigd) {
-      // checkKC niet gevonden via regex, voeg resetKC toe voor </script>
-      html = html.replace('</script>', NIEUWE_FUNCTIES.trim() + '\n</script>');
+  let gewijzigd = false;
+
+  // Vervang checkKC + resetKC via string-positie (robuuster dan regex)
+  const checkKCStart = html.indexOf('function checkKC');
+  if (checkKCStart !== -1) {
+    const resetKCIdx = html.indexOf('function resetKC', checkKCStart);
+    let end;
+
+    if (resetKCIdx !== -1) {
+      // Vind de sluitende } van resetKC door accolades te tellen
+      end = vindFuncEinde(html, resetKCIdx);
+    } else {
+      // Geen resetKC — vind einde van checkKC alleen
+      end = vindFuncEinde(html, checkKCStart);
+    }
+
+    if (end !== -1) {
+      html = html.slice(0, checkKCStart) + NIEUWE_FUNCTIES.trim() + html.slice(end);
+      gewijzigd = true;
+    }
+  } else {
+    // Geen checkKC gevonden — voeg alles toe voor </script>
+    const scriptEnd = html.indexOf('</script>');
+    if (scriptEnd !== -1) {
+      html = html.slice(0, scriptEnd) + NIEUWE_FUNCTIES.trim() + '\n' + html.slice(scriptEnd);
       gewijzigd = true;
     }
   }
 
-  // 3. Voeg .kc-knoppen CSS toe als die nog niet bestaat
+  // Voeg .kc-knoppen CSS toe als die nog niet bestaat
   if (!html.includes('.kc-knoppen')) {
-    html = html.replace('.kc-feedback.fout', KC_KNOPPEN_CSS + '\n.kc-feedback.fout');
+    const foutIdx = html.indexOf('.kc-feedback.fout');
+    if (foutIdx !== -1) {
+      html = html.slice(0, foutIdx) + KC_KNOPPEN_CSS + '\n' + html.slice(foutIdx);
+    }
     gewijzigd = true;
   }
 
   return { html, gewijzigd };
+}
+
+// Tel accolades om het einde van een functie te vinden
+function vindFuncEinde(html, start) {
+  let depth = 0;
+  let inFunc = false;
+  for (let i = start; i < html.length; i++) {
+    if (html[i] === '{') { depth++; inFunc = true; }
+    else if (html[i] === '}') {
+      depth--;
+      if (inFunc && depth === 0) return i + 1;
+    }
+  }
+  return -1;
 }
 
 async function run() {
