@@ -4,31 +4,42 @@ const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 // Versie-marker — modules die dit bevatten zijn al up-to-date
-const MARKER = '// kc-v3-schermen-fallback';
+const MARKER = '// kc-v4-altijd-volgende';
 
-// ── Nieuwe checkKC + resetKC (v3) ──
-// Leest eerst kc-volgende-N (backwards compat), anders valt terug op SCHERMEN-array
+// ── Nieuwe checkKC + resetKC (v4) ──
+// "Volgende vraag →" verschijnt ALTIJD, zowel bij correct als fout antwoord.
+// Navigatiedoel: 1) kc-volgende-N onclick, 2) SCHERMEN-array, 3) volgende .screen sibling
 const NIEUWE_FUNCTIES = `
 function checkKC(nr, el, isCorrect) {
-  // kc-v3-schermen-fallback
+  // kc-v4-altijd-volgende
   document.querySelectorAll('#kc-' + nr + ' .kc-optie').forEach(o => o.style.pointerEvents = 'none');
   el.classList.add(isCorrect ? 'correct' : 'fout');
   const fb = document.getElementById('kc-feedback-' + nr);
-  // Bepaal het volgende scherm: kc-volgende-N knop of SCHERMEN-array als fallback
+  // Bepaal het volgende scherm (3 fallbacks)
+  let volgendeTarget = null;
   const volgendeBtn = document.getElementById('kc-volgende-' + nr);
-  let volgendeOnclick = volgendeBtn ? volgendeBtn.getAttribute('onclick') : null;
-  if (!volgendeOnclick && typeof SCHERMEN !== 'undefined') {
+  if (volgendeBtn) {
+    volgendeTarget = volgendeBtn.getAttribute('onclick');
+  }
+  if (!volgendeTarget && typeof SCHERMEN !== 'undefined') {
     const act = document.querySelector('.screen.active');
     if (act) {
       const idx = SCHERMEN.indexOf(act.id);
       if (idx !== -1 && idx < SCHERMEN.length - 1) {
-        volgendeOnclick = "goTo('" + SCHERMEN[idx + 1] + "')";
+        volgendeTarget = "goTo('" + SCHERMEN[idx + 1] + "')";
       }
     }
   }
+  if (!volgendeTarget) {
+    const act = document.querySelector('.screen.active');
+    const next = act && act.nextElementSibling;
+    if (next && next.classList.contains('screen')) {
+      volgendeTarget = "goTo('" + next.id + "')";
+    }
+  }
   const btnStijl = 'background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;';
-  const volgendeKnop = volgendeOnclick
-    ? '<button style="' + btnStijl + '" onclick="' + volgendeOnclick + '">Volgende vraag \\u2192</button>'
+  const volgendeKnop = volgendeTarget
+    ? '<button style="' + btnStijl + '" onclick="' + volgendeTarget + '">Volgende vraag \\u2192</button>'
     : '';
   if (isCorrect) {
     fb.className = 'kc-feedback correct';
