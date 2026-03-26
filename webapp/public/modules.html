@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>E-learning Bibliotheek | Umely</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
   :root {
@@ -23,13 +24,52 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Inter', system-ui, sans-serif; background: var(--warm-white); color: var(--gray-text); min-height: 100vh; }
 
+  /* ── AUTH OVERLAY ── */
+  #authOverlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(39,41,45,0.85); backdrop-filter: blur(6px);
+    z-index: 1000; align-items: center; justify-content: center;
+  }
+  .auth-card {
+    background: var(--white); border-radius: 20px; padding: 48px;
+    max-width: 400px; width: 90%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  }
+  .auth-card .auth-logo { text-align: center; margin-bottom: 28px; }
+  .auth-card .auth-logo .auth-icon { font-size: 40px; display: block; margin-bottom: 8px; }
+  .auth-card .auth-logo h2 { font-size: 22px; font-weight: 800; color: var(--charcoal); margin-bottom: 6px; }
+  .auth-card .auth-logo p { font-size: 14px; color: var(--gray-text); }
+  .auth-field { margin-bottom: 14px; }
+  .auth-field label { display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+  .auth-field input {
+    width: 100%; padding: 12px 16px;
+    border: 2px solid var(--gray-border); border-radius: 10px;
+    font-family: 'Inter', system-ui, sans-serif; font-size: 14px;
+    color: var(--charcoal); outline: none; transition: border-color 0.15s;
+  }
+  .auth-field input:focus { border-color: var(--amber); }
+  #authError {
+    display: none; background: #FEF2F2; border: 1px solid #FCA5A5;
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;
+    font-size: 13px; color: #991B1B;
+  }
+  #loginBtn {
+    width: 100%; padding: 14px; background: var(--gradient);
+    color: white; border: none; border-radius: 50px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: opacity 0.2s; margin-top: 6px;
+  }
+  #loginBtn:hover:not(:disabled) { opacity: 0.88; }
+  #loginBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
   header {
     background: var(--gradient); border-bottom: none;
     padding: 0 32px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
   }
   .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: white; text-decoration: none; }
-  .header-actions { display: flex; gap: 12px; align-items: center; }
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+  .header-user { font-size: 13px; color: rgba(255,255,255,0.85); display: none; }
   .btn-sm {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 700;
@@ -40,6 +80,12 @@
   .btn-primary:hover { opacity: 0.88; }
   .btn-ghost { background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.6); backdrop-filter: blur(4px); }
   .btn-ghost:hover { background: rgba(255,255,255,0.35); }
+  .btn-logout {
+    background: none; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 600;
+    cursor: pointer; display: none; transition: all 0.15s;
+  }
+  .btn-logout:hover { background: rgba(255,255,255,0.15); color: white; }
 
   main { max-width: 1000px; margin: 0 auto; padding: 48px 20px; }
 
@@ -138,12 +184,35 @@
 </head>
 <body>
 
+<!-- Auth overlay -->
+<div id="authOverlay" style="display:flex;">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="auth-icon">🧠</span>
+      <h2>Welkom bij Umely</h2>
+      <p>Log in om de bibliotheek te bekijken.</p>
+    </div>
+    <div id="authError"></div>
+    <div class="auth-field">
+      <label>E-mailadres</label>
+      <input id="authEmail" type="email" placeholder="naam@bedrijf.nl" autocomplete="email">
+    </div>
+    <div class="auth-field">
+      <label>Wachtwoord</label>
+      <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button id="loginBtn" onclick="login()">Inloggen</button>
+  </div>
+</div>
+
 <header>
   <a class="logo" href="/">
     <span>🧠</span>Umely
   </a>
   <div class="header-actions">
+    <span class="header-user" id="headerUser"></span>
     <a class="btn-sm btn-ghost" href="/">+ Nieuwe e-learning</a>
+    <button class="btn-logout" id="logoutBtn" onclick="logout()">Uitloggen</button>
   </div>
 </header>
 
@@ -169,6 +238,73 @@
 const icons = ['📘','🎯','🧠','🚀','💡','🌿','📈','🤝','🔥','⚙️','💻','🍷','🦁'];
 const ORDER_KEY = 'umely_module_order';
 
+// ── AUTH ──
+let _supabase = null;
+let _session = null;
+
+async function initAuth() {
+  const config = await fetch('/api/config').then(r => r.json());
+  _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+
+  const { data: { session } } = await _supabase.auth.getSession();
+  _session = session;
+  if (session) {
+    showApp(session);
+    loadModules();
+  } else {
+    showLogin();
+  }
+
+  _supabase.auth.onAuthStateChange((_event, session) => {
+    _session = session;
+    if (session) { showApp(session); loadModules(); } else showLogin();
+  });
+}
+
+function showLogin() {
+  document.getElementById('authOverlay').style.display = 'flex';
+}
+
+function showApp(session) {
+  document.getElementById('authOverlay').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'block';
+  const userEl = document.getElementById('headerUser');
+  userEl.textContent = session.user.email;
+  userEl.style.display = 'block';
+}
+
+async function login() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('authError');
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Inloggen...';
+
+  const { error } = await _supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Inloggen';
+  }
+}
+
+async function logout() {
+  const btn = document.getElementById('logoutBtn');
+  btn.textContent = '...';
+  btn.disabled = true;
+  await _supabase.auth.signOut();
+  window.location.reload();
+}
+
+function authHeader() {
+  return _session ? { 'Authorization': `Bearer ${_session.access_token}` } : {};
+}
+
+// ── MODULE VOLGORDE ──
 function getSavedOrder() {
   try { return JSON.parse(localStorage.getItem(ORDER_KEY)) || []; } catch { return []; }
 }
@@ -189,8 +325,11 @@ function applyOrder(modules) {
 
 async function loadModules() {
   const grid = document.getElementById('grid');
+  grid.className = 'loading';
+  grid.innerHTML = 'Modules laden...';
   try {
-    const res = await fetch('/api/modules');
+    const res = await fetch('/api/modules', { headers: authHeader() });
+    if (res.status === 401) { showLogin(); return; }
     const raw = await res.json();
     const modules = applyOrder(raw);
 
@@ -231,7 +370,6 @@ async function loadModules() {
         </div>`;
     }).join('');
 
-    // Drag-and-drop volgorde
     Sortable.create(grid, {
       handle: '.drag-handle',
       animation: 150,
@@ -258,7 +396,7 @@ async function renameModule(slug, btn) {
   try {
     const res = await fetch(`/api/modules/${slug}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
       body: JSON.stringify({ title: newTitle.trim() })
     });
     if (!res.ok) throw new Error(`Server gaf ${res.status} terug`);
@@ -276,7 +414,10 @@ async function deleteModule(slug, title, btn) {
   btn.disabled = true;
   btn.textContent = '⏳';
   try {
-    const res = await fetch(`/api/modules/${slug}`, { method: 'DELETE' });
+    const res = await fetch(`/api/modules/${slug}`, {
+      method: 'DELETE',
+      headers: authHeader()
+    });
     if (!res.ok) throw new Error(`Server gaf ${res.status} terug`);
     btn.closest('.module-card').remove();
     saveOrder();
@@ -324,7 +465,7 @@ function filterModules() {
   }
 }
 
-loadModules();
+initAuth();
 </script>
 </body>
 </html>

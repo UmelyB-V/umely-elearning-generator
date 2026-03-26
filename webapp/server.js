@@ -16,6 +16,21 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 3 });
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
+// ── Auth middleware ──
+async function requireAuth(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Niet ingelogd' });
+  }
+  const token = auth.slice(7);
+  const { data: { user }, error } = await supabase.auth.getUser(token);
+  if (error || !user) {
+    return res.status(401).json({ error: 'Ongeldige of verlopen sessie' });
+  }
+  req.user = user;
+  next();
+}
+
 // In-memory job store
 const jobs = {};
 
@@ -690,8 +705,16 @@ KWALITEITS-CHECKLIST (controleer voor je afrondt)
 ✓ Geen placeholder tekst — alles uit de transcriptie
 ✓ Mobile-responsive @media blok aanwezig`;
 
+// ── Config voor frontend ──
+app.get('/api/config', (req, res) => {
+  res.json({
+    supabaseUrl: process.env.SUPABASE_URL,
+    supabaseAnonKey: process.env.SUPABASE_ANON_KEY || ''
+  });
+});
+
 // ── Start genereren (geeft direct jobId terug) ──
-app.post('/generate', async (req, res) => {
+app.post('/generate', requireAuth, async (req, res) => {
   const { transcription } = req.body;
   if (!transcription || transcription.trim().length < 10) {
     return res.status(400).json({ error: 'Transcriptie is te kort of leeg.' });
@@ -755,7 +778,7 @@ app.post('/generate', async (req, res) => {
 });
 
 // ── Bestand uploaden en tekst extraheren ──
-app.post('/extract-text', upload.single('file'), async (req, res) => {
+app.post('/extract-text', requireAuth, upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Geen bestand ontvangen.' });
   const { mimetype, originalname, buffer } = req.file;
   try {
@@ -789,7 +812,7 @@ app.get('/api/job/:jobId', (req, res) => {
 });
 
 // ── API: lijst van alle modules ──
-app.get('/api/modules', async (req, res) => {
+app.get('/api/modules', requireAuth, async (req, res) => {
   const { data, error } = await supabase
     .from('modules')
     .select('filename, title, created_at')
@@ -804,21 +827,68 @@ app.get('/api/modules', async (req, res) => {
   })));
 });
 
-// ── Serveer een individuele module ──
-app.get('/modules/:slug', async (req, res) => {
+// ── Beveiligd HTML-endpoint (Bearer token vereist) ──
+app.get('/api/module-html/:slug', requireAuth, async (req, res) => {
   const filename = req.params.slug + '.html';
   const { data, error } = await supabase
     .from('modules')
     .select('html')
     .eq('filename', filename)
     .single();
-  if (error || !data) return res.status(404).send('<h1>Module niet gevonden</h1>');
+  if (error || !data) return res.status(404).send('Module niet gevonden');
   res.setHeader('Content-Type', 'text/html');
   res.send(data.html);
 });
 
+// ── Auth-wrapper voor directe module-URL's ──
+app.get('/modules/:slug', (req, res) => {
+  const slug = req.params.slug;
+  res.setHeader('Content-Type', 'text/html');
+  res.send(`<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module laden...</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; background: #FFF8F2; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .loader { text-align: center; color: #FF8514; }
+  .spinner { width: 36px; height: 36px; border: 4px solid #FFD7AD; border-top-color: #FF4D00; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  p { font-size: 15px; font-weight: 600; color: #FF8514; margin: 0; }
+</style>
+</head>
+<body>
+<div class="loader"><div class="spinner"></div><p>Module laden...</p></div>
+<script>
+(async () => {
+  const config = await fetch('/api/config').then(r => r.json());
+  const _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+  const { data: { session } } = await _supabase.auth.getSession();
+  if (!session) {
+    window.location.href = '/?redirect=' + encodeURIComponent('/modules/${slug}');
+    return;
+  }
+  const res = await fetch('/api/module-html/${slug}', {
+    headers: { 'Authorization': 'Bearer ' + session.access_token }
+  });
+  if (!res.ok) {
+    document.body.innerHTML = '<div style="text-align:center;padding:80px;font-family:system-ui"><h2>Module niet gevonden</h2><a href="/modules.html" style="color:#FF8514">← Terug naar bibliotheek</a></div>';
+    return;
+  }
+  const html = await res.text();
+  document.open();
+  document.write(html);
+  document.close();
+})();
+</script>
+</body>
+</html>`);
+});
+
 // ── Hernoem een module ──
-app.patch('/api/modules/:slug', async (req, res) => {
+app.patch('/api/modules/:slug', requireAuth, async (req, res) => {
   const filename = req.params.slug + '.html';
   const { title } = req.body;
   if (!title || !title.trim()) return res.status(400).json({ error: 'Titel mag niet leeg zijn.' });
@@ -828,7 +898,7 @@ app.patch('/api/modules/:slug', async (req, res) => {
 });
 
 // ── Verwijder een module ──
-app.delete('/api/modules/:slug', async (req, res) => {
+app.delete('/api/modules/:slug', requireAuth, async (req, res) => {
   const filename = req.params.slug + '.html';
   const { error } = await supabase.from('modules').delete().eq('filename', filename);
   if (error) return res.status(500).json({ error: error.message });

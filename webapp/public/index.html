@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Umely E-learning Generator</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --amber: #FF8514;
@@ -23,6 +24,44 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Inter', system-ui, sans-serif; background: var(--warm-white); color: var(--gray-text); min-height: 100vh; }
 
+  /* ── AUTH OVERLAY ── */
+  #authOverlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(39,41,45,0.85); backdrop-filter: blur(6px);
+    z-index: 1000; align-items: center; justify-content: center;
+  }
+  .auth-card {
+    background: var(--white); border-radius: 20px; padding: 48px;
+    max-width: 400px; width: 90%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  }
+  .auth-card .auth-logo { text-align: center; margin-bottom: 28px; }
+  .auth-card .auth-logo .auth-icon { font-size: 40px; display: block; margin-bottom: 8px; }
+  .auth-card .auth-logo h2 { font-size: 22px; font-weight: 800; color: var(--charcoal); margin-bottom: 6px; }
+  .auth-card .auth-logo p { font-size: 14px; color: var(--gray-text); }
+  .auth-field { margin-bottom: 14px; }
+  .auth-field label { display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+  .auth-field input {
+    width: 100%; padding: 12px 16px;
+    border: 2px solid var(--gray-border); border-radius: 10px;
+    font-family: 'Inter', system-ui, sans-serif; font-size: 14px;
+    color: var(--charcoal); outline: none; transition: border-color 0.15s;
+  }
+  .auth-field input:focus { border-color: var(--amber); }
+  #authError {
+    display: none; background: #FEF2F2; border: 1px solid #FCA5A5;
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;
+    font-size: 13px; color: #991B1B;
+  }
+  #loginBtn {
+    width: 100%; padding: 14px; background: var(--gradient);
+    color: white; border: none; border-radius: 50px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: opacity 0.2s; margin-top: 6px;
+  }
+  #loginBtn:hover:not(:disabled) { opacity: 0.88; }
+  #loginBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
   header {
     background: var(--gradient); border-bottom: none;
     padding: 0 32px; height: 64px;
@@ -30,12 +69,20 @@
   }
   .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: white; text-decoration: none; }
   .logo-icon { font-size: 22px; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .header-user { font-size: 13px; color: rgba(255,255,255,0.85); display: none; }
   .header-cta {
     background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.6);
     padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700;
     cursor: pointer; text-decoration: none; backdrop-filter: blur(4px);
   }
   .header-cta:hover { background: rgba(255,255,255,0.35); }
+  .btn-logout {
+    background: none; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 600;
+    cursor: pointer; display: none; transition: all 0.15s;
+  }
+  .btn-logout:hover { background: rgba(255,255,255,0.15); color: white; }
 
   main { max-width: 860px; margin: 0 auto; padding: 48px 20px; }
 
@@ -162,11 +209,36 @@
 </head>
 <body>
 
+<!-- Auth overlay -->
+<div id="authOverlay" style="display:flex;">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="auth-icon">🧠</span>
+      <h2>Welkom bij Umely</h2>
+      <p>Log in om de e-learning generator te gebruiken.</p>
+    </div>
+    <div id="authError"></div>
+    <div class="auth-field">
+      <label>E-mailadres</label>
+      <input id="authEmail" type="email" placeholder="naam@bedrijf.nl" autocomplete="email">
+    </div>
+    <div class="auth-field">
+      <label>Wachtwoord</label>
+      <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button id="loginBtn" onclick="login()">Inloggen</button>
+  </div>
+</div>
+
 <header>
   <a class="logo" href="#">
     <span class="logo-icon">🧠</span>Umely
   </a>
-  <a class="header-cta" href="/modules.html">📚 Bibliotheek</a>
+  <div class="header-right">
+    <span class="header-user" id="headerUser"></span>
+    <a class="header-cta" href="/modules.html">📚 Bibliotheek</a>
+    <button class="btn-logout" id="logoutBtn" onclick="logout()">Uitloggen</button>
+  </div>
 </header>
 
 <main>
@@ -239,17 +311,70 @@ let generatedHTML = '';
 let previewVisible = false;
 let pollInterval = null;
 
-const progressMessages = [
-  'Claude analyseert de transcriptie...',
-  'Kernthema\'s worden geïdentificeerd...',
-  'Modules worden opgebouwd...',
-  'Quizvragen worden gegenereerd...',
-  'Drag & drop oefening wordt aangemaakt...',
-  'Huisstijl wordt toegepast...',
-  'HTML wordt gegenereerd...',
-];
-let progressIndex = 0;
-let progressInterval;
+// ── AUTH ──
+let _supabase = null;
+let _session = null;
+
+async function initAuth() {
+  const config = await fetch('/api/config').then(r => r.json());
+  _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+
+  const { data: { session } } = await _supabase.auth.getSession();
+  _session = session;
+  if (session) {
+    showApp(session);
+  } else {
+    showLogin();
+  }
+
+  _supabase.auth.onAuthStateChange((_event, session) => {
+    _session = session;
+    if (session) showApp(session); else showLogin();
+  });
+}
+
+function showLogin() {
+  document.getElementById('authOverlay').style.display = 'flex';
+}
+
+function showApp(session) {
+  document.getElementById('authOverlay').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'block';
+  const userEl = document.getElementById('headerUser');
+  userEl.textContent = session.user.email;
+  userEl.style.display = 'block';
+}
+
+async function login() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('authError');
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Inloggen...';
+
+  const { error } = await _supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Inloggen';
+  }
+}
+
+async function logout() {
+  const btn = document.getElementById('logoutBtn');
+  btn.textContent = '...';
+  btn.disabled = true;
+  await _supabase.auth.signOut();
+  window.location.reload();
+}
+
+function authHeader() {
+  return _session ? { 'Authorization': `Bearer ${_session.access_token}` } : {};
+}
 
 // ── BESTAND UPLOADEN ──
 const uploadArea = document.getElementById('uploadArea');
@@ -276,7 +401,7 @@ async function handleFile(file) {
   formData.append('file', file);
 
   try {
-    const res = await fetch('/extract-text', { method: 'POST', body: formData });
+    const res = await fetch('/extract-text', { method: 'POST', headers: authHeader(), body: formData });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Kon bestand niet lezen');
     document.getElementById('transcription').value = data.text;
@@ -295,6 +420,18 @@ function clearFile() {
 }
 
 // ── VOORTGANG ──
+const progressMessages = [
+  'Claude analyseert de transcriptie...',
+  'Kernthema\'s worden geïdentificeerd...',
+  'Modules worden opgebouwd...',
+  'Quizvragen worden gegenereerd...',
+  'Drag & drop oefening wordt aangemaakt...',
+  'Huisstijl wordt toegepast...',
+  'HTML wordt gegenereerd...',
+];
+let progressIndex = 0;
+let progressInterval;
+
 function startProgress() {
   progressIndex = 0;
   document.getElementById('progressText').textContent = progressMessages[0];
@@ -327,7 +464,7 @@ async function generate() {
   try {
     const response = await fetch('/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
       body: JSON.stringify({ transcription })
     });
 
@@ -429,6 +566,8 @@ function showError(msg) {
 function hideError() {
   document.getElementById('errorBox').style.display = 'none';
 }
+
+initAuth();
 </script>
 </body>
 </html>
