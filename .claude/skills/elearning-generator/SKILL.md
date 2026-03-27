@@ -37,6 +37,23 @@ Volg de instructies uit `webapp/prompt.md` exact. Geen afwijkingen van de huisst
 Output: één volledig werkend HTML-bestand.
 Sla op als: `output/elearning-[onderwerp]-[YYYYMMDD].html`
 
+### Stap 4 — Test lokaal voor opslaan
+Voer altijd een geautomatiseerde test uit op het gegenereerde bestand voordat het naar Supabase gaat:
+
+```bash
+node test-elearning.js output/elearning-[bestand].html
+```
+
+Controleer minimaal:
+- Start-knop aanwezig en linkt naar screen-module-1
+- Alle kennischecks: `id="kc-N"` en `id="kc-feedback-N"` aanwezig
+- Quiz-IDs aanwezig: `quiz-voortgang`, `quiz-vraag-tekst`, `quiz-opties`, `quiz-feedback`, `quiz-volgende-btn`
+- Resultaat-IDs aanwezig: `score-display`, `resultaat-boodschap`, `certificaat-blok`, `cert-datum`
+- Alle functies top-level gedefinieerd (niet in DOMContentLoaded)
+- SCHERMEN-array compleet met alle screen-IDs
+
+**Pas na een geslaagde test mag de module in Supabase worden opgeslagen.**
+
 ## Nooit doen
 - Inter, Roboto of system-ui als primair font gebruiken
 - Oranje of gradient als header-achtergrond

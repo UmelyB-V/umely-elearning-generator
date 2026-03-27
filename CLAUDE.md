@@ -40,6 +40,7 @@ Elke gegenereerde e-learning MOET bevatten:
 3. Maak inhoudelijk correcte quizvragen
 4. Genereer compleet HTML-bestand in één keer
 5. Sla op als: output/elearning-[onderwerp]-[YYYYMMDD].html
+6. **Test lokaal voor opslaan** — voer `node test-elearning.js output/[bestand].html` uit en los alle fouten op voor de module naar Supabase gaat
 
 ## Nooit doen
 - Blauw of paars als primaire kleur gebruiken
