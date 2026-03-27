@@ -12,27 +12,35 @@ Noteer concrete termen, definities en voorbeelden die je kunt gebruiken voor qui
 Gebruik GEEN placeholder tekst. Elke zin in de output komt uit de transcriptie.
 
 ════════════════════════════════════════════════════
-STAP 2 — HTML STRUCTUUR
+STAP 2 — BEPAAL DE STRUCTUUR VOOR JE BEGINT MET SCHRIJVEN
 ════════════════════════════════════════════════════
-De e-learning bestaat uit deze schermen, altijd in deze volgorde:
+Voordat je ook maar één regel HTML schrijft, doe je dit mentaal:
+
+1. Tel het aantal modules dat je gaat maken (minimum 4, maximum 6).
+   Stel je maakt er 5 — dan zijn je schermen:
+   screen-welcome, screen-module-1, screen-module-2, screen-module-3,
+   screen-module-4, screen-module-5, screen-drag, screen-quiz, screen-result
+
+2. Schrijf de SCHERMEN-array op basis van dat getal:
+   - 4 modules → ['screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-drag','screen-quiz','screen-result']
+   - 5 modules → voeg 'screen-module-5' toe vóór 'screen-drag'
+   - 6 modules → voeg ook 'screen-module-6' toe
+
+3. Noteer voor elke module welk scherm erna komt (dit heb je nodig in elke kennischeck).
+
+SCHERMVOLGORDE (altijd in deze volgorde):
 - id="screen-welcome"     → Welkomstscherm
 - id="screen-module-1"    → Module 1
 - id="screen-module-2"    → Module 2
-  (minimaal 4 modules, maximaal 6)
+- id="screen-module-3"    → Module 3
+- id="screen-module-4"    → Module 4
+  (optioneel: screen-module-5, screen-module-6)
 - id="screen-drag"        → Drag-and-drop oefening
 - id="screen-quiz"        → Afsluitquiz (5 vragen)
 - id="screen-result"      → Resultaatscherm
 
-Navigatie via goTo() — definieer altijd exact deze functie onderaan de body:
-
-function goTo(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-  const target = document.getElementById(screenId);
-  if (target) { target.style.display = 'block'; window.scrollTo(0, 0); }
-  updateProgress(screenId);
-}
-
-Alle knoppen gebruiken onclick="goTo('screen-id')".
+NAVIGATIEREGEL: Alle knoppen gebruiken onclick="goTo('screen-id')".
+goTo() wordt EENMALIG gedefinieerd in stap 4. NOOIT hier al definiëren.
 
 ════════════════════════════════════════════════════
 STAP 3 — UMELY HUISSTIJL (kopieer dit letterlijk)
@@ -480,16 +488,27 @@ RESPONSIVE (altijd toevoegen):
 STAP 4 — JAVASCRIPT LOGICA
 ════════════════════════════════════════════════════
 
-⚠ KRITIEKE REGELS — altijd naleven:
-1. Alle functies (goTo, checkKC, beantwoordQuiz, etc.) ALTIJD op top-level definiëren,
-   NOOIT binnen DOMContentLoaded of een andere functie.
-   Reden: onclick-attributen kunnen alleen top-level functies aanroepen.
-2. DOMContentLoaded roept alleen functies AAN — het definieert ze niet.
-3. SCHERMEN-array bevat ALLE screen-IDs in volgorde, inclusief screen-module-5 bij 5 modules.
+⚠ ABSOLUTE REGELS — overtreden hiervan breekt de module volledig:
 
-NAVIGATIE + VOORTGANG (altijd aanwezig, altijd onderaan <body> in <script>):
+1. ALLE functies (goTo, updateProgress, checkKC, resetKC, laadQuizVraag,
+   beantwoordQuiz, volgendeQuizVraag, toonResultaat, herstart, dragStart,
+   dragOver, dragLeave, drop, resetDragDrop) worden ALTIJD op TOP-LEVEL
+   gedefinieerd — NOOIT binnen DOMContentLoaded of binnen een andere functie.
+   Reden: onclick-attributen in HTML kunnen ALLEEN top-level functies aanroepen.
+   Een functie binnen DOMContentLoaded is onzichtbaar voor onclick en crasht.
 
-// Pas de array aan op het werkelijke aantal modules (4 of 5 of 6)
+2. DOMContentLoaded staat ALTIJD onderaan het script, na alle functies.
+   Het ROEPT functies AAN — het DEFINIEERT ze NIET.
+
+3. De SCHERMEN-array bevat PRECIES de screen-IDs die je hebt aangemaakt.
+   Gebruik de array die je in stap 2 hebt bepaald.
+
+────────────────────────────────────────────────────
+NAVIGATIE + VOORTGANG
+────────────────────────────────────────────────────
+
+// ⚠ Pas deze array aan op je werkelijke modules (zie stap 2)
+// Voorbeeld met 4 modules:
 const SCHERMEN = ['screen-welcome','screen-module-1','screen-module-2',
   'screen-module-3','screen-module-4','screen-drag','screen-quiz','screen-result'];
 
@@ -507,24 +526,21 @@ function updateProgress(screenId) {
   document.getElementById('progressLabel').textContent = pct + '% voltooid';
 }
 
-KENNISCHECK per module (vervang nr door 1, 2, 3, etc.):
+────────────────────────────────────────────────────
+KENNISCHECK — gedrag per module
+────────────────────────────────────────────────────
 
-GEDRAG:
-- Bij CORRECT antwoord: toon feedback "✓ Correct!" + één knop "Volgende →"
-- Bij FOUT antwoord: toon feedback "✗ Niet correct." + twee knoppen:
-    1. "↩ Probeer opnieuw" — reset deze kennischeck zodat de gebruiker het opnieuw kan proberen
-    2. "Volgende vraag →" — ga door naar het volgende scherm ondanks het foute antwoord
-
-De onclick van elke .kc-optie geeft het volgende scherm mee als parameter:
-onclick="checkKC(1, this, true, 'screen-module-2')"   ← correct antwoord
-onclick="checkKC(1, this, false, 'screen-module-2')"  ← fout antwoord
+Gedrag na klikken op een antwoord:
+- Bij CORRECT: toon groene feedback + altijd de "Volgende →" knop
+- Bij FOUT: toon rode feedback + twee knoppen: "↩ Probeer opnieuw" EN "Volgende →"
+- De "Volgende →" knop verschijnt dus ALTIJD, ongeacht of het antwoord goed of fout is.
 
 function checkKC(nr, el, isCorrect, volgendeScherm) {
   document.querySelectorAll('#kc-' + nr + ' .kc-optie').forEach(o => o.style.pointerEvents = 'none');
   el.classList.add(isCorrect ? 'correct' : 'fout');
   const fb = document.getElementById('kc-feedback-' + nr);
-  const btnStijl = 'background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;';
-  const volgendeKnop = '<button style="' + btnStijl + '" onclick="goTo(\'' + volgendeScherm + '\')">Volgende vraag →</button>';
+  const btnStijl = 'background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;font-family:Montserrat,sans-serif;';
+  const volgendeKnop = '<button style="' + btnStijl + '" onclick="goTo(\'' + volgendeScherm + '\')">Volgende →</button>';
   if (isCorrect) {
     fb.className = 'kc-feedback correct';
     fb.innerHTML = '<span>✓ Correct!</span>'
@@ -551,7 +567,9 @@ function resetKC(nr) {
   fb.innerHTML = '';
 }
 
-QUIZ (5 vragen, altijd exact zo):
+────────────────────────────────────────────────────
+QUIZ (5 vragen)
+────────────────────────────────────────────────────
 
 let quizScore = 0, quizHuidig = 0;
 
@@ -598,7 +616,9 @@ function beantwoordQuiz(gekozen, btn) {
 
 function volgendeQuizVraag() { quizHuidig++; laadQuizVraag(); }
 
-RESULTAAT:
+────────────────────────────────────────────────────
+RESULTAAT
+────────────────────────────────────────────────────
 
 function toonResultaat() {
   goTo('screen-result');
@@ -614,12 +634,22 @@ function toonResultaat() {
   }
 }
 
+────────────────────────────────────────────────────
+HERSTART — reset ALLES
+────────────────────────────────────────────────────
+
+// Herstart reset de quiz, de drag-and-drop én navigeert terug naar het begin.
 function herstart() {
-  quizScore = 0; quizHuidig = 0;
+  quizScore = 0;
+  quizHuidig = 0;
+  resetDragDrop();
+  laadQuizVraag();
   goTo('screen-welcome');
 }
 
-DRAG-AND-DROP (native HTML5 + touch fallback):
+────────────────────────────────────────────────────
+DRAG-AND-DROP (native HTML5 + touch fallback)
+────────────────────────────────────────────────────
 
 let gesleeptItem = null;
 
@@ -639,6 +669,16 @@ function drop(e, zone, correctId) {
   gesleeptItem = null;
 }
 
+// Reset: zet alle drag-items terug in de broncontainer, verwijder correct/fout-classes van zones
+function resetDragDrop() {
+  const bron = document.getElementById('drag-bron');
+  if (!bron) return;
+  document.querySelectorAll('.drag-item').forEach(item => bron.appendChild(item));
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.classList.remove('correct', 'fout', 'drag-over');
+  });
+}
+
 document.addEventListener('touchstart', e => {
   if (e.target.classList.contains('drag-item')) gesleeptItem = e.target;
 }, { passive: true });
@@ -655,8 +695,11 @@ document.addEventListener('touchend', e => {
   gesleeptItem = null;
 });
 
-INIT (onderaan script, na alle functies — roept alleen aan, definieert niets):
+────────────────────────────────────────────────────
+INIT — altijd als laatste, onderaan het script
+────────────────────────────────────────────────────
 
+// ⚠ DOMContentLoaded roept alleen functies AAN — het definieert NIETS.
 document.addEventListener('DOMContentLoaded', () => {
   goTo('screen-welcome');
   laadQuizVraag();
@@ -666,16 +709,18 @@ document.addEventListener('DOMContentLoaded', () => {
 STAP 5 — VERPLICHTE HTML-TEMPLATES (kopieer exact)
 ════════════════════════════════════════════════════
 
-KENNISCHECK HTML (per module, vervang N door 1/2/3/etc. en 'screen-module-N+1' door het juiste volgende scherm):
+KENNISCHECK HTML (per module — vervang N door modulenummer, VOLGENDE door het volgende screen-id):
+
+⚠ De broncontainer voor drag-and-drop moet id="drag-bron" hebben zodat resetDragDrop() werkt.
 
 <div id="kc-N" class="kennischeck">
   <h3>✔ Kennischeck</h3>
   <p class="kc-vraag">Vraagtekst hier?</p>
   <div class="kc-opties">
-    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-module-VOLGENDE')">Antwoord A</button>
-    <button class="kc-optie" onclick="checkKC(N, this, true,  'screen-module-VOLGENDE')">Antwoord B (correct)</button>
-    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-module-VOLGENDE')">Antwoord C</button>
-    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-module-VOLGENDE')">Antwoord D</button>
+    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-VOLGENDE')">Antwoord A</button>
+    <button class="kc-optie" onclick="checkKC(N, this, true,  'screen-VOLGENDE')">Antwoord B (correct)</button>
+    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-VOLGENDE')">Antwoord C</button>
+    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-VOLGENDE')">Antwoord D</button>
   </div>
   <div id="kc-feedback-N" class="kc-feedback"></div>
 </div>
@@ -685,6 +730,36 @@ Regels:
 - id="kc-feedback-N" op het feedback-element — zelfde N
 - Altijd precies 1 correct antwoord (true), de rest false
 - Het 4e argument is het screen-ID van het VOLGENDE scherm
+
+DRAG-AND-DROP HTML (de broncontainer MOET id="drag-bron" hebben):
+
+<div id="screen-drag" class="screen">
+  <div class="module-header">
+    <div class="module-num">Oefening</div>
+    <h2>Sleep naar de juiste categorie</h2>
+  </div>
+  <div class="content-card">
+    <p>Sleep elk begrip naar de juiste categorie.</p>
+    <div id="drag-bron" class="drag-items">
+      <div class="drag-item" draggable="true" data-id="item1" ondragstart="dragStart(event, this)">Begrip 1</div>
+      <div class="drag-item" draggable="true" data-id="item2" ondragstart="dragStart(event, this)">Begrip 2</div>
+      <div class="drag-item" draggable="true" data-id="item3" ondragstart="dragStart(event, this)">Begrip 3</div>
+    </div>
+    <div class="drop-zones">
+      <div class="drop-zone" data-correct="item1"
+           ondragover="dragOver(event, this)" ondragleave="dragLeave(this)" ondrop="drop(event, this, 'item1')">
+        <div class="drop-zone-label">Categorie A</div>
+      </div>
+      <div class="drop-zone" data-correct="item2"
+           ondragover="dragOver(event, this)" ondragleave="dragLeave(this)" ondrop="drop(event, this, 'item2')">
+        <div class="drop-zone-label">Categorie B</div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de quiz →</button>
+  </div>
+</div>
 
 QUIZ HTML (exact dit, altijd in screen-quiz):
 
@@ -703,7 +778,7 @@ QUIZ HTML (exact dit, altijd in screen-quiz):
   </div>
 </div>
 
-RESULTAAT HTML (exact dit, altijd in screen-result):
+RESULTAAT HTML (exact dit — vervang [MODULETITEL] met de echte titel van deze e-learning):
 
 <div id="screen-result" class="screen">
   <div class="resultaat-hero">
@@ -713,7 +788,7 @@ RESULTAAT HTML (exact dit, altijd in screen-result):
   </div>
   <div id="certificaat-blok" class="certificaat" style="display:none;">
     <div class="certificaat-title">🏆 Certificaat van voltooiing</div>
-    <h2>[Titel van de training]</h2>
+    <h2>[MODULETITEL]</h2>
     <p>Je hebt alle modules succesvol doorlopen en de quiz behaald.</p>
     <div class="certificaat-datum" id="cert-datum"></div>
   </div>
@@ -722,8 +797,12 @@ RESULTAAT HTML (exact dit, altijd in screen-result):
   </div>
 </div>
 
+⚠ Vervang [MODULETITEL] met de exacte tekst die ook in de <title>-tag staat.
+   Voorbeeld: als <title>Projectmanagement Basics | Umely E-learning</title>, dan:
+   <h2>Projectmanagement Basics</h2>
+
 ════════════════════════════════════════════════════
-KWALITEITS-CHECKLIST (controleer voor je afrondt)
+KWALITEITS-CHECKLIST (doorloop dit voor je afrondt)
 ════════════════════════════════════════════════════
 ✓ Font-import aanwezig: Arimo + Montserrat (GEEN Inter)
 ✓ body background: #FFF8F2 — niet wit, niet grijs
@@ -736,14 +815,19 @@ KWALITEITS-CHECKLIST (controleer voor je afrondt)
 ✓ Footer aanwezig: charcoal achtergrond, gold logo, peach links
 ✓ Welcome-hero: charcoal achtergrond met ::before blob
 ✓ Alle schermen aanwezig: welkom, 4+ modules, drag, quiz, resultaat
-✓ goTo() gedefinieerd als gewone function (niet arrow function)
+✓ SCHERMEN-array klopt met het werkelijke aantal modules
+✓ goTo() gedefinieerd als gewone function (niet arrow function) — op TOP-LEVEL
 ✓ updateProgress() aanwezig en aangeroepen vanuit goTo()
-✓ Alle functies op TOP-LEVEL — NIET binnen DOMContentLoaded
+✓ Alle functies op TOP-LEVEL — NOOIT binnen DOMContentLoaded
 ✓ DOMContentLoaded roept alleen goTo('screen-welcome') en laadQuizVraag() aan
-✓ SCHERMEN-array bevat alle screen-IDs inclusief extra modules
 ✓ Elke kennischeck: id="kc-N" op wrapper, id="kc-feedback-N" op feedback
+✓ Kennischeck "Volgende →" knop verschijnt bij ZOWEL correct als fout antwoord
+✓ Drag-bron container heeft id="drag-bron"
 ✓ Quiz: id="quiz-voortgang", "quiz-vraag-tekst", "quiz-opties", "quiz-feedback", "quiz-volgende-btn"
 ✓ quiz-volgende-btn heeft onclick="volgendeQuizVraag()"
 ✓ Resultaat: id="score-display", "resultaat-boodschap", "certificaat-blok", "cert-datum"
-✓ Geen placeholder tekst — alles uit de transcriptie
+✓ Certificaat <h2> bevat de echte moduletitel — geen placeholder tekst
+✓ herstart() roept resetDragDrop() én laadQuizVraag() aan vóór goTo()
+✓ resetDragDrop() aanwezig als top-level functie
+✓ Geen andere placeholder tekst — alles uit de transcriptie
 ✓ Mobile-responsive @media blok aanwezig
