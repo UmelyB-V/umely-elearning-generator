@@ -320,17 +320,13 @@ async function initAuth() {
     const config = await fetch('/api/config').then(r => r.json());
     _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
 
-    const { data: { session } } = await _supabase.auth.getSession();
-    _session = session;
-    if (session) {
-      showApp(session);
-    } else {
-      showLogin();
-    }
+    // Altijd loginscherm tonen bij openen van de pagina
+    showLogin();
 
-    _supabase.auth.onAuthStateChange((_event, session) => {
+    _supabase.auth.onAuthStateChange((event, session) => {
       _session = session;
-      if (session) showApp(session); else showLogin();
+      if (event === 'SIGNED_IN') showApp(session);
+      else if (event === 'SIGNED_OUT') showLogin();
     });
   } catch (e) {
     console.error('Auth initialisatie mislukt:', e);
