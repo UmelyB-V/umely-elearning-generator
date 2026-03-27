@@ -130,17 +130,6 @@ HEADER HTML (altijd exact zo):
   <div id="progressLabel" style="text-align:right;font-size:0.75rem;color:var(--amber);font-weight:600;max-width:860px;margin:0.25rem auto 0.5rem;padding-right:0;">0% voltooid</div>
 </header>
 
-VOORTGANGSBALK — updateProgress() functie (altijd aanwezig):
-
-function updateProgress(screenId) {
-  const schermen = ['screen-welcome', 'screen-module-1', 'screen-module-2',
-    'screen-module-3', 'screen-module-4', 'screen-drag', 'screen-quiz', 'screen-result'];
-  const idx = schermen.indexOf(screenId);
-  const pct = idx < 0 ? 100 : Math.round((idx / (schermen.length - 1)) * 100);
-  document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = pct + '% voltooid';
-}
-
 KNOPPEN:
 
 .btn {
@@ -491,8 +480,16 @@ RESPONSIVE (altijd toevoegen):
 STAP 4 — JAVASCRIPT LOGICA
 ════════════════════════════════════════════════════
 
+⚠ KRITIEKE REGELS — altijd naleven:
+1. Alle functies (goTo, checkKC, beantwoordQuiz, etc.) ALTIJD op top-level definiëren,
+   NOOIT binnen DOMContentLoaded of een andere functie.
+   Reden: onclick-attributen kunnen alleen top-level functies aanroepen.
+2. DOMContentLoaded roept alleen functies AAN — het definieert ze niet.
+3. SCHERMEN-array bevat ALLE screen-IDs in volgorde, inclusief screen-module-5 bij 5 modules.
+
 NAVIGATIE + VOORTGANG (altijd aanwezig, altijd onderaan <body> in <script>):
 
+// Pas de array aan op het werkelijke aantal modules (4 of 5 of 6)
 const SCHERMEN = ['screen-welcome','screen-module-1','screen-module-2',
   'screen-module-3','screen-module-4','screen-drag','screen-quiz','screen-result'];
 
@@ -658,12 +655,72 @@ document.addEventListener('touchend', e => {
   gesleeptItem = null;
 });
 
-INIT (onderaan script, na alle functies):
+INIT (onderaan script, na alle functies — roept alleen aan, definieert niets):
 
 document.addEventListener('DOMContentLoaded', () => {
   goTo('screen-welcome');
   laadQuizVraag();
 });
+
+════════════════════════════════════════════════════
+STAP 5 — VERPLICHTE HTML-TEMPLATES (kopieer exact)
+════════════════════════════════════════════════════
+
+KENNISCHECK HTML (per module, vervang N door 1/2/3/etc. en 'screen-module-N+1' door het juiste volgende scherm):
+
+<div id="kc-N" class="kennischeck">
+  <h3>✔ Kennischeck</h3>
+  <p class="kc-vraag">Vraagtekst hier?</p>
+  <div class="kc-opties">
+    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-module-VOLGENDE')">Antwoord A</button>
+    <button class="kc-optie" onclick="checkKC(N, this, true,  'screen-module-VOLGENDE')">Antwoord B (correct)</button>
+    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-module-VOLGENDE')">Antwoord C</button>
+    <button class="kc-optie" onclick="checkKC(N, this, false, 'screen-module-VOLGENDE')">Antwoord D</button>
+  </div>
+  <div id="kc-feedback-N" class="kc-feedback"></div>
+</div>
+
+Regels:
+- id="kc-N" op de wrapper — N is het modulenummer (1, 2, 3, 4...)
+- id="kc-feedback-N" op het feedback-element — zelfde N
+- Altijd precies 1 correct antwoord (true), de rest false
+- Het 4e argument is het screen-ID van het VOLGENDE scherm
+
+QUIZ HTML (exact dit, altijd in screen-quiz):
+
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header">
+    <h2>🧠 Afsluitquiz</h2>
+  </div>
+  <div class="content-card">
+    <div id="quiz-voortgang" class="quiz-voortgang">Vraag 1 van 5</div>
+    <p id="quiz-vraag-tekst" class="quiz-vraag-tekst"></p>
+    <div id="quiz-opties" class="quiz-opties"></div>
+    <div id="quiz-feedback" class="quiz-feedback"></div>
+    <div class="btn-wrap">
+      <button id="quiz-volgende-btn" class="btn" style="display:none;" onclick="volgendeQuizVraag()">Volgende vraag →</button>
+    </div>
+  </div>
+</div>
+
+RESULTAAT HTML (exact dit, altijd in screen-result):
+
+<div id="screen-result" class="screen">
+  <div class="resultaat-hero">
+    <div class="score-cirkel" id="score-display">—</div>
+    <h2 style="font-family:var(--font-h);margin-bottom:0.5rem;">Training afgerond!</h2>
+    <p id="resultaat-boodschap" style="color:rgba(255,248,242,0.85);position:relative;"></p>
+  </div>
+  <div id="certificaat-blok" class="certificaat" style="display:none;">
+    <div class="certificaat-title">🏆 Certificaat van voltooiing</div>
+    <h2>[Titel van de training]</h2>
+    <p>Je hebt alle modules succesvol doorlopen en de quiz behaald.</p>
+    <div class="certificaat-datum" id="cert-datum"></div>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn btn-outline" onclick="herstart()">↩ Opnieuw beginnen</button>
+  </div>
+</div>
 
 ════════════════════════════════════════════════════
 KWALITEITS-CHECKLIST (controleer voor je afrondt)
@@ -681,6 +738,12 @@ KWALITEITS-CHECKLIST (controleer voor je afrondt)
 ✓ Alle schermen aanwezig: welkom, 4+ modules, drag, quiz, resultaat
 ✓ goTo() gedefinieerd als gewone function (niet arrow function)
 ✓ updateProgress() aanwezig en aangeroepen vanuit goTo()
-✓ laadQuizVraag() aangeroepen bij DOMContentLoaded
+✓ Alle functies op TOP-LEVEL — NIET binnen DOMContentLoaded
+✓ DOMContentLoaded roept alleen goTo('screen-welcome') en laadQuizVraag() aan
+✓ SCHERMEN-array bevat alle screen-IDs inclusief extra modules
+✓ Elke kennischeck: id="kc-N" op wrapper, id="kc-feedback-N" op feedback
+✓ Quiz: id="quiz-voortgang", "quiz-vraag-tekst", "quiz-opties", "quiz-feedback", "quiz-volgende-btn"
+✓ quiz-volgende-btn heeft onclick="volgendeQuizVraag()"
+✓ Resultaat: id="score-display", "resultaat-boodschap", "certificaat-blok", "cert-datum"
 ✓ Geen placeholder tekst — alles uit de transcriptie
 ✓ Mobile-responsive @media blok aanwezig
