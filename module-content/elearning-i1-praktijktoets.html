@@ -1,0 +1,211 @@
+<!-- TITLE: I1 - Praktijktoets: bouw een volledig project -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>I1 - Praktijktoets: bouw een volledig project</h1>
+    <p>Pas alles toe wat je hebt geleerd in een concreet project. Van prompting tot agentic workflows, van nul tot werkend resultaat.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Een geschikt werkproces kiezen voor automatisering</li>
+      <li>Zelfstandig een AI-gedreven workflow opzetten met Claude</li>
+      <li>Je werk documenteren en het resultaat demonstreren</li>
+      <li>Eerlijk reflecteren op wat werkt en wat niet</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 20 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Wat is de praktijktoets?</h2>
+  </div>
+  <div class="content-card">
+    <p>De praktijktoets is geen multiple-choice quiz. Het is een praktijkopdracht waarbij je een compleet project opzet met Claude, van nul tot werkend resultaat. Je kiest een werkproces uit je eigen organisatie en bouwt dat volledig uit.</p>
+    <p>Dit is het moment waarop de theorie uit alle voorgaande modules samenkomt. Niemand vertelt je stap voor stap wat je moet doen. Jij bepaalt de aanpak.</p>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een sector voor een voorbeeldopdracht</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Makelaar</div>
+        <div class="fc-uitleg">Bouw een workflow die bezichtigingsaanvragen verwerkt: van e-mail tot geplande afspraak en bevestigingsmail.</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Advocaat</div>
+        <div class="fc-uitleg">Bouw een systeem dat klantdossiers aanmaakt: map aanmaken, standaarddocumenten invullen, eerste brief opstellen.</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Marketing</div>
+        <div class="fc-uitleg">Bouw een content-workflow die een wekelijkse briefing omzet naar social media posts, nieuwsbrief en blogintro.</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Accountant</div>
+        <div class="fc-uitleg">Bouw een maandelijks rapportageproces dat klantgegevens samenvat, uitschieters signaleert en een rapport genereert.</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+    </div>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Welk werkproces is het meest geschikt voor de praktijktoets?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Eenmalige taken zijn niet geschikt. De toets vraagt om een herhalend werkproces dat je automatiseert.')">Een eenmalige taak die je nooit meer hoeft te doen</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. De toets draait om het automatiseren van een herhalende, tijdrovende taak met meerdere stappen.')">Een herhalende, tijdrovende taak met meerdere stappen</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'De toets draait om wat je zelfstandig kunt bouwen, niet om het kiezen van de moeilijkste taak.')">De meest complexe taak die je kunt bedenken</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Wat lever je op?</h2>
+  </div>
+  <div class="content-card">
+    <h3>De drie onderdelen</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Documentatie</h4>
+          <p>Beschrijf het werkproces, de stappen die Claude automatiseert, de gekoppelde tools en welke beslissingen bij de mens blijven.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Werkend resultaat</h4>
+          <p>Laat zien dat het werkt. Voer de workflow uit met echte of gesimuleerde data en documenteer het resultaat.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Reflectie</h4>
+          <p>Wat werkte goed? Wat niet? Wat zou je anders doen? Wat zijn de beperkingen?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Documenteer terwijl je bouwt, niet achteraf. Schrijf op waarom je bepaalde keuzes maakt, zodat je het later kunt uitleggen.</p>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je hebt een workflow gebouwd maar stap 3 werkt niet goed. De samenvatting die Claude maakt is te lang en bevat irrelevante informatie. Wat doe je?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'De hele workflow weggooien is overdreven. Pas de specifieke stap aan die niet goed werkt.')">De hele workflow weggooien en opnieuw beginnen</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Pas de instructies aan voor die specifieke stap en documenteer de aanpassing. Dit is precies het iteratieve proces dat je hebt geleerd.')">De instructies voor stap 3 aanpassen (specifieker maken) en documenteren wat je hebt veranderd</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Het probleem negeren is geen optie. De toets beoordeelt ook eerlijkheid over beperkingen.')">Het probleem negeren en hopen dat het vanzelf beter wordt</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Beoordelingscriteria</h2>
+  </div>
+  <div class="content-card">
+    <h3>Waarop wordt beoordeeld?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Criterium</th><th>Wat wordt beoordeeld</th></tr></thead>
+      <tbody>
+        <tr><td>Volledigheid</td><td>Zijn alle stappen van het werkproces gedekt?</td></tr>
+        <tr><td>Werkt het?</td><td>Levert de workflow het verwachte resultaat?</td></tr>
+        <tr><td>Veiligheid</td><td>Zijn er grenzen gesteld aan wat Claude automatisch doet?</td></tr>
+        <tr><td>Eerlijkheid</td><td>Zijn de beperkingen eerlijk beschreven?</td></tr>
+        <tr><td>Zelfstandigheid</td><td>Heb je de keuzes zelf gemaakt en verantwoord?</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>De toets meet zelfstandigheid, volledigheid en eerlijkheid, niet perfectie. Het is beter om eerlijk te beschrijven wat niet werkt dan te doen alsof alles perfect is.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat is belangrijker bij de beoordeling: perfectie of eerlijkheid?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Perfectie wordt niet verwacht. Eerlijkheid over beperkingen is juist een van de beoordelingscriteria.')">Perfectie: alles moet foutloos werken</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Het is beter om eerlijk te beschrijven wat niet werkt dan te doen alsof alles perfect is. De toets meet zelfstandigheid en eerlijkheid.')">Eerlijkheid: beschrijf ook wat niet werkt en waarom</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Snelheid is geen beoordelingscriterium. Het gaat om volledigheid, veiligheid en eerlijkheid.')">Snelheid: hoe sneller hoe beter</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Tips voor succes</h2>
+  </div>
+  <div class="content-card">
+    <h3>Praktische tips</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Begin eenvoudig</h4>
+          <p>Het is beter om een stap perfect te laten werken dan vijf stappen half.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Documenteer tijdens het bouwen</h4>
+          <p>Schrijf op waarom je keuzes maakt terwijl je bezig bent, niet achteraf.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Test met echte data</h4>
+          <p>Maar pas op met vertrouwelijke informatie. Gebruik testdata of anonimiseer.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">4</div>
+        <div class="stap-content">
+          <h4>Vraag hulp als je vastloopt</h4>
+          <p>De toets meet of je iets kunt bouwen, niet of je het zonder hulp kunt.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Begin met een eenvoudiger werkproces dan je denkt nodig te hebben. Je kunt altijd uitbreiden als de basis werkt.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is de praktijktoets?","opties":["Een multiple-choice quiz","Een praktijkopdracht waarbij je een compleet project opzet met Claude","Een mondeling examen","Een schriftelijke samenvatting van alle modules"],"correct":1,"uitleg":"De praktijktoets is een praktijkopdracht waarbij je een werkproces automatiseert met Claude, van nul tot werkend resultaat."},
+  {"vraag":"Uit hoeveel onderdelen bestaat de oplevering?","opties":["Twee: documentatie en resultaat","Drie: documentatie, werkend resultaat en reflectie","Vier: plan, bouw, test en presentatie","Een: alleen het werkend resultaat"],"correct":1,"uitleg":"Je levert drie onderdelen op: documentatie (wat heb je gebouwd), werkend resultaat (laat zien dat het werkt) en reflectie (wat ging goed, wat niet)."},
+  {"vraag":"Wat is het belangrijkste bij het kiezen van een opdracht?","opties":["De meest complexe taak kiezen","Een herhalende, tijdrovende taak met meerdere stappen","Een taak die je nog nooit hebt gedaan","Een taak met grote financiele risico's"],"correct":1,"uitleg":"Kies een taak die regelmatig terugkomt, momenteel tijdrovend is en meerdere stappen heeft. Vermijd taken met grote risico's bij fouten."},
+  {"vraag":"Wat meet de toets?","opties":["Perfectie en snelheid","Zelfstandigheid, volledigheid en eerlijkheid","Hoeveel tools je kunt koppelen","Hoe snel je kunt typen"],"correct":1,"uitleg":"De toets beoordeelt of je zelfstandig keuzes kunt maken, of het werkproces volledig is en of je eerlijk bent over beperkingen."},
+  {"vraag":"Wat is een goede aanpak als je vastloopt?","opties":["Opgeven en een ander project kiezen","Hulp vragen aan Claude, documentatie of een collega","Wachten tot het vanzelf beter gaat","De opdracht overslaan"],"correct":1,"uitleg":"Hulp vragen is geen zwakte. De toets meet of je iets kunt bouwen, niet of je het zonder hulp kunt."}
+]
+<!-- QUIZ_END -->

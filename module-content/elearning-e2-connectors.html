@@ -1,0 +1,204 @@
+<!-- TITLE: E2 - Claude Connectors -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>E2 - Claude Connectors</h1>
+    <p>Leer hoe je Claude koppelt aan Gmail, agenda, Notion en andere tools via de gebruiksvriendelijke Connectors-interface.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat Connectors zijn en hoe ze verschillen van MCP</li>
+      <li>Een Connector inschakelen in Claude.ai</li>
+      <li>Voorbeelden geven van praktische toepassingen per sector</li>
+      <li>De grenzen en risico's van Connectors benoemen</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Wat zijn Connectors?</h2>
+  </div>
+  <div class="content-card">
+    <p>Connectors zijn kant-en-klare koppelingen tussen Claude en externe systemen. Ze zijn gebouwd bovenop MCP (zie module E1) maar zijn gebruiksvriendelijker: in plaats van technische configuratie schakel je ze in via een eenvoudige interface.</p>
+  </div>
+  <div class="content-card">
+    <h3>MCP vs Connectors</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>MCP</th><th>Connectors</th></tr></thead>
+      <tbody>
+        <tr><td>De technische standaard</td><td>De gebruiksvriendelijke implementatie</td></tr>
+        <tr><td>Vereist configuratie door IT</td><td>Inschakelen via een klik</td></tr>
+        <tr><td>Flexibel, voor elke tool</td><td>Kant-en-klaar, voor populaire tools</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat is het verschil tussen MCP en Connectors?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'MCP en Connectors werken samen. Connectors zijn gebouwd bovenop MCP.')">Het zijn twee compleet verschillende systemen</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. MCP is de technische standaard. Connectors zijn de gebruiksvriendelijke kant-en-klare implementatie daarvan.')">MCP is de technische standaard, Connectors zijn de gebruiksvriendelijke implementatie</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Connectors zijn juist bedoeld voor niet-technische gebruikers. Je schakelt ze in via een eenvoudige interface.')">Connectors zijn alleen voor developers</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Connectors inschakelen</h2>
+  </div>
+  <div class="content-card">
+    <h3>In 3 stappen klaar</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Open de Connectors-pagina</h4>
+          <p>Klik op het puzzelstukje-icoon in de zijbalk of ga naar Settings > Connectors.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Kies een Connector</h4>
+          <p>Klik op de tool die je wilt koppelen (Gmail, Calendar, Notion, etc.)</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Klik "Connect" en log in</h4>
+          <p>Log in met het account van de externe tool. Claude kan hem daarna gebruiken in gesprekken.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-card">
+    <h3>Beschikbare Connectors</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Google Workspace</div>
+        <div class="fc-uitleg">Gmail (e-mails lezen/zoeken/opstellen), Google Calendar (agenda raadplegen/plannen), Google Drive (bestanden zoeken/lezen)</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Microsoft 365</div>
+        <div class="fc-uitleg">Outlook (e-mails en agenda), OneDrive (bestanden)</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Productiviteit</div>
+        <div class="fc-uitleg">Notion (pagina's lezen/schrijven), Slack (berichten), Asana/Trello (taken beheren)</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">CRM en overig</div>
+        <div class="fc-uitleg">Salesforce, HubSpot (klantdata), GitHub (code en projecten)</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-3')">Volgende</button>
+  </div>
+</div>
+
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Praktische voorbeelden</h2>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je bent advocaat en wilt een tijdlijn maken van alle communicatie met client Jansen in de afgelopen drie maanden. Welke Connector gebruik je?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Met de Gmail-connector kan Claude alle e-mails van een specifieke client zoeken en een tijdlijn maken van de communicatie.')">Gmail-connector: &quot;Zoek alle e-mails van client Jansen uit de afgelopen drie maanden en maak een tijdlijn&quot;</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Google Drive bevat bestanden, geen e-mails. Voor e-mailcommunicatie gebruik je de Gmail-connector.')">Google Drive-connector om de e-mails te vinden</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Notion is een productiviteitstool, geen e-mailsysteem. De communicatie staat in Gmail.')">Notion-connector om de communicatie op te zoeken</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+  </div>
+  <div class="content-card">
+    <h3>Meer voorbeelden</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Sector</th><th>Voorbeeld</th><th>Connector</th></tr></thead>
+      <tbody>
+        <tr><td>Makelaar</td><td>Bezichtiging inplannen en bevestigingsmail sturen</td><td>Calendar + Gmail</td></tr>
+        <tr><td>Marketing</td><td>Content kalender bijwerken</td><td>Notion</td></tr>
+        <tr><td>Accountant</td><td>Klantdocumenten doorzoeken</td><td>Google Drive</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Bij welke abonnementen zijn Connectors beschikbaar?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'De gratis versie heeft geen toegang tot Connectors. Je hebt minimaal een Pro-abonnement nodig.')">Bij alle abonnementen inclusief gratis</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Connectors zijn beschikbaar bij Pro en Teams abonnementen, niet bij de gratis versie.')">Bij Pro en Teams abonnementen</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Connectors zijn ook beschikbaar bij Pro, niet alleen bij Enterprise.')">Alleen bij Enterprise</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Grenzen en veiligheid</h2>
+  </div>
+  <div class="content-card">
+    <h3>Belangrijke punten</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Claude handelt niet zelfstandig</h4>
+          <p>Hij doet alleen wat jij hem vraagt. Geen automatische acties op de achtergrond.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Toegang intrekken kan altijd</h4>
+          <p>Via de Connectors-instellingen kun je op elk moment een koppeling verbreken.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Niet elke tool wordt ondersteund</h4>
+          <p>Als jouw tool er niet bij staat, is een custom MCP-connector nodig (meer technisch werk).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Begin met leestoegang voordat je Claude schrijfacties laat uitvoeren. Test of Claude de juiste informatie ophaalt voordat je hem laat schrijven naar je systemen.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat zijn Connectors?","opties":["Technische protocollen voor developers","Kant-en-klare koppelingen tussen Claude en externe tools","Hardwareverbindingen voor je computer","Beveiligingsinstellingen"],"correct":1,"uitleg":"Connectors zijn gebruiksvriendelijke, kant-en-klare koppelingen waarmee Claude verbinding maakt met tools zoals Gmail, Calendar en Notion."},
+  {"vraag":"Hoe schakel je een Connector in?","opties":["Door code te schrijven","Via Settings > Connectors, klik Connect en log in","Door Anthropic te bellen","Door een plugin te installeren"],"correct":1,"uitleg":"Ga naar de Connectors-pagina in Claude.ai, klik op de gewenste tool, klik Connect en log in met je account. Klaar."},
+  {"vraag":"Wat is het verschil tussen MCP en Connectors?","opties":["MCP is gratis, Connectors zijn betaald","MCP is de technische standaard, Connectors zijn de gebruiksvriendelijke implementatie","Ze zijn hetzelfde","MCP is oud, Connectors zijn nieuw"],"correct":1,"uitleg":"MCP is het onderliggende protocol. Connectors zijn de kant-en-klare, gebruiksvriendelijke implementaties die je met een klik inschakelt."},
+  {"vraag":"Handelt Claude zelfstandig na het inschakelen van een Connector?","opties":["Ja, hij voert automatisch taken uit","Nee, hij doet alleen wat jij hem vraagt","Ja, maar alleen overdag","Alleen bij een Enterprise-abonnement"],"correct":1,"uitleg":"Claude handelt niet zelfstandig. Hij doet alleen wat jij hem vraagt. Geen automatische acties op de achtergrond."},
+  {"vraag":"Wat doe je als jouw tool niet als Connector beschikbaar is?","opties":["Dan kun je die tool niet gebruiken met Claude","Dan heb je een custom MCP-connector nodig, wat meer technisch werk is","Dan moet je wachten tot Anthropic die tool toevoegt","Dan gebruik je een andere tool"],"correct":1,"uitleg":"Als jouw tool niet als kant-en-klare Connector beschikbaar is, kan een developer een custom MCP-connector bouwen."}
+]
+<!-- QUIZ_END -->

@@ -1,0 +1,173 @@
+<!-- TITLE: E3 - Claude Plugins -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>E3 - Claude Plugins</h1>
+    <p>Leer wat Plugins zijn, hoe ze complete werkflows bundelen en wanneer je ze inzet in plaats van losse Connectors.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat Plugins zijn en hoe ze verschillen van Connectors</li>
+      <li>Voorbeelden geven van kant-en-klare Plugins per bedrijfsfunctie</li>
+      <li>Bepalen wanneer je een Plugin vs een Connector gebruikt</li>
+      <li>Begrijpen hoe je een eigen Plugin bouwt via Plugin Create</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Wat zijn Plugins?</h2>
+  </div>
+  <div class="content-card">
+    <p>Plugins bundelen meerdere functies samen voor een specifieke afdeling of werksituatie. Waar een Connector een tool koppelt (bijv. Gmail), bundelt een Plugin meerdere Connectors, instructies en commando's voor een complete werkflow.</p>
+  </div>
+  <div class="content-card">
+    <h3>Connector vs Plugin</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Connector</th><th>Plugin</th></tr></thead>
+      <tbody>
+        <tr><td>Koppelt een tool</td><td>Bundelt meerdere tools + instructies</td></tr>
+        <tr><td>Bouwsteen</td><td>Complete werkoplossing</td></tr>
+        <tr><td>Voor losse taken</td><td>Voor terugkerende werkflows</td></tr>
+        <tr><td>Bijv. Gmail koppelen</td><td>Bijv. complete HR-workflow</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat bevat een HR-Plugin?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Een Plugin bevat meer dan alleen een connector. Het combineert meerdere tools, instructies en commando\'s.')">Alleen een connector naar het HR-systeem</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Een Plugin bundelt alles: connectors naar relevante systemen, instructies voor tone of voice, en slash commands voor veelvoorkomende taken.')">Connectors, instructies voor vacatureteksten en slash commands voor HR-taken</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Een Plugin is meer dan alleen commando\'s. Het combineert tools, instructies en commando\'s in een complete werkoplossing.')">Alleen nieuwe slash commands</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Kant-en-klare Plugins</h2>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een afdeling voor de mogelijkheden</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">HR</div>
+        <div class="fc-uitleg">Vacatureteksten schrijven, sollicitatiebrieven samenvatten, onboardingdocumenten genereren. Slash command: /vacature</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Finance</div>
+        <div class="fc-uitleg">Rapporten analyseren, facturen samenvatten, budgetvergelijkingen maken.</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Legal</div>
+        <div class="fc-uitleg">Contracten samenvatten, clausules uitleggen, correspondentie opstellen.</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Marketing</div>
+        <div class="fc-uitleg">Campagneteksten genereren, social media content plannen, briefings verwerken.</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je marketingbureau schrijft wekelijks social media posts, e-mailnieuwsbrieven en blogartikelen. Elke keer moet je de tone of voice uitleggen en de content kalender handmatig bijwerken. Wat is de beste oplossing?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Alleen Gmail koppelen helpt niet bij de tone of voice en content kalender. Een Plugin bundelt alles voor deze werkflow.')">Alleen de Gmail-connector inschakelen</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Een Marketing-plugin bundelt de Notion-connector (voor de content kalender), vaste instructies voor de tone of voice, en slash commands voor veelvoorkomende content-types.')">Een Marketing-plugin inschakelen met Notion-connector, tone of voice instructies en content-commando\'s</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Elke keer de tone of voice uitleggen kost tijd. Een Plugin slaat die instructies permanent op.')">Elke keer de tone of voice opnieuw uitleggen in Claude</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Een eigen Plugin bouwen</h2>
+  </div>
+  <div class="content-card">
+    <h3>Het Plugin Create-proces</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>Beschrijf</h4><p>Welke werkflow wil je?</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Tools</h4><p>Welke Connectors nodig?</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Instructies</h4><p>Welke regels altijd gelden?</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Genereer</h4><p>Claude bouwt de Plugin</p></div>
+    </div>
+  </div>
+  <div class="content-card">
+    <p>Via Plugin Create stelt Claude je vragen over wat je wilt en genereert daarna de Plugin voor je. Je hoeft geen technische kennis te hebben. Wel moet je goed weten wat je wilt: welke werkflow, welke tools, welke instructies.</p>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Begin niet met bouwen. Begin met nadenken. Welke taken doe je elke week? Welke tools gebruik je daarbij? Welke instructies herhaal je steeds? Die antwoorden vormen je Plugin.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Heb je programmeerkennis nodig om een eigen Plugin te bouwen?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Programmeerkennis is niet nodig. Plugin Create werkt via een gesprek met Claude die je vragen stelt.')">Ja, je moet kunnen programmeren</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Plugin Create werkt via een gesprek met Claude. Hij stelt je vragen en genereert de Plugin. Je moet wel goed weten wat je wilt.')">Nee, maar je moet goed weten welke werkflow je wilt stroomlijnen</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Kant-en-klare Plugins zijn er, maar je kunt ook zelf bouwen zonder hulp via Plugin Create.')">Je kunt geen eigen Plugin bouwen, alleen kant-en-klare gebruiken</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Wanneer Plugin vs Connector?</h2>
+  </div>
+  <div class="content-card">
+    <h3>Keuzewijzer</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Situatie</th><th>Keuze</th></tr></thead>
+      <tbody>
+        <tr><td>Je wilt Claude koppelen aan een tool voor losse taken</td><td>Connector</td></tr>
+        <tr><td>Je hebt een terugkerende werkflow met meerdere tools</td><td>Plugin</td></tr>
+        <tr><td>Je wilt snel aan de slag zonder setup</td><td>Connector</td></tr>
+        <tr><td>Je wilt vaste instructies en commando's voor een afdeling</td><td>Plugin</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Plugins vereisen een goede setup. Een slecht geconfigureerde Plugin geeft inconsistente resultaten. Test altijd grondig voordat je een Plugin breed uitrolt.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is een Plugin?","opties":["Een enkele koppeling met een tool","Een bundel van Connectors, instructies en commando's voor een complete werkflow","Een type abonnement","Een beveiligingsinstelling"],"correct":1,"uitleg":"Een Plugin bundelt meerdere Connectors, vaste instructies en slash commands tot een complete werkoplossing voor een specifieke afdeling of werkflow."},
+  {"vraag":"Wanneer kies je een Plugin boven een Connector?","opties":["Altijd, Plugins zijn beter","Bij terugkerende werkflows met meerdere tools en vaste instructies","Alleen bij Enterprise-abonnementen","Nooit, Connectors zijn genoeg"],"correct":1,"uitleg":"Gebruik een Plugin als je een complete werkflow wilt stroomlijnen die regelmatig terugkomt en meerdere tools en instructies combineert."},
+  {"vraag":"Hoe bouw je een eigen Plugin?","opties":["Door code te schrijven","Via Plugin Create in Claude.ai, waar Claude je vragen stelt","Door Anthropic te vragen het te bouwen","Dat kan niet, alleen kant-en-klare Plugins"],"correct":1,"uitleg":"Via Plugin Create in Claude.ai beschrijf je wat je wilt. Claude stelt je vragen en genereert de Plugin. Geen programmeerkennis nodig."},
+  {"vraag":"Wat bevat een typische Marketing-Plugin?","opties":["Alleen een Gmail-connector","Connectors naar content tools, instructies voor tone of voice en slash commands voor content-types","Alleen een kalender","Een complete website"],"correct":1,"uitleg":"Een Marketing-Plugin combineert connectors (bijv. Notion), vaste instructies (tone of voice, doelgroep) en commando's voor veelvoorkomende taken."},
+  {"vraag":"Waarom is testen belangrijk bij Plugins?","opties":["Het is niet belangrijk","Een slecht geconfigureerde Plugin geeft inconsistente resultaten","Om de kosten te controleren","Om sneltoetsen te leren"],"correct":1,"uitleg":"Plugins combineren meerdere tools en instructies. Een fout in de configuratie kan leiden tot inconsistente of onjuiste resultaten. Test altijd grondig."}
+]
+<!-- QUIZ_END -->

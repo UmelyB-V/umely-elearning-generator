@@ -1,0 +1,181 @@
+<!-- TITLE: C3 - Claude in Chrome -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>C3 - Claude in Chrome</h1>
+    <p>Leer hoe je Claude direct vanuit je browser gebruikt zonder van tabblad te wisselen. Tekst samenvatten, e-mails schrijven en vragen stellen over pagina's.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>De Chrome-extensie installeren en activeren</li>
+      <li>Tekst op een webpagina laten samenvatten door Claude</li>
+      <li>Claude gebruiken in Gmail voor het schrijven van e-mails</li>
+      <li>De beperkingen en privacy-aspecten van de extensie benoemen</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 10 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Installeren</h2>
+  </div>
+  <div class="content-card">
+    <h3>In 3 stappen klaar</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Ga naar de Chrome Web Store</h4>
+          <p>Zoek op "Claude" in de Chrome Web Store.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Klik op "Toevoegen aan Chrome"</h4>
+          <p>Bevestig de installatie. Het Claude-icoon verschijnt rechtsboven in je browser.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Log in met je Claude-account</h4>
+          <p>Dezelfde login als claude.ai. Claude opent als een zijpaneel in je browser.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">In welke browsers werkt de Claude-extensie?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'De extensie werkt niet in alle browsers. Hij is alleen beschikbaar voor Google Chrome.')">Alle browsers</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. De Claude-extensie is alleen beschikbaar voor Google Chrome. Firefox, Safari en Edge worden niet ondersteund.')">Alleen Google Chrome</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Safari wordt niet ondersteund. Alleen Chrome.')">Chrome en Safari</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Wat kun je ermee?</h2>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een toepassing voor de uitleg</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Pagina samenvatten</div>
+        <div class="fc-uitleg">Open een lang artikel, open Claude en vraag: "Vat de inhoud van deze pagina samen in vijf punten." Claude leest de pagina mee.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">E-mails in Gmail</div>
+        <div class="fc-uitleg">Open Gmail, begin een nieuwe e-mail en vraag Claude om een concept. Claude ziet de context en helpt met de juiste toon.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Documenten doorzoeken</div>
+        <div class="fc-uitleg">Open een PDF of webpagina met contractinformatie en vraag: "Welke verplichtingen staan er in dit document?"</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Vertalen</div>
+        <div class="fc-uitleg">Selecteer tekst in een andere taal op een pagina en vraag Claude om een vertaling met uitleg.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je leest een lang Engelstalig onderzoeksrapport online en wilt snel begrijpen wat de belangrijkste conclusies zijn. Hoe gebruik je de Chrome-extensie?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Je hoeft de tekst niet te kopieren. De extensie kan de pagina direct meelezen.')">De hele tekst kopieren en in Claude.ai plakken</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Open het zijpaneel en vraag Claude om de pagina samen te vatten. Claude leest de inhoud mee zonder dat je iets hoeft te kopieren.')">Het Claude-zijpaneel openen en vragen: &quot;Vat de conclusies van deze pagina samen in het Nederlands&quot;</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'De Chrome-extensie kan dit direct. Je hoeft geen screenshot te maken.')">Een screenshot maken en die uploaden</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Beperkingen</h2>
+  </div>
+  <div class="content-card">
+    <h3>Wat de extensie niet kan</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Kan wel</th><th>Kan niet</th></tr></thead>
+      <tbody>
+        <tr><td>Tekst op een pagina lezen en samenvatten</td><td>Formulieren invullen</td></tr>
+        <tr><td>Helpen bij het schrijven van e-mails</td><td>Op knoppen klikken</td></tr>
+        <tr><td>Vragen beantwoorden over pagina-inhoud</td><td>Acties uitvoeren op websites</td></tr>
+        <tr><td>Tekst vertalen</td><td>Werken in Firefox, Safari of Edge</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>De extensie leest mee en geeft advies. Hij handelt niet namens jou. Dat is een bewuste beperking. Claude klikt niet en vult niets in.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat kan de Chrome-extensie NIET doen?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'De extensie kan wel tekst op een pagina samenvatten. Dat is juist een van de hoofdfuncties.')">Tekst op een pagina samenvatten</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. De extensie leest mee maar handelt niet. Hij kan geen formulieren invullen, niet op knoppen klikken en geen acties uitvoeren op websites.')">Formulieren invullen en op knoppen klikken</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'De extensie kan wel helpen bij het schrijven van e-mails in Gmail.')">Helpen bij het schrijven van e-mails</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Privacy bij de extensie</h2>
+  </div>
+  <div class="content-card">
+    <p>De extensie heeft toegang tot de inhoud van de pagina's die je bekijkt. Dat is nodig om te kunnen helpen. Maar dat betekent ook dat je bewust moet zijn van welke pagina's je opent terwijl de extensie actief is.</p>
+    <p>Open geen pagina's met vertrouwelijke klantgegevens als je niet wilt dat die informatie naar Anthropic's servers gaat.</p>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Je kunt de extensie pauzeren of uitschakelen via de browserinstellingen als je met vertrouwelijke informatie werkt. Schakel de extensie uit wanneer je inlogt op systemen met gevoelige klantdata.</p>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>De extensie is een handige aanvulling op de web-app, niet een vervanging. Gebruik de web-app voor uitgebreide taken en de extensie voor snelle hulp terwijl je browst.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Hoe installeer je de Claude Chrome-extensie?","opties":["Via claude.ai/download","Via de Chrome Web Store","Via de App Store","Je kunt hem niet zelf installeren"],"correct":1,"uitleg":"De Chrome-extensie installeer je via de Chrome Web Store. Zoek op 'Claude' en klik op 'Toevoegen aan Chrome'."},
+  {"vraag":"Wat kan de Chrome-extensie doen?","opties":["Formulieren automatisch invullen","Tekst op een pagina samenvatten en e-mails helpen schrijven","Bestanden downloaden van websites","Wachtwoorden beheren"],"correct":1,"uitleg":"De extensie kan tekst op pagina's samenvatten, helpen bij e-mails in Gmail, vragen beantwoorden over pagina-inhoud en tekst vertalen."},
+  {"vraag":"Wat is een belangrijk privacy-aspect van de extensie?","opties":["De extensie werkt volledig offline","De extensie heeft toegang tot de inhoud van pagina's die je bekijkt","De extensie slaat alles lokaal op","Er zijn geen privacy-aspecten"],"correct":1,"uitleg":"De extensie leest de inhoud van pagina's mee. Wees je hiervan bewust bij vertrouwelijke informatie en schakel de extensie uit wanneer nodig."},
+  {"vraag":"In welke browsers werkt de Claude-extensie?","opties":["Chrome, Firefox en Safari","Alleen Chrome","Chrome en Edge","Alle browsers"],"correct":1,"uitleg":"De extensie is alleen beschikbaar voor Google Chrome. Andere browsers worden niet ondersteund."},
+  {"vraag":"Handelt de Chrome-extensie namens jou op websites?","opties":["Ja, hij kan klikken en formulieren invullen","Nee, hij leest mee en geeft advies maar handelt niet","Ja, maar alleen in Gmail","Alleen met een betaald abonnement"],"correct":1,"uitleg":"De extensie leest mee en geeft advies maar handelt niet namens jou. Hij klikt niet, vult geen formulieren in en voert geen acties uit op websites."}
+]
+<!-- QUIZ_END -->

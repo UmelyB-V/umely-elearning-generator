@@ -1,0 +1,194 @@
+<!-- TITLE: B3 - Fouten, troubleshooting en grenzen van Claude -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>B3 - Fouten, troubleshooting en grenzen van Claude</h1>
+    <p>Leer welke fouten Claude maakt, waarom hij ze maakt, en hoe je ermee omgaat. Na deze module heb je een realistisch beeld van de grenzen.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat hallucineren is en waarom alle AI-modellen dit doen</li>
+      <li>Herkennen wanneer Claude eerlijk is over zijn onzekerheid</li>
+      <li>Omgaan met onjuiste, te vage of te lange antwoorden</li>
+      <li>Begrijpen waarom Claude bepaalde verzoeken weigert</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Claude maakt fouten - en dat is normaal</h2>
+  </div>
+  <div class="content-card">
+    <p>Claude is geen zoekmachine en geen database. Hij genereert tekst op basis van patronen die hij heeft geleerd tijdens zijn training. Dat betekent dat hij soms iets beweert wat niet klopt, verouderde informatie geeft of een antwoord verzint dat overtuigend klinkt maar feitelijk onjuist is. Dit heet "hallucineren".</p>
+    <p>Hallucineren is geen bug die snel wordt opgelost. Het is een fundamentele eigenschap van hoe grote taalmodellen werken. Alle AI-assistenten hebben dit probleem in meer of mindere mate.</p>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Controleer altijd feiten, cijfers, namen en juridische of financiele informatie die Claude geeft. Gebruik Claude niet als enige bron voor beslissingen die gevolgen hebben.</p>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat is "hallucineren" bij AI?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Hallucineren is geen technische storing. Het is een eigenschap van hoe taalmodellen tekst genereren.')">Een technische storing in het systeem</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Hallucineren betekent dat Claude iets beweert dat overtuigend klinkt maar feitelijk niet klopt. Dit is een fundamentele eigenschap van alle grote taalmodellen.')">Overtuigend klinkende antwoorden geven die feitelijk niet kloppen</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Het heeft niets met visie te maken. Hallucineren gaat over het genereren van onjuiste informatie.')">Dat de AI afbeeldingen ziet die er niet zijn</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Eerlijkheid en weigeringen</h2>
+  </div>
+  <div class="content-card">
+    <p>Een goed teken is als Claude zegt: "Ik weet dit niet zeker" of "Ik heb geen actuele informatie over dit onderwerp." Dat is eerlijkheid, geen fout. Vertrouw Claude meer als hij zijn onzekerheid benoemt dan als hij altijd zelfverzekerd antwoordt.</p>
+  </div>
+  <div class="content-card">
+    <h3>Wat weigert Claude?</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Misleidende content</div>
+        <div class="fc-uitleg">Claude schrijft geen teksten die bedoeld zijn om mensen te misleiden of manipuleren.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Gevaarlijke instructies</div>
+        <div class="fc-uitleg">Claude geeft geen gedetailleerde instructies voor activiteiten die schade kunnen veroorzaken.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Discriminerende tekst</div>
+        <div class="fc-uitleg">Claude weigert tekst te produceren die discriminerend of schadelijk is voor groepen mensen.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Soms weigert Claude ook dingen die eigenlijk prima zijn, omdat de formulering onduidelijk is. Herformuleer je vraag met meer context. Een weigering is niet altijd definitief.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-3')">Volgende</button>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Wat doe je als het antwoord niet goed is?</h2>
+  </div>
+  <div class="content-card">
+    <h3>Oplossingen per probleem</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Te vaag</h4>
+          <p>Vraag om meer detail: "Ga dieper in op punt 3" of "Geef een concreet voorbeeld."</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Klopt niet</h4>
+          <p>Corrigeer Claude: "Dit klopt niet, de situatie is eigenlijk zo. Pas je antwoord aan."</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Te lang</h4>
+          <p>Zeg: "Maak dit korter, maximaal drie alinea's."</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">4</div>
+        <div class="stap-content">
+          <h4>Verkeerd begrepen</h4>
+          <p>Herformuleer met meer context: wie je bent, wat de situatie is, wat je precies nodig hebt.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">5</div>
+        <div class="stap-content">
+          <h4>Blijft fout gaan</h4>
+          <p>Start een nieuw gesprek. Soms raakt een gesprek "besmet" met verkeerde aannames.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je hebt Claude gevraagd om een samenvatting van een juridisch document, maar het antwoord bevat een fout: er staat dat de opzegtermijn 3 maanden is, terwijl het 6 maanden is. Wat doe je?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Opgeven is niet nodig. Claude accepteert correcties en past zijn antwoord aan.')">Het antwoord niet gebruiken en het zelf doen</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Corrigeer Claude door te zeggen wat er niet klopt en wat de juiste informatie is. Claude past zijn antwoord aan op basis van jouw correctie.')">Claude corrigeren: &quot;De opzegtermijn is 6 maanden, niet 3. Pas de samenvatting aan.&quot;</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Een nieuwe vraag stellen zonder correctie lost het probleem niet op. Claude weet niet dat hij een fout heeft gemaakt tenzij je het zegt.')">Een nieuwe vraag stellen zonder de fout te benoemen</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-4')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Technische problemen</h2>
+  </div>
+  <div class="content-card">
+    <p>Als Claude traag reageert of niet beschikbaar is, ligt dat meestal aan drukte op de servers van Anthropic. Je kunt de statuspagina checken op status.anthropic.com. Dit komt af en toe voor, net als bij elke online dienst.</p>
+    <p>Als de browser vastloopt bij een heel lang gesprek, ververs de pagina of start een nieuw gesprek. Claude slaat gesprekken op in je geschiedenis, dus je verliest niets.</p>
+  </div>
+  <div class="content-card">
+    <h3>Veelvoorkomende problemen en oplossingen</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Probleem</th><th>Oplossing</th></tr></thead>
+      <tbody>
+        <tr><td>Claude reageert traag</td><td>Wacht even of check status.anthropic.com</td></tr>
+        <tr><td>Browser loopt vast</td><td>Pagina verversen of nieuw gesprek starten</td></tr>
+        <tr><td>Antwoord wordt afgekapt</td><td>Zeg: "Ga verder waar je gebleven was"</td></tr>
+        <tr><td>Claude weigert iets</td><td>Herformuleer met meer context</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="kennischeck">
+    <h3>Vul het ontbrekende woord in</h3>
+    <div class="invul-wrap">
+      <p class="invul-zin">Als Claude iets beweert dat overtuigend klinkt maar feitelijk niet klopt, heet dat <input class="invul-input" id="invul-1" type="text" placeholder="..."></p>
+      <div class="invul-feedback" id="invul-feedback-1"></div>
+    </div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn" onclick="checkInvul('invul-1','hallucineren','invul-feedback-1')">Controleer</button>
+      <button class="btn btn-outline" onclick="goTo('screen-quiz')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is hallucineren bij AI?","opties":["Een technische fout die binnenkort wordt opgelost","Een fundamentele eigenschap waarbij AI overtuigend klinkende maar onjuiste informatie genereert","Dat de AI je vraag niet begrijpt","Een probleem dat alleen bij Claude voorkomt"],"correct":1,"uitleg":"Hallucineren is een fundamentele eigenschap van grote taalmodellen. Alle AI-assistenten hebben dit probleem. Het wordt niet 'opgelost' maar je kunt er wel mee omgaan door feiten te controleren."},
+  {"vraag":"Wanneer is Claude het meest betrouwbaar?","opties":["Als hij zelfverzekerd antwoordt zonder voorbehoud","Als hij zegt dat hij iets niet zeker weet","Als het antwoord heel lang is","Als je een betaald abonnement hebt"],"correct":1,"uitleg":"Eerlijkheid over onzekerheid is een goed teken. Vertrouw Claude meer als hij zijn grenzen benoemt dan als hij altijd zelfverzekerd antwoordt."},
+  {"vraag":"Wat doe je als Claude een fout antwoord geeft?","opties":["Accepteren en doorgaan","Een nieuw AI-tool proberen","Claude corrigeren door te zeggen wat er niet klopt","Het systeem opnieuw installeren"],"correct":2,"uitleg":"Corrigeer Claude door duidelijk te zeggen wat er niet klopt en wat de juiste informatie is. Claude accepteert correcties en past zijn antwoord aan."},
+  {"vraag":"Waarom weigert Claude sommige verzoeken?","opties":["Omdat het systeem vastloopt","Vanwege bewuste richtlijnen van Anthropic over veiligheid en ethiek","Omdat je een gratis account hebt","Omdat Claude het antwoord niet weet"],"correct":1,"uitleg":"Claude heeft richtlijnen die bepalen wat hij wel en niet doet. Weigeringen zijn bewuste keuzes van Anthropic, geen technische fouten."},
+  {"vraag":"Wat doe je als Claude steeds foute antwoorden blijft geven in een gesprek?","opties":["Harder vragen stellen","Een nieuw gesprek starten","De pagina 10 keer verversen","Wachten tot morgen"],"correct":1,"uitleg":"Soms raakt een gesprek besmet met verkeerde aannames. Een nieuw gesprek begint schoon en lost vaak het probleem op."}
+]
+<!-- QUIZ_END -->

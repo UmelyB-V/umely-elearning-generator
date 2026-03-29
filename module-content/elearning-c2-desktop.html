@@ -1,0 +1,189 @@
+<!-- TITLE: C2 - Desktop-app: Chat, Cowork en Code -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>C2 - Desktop-app: Chat, Cowork en Code</h1>
+    <p>Leer wat de Claude desktop-app kan, hoe hij verschilt van de web-app, en wanneer je welke functie gebruikt.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>De desktop-app installeren en gebruiken</li>
+      <li>Het verschil uitleggen tussen Chat, Cowork en Code</li>
+      <li>Bepalen wanneer je de desktop-app kiest boven de web-app</li>
+      <li>De beperkingen van Cowork benoemen</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>De desktop-app installeren</h2>
+  </div>
+  <div class="content-card">
+    <h3>Aan de slag</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Download de app</h4>
+          <p>Ga naar claude.ai/download en download de versie voor Mac of Windows.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Installeer en log in</h4>
+          <p>Gebruik hetzelfde account als de web-app. Je hoeft geen nieuw account aan te maken.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Kies je functie</h4>
+          <p>Je kunt kiezen tussen Chat, Cowork en Code. Voor de meeste gebruikers is Chat het startpunt.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een functie voor de uitleg</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Chat</div>
+        <div class="fc-uitleg">Hetzelfde gespreksvenster als de web-app. Typen, vragen stellen, bestanden uploaden. Maar sneller te openen en kan bestanden op je computer lezen.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Cowork</div>
+        <div class="fc-uitleg">Claude voert taken uit op je computer: bestanden lezen, mappen aanmaken, documenten bewerken. Vraagt altijd bevestiging voordat hij iets doet.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Code</div>
+        <div class="fc-uitleg">Voor het schrijven, uitleggen en debuggen van code. Relevant voor bedrijven die tools of automatiseringen willen bouwen. Niet nodig als je niet programmeert.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+    </div>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Met welk account log je in op de desktop-app?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Je hoeft geen nieuw account aan te maken. Je gebruikt hetzelfde account als de web-app.')">Een nieuw, apart account</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. De desktop-app gebruikt hetzelfde account als Claude.ai. Je gesprekken en Projects zijn op beide beschikbaar.')">Hetzelfde account als Claude.ai</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Je hebt een Claude-account nodig, niet een Windows of Apple account.')">Je Windows of Apple account</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Cowork: Claude voert taken uit</h2>
+  </div>
+  <div class="content-card">
+    <p>Cowork gaat verder dan alleen antwoorden geven. Claude neemt stappen op je computer: bestanden lezen, mappen aanmaken, documenten bewerken. Dit is krachtig maar vereist aandacht.</p>
+    <p>Claude vraagt altijd om bevestiging voordat hij iets uitvoert wat niet ongedaan gemaakt kan worden. Lees altijd wat hij van plan is voordat je bevestigt.</p>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je hebt een map met 20 PDF-rapporten en wilt van elk rapport een samenvatting. Met Cowork kun je dit automatiseren. Wat doet Claude?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Claude verwerkt de bestanden stap voor stap en vraagt bij elke belangrijke actie om jouw goedkeuring. Zo houd jij de controle.')">Hij leest elk PDF-bestand, maakt samenvattingen en slaat ze op als tekstbestanden, met jouw goedkeuring per stap</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Claude stuurt geen bestanden naar externe diensten. Cowork werkt lokaal op je computer.')">Hij stuurt de bestanden naar een externe dienst voor verwerking</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Cowork kan meer dan alleen lezen. Claude kan ook bestanden aanmaken en bewerken.')">Hij kan de bestanden alleen lezen maar niet opslaan</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Beperkingen en de Code-functie</h2>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Cowork werkt het beste voor bestandsbeheer en documentverwerking. Het is geen volledige computerbesturing. Claude kan geen programma's openen, geen e-mails versturen en geen websites bezoeken tenzij je hem daar expliciete toegang voor geeft.</p>
+  </div>
+  <div class="content-card">
+    <p>De Code-functie is specifiek voor mensen die code schrijven of willen leren. Claude kan code genereren, uitleggen, debuggen en verbeteren. Dit is relevant voor bedrijven die intern tools willen bouwen.</p>
+    <p>Voor niet-developers: je hoeft hier niets mee te doen. Maar weet dat het bestaat. Als je op een punt komt dat je wilt automatiseren, is dit waar je begint.</p>
+  </div>
+  <div class="content-card">
+    <h3>Wat kan Cowork wel en niet?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Kan wel</th><th>Kan niet (zonder extra toegang)</th></tr></thead>
+      <tbody>
+        <tr><td>Bestanden lezen op je computer</td><td>Programma's openen</td></tr>
+        <tr><td>Mappen aanmaken en organiseren</td><td>E-mails versturen</td></tr>
+        <tr><td>Documenten bewerken en opslaan</td><td>Websites bezoeken</td></tr>
+        <tr><td>Samenvattingen maken van bestanden</td><td>Volledige computerbesturing</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Voor wie is de Code-functie in de desktop-app bedoeld?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'De Code-functie is niet verplicht. Als je niet programmeert, hoef je hem niet te gebruiken.')">Voor iedereen, het is een kernfunctie</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. De Code-functie is bedoeld voor mensen die code schrijven of bedrijven die tools en automatiseringen willen bouwen. Niet-developers hoeven hier niets mee te doen.')">Voor mensen die code schrijven of automatiseringen willen bouwen</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Code gaat over het schrijven van programmacode, niet over het versleutelen van bestanden.')">Voor het beveiligen van vertrouwelijke bestanden</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Desktop-app vs web-app</h2>
+  </div>
+  <div class="content-card">
+    <h3>Wanneer kies je welke?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Situatie</th><th>Beste keuze</th></tr></thead>
+      <tbody>
+        <tr><td>Je gebruikt Claude regelmatig en wilt hem snel openen</td><td>Desktop-app</td></tr>
+        <tr><td>Je wilt bestanden op je computer laten verwerken</td><td>Desktop-app (Cowork)</td></tr>
+        <tr><td>Je wilt snel iets vragen zonder installatie</td><td>Web-app</td></tr>
+        <tr><td>Je werkt op een ander apparaat</td><td>Web-app</td></tr>
+        <tr><td>Je werkt samen met collega's via Teams</td><td>Web-app</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Je hoeft niet te kiezen. Veel gebruikers hebben zowel de desktop-app als de web-app. Je account en gesprekken zijn op beide beschikbaar.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat zijn de drie hoofdfuncties van de Claude desktop-app?","opties":["Lezen, Schrijven en Bewerken","Chat, Cowork en Code","Zoeken, Analyseren en Rapporteren","Mail, Agenda en Bestanden"],"correct":1,"uitleg":"De desktop-app heeft drie functies: Chat (gesprekken), Cowork (taken uitvoeren op je computer) en Code (programmeren)."},
+  {"vraag":"Wat doet Cowork?","opties":["Het maakt je internetverbinding sneller","Claude voert taken uit op je computer zoals bestanden lezen en bewerken","Het synchroniseert je bestanden met de cloud","Het deelt gesprekken met collega's"],"correct":1,"uitleg":"Met Cowork kan Claude stappen nemen op je computer: bestanden lezen, mappen aanmaken, documenten bewerken. Altijd met jouw bevestiging."},
+  {"vraag":"Wat doet Claude voordat hij een actie uitvoert in Cowork?","opties":["Hij voert het direct uit","Hij vraagt altijd om bevestiging","Hij stuurt een e-mail ter bevestiging","Hij wacht 24 uur"],"correct":1,"uitleg":"Claude vraagt altijd om bevestiging voordat hij iets uitvoert dat niet ongedaan gemaakt kan worden. Zo houd jij de controle."},
+  {"vraag":"Wanneer kies je de web-app boven de desktop-app?","opties":["Als je bestanden wilt laten verwerken","Als je snel iets wilt vragen zonder installatie of op een ander apparaat werkt","Als je code wilt schrijven","Als je Cowork wilt gebruiken"],"correct":1,"uitleg":"De web-app is ideaal voor snelle vragen zonder installatie of als je op een ander apparaat werkt."},
+  {"vraag":"Moet je een nieuw account aanmaken voor de desktop-app?","opties":["Ja, een apart account","Nee, je gebruikt hetzelfde account als Claude.ai","Ja, maar alleen voor Cowork","Nee, de desktop-app heeft geen account nodig"],"correct":1,"uitleg":"De desktop-app gebruikt hetzelfde account als de web-app. Je gesprekken en Projects zijn op beide beschikbaar."}
+]
+<!-- QUIZ_END -->

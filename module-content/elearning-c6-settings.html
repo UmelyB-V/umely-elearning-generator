@@ -1,0 +1,193 @@
+<!-- TITLE: C6 - Claude Settings -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>C6 - Claude Settings</h1>
+    <p>Leer welke instellingen er zijn in Claude.ai en welke je direct moet aanpassen voor professioneel gebruik.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>De belangrijkste instellingen vinden en aanpassen</li>
+      <li>Je profiel instellen voor automatische context</li>
+      <li>De privacy-instelling voor modeltraining uitschakelen</li>
+      <li>Geheugen inschakelen en beheren</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 10 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Overzicht instellingen</h2>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een instelling voor de uitleg</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Profile</div>
+        <div class="fc-uitleg">Naam, e-mailadres en een korte beschrijving van jezelf. Claude gebruikt dit als context in elk gesprek. Handig als je niet telkens wilt uitleggen wie je bent.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Memory</div>
+        <div class="fc-uitleg">Claude onthoudt relevante informatie uit gesprekken. Staat standaard uit. Schakel in als je Claude regelmatig gebruikt. Controleer af en toe wat er is opgeslagen.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Privacy</div>
+        <div class="fc-uitleg">Hier schakel je uit dat je gesprekken worden gebruikt voor modeltraining. Bij gratis accounts staat dit standaard aan. Direct uitschakelen voor professioneel gebruik.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Appearance</div>
+        <div class="fc-uitleg">Licht of donker thema. Puur persoonlijke voorkeur, geen functioneel verschil.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Billing</div>
+        <div class="fc-uitleg">Je huidige abonnement, factuurgeschiedenis en de optie om te upgraden of op te zeggen.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+    </div>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Waar vind je de instellingen in Claude.ai?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Klik op je profielfoto of initialen rechtsboven en kies Settings.')">Klik op je profielfoto rechtsboven en kies Settings</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'De instellingen staan niet in de zijbalk. Je vindt ze via je profielicoon rechtsboven.')">In de linkerzijbalk bij je gesprekken</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Er is geen apart instellingenmenu in het invoerveld. Ga via je profielicoon naar Settings.')">Via het invoerveld onderaan</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Profiel en privacy instellen</h2>
+  </div>
+  <div class="content-card">
+    <h3>Direct aanpassen voor professioneel gebruik</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Vul je profiel in</h4>
+          <p>Voeg een korte beschrijving toe: wie je bent en wat je doet. Claude heeft dan automatisch context in elk gesprek.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Privacy-instelling controleren</h4>
+          <p>Ga naar Privacy en schakel uit dat je gesprekken worden gebruikt voor modeltraining. Dit is de eerste stap voor professioneel gebruik.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Bij een gratis account worden gesprekken standaard gebruikt voor modeltraining. Schakel dit direct uit als je Claude gebruikt voor professioneel werk. Bij Teams en Enterprise is dit al standaard uitgeschakeld.</p>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je bent net begonnen met Claude voor je advocatenkantoor. Je hebt een gratis account. Wat is het eerste dat je instelt?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Het thema aanpassen is puur cosmetisch. De privacy-instelling is veel belangrijker voor professioneel gebruik.')">Het donkere thema aanzetten</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Bij een gratis account worden gesprekken standaard gebruikt voor modeltraining. Dit uitschakelen is stap 1 voor professioneel gebruik.')">De privacy-instelling voor modeltraining uitschakelen</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Je factuurgeschiedenis bekijken is niet urgent. De privacy-instelling aanpassen wel.')">Je factuurgeschiedenis bekijken</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Geheugen</h2>
+  </div>
+  <div class="content-card">
+    <p>Geheugen staat standaard uit. Als je het inschakelt, onthoudt Claude relevante informatie uit je gesprekken voor toekomstige gesprekken. Claude kiest zelf wat hij onthoudt, maar jij kunt ook handmatig informatie toevoegen of verwijderen.</p>
+    <p>Je kunt het geheugen ook volledig wissen via de instellingen. Handig als je een schone start wilt.</p>
+  </div>
+  <div class="content-card">
+    <h3>Wanneer geheugen inschakelen?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Wel inschakelen als</th><th>Niet nodig als</th></tr></thead>
+      <tbody>
+        <tr><td>Je Claude regelmatig gebruikt</td><td>Je Claude af en toe gebruikt</td></tr>
+        <tr><td>Je niet telkens dezelfde context wilt geven</td><td>Je elke keer een ander onderwerp bespreekt</td></tr>
+        <tr><td>Je altijd in dezelfde rol werkt</td><td>Je liever een schoon gesprek hebt</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Controleer af en toe wat er in je geheugen staat. Claude kan dingen onthouden die je liever niet terugziet of die niet meer kloppen.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat kiest Claude zelf bij het geheugen?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Claude bepaalt zelf welke informatie hij onthoudt uit gesprekken. Daarom is het belangrijk om af en toe te controleren wat er is opgeslagen.')">Welke informatie hij onthoudt uit gesprekken</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Claude verwijdert niet zelf gesprekken. Dat doe jij handmatig.')">Welke gesprekken hij verwijdert</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Het abonnement bepaal je zelf. Claude heeft daar geen invloed op.')">Welk abonnement je nodig hebt</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Sneltoetsen en taal</h2>
+  </div>
+  <div class="content-card">
+    <h3>Handige sneltoetsen</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Sneltoets</th><th>Functie</th></tr></thead>
+      <tbody>
+        <tr><td>Enter</td><td>Bericht versturen</td></tr>
+        <tr><td>Shift + Enter</td><td>Nieuwe regel zonder te versturen</td></tr>
+        <tr><td>Ctrl/Cmd + K</td><td>Nieuw gesprek starten</td></tr>
+        <tr><td>Ctrl/Cmd + /</td><td>Alle snelkoppelingen bekijken</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="content-card">
+    <p>De interface van Claude.ai is in het Engels, maar Claude zelf reageert in de taal die jij gebruikt. Als jij Nederlands schrijft, antwoordt Claude in het Nederlands. Je hoeft daar niets voor in te stellen.</p>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Shift + Enter is handig als je een lange prompt wilt schrijven met meerdere regels. Zo voorkom je dat je per ongeluk je bericht te vroeg verstuurt.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is de eerste instelling die je moet controleren voor professioneel gebruik?","opties":["Het kleurenthema","De taalinstelling","De privacy-instelling voor modeltraining","De sneltoetsen"],"correct":2,"uitleg":"Bij een gratis account worden gesprekken standaard gebruikt voor modeltraining. Schakel dit direct uit als je Claude professioneel gebruikt."},
+  {"vraag":"Wat doet de profielinstelling?","opties":["Het verandert het uiterlijk van Claude","Het geeft Claude automatisch context over wie je bent","Het beveiligt je account","Het verbergt je naam voor andere gebruikers"],"correct":1,"uitleg":"In je profiel kun je een beschrijving toevoegen van wie je bent en wat je doet. Claude gebruikt dit als context in elk gesprek."},
+  {"vraag":"Staat het geheugen standaard aan?","opties":["Ja, bij alle abonnementen","Nee, je moet het zelf inschakelen","Ja, maar alleen bij Pro","Het hangt af van je browser"],"correct":1,"uitleg":"Geheugen staat standaard uit. Je moet het zelf inschakelen via Settings > Memory als je wilt dat Claude dingen onthoudt."},
+  {"vraag":"In welke taal antwoordt Claude?","opties":["Altijd in het Engels","In de taal die jij gebruikt","Alleen in het Nederlands","Afhankelijk van je instellingen"],"correct":1,"uitleg":"Claude antwoordt in de taal die jij gebruikt. Als je Nederlands schrijft, antwoordt hij in het Nederlands. Daar hoef je niets voor in te stellen."},
+  {"vraag":"Wat doet Shift + Enter in Claude.ai?","opties":["Het verstuurt je bericht","Het start een nieuw gesprek","Het maakt een nieuwe regel zonder te versturen","Het opent de instellingen"],"correct":2,"uitleg":"Shift + Enter maakt een nieuwe regel zonder je bericht te versturen. Handig voor langere prompts met meerdere regels."}
+]
+<!-- QUIZ_END -->

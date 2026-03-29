@@ -1,0 +1,235 @@
+<!-- TITLE: D1 - Claude Code: wat is het en hoe start je? -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-module-5','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-module-5':'Module 5','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>D1 - Claude Code: wat is het en hoe start je?</h1>
+    <p>Leer wat Claude Code is, hoe je het installeert en hoe je je eerste opdracht geeft. Geen programmeerkennis vereist.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat Claude Code is en hoe het verschilt van de web-app</li>
+      <li>Claude Code installeren via Node.js en de terminal</li>
+      <li>Je eerste opdracht geven in gewone taal</li>
+      <li>De mogelijkheden en beperkingen benoemen</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 15 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 5</div>
+    <h2>Wat is Claude Code?</h2>
+  </div>
+  <div class="content-card">
+    <p>Claude Code is een versie van Claude die je gebruikt via de terminal, een tekstgebaseerd scherm op je computer. In de web-app stel je een vraag en krijg je een antwoord. Claude Code kan meerdere stappen achter elkaar uitvoeren: bestanden lezen, mappen aanmaken, tekst schrijven, bestanden aanpassen.</p>
+    <p>Claude Code is niet alleen voor programmeurs. Als je gewone zinnen kunt typen, kun je Claude Code gebruiken.</p>
+  </div>
+  <div class="content-card">
+    <h3>Web-app vs Claude Code</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Eigenschap</th><th>Web-app</th><th>Claude Code</th></tr></thead>
+      <tbody>
+        <tr><td>Interface</td><td>Grafisch, in de browser</td><td>Tekstgebaseerd, in de terminal</td></tr>
+        <tr><td>Stappen</td><td>Een vraag, een antwoord</td><td>Meerdere stappen achter elkaar</td></tr>
+        <tr><td>Bestanden</td><td>Uploaden per stuk</td><td>Directe toegang tot mappen</td></tr>
+        <tr><td>Automatisering</td><td>Beperkt</td><td>Sterk</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat is het belangrijkste verschil tussen de web-app en Claude Code?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Claude Code is niet duurder. Het verschil zit in hoe je het gebruikt: de terminal vs de browser.')">Claude Code is duurder</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Claude Code kan meerdere stappen achter elkaar uitvoeren op je computer, terwijl de web-app werkt als een gesprek met een vraag en antwoord.')">Claude Code kan meerdere stappen achter elkaar uitvoeren op je computer</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Claude Code is juist ook voor niet-programmeurs. Je geeft opdrachten in gewone taal.')">Claude Code is alleen voor programmeurs</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 5</div>
+    <h2>De terminal</h2>
+  </div>
+  <div class="content-card">
+    <p>Een terminal is een programma op je computer waar je tekst-opdrachten intypt. Op Windows heet het "Command Prompt" of "PowerShell". Op Mac heet het "Terminal". Je kunt het openen via de zoekfunctie van je computer.</p>
+    <p>Het ziet er kaal uit. Geen knoppen, geen menu's. Maar dat is precies wat het krachtig maakt. Je typt een opdracht in gewone taal, Claude voert het uit.</p>
+  </div>
+  <div class="content-card">
+    <h3>Terminal openen</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">W</div>
+        <div class="stap-content">
+          <h4>Windows</h4>
+          <p>Zoek op "PowerShell" of "Command Prompt" in de zoekbalk en open het programma.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">M</div>
+        <div class="stap-content">
+          <h4>Mac</h4>
+          <p>Zoek op "Terminal" via Spotlight (Cmd + Spatie) en open het programma.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>De terminal ziet er misschien intimiderend uit, maar je hoeft geen technische commando's te kennen. Claude Code begrijpt gewone taal.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-3')">Volgende</button>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 5</div>
+    <h2>Installatie</h2>
+  </div>
+  <div class="content-card">
+    <h3>Claude Code installeren</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Installeer Node.js</h4>
+          <p>Download de LTS-versie (stabiel) via nodejs.org. Installeer het zoals elk ander programma.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Open de terminal en installeer Claude Code</h4>
+          <p>Typ: npm install -g @anthropic-ai/claude-code en druk op Enter. Wacht een paar minuten.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Start Claude Code</h4>
+          <p>Typ: claude en druk op Enter. Log in met je Anthropic-account. Klaar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat heb je nodig om Claude Code te installeren?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Python is niet nodig voor Claude Code. Je hebt Node.js nodig.')">Python en een code-editor</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Je hebt Node.js nodig (gratis te downloaden) en een Anthropic-account om in te loggen.')">Node.js en een Anthropic-account</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Je hoeft geen speciale computer te hebben. Node.js werkt op elke Windows- of Mac-computer.')">Een speciale ontwikkelcomputer</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 5</div>
+    <h2>Je eerste opdracht</h2>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een voorbeeld voor de uitleg</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Mappen aanmaken</div>
+        <div class="fc-uitleg">"Maak een map aan op mijn bureaublad met de naam Klanten 2026 en maak daarin vier submappen: Q1, Q2, Q3, Q4."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Bestanden samenvatten</div>
+        <div class="fc-uitleg">"Lees het bestand rapport.pdf in de map Downloads en geef mij een samenvatting van de vijf belangrijkste punten."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Bestanden zoeken</div>
+        <div class="fc-uitleg">"Zoek alle bestanden in de map Contracten die de afgelopen 30 dagen niet zijn geopend."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Hernoemen</div>
+        <div class="fc-uitleg">"Hernoem alle Word-bestanden in deze map zodat ze beginnen met de datum in het formaat JJJJ-MM-DD."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Claude Code vraagt soms om bevestiging voordat hij iets uitvoert. Typ y voor ja of n voor nee. Je ziet altijd wat hij van plan is.</p>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je hebt 15 Word-documenten die allemaal een nieuwe naam moeten krijgen volgens een vast patroon. Hoe pak je dit aan?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Handmatig hernoemen kost veel tijd. Claude Code kan dit in seconden doen.')">Elk bestand handmatig hernoemen</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Beschrijf in gewone taal wat het patroon is en Claude Code hernoemt alle 15 bestanden in een keer.')">Claude Code de opdracht geven: &quot;Hernoem alle Word-bestanden in deze map volgens het patroon [datum]-[klantnaam].docx&quot;</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'De web-app kan geen bestanden hernoemen op je computer. Daarvoor heb je Claude Code nodig.')">Het via de Claude.ai web-app doen</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-5')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 5 -->
+<div id="screen-module-5" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 5 van 5</div>
+    <h2>Mogelijkheden, beperkingen en veiligheid</h2>
+  </div>
+  <div class="content-card">
+    <h3>Wat kan Claude Code wel en niet?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Kan wel</th><th>Kan niet</th></tr></thead>
+      <tbody>
+        <tr><td>Bestanden lezen en verwerken</td><td>Internettoegang (tenzij ingesteld)</td></tr>
+        <tr><td>Mappen aanmaken en organiseren</td><td>Programma's als Word/Excel openen</td></tr>
+        <tr><td>Bestanden hernoemen en sorteren</td><td>Werken buiten toegewezen mappen</td></tr>
+        <tr><td>Herhalende taken automatiseren</td><td>E-mails versturen</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Claude Code vraagt altijd om bevestiging bij ingrijpende acties zoals het verwijderen of overschrijven van bestanden. Maak een back-up van belangrijke bestanden voordat je Claude Code op een grote map loslaat.</p>
+  </div>
+  <div class="kennischeck">
+    <h3>Vul het ontbrekende woord in</h3>
+    <div class="invul-wrap">
+      <p class="invul-zin">Om Claude Code te installeren heb je <input class="invul-input" id="invul-1" type="text" placeholder="..."> nodig, een gratis programma dat je downloadt via nodejs.org.</p>
+      <div class="invul-feedback" id="invul-feedback-1"></div>
+    </div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn" onclick="checkInvul('invul-1','node.js','invul-feedback-1')">Controleer</button>
+      <button class="btn btn-outline" onclick="goTo('screen-quiz')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is Claude Code?","opties":["Een website zoals Claude.ai","Een versie van Claude die via de terminal meerdere stappen achter elkaar uitvoert","Een programmeertal","Een plugin voor Chrome"],"correct":1,"uitleg":"Claude Code is een terminalversie van Claude die meerdere stappen achter elkaar kan uitvoeren op je computer: bestanden lezen, mappen aanmaken, documenten verwerken."},
+  {"vraag":"Heb je programmeerkennis nodig voor Claude Code?","opties":["Ja, je moet kunnen programmeren","Nee, je geeft opdrachten in gewone taal","Ja, je moet Python kennen","Alleen voor geavanceerde taken"],"correct":1,"uitleg":"Claude Code begrijpt gewone taal. Je beschrijft wat je wilt en Claude voert het uit. Geen programmeerkennis vereist."},
+  {"vraag":"Wat heb je nodig om Claude Code te installeren?","opties":["Python en Visual Studio","Node.js en een Anthropic-account","Een speciale computer","Alleen een browser"],"correct":1,"uitleg":"Je hebt Node.js nodig (gratis via nodejs.org) en een Anthropic-account om in te loggen."},
+  {"vraag":"Wat doet Claude Code bij ingrijpende acties?","opties":["Hij voert ze direct uit","Hij vraagt om bevestiging voordat hij ze uitvoert","Hij stuurt een e-mail","Hij maakt automatisch een back-up"],"correct":1,"uitleg":"Claude Code vraagt altijd om bevestiging bij ingrijpende acties zoals het verwijderen of overschrijven van bestanden."},
+  {"vraag":"Waarvoor is Claude Code het meest geschikt?","opties":["E-mails versturen","Bestandsverwerking, mapbeheer en herhalende taken","Presentaties opmaken","Online zoeken"],"correct":1,"uitleg":"Claude Code is sterk in het verwerken van bestanden, aanmaken van structuren en uitvoeren van herhalende taken op je computer."}
+]
+<!-- QUIZ_END -->

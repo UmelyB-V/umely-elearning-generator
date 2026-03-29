@@ -1,0 +1,185 @@
+<!-- TITLE: D3 - Plan Mode, commando's en hooks -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>D3 - Plan Mode, commando's en hooks</h1>
+    <p>Leer geavanceerde functies van Claude Code: eerst plannen dan uitvoeren, handige commando's en automatische acties.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Plan Mode gebruiken voor complexe taken</li>
+      <li>De belangrijkste slash-commando's toepassen</li>
+      <li>Hooks instellen voor terugkerende acties</li>
+      <li>Commando's en Plan Mode combineren voor maximale controle</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Plan Mode</h2>
+  </div>
+  <div class="content-card">
+    <p>Standaard voert Claude Code direct uit wat je vraagt. Plan Mode verandert dat: Claude maakt eerst een gedetailleerd plan en wacht op jouw goedkeuring voordat hij begint.</p>
+    <p>Je schakelt Plan Mode in door voor je opdracht te typen: /plan [jouw opdracht]</p>
+  </div>
+  <div class="content-card">
+    <h3>Het Plan Mode-proces</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>/plan + opdracht</h4><p>Jij beschrijft de taak</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Plan</h4><p>Claude beschrijft elke stap</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Review</h4><p>Jij keurt goed of past aan</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Uitvoering</h4><p>Claude voert het plan uit</p></div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Gebruik Plan Mode voor taken met veel stappen, taken op grote aantallen bestanden, of elke keer dat je niet zeker weet wat Claude gaat doen. Het kost iets meer tijd maar geeft je volledige controle.</p>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat doet Plan Mode?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Plan Mode maakt Claude Code niet sneller. Het voegt juist een stap toe: eerst plannen, dan uitvoeren.')">Het maakt Claude Code sneller</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Plan Mode laat Claude eerst een plan maken dat jij kunt goedkeuren of aanpassen voordat hij begint met uitvoeren.')">Claude maakt eerst een plan dat jij goedkeurt voordat hij begint</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Plan Mode slaat geen bestanden op. Het gaat over het plannen van acties voordat ze worden uitgevoerd.')">Het slaat automatisch een back-up op</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Veelgebruikte commando's</h2>
+  </div>
+  <div class="content-card">
+    <h3>Slash-commando's</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Commando</th><th>Wat het doet</th></tr></thead>
+      <tbody>
+        <tr><td>/help</td><td>Toont een overzicht van beschikbare commando's</td></tr>
+        <tr><td>/clear</td><td>Wist het huidige gesprek en begint schoon</td></tr>
+        <tr><td>/memory</td><td>Toont wat Claude Code onthouden heeft</td></tr>
+        <tr><td>/cost</td><td>Toont de API-kosten van de huidige sessie</td></tr>
+        <tr><td>/exit of Ctrl+C</td><td>Sluit Claude Code af</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Typ /help als je even niet weet welke commando's beschikbaar zijn. Dit toont een overzicht met uitleg per commando.</p>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je hebt een lange sessie met Claude Code achter de rug en het gesprek is onoverzichtelijk geworden. Claude Code lijkt in de war door eerdere instructies. Wat doe je?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Claude Code helemaal afsluiten en opnieuw starten is onnodig. /clear wist het gesprek zonder opnieuw te hoeven starten.')">Claude Code afsluiten en opnieuw opstarten</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. /clear wist het huidige gesprek zodat je met een schone lei verder kunt. Je CLAUDE.md wordt opnieuw ingelezen.')">Typ /clear om het gesprek te wissen en schoon te beginnen</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Doortypen in een onoverzichtelijk gesprek maakt het alleen maar erger. Een schone start is effectiever.')">Gewoon doorgaan en hopen dat het beter wordt</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Hooks: automatische acties</h2>
+  </div>
+  <div class="content-card">
+    <p>Hooks zijn automatische acties die Claude Code uitvoert op vaste momenten, zonder dat je er elke keer om hoeft te vragen. Je stelt een Hook in via je CLAUDE.md of door Claude Code te instrueren.</p>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een type hook voor een voorbeeld</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Bij sessiestart</div>
+        <div class="fc-uitleg">"Aan het begin van elke sessie: toon een overzicht van alle bestanden in de map Nieuw die vandaag zijn toegevoegd."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Na een opdracht</div>
+        <div class="fc-uitleg">"Na het aanmaken van een samenvatting: voeg de bestandsnaam en datum toe aan het logbestand sessie-log.txt."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Bij een specifieke actie</div>
+        <div class="fc-uitleg">"Elke keer dat je een bestand overschrijft: maak eerst een back-up in de map Archief."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Complexe Hooks kunnen onverwacht gedrag veroorzaken. Begin eenvoudig met een of twee Hooks en bouw uit naarmate je meer ervaring krijgt.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat is een Hook in Claude Code?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Een Hook is niet hetzelfde als een commando. Een commando voer je handmatig uit, een Hook wordt automatisch getriggerd.')">Een handmatig commando dat je elke keer typt</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Hooks zijn automatische acties die op vaste momenten worden uitgevoerd, zoals bij sessiestart, na een opdracht of bij een specifieke actie.')">Een automatische actie die op een vast moment wordt uitgevoerd</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Een Hook is geen beveiligingsfunctie. Het is een automatisering van terugkerende taken.')">Een beveiligingsfunctie die bestanden beschermt</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Combineren voor maximale controle</h2>
+  </div>
+  <div class="content-card">
+    <p>Je kunt commando's en Plan Mode combineren. Bijvoorbeeld: "/plan Gebruik de Hooks uit CLAUDE.md en verwerk de bestanden in de map Inbox." Claude maakt dan een plan inclusief alle automatische acties, zodat je precies weet wat er gaat gebeuren.</p>
+  </div>
+  <div class="content-card">
+    <h3>Samenvatting: wanneer gebruik je wat?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Functie</th><th>Wanneer gebruiken</th></tr></thead>
+      <tbody>
+        <tr><td>Plan Mode</td><td>Bij complexe taken of als je niet zeker bent wat Claude gaat doen</td></tr>
+        <tr><td>/clear</td><td>Als het gesprek onoverzichtelijk is geworden</td></tr>
+        <tr><td>/cost</td><td>Om je API-kosten in de gaten te houden</td></tr>
+        <tr><td>Hooks</td><td>Voor terugkerende acties die je niet telkens wilt herhalen</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Begin met Plan Mode bij je eerste grote taken. Voeg Hooks toe als je patronen herkent die je steeds herhaalt. Gebruik /cost om bewust te blijven van je API-gebruik.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Hoe activeer je Plan Mode?","opties":["Door op een knop te klikken","Door /plan voor je opdracht te typen","Door het in de instellingen aan te zetten","Plan Mode is altijd actief"],"correct":1,"uitleg":"Je activeert Plan Mode door /plan voor je opdracht te typen. Claude maakt dan eerst een plan dat jij kunt goedkeuren."},
+  {"vraag":"Wat doet het commando /clear?","opties":["Het verwijdert alle bestanden","Het wist het huidige gesprek en begint schoon","Het sluit Claude Code af","Het maakt een back-up"],"correct":1,"uitleg":"/clear wist het huidige gesprek zodat je met een schone lei verder kunt. Je CLAUDE.md wordt opnieuw ingelezen."},
+  {"vraag":"Wat is een Hook?","opties":["Een commando dat je handmatig typt","Een automatische actie die op een vast moment wordt uitgevoerd","Een beveiligingsinstelling","Een type bestand"],"correct":1,"uitleg":"Hooks zijn automatische acties die Claude Code uitvoert op vaste momenten, zoals bij sessiestart of na een specifieke opdracht."},
+  {"vraag":"Wanneer gebruik je Plan Mode?","opties":["Bij elke opdracht","Bij complexe taken of als je niet zeker bent wat Claude gaat doen","Alleen bij het verwijderen van bestanden","Nooit, het is overbodig"],"correct":1,"uitleg":"Gebruik Plan Mode voor taken met veel stappen, grote aantallen bestanden, of als je volledige controle wilt over wat er gaat gebeuren."},
+  {"vraag":"Wat toont het commando /cost?","opties":["De kosten van je abonnement","De API-kosten van de huidige sessie","De kosten van Node.js","Hoeveel bestanden je hebt verwerkt"],"correct":1,"uitleg":"/cost toont hoeveel API-kosten de huidige sessie heeft gemaakt. Handig om je gebruik in de gaten te houden."}
+]
+<!-- QUIZ_END -->

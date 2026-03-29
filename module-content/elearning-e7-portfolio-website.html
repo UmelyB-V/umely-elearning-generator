@@ -1,0 +1,190 @@
+<!-- TITLE: E7 - Portfolio website bouwen met Claude -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>E7 - Portfolio website bouwen met Claude</h1>
+    <p>Leer hoe je met Claude Code een eenvoudige bedrijfswebsite bouwt zonder programmeerkennis. Van beschrijving tot online.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Een website beschrijven in gewone taal en laten bouwen door Claude</li>
+      <li>Het resultaat bekijken, beoordelen en verfijnen</li>
+      <li>Een website gratis online zetten via Netlify</li>
+      <li>De beperkingen herkennen van website-generatie met Claude</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 15 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Waarom en wat heb je nodig?</h2>
+  </div>
+  <div class="content-card">
+    <p>Een eenvoudige website bouwen kostte vroeger duizenden euro's en een developer. Met Claude Code kun je een nette, functionele website maken in een middag, ook als je nog nooit een regel code hebt geschreven.</p>
+    <p>Dit is niet bedoeld voor complexe webapplicaties of webshops met betalingen. Het is bedoeld voor een eenvoudige aanwezigheid online: wie ben je, wat doe je, hoe kun je contact opnemen.</p>
+  </div>
+  <div class="content-card">
+    <h3>Wat heb je nodig?</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Claude Code</h4>
+          <p>Geinstalleerd en werkend (zie module D1).</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Een webbrowser</h4>
+          <p>Om het resultaat te bekijken. Chrome, Firefox of Edge.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Optioneel: hostingaccount</h4>
+          <p>Netlify of GitHub Pages (gratis) om de website online te zetten.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Waarvoor is website-generatie met Claude Code bedoeld?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Complexe webshops vereisen betalingssystemen en databases. Dat gaat verder dan wat Claude Code kan bieden.')">Complexe webshops met betalingen</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Claude Code is ideaal voor eenvoudige informatieve websites: wie je bent, wat je doet, hoe je te bereiken bent.')">Eenvoudige informatieve websites en portfolio\'s</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Social media platforms zijn complexe applicaties. Claude Code is bedoeld voor eenvoudige websites.')">Social media platforms bouwen</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Het bouwproces</h2>
+  </div>
+  <div class="content-card">
+    <h3>Van beschrijving naar website</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>Beschrijf</h4><p>In gewone taal</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Claude bouwt</h4><p>HTML, CSS, JS</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Bekijk</h4><p>Open in browser</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Verfijn</h4><p>Feedback, herhaal</p></div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je bent makelaar en wilt een eenvoudige website met een homepage, drie diensten (Aankoop, Verkoop, Verhuur) en een contactsectie. Hoe begin je?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'HTML leren is niet nodig. Claude Code schrijft de code op basis van jouw beschrijving in gewone taal.')">Eerst HTML en CSS leren</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Hoe specifieker je beschrijving (welke secties, welke kleuren, welke tekst), hoe beter het resultaat. Claude schrijft de code.')">Open Claude Code en beschrijf precies wat je wilt: secties, kleuren, tekst en contactgegevens</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Een webdesigner inhuren is niet nodig voor een eenvoudige website. Claude Code kan dit in een middag.')">Een webdesigner inhuren</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Online zetten</h2>
+  </div>
+  <div class="content-card">
+    <h3>Website live zetten via Netlify</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Maak een Netlify-account</h4>
+          <p>Ga naar netlify.com en maak een gratis account aan.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Upload je website</h4>
+          <p>Sleep je websitemap naar het Netlify-dashboard.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Website is live</h4>
+          <p>Netlify geeft je een URL. Je website is direct bereikbaar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Voor een eigen domeinnaam (www.jouwbedrijf.nl) koop je een domein bij een registrar zoals TransIP of Antagonist. Kost ongeveer 10-15 euro per jaar.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat kost het om een website online te zetten via Netlify?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Netlify biedt een gratis optie. Je betaalt alleen als je een eigen domeinnaam wilt.')">50 euro per maand</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Netlify heeft een gratis optie. Een eigen domeinnaam kost apart circa 10-15 euro per jaar bij een registrar.')">Niets, Netlify heeft een gratis optie</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'De hosting via Netlify is gratis. Alleen een eigen domeinnaam kost geld (10-15 euro per jaar).')">200 euro eenmalig</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Beperkingen en onderhoud</h2>
+  </div>
+  <div class="content-card">
+    <h3>Wat kan Claude niet voor je website?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Kan wel</th><th>Kan niet</th></tr></thead>
+      <tbody>
+        <tr><td>HTML en CSS genereren</td><td>Betalingssysteem integreren</td></tr>
+        <tr><td>Teksten en kleuren aanpassen</td><td>Inlogsysteem bouwen</td></tr>
+        <tr><td>Mobiele weergave verbeteren</td><td>Database koppelen</td></tr>
+        <tr><td>Secties toevoegen/verwijderen</td><td>Afbeeldingen genereren of uploaden</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Een website die Claude heeft gebouwd, moet je zelf onderhouden. Als je teksten wilt aanpassen, doe je dat via Claude Code of door de HTML-bestanden direct te bewerken. Claude kan geen afbeeldingen genereren. Je voegt eigen afbeeldingen toe door ze in de juiste map te plaatsen.</p>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Als je website complex wordt, overweeg dan een CMS zoals WordPress. Maar voor een eenvoudige bedrijfswebsite is een door Claude gebouwd HTML-bestand meer dan voldoende.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat heb je nodig om met Claude Code een website te bouwen?","opties":["Een betaald Adobe-abonnement","Claude Code, een browser en optioneel een hostingaccount","Een professionele webdesigner","WordPress en een databaseserver"],"correct":1,"uitleg":"Je hebt Claude Code nodig, een webbrowser om het resultaat te bekijken, en optioneel een gratis hostingaccount zoals Netlify."},
+  {"vraag":"Hoe beschrijf je een website aan Claude Code?","opties":["Met technische specificaties in JSON","In gewone Nederlandse taal","Door een wireframe te uploaden","Met CSS-code"],"correct":1,"uitleg":"Je beschrijft in gewone taal wat je wilt: welke secties, welke kleuren, welke tekst. Claude schrijft de code."},
+  {"vraag":"Wat is het bouwproces met Claude Code?","opties":["Eenmalig: beschrijf en klaar","Iteratief: beschrijf, bekijk, verfijn, herhaal","Lineair: eerst HTML, dan CSS, dan JavaScript","Automatisch: Claude bouwt alles zonder input"],"correct":1,"uitleg":"Het is een iteratief proces. Je beschrijft wat je wilt, bekijkt het resultaat en geeft feedback. Claude past aan en jij herhaalt tot je tevreden bent."},
+  {"vraag":"Wat kan Claude NIET voor een website?","opties":["HTML genereren","Teksten aanpassen op verzoek","Een betalingssysteem integreren","Mobiele weergave verbeteren"],"correct":2,"uitleg":"Claude kan geen betalingssystemen, inlogsystemen of databases integreren. Voor een informatieve website is dat niet nodig."},
+  {"vraag":"Wat is de eenvoudigste manier om een website online te zetten?","opties":["Een eigen server huren","Gratis uploaden naar Netlify","De bestanden e-mailen naar je hostingprovider","Een WordPress-installatie opzetten"],"correct":1,"uitleg":"Netlify biedt een gratis optie. Sleep je websitemap naar het dashboard en je website is live."}
+]
+<!-- QUIZ_END -->

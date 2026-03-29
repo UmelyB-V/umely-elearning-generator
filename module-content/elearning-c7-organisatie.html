@@ -1,0 +1,200 @@
+<!-- TITLE: C7 - Claude als organisatie -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>C7 - Claude als organisatie</h1>
+    <p>Leer hoe je Claude inzet op teamniveau: gedeelde projecten, centrale instellingen en een succesvolle uitrol.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Het verschil uitleggen tussen Teams en Enterprise</li>
+      <li>Een plan maken voor het uitrollen van Claude in een team</li>
+      <li>De uitdagingen benoemen bij organisatiebrede adoptie</li>
+      <li>Een interne richtlijn opstellen voor Claude-gebruik</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Teams vs Enterprise</h2>
+  </div>
+  <div class="content-card">
+    <h3>Vergelijking abonnementen</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Eigenschap</th><th>Teams</th><th>Enterprise</th></tr></thead>
+      <tbody>
+        <tr><td>Voor wie?</td><td>Kleine tot middelgrote organisaties</td><td>Grotere organisaties</td></tr>
+        <tr><td>Gedeelde Projects</td><td>Ja</td><td>Ja</td></tr>
+        <tr><td>Gesprekken voor training</td><td>Standaard niet</td><td>Standaard niet</td></tr>
+        <tr><td>SSO / SAML</td><td>Nee</td><td>Ja</td></tr>
+        <tr><td>Verwerkersovereenkomst (AVG)</td><td>Beperkt</td><td>Ja</td></tr>
+        <tr><td>Auditlogs</td><td>Nee</td><td>Ja</td></tr>
+        <tr><td>Prioriteitssupport</td><td>Nee</td><td>Ja</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Voor de meeste MKB-kantoren is Teams voldoende. Enterprise is pas nodig als je werkt met gevoelige data en specifieke beveiligingseisen hebt (SSO, auditlogs, verwerkersovereenkomst).</p>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Welk abonnement is geschikt voor een advocatenkantoor dat met vertrouwelijke klantdata werkt?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Het gratis abonnement biedt geen verwerkersovereenkomst of geavanceerde beveiliging. Voor vertrouwelijke data is dit niet geschikt.')">Gratis</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Teams biedt betere privacy, maar voor een advocatenkantoor met vertrouwelijke klantdata is Enterprise met verwerkersovereenkomst en auditlogs de betere keuze.')">Teams</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Enterprise biedt verwerkersovereenkomst, SSO, auditlogs en prioriteitssupport. Precies wat je nodig hebt voor vertrouwelijke klantdata.')">Enterprise</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Claude uitrollen in een team</h2>
+  </div>
+  <div class="content-card">
+    <h3>Het uitrolproces</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Kies een use case</h4>
+          <p>Begin met een taak die direct waarde oplevert: klantgesprekken samenvatten, standaardbrieven opstellen of rapporten analyseren.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Start met een kleine groep</h4>
+          <p>Laat 3-5 medewerkers ermee werken. Verzamel feedback en pas aan.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Stel een interne richtlijn op</h4>
+          <p>Wat mag wel en niet in Claude? Wie is verantwoordelijk? Een A4 is genoeg.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">4</div>
+        <div class="stap-content">
+          <h4>Breid uit op basis van resultaten</h4>
+          <p>Laat resultaten spreken. Als collega's zien dat een taak van een uur nu tien minuten duurt, volgt adoptie vanzelf.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je bent office manager bij een marketingbureau met 15 medewerkers. De directeur wil dat iedereen morgen Claude gaat gebruiken. Wat adviseer je?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Iedereen tegelijk laten beginnen zonder voorbereiding leidt tot frustratie. Begin klein en bouw op.')">Iedereen direct een account geven en zeggen dat ze het moeten gebruiken</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Begin met een kleine groep en een concrete use case. Laat resultaten spreken. Stel een korte richtlijn op en breid dan pas uit.')">Begin met een kleine testgroep, kies een concrete use case en stel een korte richtlijn op</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Wachten is onnodig. Je kunt direct beginnen met een kleine groep en een concreet doel.')">Wachten tot Anthropic een speciaal trainingsprogramma aanbiedt</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Gedeelde Projects</h2>
+  </div>
+  <div class="content-card">
+    <p>Met Teams en Enterprise kun je Projects delen met collega's. Iedereen die aan een klant werkt heeft dan toegang tot dezelfde context: briefing, tone of voice, eerdere content en relevante documenten.</p>
+  </div>
+  <div class="content-card">
+    <h3>Voorbeelden van gedeelde Projects</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Marketingbureau</div>
+        <div class="fc-uitleg">Project per klant met briefing, tone of voice en eerdere content. Alle medewerkers werken met dezelfde informatie.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Advocatenkantoor</div>
+        <div class="fc-uitleg">Project per zaak met relevante documenten en correspondentie. Meerdere advocaten kunnen aan dezelfde zaak werken.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Accountantskantoor</div>
+        <div class="fc-uitleg">Project per klant met jaarrekeningen, kwartaalcijfers en standaardbrieven. Context is altijd beschikbaar.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+    </div>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat is het voordeel van gedeelde Projects?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Met gedeelde Projects werkt iedereen met dezelfde context. Niemand hoeft de briefing of achtergrond opnieuw in te voeren.')">Iedereen in het team werkt met dezelfde context en documenten</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Projects maken Claude niet sneller. Ze zorgen voor consistente context binnen een team.')">Claude reageert sneller bij gedeelde Projects</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Projects geven geen korting. Het is een functie voor betere samenwerking.')">Je krijgt korting op het abonnement</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Uitdagingen bij adoptie</h2>
+  </div>
+  <div class="content-card">
+    <p>Niet iedereen pikt Claude even snel op. Sommige medewerkers zijn enthousiast, anderen sceptisch. Dat is normaal. Dwing het gebruik niet af. Laat resultaten spreken. Als collega's zien dat een taak die een uur kostte nu tien minuten duurt, volgt adoptie vanzelf.</p>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Zorg voor duidelijkheid over verantwoordelijkheid: Claude geeft antwoorden maar mensen nemen beslissingen. Die grens moet helder zijn in de organisatie.</p>
+  </div>
+  <div class="content-card">
+    <h3>Wat hoort er in een interne richtlijn?</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>Wat mag?</h4><p>Welke data in Claude</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Wat niet?</h4><p>Vertrouwelijke grenzen</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Wie beslist?</h4><p>Verantwoordelijkheid</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Bij vragen?</h4><p>Aanspreekpunt</p></div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Een interne richtlijn hoeft geen lang document te zijn. Een A4 met duidelijke regels is genoeg. Belangrijker dan de lengte is dat iedereen het leest en begrijpt.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is het belangrijkste verschil tussen Teams en Enterprise?","opties":["Enterprise is duurder","Enterprise biedt SSO, verwerkersovereenkomst en auditlogs","Teams heeft meer berichten","Er is geen verschil"],"correct":1,"uitleg":"Enterprise biedt geavanceerde beveiligingsopties (SSO, SAML), een verwerkersovereenkomst voor AVG-compliance, auditlogs en prioriteitssupport."},
+  {"vraag":"Wat is de beste aanpak om Claude in een team uit te rollen?","opties":["Iedereen tegelijk laten beginnen","Begin met een kleine groep en een concrete use case","Wachten tot iedereen er klaar voor is","Alleen de IT-afdeling laten beslissen"],"correct":1,"uitleg":"Begin klein met 3-5 medewerkers en een concrete use case die direct waarde oplevert. Verzamel feedback en breid dan uit."},
+  {"vraag":"Wat moeten gedeelde Projects bevatten?","opties":["Alleen gesprekken","Documenten en context die relevant zijn voor het onderwerp of de klant","Alleen e-mails","Persoonlijke notities van medewerkers"],"correct":1,"uitleg":"Gedeelde Projects bevatten documenten, briefings en andere context die relevant is. Zo werkt iedereen met dezelfde informatie."},
+  {"vraag":"Hoe ga je om met medewerkers die sceptisch zijn over Claude?","opties":["Het gebruik verplicht stellen","Resultaten laten spreken en niet afdwingen","Ze uitsluiten van het team","Wachten tot ze zelf interesse tonen"],"correct":1,"uitleg":"Dwing gebruik niet af. Laat resultaten spreken. Als collega's zien dat taken sneller gaan, volgt adoptie vanzelf."},
+  {"vraag":"Wat is het belangrijkste punt in een interne richtlijn voor Claude?","opties":["Welk thema je moet gebruiken","Welke data wel en niet in Claude mag en wie verantwoordelijk is","Hoeveel berichten per dag je mag sturen","Welke sneltoetsen je moet kennen"],"correct":1,"uitleg":"De richtlijn moet duidelijk maken welke informatie wel en niet in Claude mag worden ingevoerd en wie verantwoordelijk is voor de output."}
+]
+<!-- QUIZ_END -->

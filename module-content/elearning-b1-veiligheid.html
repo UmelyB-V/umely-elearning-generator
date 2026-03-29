@@ -1,0 +1,216 @@
+<!-- TITLE: B1 - Veiligheid en privacy bij Claude -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-module-5','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-module-5':'Module 5','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>B1 - Veiligheid en privacy bij Claude</h1>
+    <p>Leer wat er met je gegevens gebeurt, wat de risico's zijn en hoe je Claude veilig inzet zonder onbewust gevoelige informatie te lekken.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen waar je gegevens naartoe gaan als je Claude gebruikt</li>
+      <li>Het verschil beschrijven tussen een gratis en zakelijk abonnement qua privacy</li>
+      <li>Bepalen welke informatie je wel en niet met Claude kunt delen</li>
+      <li>De relevantie van de AVG bij het gebruik van Claude uitleggen</li>
+      <li>Bewuste keuzes maken over vertrouwelijke bedrijfsdata</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 15 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 5</div>
+    <h2>Waar gaan je gegevens naartoe?</h2>
+  </div>
+  <div class="content-card">
+    <h3>Het pad van je gegevens</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>Jij typt</h4><p>Tekst in Claude.ai</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Verstuurd</h4><p>Naar Anthropic servers (VS)</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Verwerkt</h4><p>Claude genereert antwoord</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Terug</h4><p>Antwoord in je scherm</p></div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Bij het gratis en standaard Pro-abonnement kan Anthropic je gesprekken gebruiken om hun modellen te verbeteren, tenzij je dit uitschakelt in je privacy-instellingen. Typ nooit klantgegevens, BSN-nummers, wachtwoorden of bankgegevens in Claude zonder de juiste privacyafspraken.</p>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat gebeurt er standaard met je gesprekken bij een gratis Claude-abonnement?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Gesprekken worden niet automatisch verwijderd. Ze worden opgeslagen en mogelijk gebruikt voor modelverbetering.')">Ze worden direct verwijderd na het gesprek</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Bij gratis en standaard abonnementen kan Anthropic gesprekken gebruiken voor modeltraining, tenzij je dit uitschakelt in je privacy-instellingen.')">Anthropic kan ze gebruiken om modellen te verbeteren</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Gesprekken worden niet gedeeld met andere gebruikers. Maar ze kunnen wel gebruikt worden voor modeltraining.')">Ze worden gedeeld met andere gebruikers</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 5</div>
+    <h2>Zakelijk abonnement</h2>
+  </div>
+  <div class="content-card">
+    <p>Anthropic biedt een Teams- en Enterprise-abonnement voor bedrijven. Bij deze abonnementen worden je gesprekken standaard niet gebruikt voor modeltraining. Er zijn ook aanvullende beveiligingsopties beschikbaar.</p>
+    <p>Als je Claude structureel wilt inzetten voor gevoelig werk, denk aan juridische documenten, financiele rapporten of medische informatie, is een zakelijk abonnement de juiste keuze.</p>
+  </div>
+  <div class="content-card">
+    <h3>Gratis vs zakelijk</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Eigenschap</th><th>Gratis / Pro</th><th>Teams / Enterprise</th></tr></thead>
+      <tbody>
+        <tr><td>Gesprekken voor training</td><td>Mogelijk (uitzetten kan)</td><td>Standaard niet</td></tr>
+        <tr><td>Verwerkersovereenkomst</td><td>Niet beschikbaar</td><td>Beschikbaar</td></tr>
+        <tr><td>Geschikt voor gevoelige data</td><td>Nee</td><td>Ja, met juiste afspraken</td></tr>
+        <tr><td>Extra beveiligingsopties</td><td>Beperkt</td><td>Uitgebreid</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Het is niet zo dat de gratis versie onveilig is. Maar je moet bewust zijn van wat je deelt. Voor algemene vragen en eigen teksten is het prima. Voor klantgegevens en vertrouwelijke documenten niet.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-3')">Volgende</button>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 5</div>
+    <h2>Wat mag je wel en niet delen?</h2>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een categorie voor de uitleg</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Veilig</div>
+        <div class="fc-uitleg">Publiek beschikbare informatie, eigen teksten die je wilt verbeteren, algemene vakinhoudelijke vragen, anonieme voorbeelden zonder identificerende informatie.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Voorzichtig</div>
+        <div class="fc-uitleg">Volledige namen en contactgegevens van klanten, vertrouwelijke contracten, financiele gegevens, intern bedrijfsgevoelige informatie. Alleen met zakelijk abonnement.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Nooit</div>
+        <div class="fc-uitleg">BSN-nummers, paspoortnummers, wachtwoorden, inloggegevens, bankgegevens, medische dossiers. Deze informatie hoort nooit in een AI-tool.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je bent accountant en wilt Claude gebruiken om een rapport te schrijven over de financiele situatie van een klant. Je hebt een gratis Claude-account. Wat doe je?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Bij een gratis account zijn er geen garanties over hoe je data wordt behandeld. Klantgegevens horen hier niet in.')">De volledige jaarrekening in Claude plakken en een rapport laten schrijven</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Je kunt Claude gebruiken met geanonimiseerde gegevens bij een gratis account. Voor volledige klantdata heb je een zakelijk abonnement met verwerkersovereenkomst nodig.')">De gegevens anonimiseren en een algemeen rapport laten schrijven, of eerst upgraden naar een zakelijk abonnement</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Claude kan wel helpen met financiele rapporten, maar je moet nadenken over de privacy van je klantgegevens.')">Claude helemaal niet gebruiken voor financieel werk</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-4')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 5</div>
+    <h2>AVG en Claude</h2>
+  </div>
+  <div class="content-card">
+    <p>De AVG (Algemene Verordening Gegevensbescherming) stelt eisen aan hoe je omgaat met persoonsgegevens. Als je persoonsgegevens van klanten in Claude invoert, ben jij als bedrijf verantwoordelijk voor hoe die gegevens worden verwerkt. Anthropic is dan een verwerker van die data.</p>
+    <p>Voor zakelijk gebruik met persoonsgegevens heb je een verwerkersovereenkomst nodig met Anthropic. Die is beschikbaar bij zakelijke abonnementen. Dit is geen detail, dit is een juridische verplichting.</p>
+  </div>
+  <div class="content-card">
+    <h3>Wat je nodig hebt voor AVG-compliant gebruik</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Zakelijk abonnement afsluiten</h4>
+          <p>Teams of Enterprise abonnement bij Anthropic.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Verwerkersovereenkomst tekenen</h4>
+          <p>Beschikbaar bij zakelijke abonnementen. Juridisch verplicht bij verwerking van persoonsgegevens.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Intern beleid opstellen</h4>
+          <p>Bepaal wat medewerkers wel en niet mogen invoeren in Claude. Communiceer dit duidelijk.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat heb je nodig om persoonsgegevens van klanten in Claude te mogen verwerken?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-5', 'Het gratis account biedt geen verwerkersovereenkomst. Voor persoonsgegevens heb je een zakelijk abonnement nodig.')">Alleen een gratis account is voldoende</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-5', 'Toestemming van de klant alleen is niet voldoende. Je hebt ook de juiste technische en juridische afspraken nodig met Anthropic.')">Toestemming van de klant</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-5', 'Correct. De AVG vereist een verwerkersovereenkomst wanneer je persoonsgegevens laat verwerken door een derde partij zoals Anthropic.')">Een zakelijk abonnement met verwerkersovereenkomst</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 5 -->
+<div id="screen-module-5" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 5 van 5</div>
+    <h2>Claude is geen autonoom systeem</h2>
+  </div>
+  <div class="content-card">
+    <p>Claude slaat informatie niet op tussen gesprekken (tenzij je Memory of Projects gebruikt). Hij belt niet zelf naar buiten, neemt geen beslissingen zonder jouw instructie en kan niets uitvoeren buiten het gespreksvenster tenzij je hem daar expliciet toegang voor geeft.</p>
+    <p>Claude is geen autonome agent die op de achtergrond dingen doet. Hij doet alleen wat jij hem vraagt, op het moment dat jij het vraagt.</p>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Maak intern beleid over wat medewerkers wel en niet in Claude mogen invoeren. Een korte richtlijn van een half A4 is genoeg. Zo voorkom je dat iemand per ongeluk klantgegevens deelt.</p>
+  </div>
+  <div class="kennischeck">
+    <h3>Vul het ontbrekende woord in</h3>
+    <div class="invul-wrap">
+      <p class="invul-zin">Voor zakelijk gebruik met persoonsgegevens heb je een <input class="invul-input" id="invul-1" type="text" placeholder="..."> nodig met Anthropic.</p>
+      <div class="invul-feedback" id="invul-feedback-1"></div>
+    </div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn" onclick="checkInvul('invul-1','verwerkersovereenkomst','invul-feedback-1')">Controleer</button>
+      <button class="btn btn-outline" onclick="goTo('screen-quiz')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Waar worden je gegevens naartoe gestuurd als je Claude.ai gebruikt?","opties":["Ze blijven op je eigen computer","Naar servers van Anthropic in de VS","Naar een Europees datacenter","Nergens, Claude werkt lokaal"],"correct":1,"uitleg":"Als je iets typt in Claude.ai wordt die tekst verstuurd naar de servers van Anthropic in de Verenigde Staten."},
+  {"vraag":"Bij welk abonnement worden gesprekken standaard niet gebruikt voor modeltraining?","opties":["Het gratis abonnement","Het Pro-abonnement","Het Teams/Enterprise-abonnement","Alle abonnementen"],"correct":2,"uitleg":"Bij Teams- en Enterprise-abonnementen worden gesprekken standaard niet gebruikt voor modeltraining. Bij gratis en Pro kan dit wel, tenzij je het uitschakelt."},
+  {"vraag":"Welke gegevens mag je NOOIT in Claude invoeren?","opties":["Algemene vragen over je vakgebied","Eigen teksten die je wilt verbeteren","BSN-nummers en wachtwoorden","Publiek beschikbare informatie"],"correct":2,"uitleg":"BSN-nummers, wachtwoorden, bankgegevens en medische dossiers horen nooit in een AI-tool, ongeacht welk abonnement je hebt."},
+  {"vraag":"Wat is een verwerkersovereenkomst?","opties":["Een contract tussen jou en je klant","Een juridische overeenkomst over hoe een derde partij persoonsgegevens verwerkt","Een licentie om Claude te mogen gebruiken","Een technische instelling in Claude"],"correct":1,"uitleg":"Een verwerkersovereenkomst regelt juridisch hoe Anthropic (als verwerker) omgaat met de persoonsgegevens die jij (als verantwoordelijke) aanlevert. Dit is verplicht onder de AVG."},
+  {"vraag":"Slaat Claude informatie op tussen gesprekken?","opties":["Ja, alles wordt permanent opgeslagen","Nee, tenzij je Memory of Projects gebruikt","Ja, maar alleen bij een betaald abonnement","Nee, nooit"],"correct":1,"uitleg":"Claude slaat standaard geen informatie op tussen gesprekken. Alleen als je Memory of Projects gebruikt wordt context bewaard."}
+]
+<!-- QUIZ_END -->

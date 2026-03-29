@@ -1,0 +1,200 @@
+<!-- TITLE: E1 - MCP: Claude verbinden met externe tools -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>E1 - MCP: Claude verbinden met externe tools</h1>
+    <p>Leer wat MCP is en hoe het Claude verbindt met je e-mail, agenda, CRM en andere systemen die je dagelijks gebruikt.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat MCP is en waarom het bestaat</li>
+      <li>Voorbeelden geven van tools die Claude kan verbinden</li>
+      <li>Het verschil uitleggen tussen lees- en schrijftoegang</li>
+      <li>De risico's benoemen van MCP-integraties</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Wat is MCP?</h2>
+  </div>
+  <div class="content-card">
+    <p>MCP staat voor Model Context Protocol. Het is een standaard waarmee Claude verbinding kan maken met externe tools en systemen. Zonder MCP werkt Claude alleen met de informatie die jij hem geeft. Met MCP kan Claude informatie ophalen uit en schrijven naar systemen die je dagelijks gebruikt.</p>
+    <p>Simpel gezegd: MCP is de brug tussen Claude en de rest van je digitale werkomgeving.</p>
+  </div>
+  <div class="content-card">
+    <h3>Zonder vs met MCP</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Zonder MCP</th><th>Met MCP</th></tr></thead>
+      <tbody>
+        <tr><td>Je kopieert informatie handmatig naar Claude</td><td>Claude haalt informatie zelf op</td></tr>
+        <tr><td>Claude kent alleen wat jij hem vertelt</td><td>Claude heeft toegang tot actuele data</td></tr>
+        <tr><td>Geen interactie met je systemen</td><td>Claude kan lezen en schrijven naar je tools</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Waar staat MCP voor?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'MCP staat niet voor Multi Cloud Platform. Het gaat over het verbinden van Claude met externe tools.')">Multi Cloud Platform</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Model Context Protocol is de standaard waarmee Claude verbinding maakt met externe tools en systemen.')">Model Context Protocol</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'MCP is geen programma dat je installeert. Het is een protocol, een standaard voor communicatie tussen Claude en externe tools.')">Microsoft Connector Program</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Welke tools kun je verbinden?</h2>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een categorie voor voorbeelden</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Communicatie</div>
+        <div class="fc-uitleg">Gmail, Outlook, Slack. Claude kan e-mails doorzoeken, berichten lezen en samenvattingen maken.</div>
+        <div class="fc-hint">Klik voor voorbeelden</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Planning</div>
+        <div class="fc-uitleg">Google Calendar, Outlook Calendar. Claude kan afspraken bekijken en eventueel aanmaken.</div>
+        <div class="fc-hint">Klik voor voorbeelden</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Opslag</div>
+        <div class="fc-uitleg">Google Drive, OneDrive, Dropbox. Claude kan documenten lezen en doorzoeken.</div>
+        <div class="fc-hint">Klik voor voorbeelden</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Productiviteit</div>
+        <div class="fc-uitleg">Notion, Trello, Asana. Claude kan taken en notities bekijken en bijwerken.</div>
+        <div class="fc-hint">Klik voor voorbeelden</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">CRM</div>
+        <div class="fc-uitleg">Salesforce, HubSpot. Claude kan klantinformatie raadplegen voor betere antwoorden.</div>
+        <div class="fc-hint">Klik voor voorbeelden</div>
+      </div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je bent makelaar en wilt dat Claude een professionele e-mail schrijft naar klant Jansen, gebaseerd op de laatste correspondentie. Zonder MCP kopieer je die e-mails handmatig. Met MCP...</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Met de Gmail-connector kan Claude je inbox doorzoeken en de relevante e-mails zelf vinden. Je hoeft niets te kopieren.')">Vraag je Claude: &quot;Zoek de laatste e-mails van klant Jansen en schrijf een opvolg-e-mail.&quot; Claude doorzoekt Gmail zelf.</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Dit is de manier zonder MCP. Met MCP hoef je niet handmatig te kopieren.')">Kopieer je de e-mails en plak ze in Claude</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Claude kan niet zelf beslissen om e-mails te versturen. Je geeft altijd de opdracht en bevestigt.')">Claude verstuurt automatisch een e-mail zonder jouw input</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Risico's en lees- vs schrijftoegang</h2>
+  </div>
+  <div class="content-card">
+    <p>MCP geeft Claude toegang tot echte systemen. Dat betekent dat fouten ook echte gevolgen hebben. Als Claude een e-mail verstuurt die je niet wilde versturen, of een agenda-item verwijdert, is dat niet zomaar ongedaan te maken.</p>
+  </div>
+  <div class="content-card">
+    <h3>Lees- vs schrijftoegang</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Begin met leestoegang</h4>
+          <p>Claude kan informatie ophalen maar niet aanpassen. Veilig om mee te starten.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Test uitgebreid</h4>
+          <p>Controleer of Claude de juiste informatie ophaalt en correct interpreteert.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Eventueel schrijftoegang</h4>
+          <p>Pas als je vertrouwen hebt in de resultaten. Geef alleen schrijftoegang voor specifieke acties.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Begin altijd met leestoegang. Geef schrijftoegang alleen als je begrijpt wat Claude ermee kan doen en als je hem getest hebt. Fouten in echte systemen zijn niet zomaar ongedaan te maken.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Waarmee moet je beginnen bij MCP-integraties?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Direct schrijftoegang geven is riskant. Begin altijd met leestoegang en test eerst.')">Direct schrijftoegang geven zodat Claude alles kan doen</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Begin met leestoegang (Claude kan informatie ophalen maar niet aanpassen) en test uitgebreid voordat je schrijftoegang geeft.')">Leestoegang, en pas na testen eventueel schrijftoegang</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Je hoeft niet te wachten op Enterprise. MCP is beschikbaar bij Teams en via de desktop-app. Begin wel altijd met leestoegang.')">Wachten tot je een Enterprise-abonnement hebt</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Wie stelt MCP in?</h2>
+  </div>
+  <div class="content-card">
+    <p>Voor de meeste gebruikers: een IT-beheerder of implementatiepartner stelt MCP-integraties in. Jij als eindgebruiker merkt het resultaat: Claude weet dingen die hij eerder niet wist.</p>
+    <p>Als je een kleine organisatie bent zonder IT-afdeling, kan een partner als Umely dit voor je inrichten.</p>
+  </div>
+  <div class="content-card">
+    <h3>Het implementatieproces</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>Kies tools</h4><p>Welke systemen wil je koppelen?</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Inrichten</h4><p>IT of partner stelt in</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Test</h4><p>Leestoegang testen</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Uitrollen</h4><p>Gebruikers aan de slag</p></div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Begin met een of twee connectoren die het meeste tijdwinst opleveren, zoals Gmail of je agenda. Voeg later meer toe als je ervaring hebt opgebouwd.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Waar staat MCP voor?","opties":["Multi Cloud Platform","Model Context Protocol","Microsoft Connector Program","Master Control Panel"],"correct":1,"uitleg":"MCP staat voor Model Context Protocol. Het is de standaard waarmee Claude verbinding maakt met externe tools en systemen."},
+  {"vraag":"Wat doet MCP?","opties":["Het maakt Claude sneller","Het verbindt Claude met externe tools zoals e-mail, agenda en CRM","Het beveiligt je Claude-account","Het vertaalt teksten automatisch"],"correct":1,"uitleg":"MCP is de brug tussen Claude en je digitale werkomgeving. Claude kan informatie ophalen uit en schrijven naar de tools die je dagelijks gebruikt."},
+  {"vraag":"Waarmee moet je beginnen bij MCP?","opties":["Direct schrijftoegang geven","Leestoegang geven en testen voordat je schrijftoegang geeft","Alle tools tegelijk koppelen","Wachten tot MCP perfect is"],"correct":1,"uitleg":"Begin altijd met leestoegang. Test uitgebreid en geef pas schrijftoegang als je vertrouwen hebt in de resultaten."},
+  {"vraag":"Wie stelt MCP-integraties meestal in?","opties":["De eindgebruiker zelf","Een IT-beheerder of implementatiepartner","Anthropic doet dit automatisch","Niemand, het werkt vanzelf"],"correct":1,"uitleg":"Voor de meeste organisaties stelt een IT-beheerder of implementatiepartner de MCP-integraties in."},
+  {"vraag":"Waarom is schrijftoegang via MCP risicovol?","opties":["Het kost meer geld","Claude kan acties uitvoeren in echte systemen die niet zomaar ongedaan te maken zijn","Het is langzamer","Er is geen risico"],"correct":1,"uitleg":"Met schrijftoegang kan Claude e-mails versturen, agenda-items aanpassen of data wijzigen. Fouten in echte systemen hebben echte gevolgen."}
+]
+<!-- QUIZ_END -->

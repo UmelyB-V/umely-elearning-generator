@@ -1,0 +1,179 @@
+<!-- TITLE: C4 - Cowork: taken delegeren aan Claude -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>C4 - Cowork: taken delegeren aan Claude</h1>
+    <p>Leer hoe je repetitieve taken op je computer delegeert aan Claude via Cowork. Van bestandsverwerking tot mapbeheer.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat Cowork is en hoe het verschilt van Chat</li>
+      <li>Een taak delegeren aan Claude via Cowork</li>
+      <li>Bepalen welke taken geschikt zijn voor Cowork</li>
+      <li>Veilig werken met Cowork door back-ups en bevestiging</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Chat vs Cowork</h2>
+  </div>
+  <div class="content-card">
+    <h3>Het verschil in een oogopslag</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Eigenschap</th><th>Chat</th><th>Cowork</th></tr></thead>
+      <tbody>
+        <tr><td>Wat doet Claude?</td><td>Geeft een antwoord</td><td>Voert taken uit op je computer</td></tr>
+        <tr><td>Wie voert uit?</td><td>Jij, op basis van het antwoord</td><td>Claude, met jouw goedkeuring</td></tr>
+        <tr><td>Bestanden aanpassen?</td><td>Nee</td><td>Ja, lezen, aanmaken, bewerken</td></tr>
+        <tr><td>Bevestiging nodig?</td><td>Nee</td><td>Ja, bij ingrijpende acties</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat is het belangrijkste verschil tussen Chat en Cowork?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Cowork is niet sneller. Het verschil is dat Claude bij Cowork daadwerkelijk stappen uitvoert op je computer.')">Cowork is sneller dan Chat</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Bij Chat geeft Claude antwoorden die jij zelf uitvoert. Bij Cowork voert Claude de stappen zelf uit op je computer, met jouw goedkeuring.')">Bij Chat geeft Claude antwoorden, bij Cowork voert Claude taken uit</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Cowork werkt niet op internet. Het werkt met bestanden op je eigen computer.')">Cowork werkt op internet, Chat werkt lokaal</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Hoe werkt het in de praktijk?</h2>
+  </div>
+  <div class="content-card">
+    <h3>Het Cowork-proces</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>Opdracht</h4><p>Jij beschrijft de taak</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Plan</h4><p>Claude laat zien wat hij gaat doen</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Goedkeuring</h4><p>Jij bevestigt het plan</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Uitvoering</h4><p>Claude voert stap voor stap uit</p></div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je bent makelaar en hebt een map met 30 bezichtigingsverslagen als PDF. Je wilt van elk verslag een korte samenvatting. Hoe gebruik je Cowork?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Geef Claude toegang tot de map en beschrijf wat je wilt. Claude leest elk bestand, maakt samenvattingen en slaat ze op. Jij bevestigt elke stap.')">Open Cowork, geef Claude toegang tot de map, en zeg: &quot;Lees alle PDFs in deze map en maak per bestand een samenvatting als tekstbestand.&quot;</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Bij Chat moet je elk bestand handmatig uploaden en de samenvatting zelf opslaan. Cowork automatiseert dit proces.')">Upload elk bestand apart in Chat en kopieer de samenvattingen handmatig</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'De Chrome-extensie is bedoeld voor webpaginas, niet voor bestanden op je computer. Gebruik Cowork voor lokale bestanden.')">Gebruik de Chrome-extensie om de PDFs te lezen</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>Geschikte en ongeschikte taken</h2>
+  </div>
+  <div class="content-card">
+    <h3>Wat werkt goed en wat niet?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Geschikt voor Cowork</th><th>Niet geschikt</th></tr></thead>
+      <tbody>
+        <tr><td>Grote aantallen bestanden samenvatten</td><td>Excel-formules berekenen</td></tr>
+        <tr><td>Bestanden hernoemen en sorteren</td><td>Presentaties opmaken in PowerPoint</td></tr>
+        <tr><td>Mappenstructuren aanmaken</td><td>Taken met internettoegang</td></tr>
+        <tr><td>Mappen doorzoeken op specifieke informatie</td><td>Alles met real-time data</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Cowork is het sterkst bij repetitieve bestandstaken die je normaal handmatig doet: samenvatten, hernoemen, sorteren, doorzoeken. Denk aan alles waar je normaal een half uur tot een uur mee kwijt bent.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Welke taak is het meest geschikt voor Cowork?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Excel-formules berekenen is niet geschikt voor Cowork. Dat doe je beter in Excel zelf of via de Excel-integratie.')">Excel-formules berekenen in een spreadsheet</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Het verwerken van grote aantallen bestanden is precies waar Cowork voor is ontworpen. Claude leest, verwerkt en slaat op, stap voor stap.')">30 PDF-rapporten in een map samenvatten als tekstbestanden</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Cowork heeft geen internettoegang. Voor taken met live data is Cowork niet geschikt.')">De laatste beurskoersen opzoeken en in een rapport verwerken</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Veilig werken met Cowork</h2>
+  </div>
+  <div class="content-card">
+    <p>Claude vraagt altijd om bevestiging voordat hij iets doet dat niet ongedaan gemaakt kan worden, zoals een bestand overschrijven of verwijderen. Je kunt op elk moment stoppen. Je bent altijd de baas.</p>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Maak altijd een back-up van belangrijke bestanden voordat je Claude op een grote map loslaat. Niet omdat hij per se fouten maakt, maar omdat automatisering altijd risico's heeft en voorzichtigheid een goede gewoonte is.</p>
+  </div>
+  <div class="content-card">
+    <h3>Veiligheidsregels</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Maak een back-up</h4>
+          <p>Kopieer belangrijke bestanden naar een andere locatie voordat je Cowork start.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Lees het plan</h4>
+          <p>Claude laat altijd zien wat hij van plan is. Lees dit voordat je bevestigt.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Bevestig per stap</h4>
+          <p>Bij ingrijpende acties vraagt Claude extra bevestiging. Neem de tijd om te controleren.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Cowork werkt alleen met bestanden op je eigen computer. Voor toegang tot e-mail, CRM of boekhoudpakket heb je MCP-integraties nodig (zie module E1).</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is het verschil tussen Chat en Cowork?","opties":["Chat is gratis, Cowork is betaald","Bij Chat geeft Claude antwoorden, bij Cowork voert Claude taken uit op je computer","Cowork werkt sneller dan Chat","Er is geen verschil"],"correct":1,"uitleg":"Bij Chat geeft Claude antwoorden die jij zelf uitvoert. Bij Cowork voert Claude de stappen zelf uit op je computer, met jouw goedkeuring per stap."},
+  {"vraag":"Wat doet Claude voordat hij een bestand overschrijft in Cowork?","opties":["Hij doet het direct","Hij vraagt om bevestiging","Hij maakt automatisch een back-up","Hij stuurt een e-mail"],"correct":1,"uitleg":"Claude vraagt altijd om bevestiging voordat hij iets doet dat niet ongedaan gemaakt kan worden. Je bent altijd in controle."},
+  {"vraag":"Welke taak is NIET geschikt voor Cowork?","opties":["30 bestanden samenvatten","Een mappenstructuur aanmaken","Excel-formules berekenen","Bestanden hernoemen en sorteren"],"correct":2,"uitleg":"Excel-formules berekenen is niet geschikt voor Cowork. Cowork werkt met bestanden op je computer, niet binnen specifieke software."},
+  {"vraag":"Wat moet je altijd doen voordat je Cowork start op een grote map?","opties":["Je internetverbinding controleren","Een back-up maken van belangrijke bestanden","Een nieuw account aanmaken","De Chrome-extensie installeren"],"correct":1,"uitleg":"Maak altijd een back-up. Automatisering heeft altijd risico's en voorzichtigheid is een goede gewoonte."},
+  {"vraag":"Heeft Cowork toegang tot je e-mail of CRM?","opties":["Ja, automatisch","Nee, alleen tot bestanden op je computer","Ja, maar alleen met Enterprise","Ja, via de Chrome-extensie"],"correct":1,"uitleg":"Cowork werkt alleen met bestanden op je eigen computer. Voor toegang tot e-mail, CRM of andere systemen heb je MCP-integraties nodig."}
+]
+<!-- QUIZ_END -->

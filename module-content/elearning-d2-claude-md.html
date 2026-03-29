@@ -1,0 +1,184 @@
+<!-- TITLE: D2 - CLAUDE.md: projectgeheugen -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>D2 - CLAUDE.md: projectgeheugen</h1>
+    <p>Leer hoe je Claude Code voorziet van vaste context via een CLAUDE.md-bestand. Consistentere resultaten, minder herhaling.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat een CLAUDE.md-bestand is en waarom het nuttig is</li>
+      <li>Een CLAUDE.md aanmaken voor je project</li>
+      <li>Bepalen welke informatie erin hoort</li>
+      <li>Het bestand onderhouden als levend document</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 4</div>
+    <h2>Wat is CLAUDE.md?</h2>
+  </div>
+  <div class="content-card">
+    <p>CLAUDE.md is een tekstbestand dat je aanmaakt in een projectmap. Elke keer dat je Claude Code opstart in die map, leest hij dit bestand automatisch in. Alles wat erin staat, instructies, context, regels, voorkeuren, weet Claude Code dan direct.</p>
+    <p>Vergelijk het met een interne briefing die je aan een nieuwe medewerker geeft: dit zijn onze regels, dit is hoe wij werken, dit zijn de dingen die je altijd moet doen of nooit moet doen.</p>
+  </div>
+  <div class="content-card">
+    <h3>Met vs zonder CLAUDE.md</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Zonder CLAUDE.md</th><th>Met CLAUDE.md</th></tr></thead>
+      <tbody>
+        <tr><td>Elke sessie begint met een schone lei</td><td>Context is automatisch beschikbaar</td></tr>
+        <tr><td>Je herhaalt elke keer dezelfde instructies</td><td>Instructies worden automatisch ingelezen</td></tr>
+        <tr><td>Resultaten kunnen inconsistent zijn</td><td>Claude Code werkt consistenter</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wanneer leest Claude Code het CLAUDE.md-bestand in?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Je hoeft CLAUDE.md niet handmatig te openen. Claude Code leest het automatisch in.')">Alleen als je het handmatig opent</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Claude Code leest CLAUDE.md automatisch in elke keer dat je hem opstart in die projectmap.')">Automatisch bij elke sessie in die projectmap</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'CLAUDE.md wordt bij elke sessie opnieuw ingelezen, niet alleen de eerste keer.')">Alleen bij de eerste sessie</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 4</div>
+    <h2>Wat zet je erin?</h2>
+  </div>
+  <div class="content-card">
+    <h3>De vier onderdelen van een goed CLAUDE.md</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Wie en wat</div>
+        <div class="fc-uitleg">"Dit is het project voor makelaarskantoor De Vries. We verwerken hier bezichtigingsrapporten en klantcommunicatie."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Technische context</div>
+        <div class="fc-uitleg">"Bestanden in /Documenten/Klanten/2026. Rapporten in PDF. Samenvattingen als .txt opslaan."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Gedragsregels</div>
+        <div class="fc-uitleg">"Schrijf altijd in het Nederlands. Professionele maar vriendelijke toon. Vraag bevestiging voordat je bestanden overschrijft."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Nooit doen</div>
+        <div class="fc-uitleg">"Verwijder nooit bestanden zonder expliciete instructie. Maak geen wijzigingen buiten de aangewezen mappen."</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je werkt bij een accountantskantoor en gebruikt Claude Code om kwartaalrapporten te verwerken. Claude Code gebruikt soms Engelse termen en slaat bestanden op met willekeurige namen. Wat doe je?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Elke keer opnieuw vertellen kost tijd en is foutgevoelig. Een CLAUDE.md lost dit structureel op.')">Elke sessie opnieuw vertellen dat hij Nederlands moet gebruiken</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Zet in CLAUDE.md dat Claude altijd Nederlands moet schrijven en bestandsnamen moet gebruiken in het formaat JJJJ-MM-[klantnaam].txt. Claude Code leest dit automatisch in.')">In CLAUDE.md toevoegen: &quot;Schrijf altijd in het Nederlands. Bestandsnamen in formaat JJJJ-MM-[klantnaam].txt&quot;</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Een ander AI-programma lost het probleem niet op. Het probleem is dat Claude Code geen context heeft, en dat los je op met CLAUDE.md.')">Een ander AI-programma gebruiken</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 4</div>
+    <h2>CLAUDE.md aanmaken</h2>
+  </div>
+  <div class="content-card">
+    <h3>Twee manieren</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">A</div>
+        <div class="stap-content">
+          <h4>Via Claude Code zelf</h4>
+          <p>Open Claude Code in je projectmap en typ: "Maak een CLAUDE.md aan met de volgende inhoud: [jouw instructies]"</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">B</div>
+        <div class="stap-content">
+          <h4>Handmatig</h4>
+          <p>Open een tekstverwerker, schrijf je instructies en sla het op als CLAUDE.md (hoofdletters, zonder spaties) in de hoofdmap van je project.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Houd CLAUDE.md onder de 200 regels. Schrijf alleen wat echt relevant is. Alles wat je nooit gaat gebruiken is ruis die Claude Code kan afleiden.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Waar moet het CLAUDE.md-bestand staan?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'CLAUDE.md hoeft niet op je bureaublad te staan. Het moet in de hoofdmap van het project waar je Claude Code gebruikt.')">Op je bureaublad</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. CLAUDE.md moet in de hoofdmap van je project staan. Claude Code leest het automatisch in wanneer je hem start in die map.')">In de hoofdmap van je project</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'CLAUDE.md hoeft niet in een speciale Claude-map. Het staat gewoon in je projectmap.')">In een speciale Claude-map</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 4 -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 4</div>
+    <h2>Onderhoud en best practices</h2>
+  </div>
+  <div class="content-card">
+    <p>Behandel CLAUDE.md als een levend document. Pas het aan als je merkt dat Claude Code een fout maakt die je niet wilt herhalen. Bijvoorbeeld: "Voeg toe aan CLAUDE.md: maak nooit een bestand aan met de naam 'definitief'. Gebruik altijd een datum in de bestandsnaam."</p>
+  </div>
+  <div class="content-card">
+    <h3>Best practices</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>Kort</h4><p>Max 200 regels</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Relevant</h4><p>Alleen wat je echt gebruikt</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Levend</h4><p>Regelmatig bijwerken</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Duidelijk</h4><p>Concrete instructies</p></div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Een CLAUDE.md die te lang is werkt minder goed. Claude Code kan afleiden door irrelevante instructies. Wees selectief in wat je toevoegt.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is CLAUDE.md?","opties":["Een programmeerbestand","Een tekstbestand met context en regels dat Claude Code automatisch inleest","Een backup van je gesprekken","Een logbestand van Claude Code"],"correct":1,"uitleg":"CLAUDE.md is een tekstbestand in je projectmap dat Claude Code automatisch inleest bij elke sessie. Het bevat context, regels en voorkeuren."},
+  {"vraag":"Wat is het voordeel van een CLAUDE.md?","opties":["Claude Code wordt sneller","Je hoeft niet elke sessie dezelfde instructies te herhalen","Je krijgt meer berichten per dag","Je kunt bestanden delen met collega's"],"correct":1,"uitleg":"Met een CLAUDE.md heeft Claude Code direct de juiste context. Je hoeft niet elke keer opnieuw uit te leggen wie je bent en wat de regels zijn."},
+  {"vraag":"Hoe lang moet een CLAUDE.md zijn?","opties":["Zo lang mogelijk, meer is beter","Onder de 200 regels, alleen relevante informatie","Precies 50 regels","Het maakt niet uit"],"correct":1,"uitleg":"Houd het onder de 200 regels. Schrijf alleen wat relevant is. Te veel informatie is ruis die Claude Code kan afleiden."},
+  {"vraag":"Hoe maak je een CLAUDE.md aan?","opties":["Via de Claude.ai web-app","Via Claude Code of handmatig als tekstbestand in de projectmap","Via de Chrome-extensie","Het wordt automatisch aangemaakt"],"correct":1,"uitleg":"Je kunt Claude Code vragen om het bestand aan te maken, of je maakt het handmatig via een tekstverwerker en slaat het op als CLAUDE.md in je projectmap."},
+  {"vraag":"Hoe moet je CLAUDE.md behandelen?","opties":["Als een definitief document dat je nooit wijzigt","Als een levend document dat je bijwerkt wanneer nodig","Als een geheim bestand dat niemand mag zien","Als een dagelijks logboek"],"correct":1,"uitleg":"CLAUDE.md is een levend document. Pas het aan als je merkt dat Claude Code fouten maakt die je niet wilt herhalen."}
+]
+<!-- QUIZ_END -->

@@ -1,0 +1,188 @@
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  const target = document.getElementById(screenId);
+  if (target) { target.style.display = 'block'; window.scrollTo(0, 0); }
+  updateProgress(screenId);
+  const titleEl = document.getElementById('header-module-title');
+  if (titleEl && MODULE_TITELS[screenId] !== undefined) {
+    titleEl.textContent = MODULE_TITELS[screenId];
+  }
+}
+
+function updateProgress(screenId) {
+  const idx = SCHERMEN.indexOf(screenId);
+  const pct = idx < 0 ? 100 : Math.round((idx / (SCHERMEN.length - 1)) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '% voltooid';
+}
+
+function checkKC(nr, el, isCorrect, volgendeScherm, uitleg) {
+  document.querySelectorAll('#kc-' + nr + ' .kc-optie').forEach(o => o.style.pointerEvents = 'none');
+  el.classList.add(isCorrect ? 'correct' : 'fout');
+  const fb = document.getElementById('kc-feedback-' + nr);
+  const btnStijl = 'background:linear-gradient(90deg,#FF8514,#FF4D00);color:white;border:none;border-radius:50px;padding:10px 20px;font-weight:700;cursor:pointer;font-family:Montserrat,sans-serif;font-size:0.9rem;';
+  const volgendeKnop = '<button style="' + btnStijl + '" onclick="goTo(\'' + volgendeScherm + '\')">Volgende</button>';
+  if (isCorrect) {
+    fb.className = 'kc-feedback correct';
+    fb.innerHTML = '<strong>Correct!</strong> ' + uitleg + '<div class="kc-knoppen">' + volgendeKnop + '</div>';
+  } else {
+    fb.className = 'kc-feedback fout';
+    fb.innerHTML = '<strong>Niet correct.</strong> ' + uitleg + '<div class="kc-knoppen"><button style="' + btnStijl + 'background:#27292D;" onclick="resetKC(' + nr + ')">Probeer opnieuw</button>' + volgendeKnop + '</div>';
+  }
+}
+
+function resetKC(nr) {
+  document.querySelectorAll('#kc-' + nr + ' .kc-optie').forEach(o => { o.style.pointerEvents = ''; o.classList.remove('correct', 'fout'); });
+  const fb = document.getElementById('kc-feedback-' + nr);
+  fb.className = 'kc-feedback'; fb.innerHTML = '';
+}
+
+function toggleFlashcard(el) { el.classList.toggle('open'); }
+
+function toggleLeesMeer(btn, contentId) {
+  const content = document.getElementById(contentId);
+  if (content) { content.classList.toggle('open'); btn.textContent = content.classList.contains('open') ? 'Lees minder' : 'Lees meer'; }
+}
+
+function checkScenario(nr, el, isCorrect, uitleg) {
+  document.querySelectorAll('#scenario-' + nr + ' .scenario-keuze').forEach(o => o.style.pointerEvents = 'none');
+  el.classList.add(isCorrect ? 'correct' : 'fout');
+  const fb = document.getElementById('scenario-feedback-' + nr);
+  fb.className = 'scenario-feedback ' + (isCorrect ? 'correct' : 'fout');
+  fb.innerHTML = (isCorrect ? '<strong>Goede keuze!</strong> ' : '<strong>Niet de beste keuze.</strong> ') + uitleg;
+  fb.style.display = 'block';
+}
+
+function checkInvul(inputId, correctAntwoord, feedbackId) {
+  const input = document.getElementById(inputId);
+  const feedback = document.getElementById(feedbackId);
+  const waarde = input.value.trim().toLowerCase();
+  const correct = correctAntwoord.toLowerCase();
+  if (waarde === correct || waarde.includes(correct) || correct.includes(waarde)) {
+    input.classList.add('correct-input'); input.classList.remove('fout-input');
+    feedback.textContent = 'Correct!'; feedback.style.color = '#16a34a';
+  } else {
+    input.classList.add('fout-input'); input.classList.remove('correct-input');
+    feedback.textContent = 'Het juiste antwoord is: ' + correctAntwoord; feedback.style.color = '#dc2626';
+  }
+}
+
+function togglePopup(popupId) {
+  document.querySelectorAll('.diagram-popup').forEach(p => { if (p.id !== popupId) p.classList.remove('zichtbaar'); });
+  const popup = document.getElementById(popupId);
+  if (popup) popup.classList.toggle('zichtbaar');
+}
+
+function highlightAnnotatie(puntNr) {
+  document.querySelectorAll('.annotatie-item').forEach(item => {
+    item.style.background = item.dataset.nr === String(puntNr) ? 'rgba(255,133,20,0.1)' : 'transparent';
+    item.style.borderRadius = '8px';
+    item.style.padding = item.dataset.nr === String(puntNr) ? '0.5rem' : '0';
+  });
+}
+
+let gesleeptItem = null;
+function dragStart(e, el) { gesleeptItem = el; e.dataTransfer?.setData('text/plain', el.dataset.id); }
+function dragOver(e, zone) { e.preventDefault(); zone.classList.add('drag-over'); }
+function dragLeave(zone) { zone.classList.remove('drag-over'); }
+function drop(e, zone, correctId) {
+  e.preventDefault(); zone.classList.remove('drag-over');
+  if (!gesleeptItem) return;
+  zone.appendChild(gesleeptItem);
+  zone.classList.add(gesleeptItem.dataset.id === correctId ? 'correct' : 'fout');
+  gesleeptItem = null;
+}
+function resetDragDrop() {
+  const bron = document.getElementById('drag-bron');
+  if (!bron) return;
+  document.querySelectorAll('.drag-item').forEach(item => bron.appendChild(item));
+  document.querySelectorAll('.drop-zone').forEach(zone => zone.classList.remove('correct', 'fout', 'drag-over'));
+}
+document.addEventListener('touchstart', e => { if (e.target.classList.contains('drag-item')) gesleeptItem = e.target; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!gesleeptItem) return;
+  const t = e.changedTouches[0]; const el = document.elementFromPoint(t.clientX, t.clientY);
+  const zone = el?.closest('.drop-zone');
+  if (zone) { zone.appendChild(gesleeptItem); zone.classList.add(gesleeptItem.dataset.id === zone.dataset.correct ? 'correct' : 'fout'); }
+  gesleeptItem = null;
+});
+
+let gesorteerBron = null;
+function sorteerDragStart(e, el) { gesorteerBron = el; e.dataTransfer?.setData('text/plain', el.dataset.positie); }
+function sorteerDragOver(e, el) { e.preventDefault(); el.style.borderColor = 'var(--amber)'; }
+function sorteerDragLeave(el) { el.style.borderColor = 'transparent'; }
+function sorteerDrop(e, el) {
+  e.preventDefault(); el.style.borderColor = 'transparent';
+  if (!gesorteerBron || gesorteerBron === el) return;
+  const lijst = el.parentNode; const items = [...lijst.children];
+  const vanIdx = items.indexOf(gesorteerBron); const naarIdx = items.indexOf(el);
+  if (vanIdx < naarIdx) { lijst.insertBefore(gesorteerBron, el.nextSibling); }
+  else { lijst.insertBefore(gesorteerBron, el); }
+  gesorteerBron = null;
+}
+function checkSorteer(lijstId, correcteVolgorde, feedbackId) {
+  const lijst = document.getElementById(lijstId);
+  const items = [...lijst.querySelectorAll('.sorteer-item')];
+  const huidigeVolgorde = items.map(i => i.dataset.positie);
+  const isCorrect = huidigeVolgorde.join(',') === correcteVolgorde.join(',');
+  const fb = document.getElementById(feedbackId);
+  if (isCorrect) {
+    fb.textContent = 'Correct! Dit is de juiste volgorde.'; fb.style.color = '#16a34a';
+    items.forEach(i => i.style.borderLeft = '3px solid #22c55e');
+  } else {
+    fb.textContent = 'Nog niet helemaal goed. Probeer de items opnieuw te ordenen.'; fb.style.color = '#dc2626';
+    items.forEach(i => i.style.borderLeft = '3px solid #ef4444');
+  }
+}
+
+let quizScore = 0, quizHuidig = 0;
+
+function laadQuizVraag() {
+  if (quizHuidig >= quizVragen.length) { toonResultaat(); return; }
+  const v = quizVragen[quizHuidig];
+  document.getElementById('quiz-voortgang').textContent = 'Vraag ' + (quizHuidig+1) + ' van ' + quizVragen.length;
+  document.getElementById('quiz-vraag-tekst').textContent = v.vraag;
+  const el = document.getElementById('quiz-opties'); el.innerHTML = '';
+  v.opties.forEach((opt, i) => {
+    const btn = document.createElement('button'); btn.className = 'quiz-optie'; btn.textContent = opt;
+    btn.onclick = () => beantwoordQuiz(i, btn); el.appendChild(btn);
+  });
+  document.getElementById('quiz-feedback').className = 'quiz-feedback';
+  document.getElementById('quiz-volgende-btn').style.display = 'none';
+}
+
+function beantwoordQuiz(gekozen, btn) {
+  document.querySelectorAll('.quiz-optie').forEach(o => o.style.pointerEvents = 'none');
+  const v = quizVragen[quizHuidig]; const isCorrect = gekozen === v.correct;
+  btn.classList.add(isCorrect ? 'correct' : 'fout');
+  document.querySelectorAll('.quiz-optie')[v.correct].classList.add('correct');
+  if (isCorrect) quizScore++;
+  const fb = document.getElementById('quiz-feedback');
+  fb.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'fout');
+  fb.textContent = (isCorrect ? 'Correct! ' : 'Niet helemaal. ') + v.uitleg;
+  const volgende = document.getElementById('quiz-volgende-btn');
+  volgende.style.display = 'inline-block';
+  volgende.textContent = quizHuidig < quizVragen.length - 1 ? 'Volgende vraag' : 'Bekijk resultaat';
+}
+
+function volgendeQuizVraag() { quizHuidig++; laadQuizVraag(); }
+
+function toonResultaat() {
+  goTo('screen-result');
+  const pct = Math.round((quizScore / quizVragen.length) * 100);
+  document.getElementById('score-display').textContent = pct + '%';
+  document.getElementById('resultaat-boodschap').textContent = pct >= 70
+    ? 'Gefeliciteerd! Je hebt de training succesvol afgerond.'
+    : 'Je score is ' + pct + '%. Probeer het nog eens!';
+  if (pct >= 70) {
+    document.getElementById('certificaat-blok').style.display = 'block';
+    document.getElementById('cert-datum').textContent = 'Behaald op ' +
+      new Date().toLocaleDateString('nl-NL', { day:'numeric', month:'long', year:'numeric' });
+  }
+}
+
+function herstart() {
+  quizScore = 0; quizHuidig = 0;
+  if (document.getElementById('drag-bron')) resetDragDrop();
+  laadQuizVraag(); goTo('screen-welcome');
+}

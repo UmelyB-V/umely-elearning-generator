@@ -1,0 +1,213 @@
+<!-- TITLE: A3 - Hoe schrijf je goede prompts? -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-module-5','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-module-5':'Module 5','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>A3 - Hoe schrijf je goede prompts?</h1>
+    <p>Leer hoe je Claude effectief instrueert zodat je bruikbare antwoorden krijgt. De kwaliteit van je vraag bepaalt direct wat je terugkrijgt.</p>
+  </div>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat een prompt is en waarom de formulering ertoe doet</li>
+      <li>De drie onderdelen van een goede prompt benoemen</li>
+      <li>Effectieve prompts schrijven voor jouw type werk</li>
+      <li>Veelgemaakte fouten bij het prompten herkennen</li>
+      <li>Een prompt iteratief verbeteren in een gesprek met Claude</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">Geschatte tijd: 15 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+  </div>
+</div>
+
+<!-- MODULE 1: Wat is een prompt? -->
+<div id="screen-module-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 1 van 5</div>
+    <h2>Wat is een prompt?</h2>
+  </div>
+  <div class="content-card">
+    <p>Een prompt is de instructie die je aan Claude geeft. Alles wat je typt in het invoerveld is een prompt. "Schrijf een e-mail" is een prompt. "Vat dit document samen" is een prompt. Hoe je die prompt formuleert bepaalt grotendeels de kwaliteit van het antwoord.</p>
+    <p>Claude is geen gedachtenlezer. Hij werkt met de informatie die jij hem geeft. Een vage vraag levert een vaag antwoord op. Een specifieke, goed geformuleerde vraag levert een bruikbaar antwoord op.</p>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat bepaalt grotendeels de kwaliteit van het antwoord dat Claude geeft?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Het tijdstip maakt niet uit. Claude geeft op elk moment dezelfde kwaliteit, afhankelijk van je prompt.')">Het tijdstip waarop je de vraag stelt</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Claude werkt met de informatie die jij hem geeft. Hoe specifieker en duidelijker je prompt, hoe bruikbaarder het antwoord.')">Hoe je de prompt formuleert</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Langere prompts zijn niet automatisch beter. Het gaat om de juiste informatie, niet om de hoeveelheid tekst.')">De lengte van je tekst</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 2: Context + Opdracht + Formaat -->
+<div id="screen-module-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 2 van 5</div>
+    <h2>De basisregel: context + opdracht + formaat</h2>
+  </div>
+  <div class="content-card">
+    <h3>De drie onderdelen van een goede prompt</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Context - wie ben je, wat is de situatie?</h4>
+          <p>"Ik ben medewerker bij een makelaarskantoor en ik schrijf een e-mail aan een klant die zijn woning te koop heeft gezet."</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Opdracht - wat moet Claude doen?</h4>
+          <p>"Schrijf een professionele maar vriendelijke e-mail om de bezichtiging van volgende week te bevestigen."</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Formaat - hoe wil je de output?</h4>
+          <p>"Houd het kort, maximaal drie alinea's, en sluit af met een vriendelijke groet."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Een prompt die alle drie onderdelen bevat levert bijna altijd een bruikbaar resultaat op. Een prompt die alleen de opdracht bevat levert iets generieks op dat je toch nog helemaal moet herschrijven.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-3')">Volgende</button>
+  </div>
+</div>
+
+<!-- MODULE 3: Voorbeelden per sector -->
+<div id="screen-module-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 3 van 5</div>
+    <h2>Goede vs slechte prompts per sector</h2>
+  </div>
+  <div class="content-card">
+    <h3>Vergelijking: vaag vs specifiek</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Sector</th><th>Slechte prompt</th><th>Goede prompt</th></tr></thead>
+      <tbody>
+        <tr><td>Makelaar</td><td>"Schrijf een beschrijving van een woning."</td><td>"Schrijf een verkooptekst voor een vrijstaande woning van 180m2 in Amstelveen, bouwjaar 1998, gerenoveerde keuken, zonnige tuin op het zuiden. Doelgroep: gezinnen. Maximaal 150 woorden."</td></tr>
+        <tr><td>Advocaat</td><td>"Vat dit contract samen."</td><td>"Vat deze huurovereenkomst samen in 10 bullet points. Focus op verplichtingen huurder, opzegtermijnen en boeteclausules. Gewone taal, geen jargon."</td></tr>
+        <tr><td>Accountant</td><td>"Leg btw uit."</td><td>"Leg in drie alinea's uit hoe btw-teruggave werkt voor een startende zzp'er. Schrijf voor iemand zonder boekhoudkundige achtergrond."</td></tr>
+        <tr><td>Marketing</td><td>"Schrijf een social media post."</td><td>"Schrijf drie LinkedIn-post varianten voor een IT-bedrijf dat cybersecurity lanceert. Doelgroep: MKB-directeuren. Professioneel, geen jargon, max 150 woorden per variant."</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Praktijksituatie</div>
+    <p class="scenario-tekst">Je bent advocaat en wilt dat Claude een sommatiebrief schrijft voor een klant die huur niet betaalt. Welke prompt is het meest effectief?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Deze prompt is te vaag. Claude weet niet om welk type brief het gaat, wie de ontvanger is, of welke toon gepast is.')">Schrijf een brief voor een klant</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Deze prompt bevat context (advocaat, huurachterstand), opdracht (sommatiebrief) en formaat (formeel, maximaal 1 pagina). Claude heeft genoeg informatie om een bruikbaar resultaat te leveren.')">Ik ben advocaat. Schrijf een formele sommatiebrief aan een huurder die 3 maanden huurachterstand heeft. Vermeld het verschuldigde bedrag van 3.600 euro en geef een termijn van 14 dagen. Maximaal 1 pagina.</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Dit is een goed begin maar mist context en formaat. Claude weet niet wie je bent, wat de achtergrond is, of hoe lang de brief moet zijn.')">Schrijf een sommatiebrief voor huurachterstand</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="goTo('screen-module-4')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 4: Veelgemaakte fouten -->
+<div id="screen-module-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 4 van 5</div>
+    <h2>Veelgemaakte fouten</h2>
+  </div>
+  <div class="content-card">
+    <h3>Klik op een fout voor de uitleg</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Te vaag zijn</div>
+        <div class="fc-uitleg">"Schrijf iets over ons bedrijf" geeft Claude te weinig om mee te werken. Wees specifiek over wat je wilt, voor wie, en in welk formaat.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Geen context geven</div>
+        <div class="fc-uitleg">Claude weet niet wie je bent, voor wie je schrijft of wat de achtergrond is. Vertel het hem. Hoe meer relevante context, hoe beter het antwoord.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Alles verwachten</div>
+        <div class="fc-uitleg">Claude heeft geen toegang tot jouw bedrijfsinformatie, klantgegevens of interne documenten tenzij je die in de prompt plakt of uploadt.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Na 1x opgeven</div>
+        <div class="fc-uitleg">Als het eerste antwoord niet goed is, verfijn je prompt. Zeg wat er niet klopte: "Dit is te formeel" of "Maak het korter". Itereren levert betere resultaten.</div>
+        <div class="fc-hint">Klik voor uitleg</div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Claude heeft geen toegang tot jouw bedrijfsinformatie tenzij je die zelf aanlevert. Plak relevante documenten in het gesprek of upload ze als bijlage.</p>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat moet je doen als Claude een antwoord geeft dat niet goed genoeg is?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-5', 'Opnieuw beginnen is onnodig. Claude bouwt voort op het gesprek. Geef feedback op wat er beter kan.')">Een nieuw gesprek starten en opnieuw beginnen</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-5', 'Correct. Claude bouwt voort op het gesprek. Zeg wat er niet klopte en hoe het beter kan. Dat is vaak effectiever dan opnieuw beginnen.')">Je prompt verfijnen door te zeggen wat er beter kan</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-5', 'Accepteren is niet nodig. Claude kan zijn antwoord verbeteren als je aangeeft wat er niet klopt.')">Het antwoord accepteren zoals het is</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+</div>
+
+<!-- MODULE 5: Itereren -->
+<div id="screen-module-5" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 5 van 5</div>
+    <h2>Itereren werkt</h2>
+  </div>
+  <div class="content-card">
+    <p>Claude is geen statische zoekmachine. Je kunt een gesprek voeren. Als het antwoord niet goed is, reageer dan met wat er beter kan. Zeg: "Dit is te lang" of "Voeg een oproep tot actie toe" of "Schrijf dit opnieuw vanuit het perspectief van de klant."</p>
+    <p>Elke vervolgvraag bouwt voort op wat er al is. Dat is een van de krachtigste dingen aan Claude: je hoeft niet elke keer opnieuw te beginnen.</p>
+  </div>
+  <div class="content-card">
+    <h3>Het iteratieproces</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>Prompt</h4><p>Stel je eerste vraag</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Antwoord</h4><p>Lees wat Claude geeft</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Feedback</h4><p>Zeg wat er beter kan</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>Verfijnd</h4><p>Claude past aan</p></div>
+    </div>
+  </div>
+  <div class="kennischeck">
+    <h3>Vul het ontbrekende woord in</h3>
+    <div class="invul-wrap">
+      <p class="invul-zin">Een goede prompt bestaat uit drie onderdelen: context, opdracht en <input class="invul-input" id="invul-1" type="text" placeholder="..."></p>
+      <div class="invul-feedback" id="invul-feedback-1"></div>
+    </div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn" onclick="checkInvul('invul-1','formaat','invul-feedback-1')">Controleer</button>
+      <button class="btn btn-outline" onclick="goTo('screen-quiz')">Volgende</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat zijn de drie onderdelen van een goede prompt?","opties":["Titel, tekst en bijlage","Context, opdracht en formaat","Inleiding, kern en conclusie","Vraag, antwoord en feedback"],"correct":1,"uitleg":"Een goede prompt bevat context (wie ben je, wat is de situatie), opdracht (wat moet Claude doen) en formaat (hoe wil je de output)."},
+  {"vraag":"Waarom is 'schrijf een e-mail' een slechte prompt?","opties":["Omdat Claude geen e-mails kan schrijven","Omdat het te kort is","Omdat er geen context, doelgroep of formaat in staat","Omdat je 'alsjeblieft' moet zeggen"],"correct":2,"uitleg":"Zonder context weet Claude niet wie je bent of voor wie de e-mail is. Zonder formaat weet hij niet hoe lang of in welke toon. Het resultaat wordt generiek en onbruikbaar."},
+  {"vraag":"Wat moet je doen als het eerste antwoord van Claude niet goed genoeg is?","opties":["Een ander AI-tool proberen","Je prompt verfijnen en aangeven wat er beter kan","Het antwoord accepteren","Een nieuw gesprek starten"],"correct":1,"uitleg":"Claude bouwt voort op het gesprek. Door te zeggen wat er niet klopte krijg je een beter resultaat zonder opnieuw te beginnen."},
+  {"vraag":"Waarom kan Claude geen informatie over jouw klanten geven?","opties":["Omdat Claude geen Nederlands begrijpt","Omdat je een duurder abonnement nodig hebt","Omdat Claude geen toegang heeft tot jouw bedrijfsinformatie tenzij je die aanlevert","Omdat klantinformatie te complex is voor AI"],"correct":2,"uitleg":"Claude heeft geen toegang tot jouw systemen of documenten. Je moet relevante informatie zelf in de prompt plakken of uploaden."},
+  {"vraag":"Welke prompt is het meest effectief voor een makelaar?","opties":["Schrijf iets over een huis","Schrijf een woning beschrijving","Maak tekst voor Funda","Schrijf een verkooptekst voor een 3-kamer appartement in Utrecht, 85m2, nabij het centrum, recent gerenoveerd. Doelgroep: starters. Max 120 woorden."],"correct":3,"uitleg":"Deze prompt bevat alle drie onderdelen: context (type woning, locatie, kenmerken), opdracht (verkooptekst) en formaat (doelgroep, woordlimiet)."}
+]
+<!-- QUIZ_END -->
