@@ -203,39 +203,34 @@
   #newsletterPopup.open { display: flex; }
   .newsletter-modal {
     background: var(--white); border-radius: 20px; padding: 40px;
-    max-width: 500px; width: 92%; position: relative;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.25);
-    max-height: 80vh; overflow-y: auto;
+    max-width: 440px; width: 92%; position: relative;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.25); text-align: center;
   }
   .newsletter-close {
-    position: absolute; top: 16px; right: 20px;
-    background: none; border: none; font-size: 22px; cursor: pointer;
-    color: #aaa; line-height: 1; padding: 4px;
+    position: absolute; top: 14px; right: 18px;
+    background: none; border: none; font-size: 20px; cursor: pointer;
+    color: #bbb; line-height: 1; padding: 4px;
   }
   .newsletter-close:hover { color: var(--charcoal); }
-  .newsletter-badge {
-    display: inline-block; background: var(--cream); color: var(--flame);
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.5px; padding: 3px 12px; border-radius: 50px;
-    margin-bottom: 12px;
+  .newsletter-modal .nl-icon { font-size: 40px; margin-bottom: 12px; }
+  .newsletter-modal h2 { font-size: 21px; font-weight: 800; color: var(--charcoal); margin-bottom: 8px; }
+  .newsletter-modal p { font-size: 14px; color: var(--gray-text); line-height: 1.6; margin-bottom: 20px; }
+  .nl-email-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .nl-email-row input {
+    flex: 1; padding: 12px 16px; border: 2px solid var(--gray-border);
+    border-radius: 50px; font-size: 14px; font-family: 'Inter', system-ui, sans-serif;
+    color: var(--charcoal); outline: none; transition: border-color 0.15s;
   }
-  .newsletter-modal h2 { font-size: 20px; font-weight: 800; color: var(--charcoal); margin-bottom: 8px; }
-  .newsletter-modal .nl-date { font-size: 12px; color: #aaa; margin-bottom: 16px; }
-  .newsletter-modal .nl-body { font-size: 14px; color: var(--gray-text); line-height: 1.7; white-space: pre-wrap; }
-  .newsletter-btn {
-    display: inline-block; margin-top: 20px; padding: 12px 28px;
-    background: var(--gradient); color: white; border: none;
-    border-radius: 50px; font-size: 14px; font-weight: 700;
-    cursor: pointer; text-decoration: none; transition: opacity 0.2s;
+  .nl-email-row input:focus { border-color: var(--amber); }
+  .nl-submit {
+    padding: 12px 22px; background: var(--gradient); color: white;
+    border: none; border-radius: 50px; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: opacity 0.2s; white-space: nowrap;
   }
-  .newsletter-btn:hover { opacity: 0.88; }
-  .nl-trigger {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 700;
-    background: var(--cream); color: var(--flame); border: none;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .nl-trigger:hover { background: var(--peach); }
+  .nl-submit:hover { opacity: 0.88; }
+  .nl-skip { background: none; border: none; color: #aaa; font-size: 13px; cursor: pointer; text-decoration: underline; }
+  .nl-skip:hover { color: var(--charcoal); }
+  .nl-success { color: #15803D; font-size: 14px; font-weight: 600; margin-top: 8px; display: none; }
 
   .progress-status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-top: 2px; }
   .progress-status.done { background: #D1FAE5; color: #065F46; }
@@ -300,15 +295,20 @@
   <div id="grid" class="loading">Modules laden...</div>
 </main>
 
-<!-- Newsletter popup -->
+<!-- Newsletter signup popup (eenmalig bij eerste login) -->
 <div id="newsletterPopup">
   <div class="newsletter-modal">
     <button class="newsletter-close" onclick="closeNewsletter()">&#x2715;</button>
-    <div class="newsletter-badge">Nieuwsbrief</div>
-    <h2 id="nlTitle">Laden...</h2>
-    <div class="nl-date" id="nlDate"></div>
-    <div class="nl-body" id="nlBody"></div>
-    <a href="https://umely.ai" target="_blank" class="newsletter-btn">Meer op umely.ai</a>
+    <div class="nl-icon">&#128240;</div>
+    <h2>Blijf op de hoogte</h2>
+    <p>Ontvang wekelijks de Umely AI-nieuwsbrief: de belangrijkste AI-ontwikkelingen, praktische tips en wat het betekent voor jouw werk.</p>
+    <div class="nl-email-row">
+      <input type="email" id="nlEmailInput" placeholder="jouw@email.nl">
+      <button class="nl-submit" onclick="subscribeNewsletter()">Aanmelden</button>
+    </div>
+    <div class="nl-success" id="nlSuccess">&#10003; Je bent aangemeld!</div>
+    <br>
+    <button class="nl-skip" onclick="closeNewsletter()">Nee bedankt, overslaan</button>
   </div>
 </div>
 
@@ -317,8 +317,6 @@
     <img src="/logo.png" alt="Umely" style="height:44px;filter:brightness(0) invert(1);vertical-align:middle;">
     <span style="color:rgba(255,255,255,0.5);">|</span>
     <span>Jouw vaste AI-partner &nbsp;&middot;&nbsp; <a href="https://umely.ai" target="_blank">umely.ai</a></span>
-    <span style="color:rgba(255,255,255,0.5);">|</span>
-    <button class="nl-trigger" onclick="openNewsletter()">&#128240; Laatste nieuwsbrief</button>
   </p>
 </footer>
 
@@ -374,7 +372,7 @@ async function initAuth() {
 
     _supabase.auth.onAuthStateChange((event, session) => {
       _session = session;
-      if (event === 'SIGNED_IN') { showApp(session); loadModules(); }
+      if (event === 'SIGNED_IN') { showApp(session); loadModules(); checkNewsletterPopup(session); }
       else if (event === 'SIGNED_OUT') showLogin();
     });
   } catch (e) {
@@ -751,24 +749,43 @@ function filterModules() {
 initAuth();
 
 // ── Newsletter popup ──
-async function openNewsletter() {
-  document.getElementById('newsletterPopup').classList.add('open');
+async function checkNewsletterPopup(session) {
+  if (localStorage.getItem('umely_nl_shown')) return;
   try {
-    const res = await fetch('/api/newsletter/latest', { headers: authHeader() });
-    if (!res.ok) throw new Error();
-    const { newsletter } = await res.json();
-    document.getElementById('nlTitle').textContent = newsletter.title || 'Umely Nieuwsbrief';
-    document.getElementById('nlDate').textContent = newsletter.created_at
-      ? new Date(newsletter.created_at).toLocaleDateString('nl-NL', { day:'numeric', month:'long', year:'numeric' })
-      : '';
-    document.getElementById('nlBody').textContent = newsletter.content || newsletter.body || '';
-  } catch(e) {
-    document.getElementById('nlTitle').textContent = 'Nieuwsbrief niet beschikbaar';
-    document.getElementById('nlBody').textContent = 'Bezoek umely.ai voor de laatste updates.';
-  }
+    const res = await fetch('/api/user/profile', { headers: authHeader() });
+    if (res.ok) {
+      const { profile } = await res.json();
+      if (profile?.newsletter_subscribed) {
+        localStorage.setItem('umely_nl_shown', '1');
+        return;
+      }
+    }
+  } catch(e) {}
+  document.getElementById('nlEmailInput').value = session?.user?.email || '';
+  setTimeout(() => document.getElementById('newsletterPopup').classList.add('open'), 1200);
 }
+
 function closeNewsletter() {
+  localStorage.setItem('umely_nl_shown', '1');
   document.getElementById('newsletterPopup').classList.remove('open');
+}
+
+async function subscribeNewsletter() {
+  const email = document.getElementById('nlEmailInput').value.trim();
+  if (!email) return;
+  const btn = document.querySelector('.nl-submit');
+  btn.disabled = true;
+  btn.textContent = 'Bezig...';
+  try {
+    await fetch('/api/newsletter/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
+      body: JSON.stringify({ email })
+    });
+  } catch(e) {}
+  localStorage.setItem('umely_nl_shown', '1');
+  document.getElementById('nlSuccess').style.display = 'block';
+  setTimeout(() => closeNewsletter(), 2000);
 }
 </script>
 </body>

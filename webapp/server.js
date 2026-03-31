@@ -378,16 +378,24 @@ app.patch('/api/modules/:slug', requireAuth, requireAdmin, async (req, res) => {
   res.json({ ok: true });
 });
 
-// ── Laatste nieuwsbrief (voor popup) ──
-app.get('/api/newsletter/latest', requireAuth, async (req, res) => {
-  const { data, error } = await supabase
-    .from('newsletters')
-    .select('title, content, created_at')
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .single();
-  if (error || !data) return res.status(404).json({ error: 'Geen nieuwsbrief gevonden' });
-  res.json({ newsletter: data });
+// ── Nieuwsbrief aanmelden ──
+app.post('/api/newsletter/subscribe', requireAuth, async (req, res) => {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ newsletter_subscribed: true })
+    .eq('id', req.user.id);
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ ok: true });
+});
+
+// ── Nieuwsbrief afmelden ──
+app.post('/api/newsletter/unsubscribe', requireAuth, async (req, res) => {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ newsletter_subscribed: false })
+    .eq('id', req.user.id);
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ ok: true });
 });
 
 // ── Verwijder een module (admin) ──

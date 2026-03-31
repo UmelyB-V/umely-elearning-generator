@@ -237,6 +237,11 @@
     <div id="certGrid">Laden...</div>
   </div>
 
+  <div class="section">
+    <h2>Nieuwsbrief</h2>
+    <div id="nlSection">Laden...</div>
+  </div>
+
   <div class="section" id="adminSection" style="display:none;">
     <h2>Gebruikersbeheer (admin)</h2>
     <div id="usersTable" class="loading">Laden...</div>
@@ -435,6 +440,9 @@ async function loadAccount() {
       }).join('')}</div>`;
     }
 
+    // Nieuwsbrief sectie
+    renderNewsletterSection(profile.newsletter_subscribed);
+
     // Admin sectie
     if (profile.role === 'admin') {
       document.getElementById('adminSection').style.display = 'block';
@@ -443,6 +451,37 @@ async function loadAccount() {
   } catch (e) {
     console.error(e);
     document.getElementById('profileCard').innerHTML = '<p>Kon profiel niet laden.</p>';
+  }
+}
+
+function renderNewsletterSection(subscribed) {
+  const el = document.getElementById('nlSection');
+  if (subscribed) {
+    el.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <p style="font-size:14px;color:var(--gray-text);margin:0;">Je bent aangemeld voor de wekelijkse Umely AI-nieuwsbrief.</p>
+      <button onclick="toggleNewsletter(false)" style="background:none;border:1px solid #ddd;border-radius:50px;padding:8px 18px;font-size:13px;font-weight:600;color:#aaa;cursor:pointer;">Afmelden</button>
+    </div>`;
+  } else {
+    el.innerHTML = `<p style="font-size:14px;color:var(--gray-text);margin-bottom:14px;">Ontvang wekelijks de Umely AI-nieuwsbrief: de belangrijkste AI-ontwikkelingen en praktische tips.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="toggleNewsletter(true)" style="padding:11px 24px;background:var(--gradient);color:white;border:none;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;">Aanmelden voor nieuwsbrief</button>
+      </div>
+      <div id="nlAccountMsg" style="font-size:13px;margin-top:10px;display:none;"></div>`;
+  }
+}
+
+async function toggleNewsletter(subscribe) {
+  const endpoint = subscribe ? '/api/newsletter/subscribe' : '/api/newsletter/unsubscribe';
+  try {
+    const res = await fetch(endpoint, { method: 'POST', headers: authHeader() });
+    if (!res.ok) throw new Error();
+    if (subscribe) {
+      localStorage.setItem('umely_nl_shown', '1');
+    }
+    renderNewsletterSection(subscribe);
+  } catch(e) {
+    const msg = document.getElementById('nlAccountMsg');
+    if (msg) { msg.textContent = 'Er ging iets mis. Probeer het opnieuw.'; msg.style.display = 'block'; }
   }
 }
 
