@@ -31,12 +31,12 @@
   </div>
   <div class="content-card">
     <p>Standaard voert Claude Code direct uit wat je vraagt. Plan Mode verandert dat: Claude maakt eerst een gedetailleerd plan en wacht op jouw goedkeuring voordat hij begint.</p>
-    <p>Je schakelt Plan Mode in door voor je opdracht te typen: /plan [jouw opdracht]</p>
+    <p>Je schakelt Plan Mode in door op Shift+Tab te drukken in Claude Code. Je kunt ook woorden als "plan" of "think about" in je prompt gebruiken om Claude richting planning te sturen. In Plan Mode analyseert Claude de taak, maakt een plan en vraagt om goedkeuring voordat hij begint met uitvoeren.</p>
   </div>
   <div class="content-card">
     <h3>Het Plan Mode-proces</h3>
     <div class="processtroom">
-      <div class="proces-blok"><h4>/plan + opdracht</h4><p>Jij beschrijft de taak</p></div>
+      <div class="proces-blok"><h4>Shift+Tab</h4><p>Je activeert Plan Mode</p></div>
       <div class="proces-pijl">&#9658;</div>
       <div class="proces-blok"><h4>Plan</h4><p>Claude beschrijft elke stap</p></div>
       <div class="proces-pijl">&#9658;</div>
@@ -74,9 +74,9 @@
       <tbody>
         <tr><td>/help</td><td>Toont een overzicht van beschikbare commando's</td></tr>
         <tr><td>/clear</td><td>Wist het huidige gesprek en begint schoon</td></tr>
-        <tr><td>/memory</td><td>Toont wat Claude Code onthouden heeft</td></tr>
+        <tr><td>/init</td><td>Maakt een CLAUDE.md bestand aan voor projectinstructies</td></tr>
         <tr><td>/cost</td><td>Toont de API-kosten van de huidige sessie</td></tr>
-        <tr><td>/exit of Ctrl+C</td><td>Sluit Claude Code af</td></tr>
+        <tr><td>/compact</td><td>Comprimeert het gesprek om context te besparen</td></tr>
       </tbody>
     </table>
   </div>
@@ -106,39 +106,39 @@
     <h2>Hooks: automatische acties</h2>
   </div>
   <div class="content-card">
-    <p>Hooks zijn automatische acties die Claude Code uitvoert op vaste momenten, zonder dat je er elke keer om hoeft te vragen. Je stelt een Hook in via je CLAUDE.md of door Claude Code te instrueren.</p>
+    <p>Hooks zijn shell-commando's die jouw systeem automatisch uitvoert op specifieke momenten in de Claude Code levenscyclus. Je configureert ze in settings.json. Het zijn geen acties die Claude zelf uitvoert, maar scripts die jouw systeem draait op events zoals PreToolUse, PostToolUse en Notification.</p>
   </div>
   <div class="content-card">
     <h3>Klik op een type hook voor een voorbeeld</h3>
     <div class="flashcard-set">
       <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Bij sessiestart</div>
-        <div class="fc-uitleg">"Aan het begin van elke sessie: toon een overzicht van alle bestanden in de map Nieuw die vandaag zijn toegevoegd."</div>
+        <div class="fc-term">PreToolUse</div>
+        <div class="fc-uitleg">Draait voordat Claude een tool gebruikt. Bijvoorbeeld: een linting-script dat automatisch controleert voordat een bestand wordt bewerkt.</div>
         <div class="fc-hint">Klik voor voorbeeld</div>
       </div>
       <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Na een opdracht</div>
-        <div class="fc-uitleg">"Na het aanmaken van een samenvatting: voeg de bestandsnaam en datum toe aan het logbestand sessie-log.txt."</div>
+        <div class="fc-term">PostToolUse</div>
+        <div class="fc-uitleg">Draait nadat Claude een tool heeft gebruikt. Bijvoorbeeld: automatisch tests uitvoeren nadat een bestand is gewijzigd.</div>
         <div class="fc-hint">Klik voor voorbeeld</div>
       </div>
       <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Bij een specifieke actie</div>
-        <div class="fc-uitleg">"Elke keer dat je een bestand overschrijft: maak eerst een back-up in de map Archief."</div>
+        <div class="fc-term">Notification</div>
+        <div class="fc-uitleg">Draait wanneer Claude Code een melding stuurt. Bijvoorbeeld: een geluidssignaal afspelen of een Slack-bericht sturen wanneer een lange taak klaar is.</div>
         <div class="fc-hint">Klik voor voorbeeld</div>
       </div>
     </div>
   </div>
   <div class="tip-box waarschuwing">
     <div class="tip-box-label waarschuwing">Let op</div>
-    <p>Complexe Hooks kunnen onverwacht gedrag veroorzaken. Begin eenvoudig met een of twee Hooks en bouw uit naarmate je meer ervaring krijgt.</p>
+    <p>Hooks zijn shell-commando's die op je systeem draaien. Test ze goed voordat je ze inschakelt. Een fout in een hook kan je workflow blokkeren. Begin eenvoudig en bouw uit naarmate je meer ervaring krijgt.</p>
   </div>
   <div id="kc-2" class="kennischeck">
     <h3>Kennischeck</h3>
     <p class="kc-vraag">Wat is een Hook in Claude Code?</p>
     <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Een Hook is niet hetzelfde als een commando. Een commando voer je handmatig uit, een Hook wordt automatisch getriggerd.')">Een handmatig commando dat je elke keer typt</button>
-      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Hooks zijn automatische acties die op vaste momenten worden uitgevoerd, zoals bij sessiestart, na een opdracht of bij een specifieke actie.')">Een automatische actie die op een vast moment wordt uitgevoerd</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Een Hook is geen beveiligingsfunctie. Het is een automatisering van terugkerende taken.')">Een beveiligingsfunctie die bestanden beschermt</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Een Hook is niet hetzelfde als een commando. Een commando voer je handmatig uit, een Hook wordt automatisch getriggerd door het systeem.')">Een handmatig commando dat je elke keer typt</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Hooks zijn shell-commando\'s geconfigureerd in settings.json die jouw systeem automatisch uitvoert op lifecycle-events zoals PreToolUse en PostToolUse.')">Een shell-commando dat jouw systeem automatisch uitvoert op een lifecycle-event</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Een Hook is geen beveiligingsfunctie. Het is een shell-commando dat automatisch draait op specifieke momenten.')">Een beveiligingsfunctie die bestanden beschermt</button>
     </div>
     <div id="kc-feedback-2" class="kc-feedback"></div>
   </div>
@@ -151,7 +151,7 @@
     <h2>Combineren voor maximale controle</h2>
   </div>
   <div class="content-card">
-    <p>Je kunt commando's en Plan Mode combineren. Bijvoorbeeld: "/plan Gebruik de Hooks uit CLAUDE.md en verwerk de bestanden in de map Inbox." Claude maakt dan een plan inclusief alle automatische acties, zodat je precies weet wat er gaat gebeuren.</p>
+    <p>Je kunt commando's en Plan Mode combineren. Schakel Plan Mode in met Shift+Tab en geef vervolgens je opdracht. Bijvoorbeeld: "Verwerk de bestanden in de map Inbox en voer daarna de tests uit." Claude maakt dan een plan met alle stappen, zodat je precies weet wat er gaat gebeuren voordat hij begint.</p>
   </div>
   <div class="content-card">
     <h3>Samenvatting: wanneer gebruik je wat?</h3>
@@ -161,13 +161,13 @@
         <tr><td>Plan Mode</td><td>Bij complexe taken of als je niet zeker bent wat Claude gaat doen</td></tr>
         <tr><td>/clear</td><td>Als het gesprek onoverzichtelijk is geworden</td></tr>
         <tr><td>/cost</td><td>Om je API-kosten in de gaten te houden</td></tr>
-        <tr><td>Hooks</td><td>Voor terugkerende acties die je niet telkens wilt herhalen</td></tr>
+        <tr><td>Hooks</td><td>Voor automatische shell-commando's op lifecycle-events (configureer in settings.json)</td></tr>
       </tbody>
     </table>
   </div>
   <div class="tip-box">
     <div class="tip-box-label tip">Tip</div>
-    <p>Begin met Plan Mode bij je eerste grote taken. Voeg Hooks toe als je patronen herkent die je steeds herhaalt. Gebruik /cost om bewust te blijven van je API-gebruik.</p>
+    <p>Begin met Plan Mode bij je eerste grote taken. Configureer hooks in settings.json als je merkt dat je steeds dezelfde controles handmatig uitvoert. Gebruik /cost om bewust te blijven van je API-gebruik.</p>
   </div>
   <div class="btn-wrap">
     <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
@@ -176,9 +176,9 @@
 
 <!-- QUIZ_START -->
 [
-  {"vraag":"Hoe activeer je Plan Mode?","opties":["Door op een knop te klikken","Door /plan voor je opdracht te typen","Door het in de instellingen aan te zetten","Plan Mode is altijd actief"],"correct":1,"uitleg":"Je activeert Plan Mode door /plan voor je opdracht te typen. Claude maakt dan eerst een plan dat jij kunt goedkeuren."},
+  {"vraag":"Hoe activeer je Plan Mode?","opties":["Door op een knop te klikken","Door Shift+Tab te drukken in Claude Code","Door het in de instellingen aan te zetten","Plan Mode is altijd actief"],"correct":1,"uitleg":"Je activeert Plan Mode door op Shift+Tab te drukken. Claude maakt dan eerst een plan dat jij kunt goedkeuren voordat hij begint."},
   {"vraag":"Wat doet het commando /clear?","opties":["Het verwijdert alle bestanden","Het wist het huidige gesprek en begint schoon","Het sluit Claude Code af","Het maakt een back-up"],"correct":1,"uitleg":"/clear wist het huidige gesprek zodat je met een schone lei verder kunt. Je CLAUDE.md wordt opnieuw ingelezen."},
-  {"vraag":"Wat is een Hook?","opties":["Een commando dat je handmatig typt","Een automatische actie die op een vast moment wordt uitgevoerd","Een beveiligingsinstelling","Een type bestand"],"correct":1,"uitleg":"Hooks zijn automatische acties die Claude Code uitvoert op vaste momenten, zoals bij sessiestart of na een specifieke opdracht."},
+  {"vraag":"Wat is een Hook?","opties":["Een commando dat je handmatig typt","Een shell-commando dat jouw systeem uitvoert op een lifecycle-event","Een beveiligingsinstelling","Een type bestand"],"correct":1,"uitleg":"Hooks zijn shell-commando's geconfigureerd in settings.json die jouw systeem automatisch uitvoert op lifecycle-events zoals PreToolUse en PostToolUse."},
   {"vraag":"Wanneer gebruik je Plan Mode?","opties":["Bij elke opdracht","Bij complexe taken of als je niet zeker bent wat Claude gaat doen","Alleen bij het verwijderen van bestanden","Nooit, het is overbodig"],"correct":1,"uitleg":"Gebruik Plan Mode voor taken met veel stappen, grote aantallen bestanden, of als je volledige controle wilt over wat er gaat gebeuren."},
   {"vraag":"Wat toont het commando /cost?","opties":["De kosten van je abonnement","De API-kosten van de huidige sessie","De kosten van Node.js","Hoeveel bestanden je hebt verwerkt"],"correct":1,"uitleg":"/cost toont hoeveel API-kosten de huidige sessie heeft gemaakt. Handig om je gebruik in de gaten te houden."}
 ]
