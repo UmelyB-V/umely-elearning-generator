@@ -193,6 +193,11 @@
   footer p { font-size: 13px; color: rgba(255,255,255,0.85); }
   footer a { color: white; font-weight: 700; text-decoration: none; }
 
+  .progress-status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-top: 2px; }
+  .progress-status.done { background: #D1FAE5; color: #065F46; }
+  .progress-status.started { background: var(--cream); color: #92400E; }
+  .progress-status svg { flex-shrink: 0; }
+
   @media(max-width:600px) {
     .grid { grid-template-columns: 1fr; }
     main { padding: 24px 16px; }
@@ -252,7 +257,7 @@
 </main>
 
 <footer>
-  <p>🧠 <strong>Umely</strong> — Jouw vaste AI-partner | <a href="https://umely.ai" target="_blank">umely.ai</a></p>
+  <p><img src="/logo.png" alt="Umely" style="height:32px;filter:brightness(0) invert(1);vertical-align:middle;margin-right:10px;"> — Jouw vaste AI-partner | <a href="https://umely.ai" target="_blank">umely.ai</a></p>
 </footer>
 
 <script>
@@ -546,9 +551,39 @@ async function loadModules() {
       grid.appendChild(group);
     }
 
+    // Laad voortgang na het renderen van kaarten
+    loadProgress();
+
   } catch (e) {
     grid.innerHTML = '<div class="empty-state"><p>Kon modules niet laden. Is de server actief?</p></div>';
   }
+}
+
+async function loadProgress() {
+  try {
+    const res = await fetch('/api/user/progress', { headers: authHeader() });
+    if (!res.ok) return;
+    const { progress } = await res.json();
+    progress.forEach(function(p) {
+      var card = document.querySelector('.module-card[data-slug="' + p.module_slug + '"]');
+      if (!card) return;
+      var existing = card.querySelector('.progress-status');
+      if (existing) existing.remove();
+      var badge = document.createElement('div');
+      if (p.completed) {
+        badge.className = 'progress-status done';
+        badge.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Afgerond &mdash; ' + p.score_pct + '%';
+      } else if (p.score_pct > 0) {
+        badge.className = 'progress-status started';
+        badge.innerHTML = '&#9654; Bezig &mdash; ' + p.score_pct + '%';
+      } else {
+        badge.className = 'progress-status started';
+        badge.innerHTML = '&#9654; Gestart';
+      }
+      var footer = card.querySelector('.module-footer');
+      if (footer) card.insertBefore(badge, footer);
+    });
+  } catch(e) {}
 }
 
 async function renameModule(slug, btn) {

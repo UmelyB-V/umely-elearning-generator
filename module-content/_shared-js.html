@@ -207,6 +207,7 @@ function toonResultaat() {
     document.getElementById('cert-datum').textContent = 'Behaald op ' +
       new Date().toLocaleDateString('nl-NL', { day:'numeric', month:'long', year:'numeric' });
   }
+  if (typeof onQuizCompleted === 'function') onQuizCompleted(pct);
 }
 
 function herstart() {

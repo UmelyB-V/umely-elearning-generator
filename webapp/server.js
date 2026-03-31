@@ -149,7 +149,7 @@ app.get('/api/job/:jobId', (req, res) => {
 app.get('/api/modules', requireAuth, async (req, res) => {
   const { data, error } = await supabase
     .from('modules')
-    .select('filename, title, created_at')
+    .select('filename, slug, title, created_at')
     .order('created_at', { ascending: true });
   if (error) return res.status(500).json({ error: error.message });
 
@@ -163,21 +163,20 @@ app.get('/api/modules', requireAuth, async (req, res) => {
     role: profile?.role || 'user',
     modules: data.map(m => ({
       filename: m.filename,
-      slug: m.filename.replace('.html', ''),
+      slug: m.slug || m.filename.replace('.html', ''),
       title: m.title,
       date: m.created_at.slice(0, 10),
-      url: `/modules/${m.filename.replace('.html', '')}`
+      url: `/modules/${m.slug || m.filename.replace('.html', '')}`
     }))
   });
 });
 
 // ── Beveiligd HTML-endpoint (Bearer token vereist) ──
 app.get('/api/module-html/:slug', requireAuth, async (req, res) => {
-  const filename = req.params.slug + '.html';
   const { data, error } = await supabase
     .from('modules')
     .select('html')
-    .eq('filename', filename)
+    .eq('slug', req.params.slug)
     .single();
   if (error || !data) return res.status(404).send('Module niet gevonden');
   res.setHeader('Content-Type', 'text/html');
@@ -222,11 +221,11 @@ app.get('/modules/:slug', (req, res) => {
     document.body.innerHTML = '<div style="text-align:center;padding:80px;font-family:system-ui"><h2>Module niet gevonden</h2><a href="/modules.html" style="color:#FF8514">← Terug naar bibliotheek</a></div>';
     return;
   }
-  // Registreer module als gestart
+  // Registreer module als gestart (score_pct 0 = gestart, nog niet afgerond)
   fetch('/api/user/progress', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-    body: JSON.stringify({ module_filename: '${slug}.html' })
+    body: JSON.stringify({ module_slug: '${slug}', score_pct: 0, completed: false })
   }).catch(() => {});
   const html = await res.text();
   window.__AUTH_TOKEN__ = token;
@@ -323,22 +322,33 @@ app.patch('/api/users/:userId/role', requireAuth, requireAdmin, async (req, res)
 
 // ── Voortgang opslaan ──
 app.post('/api/user/progress', requireAuth, async (req, res) => {
-  const { module_filename, completed, quiz_score } = req.body;
-  if (!module_filename) return res.status(400).json({ error: 'module_filename is verplicht.' });
+  const { module_slug, score_pct, completed } = req.body;
+  if (!module_slug) return res.status(400).json({ error: 'module_slug is verplicht.' });
 
   const record = {
     user_id: req.user.id,
-    module_filename,
-    started_at: new Date().toISOString()
+    module_slug,
+    score_pct: score_pct ?? 0,
+    completed: !!completed,
+    updated_at: new Date().toISOString()
   };
   if (completed) record.completed_at = new Date().toISOString();
-  if (quiz_score !== undefined) record.quiz_score = quiz_score;
 
   const { error } = await supabase
     .from('user_progress')
-    .upsert(record, { onConflict: 'user_id,module_filename' });
+    .upsert(record, { onConflict: 'user_id,module_slug' });
   if (error) return res.status(500).json({ error: error.message });
   res.json({ ok: true });
+});
+
+// ── Voortgang ophalen (eigen gebruiker) ──
+app.get('/api/user/progress', requireAuth, async (req, res) => {
+  const { data, error } = await supabase
+    .from('user_progress')
+    .select('module_slug, score_pct, completed, completed_at')
+    .eq('user_id', req.user.id);
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ progress: data || [] });
 });
 
 // ── Hernoem een module (admin) ──

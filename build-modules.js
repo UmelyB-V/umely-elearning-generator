@@ -87,6 +87,14 @@ for (const file of contentFiles) {
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 ${sharedCSS}
+@media print {
+  header, footer, .btn-wrap, .nav-buttons, #pdf-download-btn { display: none !important; }
+  body { background: white !important; }
+  .screen { display: none !important; }
+  #screen-result { display: block !important; max-width: 680px !important; margin: 0 auto !important; padding: 20mm !important; }
+  .resultaat-hero { display: none !important; }
+  .certificaat { display: block !important; border: 2px solid #FF8514 !important; box-shadow: none !important; page-break-inside: avoid; }
+}
 </style>
 </head>
 <body>
@@ -106,7 +114,13 @@ ${sharedCSS}
   <div id="progressLabel" style="text-align:right;font-size:0.75rem;color:rgba(255,248,242,0.6);font-weight:600;max-width:860px;margin:0.25rem auto 0.5rem;padding-right:0;">0% voltooid</div>
 </header>
 
-${content.replace(/<!-- TITLE: .+? -->/, '').replace(/<!-- SCHERMEN: .+? -->/, '').replace(/<!-- MODULE_TITELS: .+? -->/, '').replace(/<!-- QUIZ_START -->[\s\S]*?<!-- QUIZ_END -->/, '').trim()}
+${content
+    .replace(/<!-- TITLE: .+? -->/, '')
+    .replace(/<!-- SCHERMEN: .+? -->/, '')
+    .replace(/<!-- MODULE_TITELS: .+? -->/, '')
+    .replace(/<!-- QUIZ_START -->[\s\S]*?<!-- QUIZ_END -->/, '')
+    .replace('<div class="welcome-badge">Umely E-learning</div>', '<div class="welcome-badge"><img src="/logo.png" alt="Umely" style="height:28px;filter:brightness(0) invert(1);vertical-align:middle;"></div>')
+    .trim()}
 
 <!-- AFSLUITQUIZ -->
 <div id="screen-quiz" class="screen">
@@ -136,6 +150,12 @@ ${content.replace(/<!-- TITLE: .+? -->/, '').replace(/<!-- SCHERMEN: .+? -->/, '
     <h2>${title}</h2>
     <p>Je hebt alle modules succesvol doorlopen en de quiz behaald.</p>
     <div class="certificaat-datum" id="cert-datum"></div>
+    <div style="margin-top:1.5rem;">
+      <button id="pdf-download-btn" class="btn" onclick="window.print()" style="display:none;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download certificaat als PDF
+      </button>
+    </div>
   </div>
   <div class="btn-wrap">
     <button class="btn btn-outline" onclick="herstart()">Opnieuw beginnen</button>
@@ -156,7 +176,36 @@ ${sharedJS}
 
 const quizVragen = ${quizVragen};
 
+// ── Voortgang opslaan ──
+async function saveProgress(scorePct) {
+  var token = window.__AUTH_TOKEN__;
+  if (!token) return;
+  try {
+    await fetch('/api/user/progress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ module_slug: '${currentSlug}', score_pct: scorePct, completed: scorePct >= 70 })
+    });
+  } catch(e) {}
+}
+
+// ── Hook: aangeroepen door shared-js als quiz klaar is ──
+function onQuizCompleted(pct) {
+  saveProgress(pct);
+  if (pct >= 70) {
+    var btn = document.getElementById('pdf-download-btn');
+    if (btn) btn.style.display = 'inline-block';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+  // Inject module name into all module headers
+  document.querySelectorAll('.module-header').forEach(function(header) {
+    var nameDiv = document.createElement('div');
+    nameDiv.className = 'module-naam';
+    nameDiv.textContent = '${title}';
+    header.insertBefore(nameDiv, header.firstChild);
+  });
   // Inject nav-buttons into each screen (except welcome, quiz, result)
   SCHERMEN.forEach(function(id) {
     var screen = document.getElementById(id);
