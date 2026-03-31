@@ -92,11 +92,15 @@
   .header-right { display: flex; align-items: center; gap: 10px; }
   .header-user { font-size: 13px; color: rgba(255,255,255,0.85); display: none; }
   .header-cta {
-    background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.45);
     padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700;
-    cursor: pointer; text-decoration: none; backdrop-filter: blur(4px);
+    cursor: pointer; text-decoration: none; backdrop-filter: blur(4px); transition: all 0.15s;
   }
-  .header-cta:hover { background: rgba(255,255,255,0.35); }
+  .header-cta:hover { background: rgba(255,255,255,0.25); }
+  .header-cta-primary {
+    background: var(--gradient); border-color: transparent;
+  }
+  .header-cta-primary:hover { opacity: 0.88; background: var(--gradient); }
   .btn-logout {
     background: none; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.4);
     padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 600;
@@ -166,26 +170,33 @@
   /* STATUS */
   #status { margin-top: 24px; display: none; }
   .status-loading {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--peach); border: 1px solid var(--cream); border-radius: 10px;
-    padding: 14px 18px;
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--peach); border: 1px solid var(--cream); border-radius: 12px;
+    padding: 16px 18px;
   }
   .spinner {
     width: 20px; height: 20px; border: 3px solid var(--cream);
     border-top-color: var(--flame); border-radius: 50%;
-    animation: spin 0.8s linear infinite; flex-shrink: 0;
+    animation: spin 0.8s linear infinite; flex-shrink: 0; margin-top: 2px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .status-loading p { font-size: 14px; font-weight: 600; color: var(--flame); margin: 0; }
-  .progress-text { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
+  .status-loading .status-label { font-size: 14px; font-weight: 700; color: var(--flame); margin: 0 0 10px; }
+  .progress-steps { display: flex; flex-direction: column; gap: 5px; }
+  .progress-step { font-size: 12px; color: #bbb; display: flex; align-items: center; gap: 7px; transition: color 0.3s; }
+  .progress-step-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; flex-shrink: 0; transition: background 0.3s; }
+  .progress-step.active { color: var(--flame); font-weight: 600; }
+  .progress-step.active .progress-step-dot { background: var(--flame); }
+  .progress-step.done { color: #22C55E; }
+  .progress-step.done .progress-step-dot { background: #22C55E; }
 
   /* RESULT */
   #result { margin-top: 32px; display: none; }
   .result-header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: flex-start; justify-content: space-between;
     margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
   }
-  .result-header h2 { font-size: 18px; font-weight: 700; color: var(--charcoal); }
+  .result-header h2 { font-size: 18px; font-weight: 700; color: var(--charcoal); display: flex; align-items: center; gap: 8px; }
+  .result-module-title { font-size: 13px; color: var(--gray-text); margin-top: 4px; font-weight: 400; }
   .result-actions { display: flex; gap: 10px; }
   .btn-sm {
     display: inline-flex; align-items: center; gap: 6px;
@@ -312,7 +323,7 @@
   <div class="header-right">
     <span class="header-user" id="headerUser"></span>
     <a class="header-cta" href="/account.html">Mijn account</a>
-    <a class="header-cta" href="/modules.html">Bibliotheek</a>
+    <a class="header-cta header-cta-primary" href="/modules.html">Bibliotheek</a>
     <button class="btn-logout" id="logoutBtn" onclick="logout()">Uitloggen</button>
   </div>
 </header>
@@ -328,7 +339,7 @@
 
     <!-- Bestand uploaden -->
     <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-      <p>📎 <strong>Klik om een bestand te uploaden</strong> of sleep het hiernaartoe</p>
+      <p><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-3px;margin-right:4px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><strong>Klik om een bestand te uploaden</strong> of sleep het hiernaartoe</p>
       <p style="margin-top:4px;font-size:11px;color:#aaa;">PDF, DOCX of TXT — max 20 MB</p>
       <div id="fileBadge" style="display:none"></div>
     </div>
@@ -343,36 +354,46 @@
     ></textarea>
 
     <button class="btn" id="generateBtn" onclick="generate()">
-      <span id="btnText">✨ Genereer e-learning</span>
+      <svg id="btnIcon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+      <span id="btnText">Genereer e-learning</span>
     </button>
 
     <div id="status">
       <div class="status-loading">
         <div class="spinner"></div>
-        <div>
-          <p>E-learning wordt gegenereerd...</p>
-          <p class="progress-text" id="progressText">Claude analyseert de transcriptie</p>
+        <div style="flex:1">
+          <p class="status-label">E-learning wordt gegenereerd...</p>
+          <div class="progress-steps">
+            <div class="progress-step active" data-step="0"><div class="progress-step-dot"></div>Transcriptie analyseren</div>
+            <div class="progress-step" data-step="1"><div class="progress-step-dot"></div>Kernthema's identificeren</div>
+            <div class="progress-step" data-step="2"><div class="progress-step-dot"></div>Modules opbouwen</div>
+            <div class="progress-step" data-step="3"><div class="progress-step-dot"></div>Quizvragen genereren</div>
+            <div class="progress-step" data-step="4"><div class="progress-step-dot"></div>HTML genereren</div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="error-box" id="errorBox">
       <p id="errorMsg"></p>
-      <button class="btn-retry" onclick="retryGenerate()">🔄 Probeer opnieuw</button>
+      <button class="btn-retry" onclick="retryGenerate()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-2px;margin-right:4px"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>Probeer opnieuw</button>
     </div>
   </div>
 
   <div id="result">
     <div class="result-header">
-      <h2>✅ E-learning gegenereerd!</h2>
+      <div>
+        <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg> E-learning gegenereerd!</h2>
+        <p class="result-module-title" id="resultModuleTitle"></p>
+      </div>
       <div class="result-actions">
-        <button class="btn-sm btn-download" id="downloadBtn">⬇ Download HTML</button>
-        <a class="btn-sm btn-preview" id="moduleLink" href="#" target="_blank" style="display:none">🔗 Open module</a>
-        <button class="btn-sm btn-preview" onclick="togglePreview()">👁 Preview</button>
+        <button class="btn-sm btn-download" id="downloadBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg> Download HTML</button>
+        <a class="btn-sm btn-preview" id="moduleLink" href="#" target="_blank" style="display:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg> Open module</a>
+        <button class="btn-sm btn-preview" onclick="togglePreview()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12C3 7 7 4 12 4s9 3 11 8c-2 5-6 8-11 8S3 17 1 12z"/><circle cx="12" cy="12" r="3"/></svg> Preview</button>
       </div>
     </div>
     <div id="moduleUrl" style="display:none;margin-bottom:12px;padding:10px 16px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;font-size:13px;color:#15803D;">
-      ✅ Opgeslagen als: <strong id="moduleUrlText"></strong> — <a id="moduleUrlLink" href="#" target="_blank" style="color:#15803D;font-weight:700;">bekijk →</a>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-2px;margin-right:4px"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>Opgeslagen als: <strong id="moduleUrlText"></strong> — <a id="moduleUrlLink" href="#" target="_blank" style="color:#15803D;font-weight:700;">bekijk →</a>
     </div>
     <iframe id="preview" style="display:none"></iframe>
   </div>
@@ -413,12 +434,21 @@ function showLogin() {
   document.getElementById('authOverlay').style.display = 'flex';
 }
 
-function showApp(session) {
+async function showApp(session) {
   document.getElementById('authOverlay').style.display = 'none';
   document.getElementById('logoutBtn').style.display = 'block';
   const userEl = document.getElementById('headerUser');
-  userEl.textContent = session.user.email;
   userEl.style.display = 'block';
+  try {
+    const { data: profile } = await _supabase
+      .from('profiles')
+      .select('first_name')
+      .eq('id', session.user.id)
+      .single();
+    userEl.textContent = profile?.first_name || session.user.email;
+  } catch {
+    userEl.textContent = session.user.email;
+  }
 }
 
 let isSignupMode = false;
@@ -560,10 +590,8 @@ async function checkVerification() {
     // Successfully logged in = email is verified
     hideAuthError();
     document.getElementById('authOverlay').style.display = 'none';
-    const userEl = document.getElementById('headerUser');
-    userEl.textContent = email;
-    userEl.style.display = 'inline';
     document.getElementById('logoutBtn').style.display = 'inline';
+    if (data?.session) showApp(data.session);
 
   } finally {
     document.getElementById('verifyCheckBtn').disabled = false;
@@ -651,25 +679,23 @@ function clearFile() {
 }
 
 // ── VOORTGANG ──
-const progressMessages = [
-  'Claude analyseert de transcriptie...',
-  'Kernthema\'s worden geïdentificeerd...',
-  'Modules worden opgebouwd...',
-  'Quizvragen worden gegenereerd...',
-  'Drag & drop oefening wordt aangemaakt...',
-  'Huisstijl wordt toegepast...',
-  'HTML wordt gegenereerd...',
-];
 let progressIndex = 0;
 let progressInterval;
 
 function startProgress() {
   progressIndex = 0;
-  document.getElementById('progressText').textContent = progressMessages[0];
+  const steps = document.querySelectorAll('.progress-step');
+  steps.forEach(s => s.classList.remove('active', 'done'));
+  if (steps[0]) steps[0].classList.add('active');
   progressInterval = setInterval(() => {
-    progressIndex = (progressIndex + 1) % progressMessages.length;
-    document.getElementById('progressText').textContent = progressMessages[progressIndex];
-  }, 3000);
+    const steps = document.querySelectorAll('.progress-step');
+    if (progressIndex < steps.length) {
+      steps[progressIndex].classList.remove('active');
+      steps[progressIndex].classList.add('done');
+      progressIndex++;
+      if (progressIndex < steps.length) steps[progressIndex].classList.add('active');
+    }
+  }, 4500);
 }
 
 function stopProgress() {
@@ -688,7 +714,7 @@ async function generate() {
   document.getElementById('result').style.display = 'none';
   document.getElementById('status').style.display = 'block';
   document.getElementById('generateBtn').disabled = true;
-  document.getElementById('btnText').textContent = '⏳ Genereren...';
+  document.getElementById('btnText').textContent = 'Genereren...';
   generatedHTML = '';
   startProgress();
 
@@ -748,7 +774,7 @@ async function generate() {
     clearInterval(pollInterval);
     document.getElementById('status').style.display = 'none';
     document.getElementById('generateBtn').disabled = false;
-    document.getElementById('btnText').textContent = '✨ Genereer e-learning';
+    document.getElementById('btnText').textContent = 'Genereer e-learning';
   }
 }
 
@@ -760,6 +786,11 @@ function retryGenerate() {
 function showResult() {
   const resultEl = document.getElementById('result');
   resultEl.style.display = 'block';
+
+  // Extract and display module title
+  const titleMatch = generatedHTML.match(/<title>(.*?)<\/title>/i);
+  const titleEl = document.getElementById('resultModuleTitle');
+  if (titleEl && titleMatch) titleEl.textContent = titleMatch[1];
 
   document.getElementById('downloadBtn').onclick = () => {
     const blob = new Blob([generatedHTML], { type: 'text/html' });

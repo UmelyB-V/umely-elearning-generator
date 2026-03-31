@@ -103,10 +103,11 @@
     border-radius: 14px; padding: 28px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     display: flex; flex-direction: column; gap: 12px;
-    transition: box-shadow 0.2s, transform 0.15s;
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
     text-decoration: none; color: inherit;
+    border-left: 3px solid transparent;
   }
-  .module-card:hover { box-shadow: 0 6px 24px rgba(255,77,0,0.15); transform: translateY(-2px); }
+  .module-card:hover { box-shadow: 0 6px 24px rgba(255,77,0,0.15); transform: translateY(-2px); border-left-color: var(--amber); }
   .module-card.sortable-ghost { opacity: 0.35; }
   .module-card.sortable-drag { box-shadow: 0 12px 40px rgba(255,77,0,0.25); transform: scale(1.02); }
 
@@ -231,22 +232,22 @@
   <div class="header-actions">
     <span class="header-user" id="headerUser"></span>
     <a class="btn-sm btn-ghost" href="/account.html">Mijn account</a>
-    <a class="btn-sm btn-ghost" href="/">+ Nieuwe e-learning</a>
+    <a class="btn-sm btn-primary" href="/">+ Nieuwe e-learning</a>
     <button class="btn-logout" id="logoutBtn" onclick="logout()">Uitloggen</button>
   </div>
 </header>
 
 <main>
   <div class="page-header">
-    <h1>📚 E-learning Bibliotheek</h1>
+    <h1>E-learning Bibliotheek</h1>
     <p>Alle gegenereerde e-learning modules, direct te openen in je browser.</p>
   </div>
 
   <div class="search-wrap" id="searchWrap" style="display:none">
-    <span class="search-icon">🔍</span>
+    <span class="search-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round" style="display:block"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
     <input type="text" id="searchInput" placeholder="Zoek op naam..." oninput="filterModules()">
   </div>
-  <p class="drag-hint" id="dragHint" style="display:none">⠿ Sleep kaarten om de volgorde te wijzigen</p>
+  <p class="drag-hint" id="dragHint" style="display:none"><svg width="12" height="12" viewBox="0 0 24 24" fill="#bbb" style="vertical-align:-2px;margin-right:4px"><circle cx="9" cy="7" r="1.5"/><circle cx="15" cy="7" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="17" r="1.5"/><circle cx="15" cy="17" r="1.5"/></svg>Sleep kaarten om de volgorde te wijzigen</p>
   <div id="grid" class="loading">Modules laden...</div>
 </main>
 
@@ -319,12 +320,21 @@ function showLogin() {
   document.getElementById('authOverlay').style.display = 'flex';
 }
 
-function showApp(session) {
+async function showApp(session) {
   document.getElementById('authOverlay').style.display = 'none';
   document.getElementById('logoutBtn').style.display = 'block';
   const userEl = document.getElementById('headerUser');
-  userEl.textContent = session.user.email;
   userEl.style.display = 'block';
+  try {
+    const { data: profile } = await _supabase
+      .from('profiles')
+      .select('first_name')
+      .eq('id', session.user.id)
+      .single();
+    userEl.textContent = profile?.first_name || session.user.email;
+  } catch {
+    userEl.textContent = session.user.email;
+  }
 }
 
 let isSignupMode = false;

@@ -74,8 +74,10 @@
     cursor: pointer; text-decoration: none; border: none;
     transition: all 0.15s;
   }
-  .btn-ghost { background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.6); backdrop-filter: blur(4px); }
-  .btn-ghost:hover { background: rgba(255,255,255,0.35); }
+  .btn-primary { background: linear-gradient(135deg, #FF8514, #FF4D00); color: white; border: 2px solid transparent; }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-ghost { background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.45); backdrop-filter: blur(4px); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.25); }
   .btn-logout {
     background: none; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.4);
     padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 600;
@@ -193,7 +195,7 @@
   <div class="header-actions">
     <span class="header-user" id="headerUser"></span>
     <a class="btn-sm btn-ghost" href="/modules.html">Bibliotheek</a>
-    <a class="btn-sm btn-ghost" href="/">+ Nieuwe e-learning</a>
+    <a class="btn-sm btn-primary" href="/">+ Nieuwe e-learning</a>
     <button class="btn-logout" id="logoutBtn" onclick="logout()">Uitloggen</button>
   </div>
 </header>
@@ -243,12 +245,21 @@ function showLogin() {
   document.getElementById('authOverlay').style.display = 'flex';
 }
 
-function showApp(session) {
+async function showApp(session) {
   document.getElementById('authOverlay').style.display = 'none';
   document.getElementById('logoutBtn').style.display = 'block';
   const userEl = document.getElementById('headerUser');
-  userEl.textContent = session.user.email;
   userEl.style.display = 'block';
+  try {
+    const { data: profile } = await _supabase
+      .from('profiles')
+      .select('first_name')
+      .eq('id', session.user.id)
+      .single();
+    userEl.textContent = profile?.first_name || session.user.email;
+  } catch {
+    userEl.textContent = session.user.email;
+  }
 }
 
 let isSignupMode = false;
