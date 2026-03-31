@@ -14,7 +14,7 @@
       <li>Uitleggen wat een Skill is en waarom het nuttig is</li>
       <li>De structuur van een SKILL.md-bestand beschrijven</li>
       <li>Bepalen wanneer een Skill zinvol is</li>
-      <li>Begrijpen hoe Claude Code Skills automatisch inlaadt</li>
+      <li>Begrijpen hoe Claude Code Skills laadt (automatisch, via slash-commando of handmatig)</li>
     </ul>
   </div>
   <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
@@ -29,7 +29,7 @@
     <h2>Wat is een Skill?</h2>
   </div>
   <div class="content-card">
-    <p>Een Skill is een herbruikbaar instructiepakket voor een specifieke taak. Je schrijft een keer op wat Claude moet doen, stap voor stap, met regels en voorkeuren, en slaat dat op in een SKILL.md-bestand. Daarna laadt Claude Code die Skill automatisch als de taak overeenkomt.</p>
+    <p>Een Skill is een herbruikbaar instructiepakket voor een specifieke taak. Je schrijft een keer op wat Claude moet doen, stap voor stap, met regels en voorkeuren, en slaat dat op in een SKILL.md-bestand. Claude Code kan Skills laden via slash-commando's (bijv. /skill-naam) of automatisch via de Skill tool wanneer de taakomschrijving overeenkomt met de skill-beschrijving. Je kunt Skills ook handmatig activeren.</p>
     <p>Vergelijk het met een werkprocedure in een bedrijf: je schrijft een keer op hoe iets gedaan moet worden, en iedereen, inclusief Claude, volgt die procedure.</p>
   </div>
   <div class="content-card">
@@ -37,7 +37,7 @@
     <table class="vergelijk-tabel">
       <thead><tr><th>Zonder Skill</th><th>Met Skill</th></tr></thead>
       <tbody>
-        <tr><td>Elke keer instructies herhalen</td><td>Instructies worden automatisch geladen</td></tr>
+        <tr><td>Elke keer instructies herhalen</td><td>Instructies worden geladen via slash-commando of automatisch</td></tr>
         <tr><td>Inconsistente resultaten</td><td>Consistent dezelfde aanpak</td></tr>
         <tr><td>Meer kans op fouten</td><td>Vaste stappen en regels</td></tr>
       </tbody>
@@ -111,16 +111,16 @@
     <h2>Skills opslaan en laden</h2>
   </div>
   <div class="content-card">
-    <p>Skills sla je op in de map .claude/skills/ in je projectmap. Claude Code scant die map automatisch en laadt de juiste Skill op basis van de beschrijving en de opdracht die je geeft.</p>
+    <p>Skills sla je op in de map .claude/skills/ in je projectmap. Claude Code kan de juiste Skill laden via slash-commando's, automatisch via de Skill tool wanneer de taakomschrijving matcht, of je activeert een Skill handmatig.</p>
   </div>
   <div class="content-card">
-    <h3>Het laadproces</h3>
+    <h3>Het laadproces (automatisch)</h3>
     <div class="processtroom">
       <div class="proces-blok"><h4>Jij geeft opdracht</h4><p>"Verwerk de rapporten"</p></div>
       <div class="proces-pijl">&#9658;</div>
-      <div class="proces-blok"><h4>Claude scant Skills</h4><p>Leest beschrijvingen</p></div>
+      <div class="proces-blok"><h4>Skill tool matcht</h4><p>Beschrijving komt overeen</p></div>
       <div class="proces-pijl">&#9658;</div>
-      <div class="proces-blok"><h4>Match gevonden</h4><p>Laadt de juiste Skill</p></div>
+      <div class="proces-blok"><h4>Skill geladen</h4><p>Of via /skill-naam</p></div>
       <div class="proces-pijl">&#9658;</div>
       <div class="proces-blok"><h4>Uitvoering</h4><p>Volgt de stappen en regels</p></div>
     </div>
@@ -164,10 +164,10 @@
 
 <!-- QUIZ_START -->
 [
-  {"vraag":"Wat is een Skill in Claude Code?","opties":["Een programmeertal","Een herbruikbaar instructiepakket voor een specifieke taak","Een type abonnement","Een beveiligingsinstelling"],"correct":1,"uitleg":"Een Skill is een herbruikbaar instructiepakket met stappen en regels dat Claude Code automatisch laadt als de taak overeenkomt."},
+  {"vraag":"Wat is een Skill in Claude Code?","opties":["Een programmeertal","Een herbruikbaar instructiepakket voor een specifieke taak","Een type abonnement","Een beveiligingsinstelling"],"correct":1,"uitleg":"Een Skill is een herbruikbaar instructiepakket met stappen en regels dat Claude Code kan laden via slash-commando's, automatisch via de Skill tool, of handmatig."},
   {"vraag":"Wat is het belangrijkste onderdeel van een SKILL.md?","opties":["De bestandsnaam","De beschrijving bovenaan, die bepaalt wanneer de Skill wordt geladen","De lengte van het bestand","Het aantal stappen"],"correct":1,"uitleg":"De beschrijving is cruciaal. Claude leest die om te bepalen of de Skill relevant is voor een opdracht."},
   {"vraag":"Waar worden Skills opgeslagen?","opties":["In de cloud","In de map .claude/skills/ in je projectmap","In CLAUDE.md","Op je bureaublad"],"correct":1,"uitleg":"Skills worden opgeslagen als SKILL.md-bestanden in de map .claude/skills/ in je projectmap."},
   {"vraag":"Wanneer is een Skill NIET zinvol?","opties":["Bij herhalende taken","Bij taken met vaste stappen","Bij eenmalige taken die elke keer anders zijn","Bij taken die consistentie vereisen"],"correct":2,"uitleg":"Maak geen Skill voor taken die je maar een keer uitvoert of die elke keer anders zijn. Skills zijn voor herhalende taken met vaste patronen."},
-  {"vraag":"Hoe laadt Claude Code de juiste Skill?","opties":["Je moet hem handmatig selecteren","Claude scant de beschrijvingen en kiest automatisch de match","Claude laadt altijd alle Skills","Je moet de Skill-naam in je opdracht typen"],"correct":1,"uitleg":"Claude Code scant de beschrijvingen van alle Skills in .claude/skills/ en laadt automatisch de Skill die het beste past bij je opdracht."}
+  {"vraag":"Hoe laadt Claude Code de juiste Skill?","opties":["Alleen door de bestandsnaam te typen","Via slash-commando's, automatisch via de Skill tool, of handmatig","Claude laadt altijd alle Skills tegelijk","Alleen via het instellingenmenu"],"correct":1,"uitleg":"Claude Code kan Skills laden via slash-commando's (bijv. /skill-naam), automatisch via de Skill tool wanneer de taakomschrijving matcht, of je activeert een Skill handmatig."}
 ]
 <!-- QUIZ_END -->
