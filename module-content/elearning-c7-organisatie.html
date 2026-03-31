@@ -38,7 +38,7 @@
         <tr><td>Gedeelde Projects</td><td>Ja</td><td>Ja</td></tr>
         <tr><td>Gesprekken voor training</td><td>Standaard niet</td><td>Standaard niet</td></tr>
         <tr><td>SSO / SAML</td><td>Nee</td><td>Ja</td></tr>
-        <tr><td>Verwerkersovereenkomst (AVG)</td><td>Beperkt</td><td>Ja</td></tr>
+        <tr><td>Verwerkersovereenkomst (AVG)</td><td>Ja, standaard DPA</td><td>Ja</td></tr>
         <tr><td>Auditlogs</td><td>Nee</td><td>Ja</td></tr>
         <tr><td>Prioriteitssupport</td><td>Nee</td><td>Ja</td></tr>
       </tbody>
@@ -46,15 +46,15 @@
   </div>
   <div class="tip-box">
     <div class="tip-box-label tip">Tip</div>
-    <p>Voor de meeste MKB-kantoren is Teams voldoende. Enterprise is pas nodig als je werkt met gevoelige data en specifieke beveiligingseisen hebt (SSO, auditlogs, verwerkersovereenkomst).</p>
+    <p>Voor de meeste MKB-kantoren is Teams voldoende. Teams biedt al een standaard verwerkersovereenkomst (DPA). Enterprise is pas nodig als je specifieke beveiligingseisen hebt zoals SSO, auditlogs en prioriteitssupport.</p>
   </div>
   <div id="kc-1" class="kennischeck">
     <h3>Kennischeck</h3>
     <p class="kc-vraag">Welk abonnement is geschikt voor een advocatenkantoor dat met vertrouwelijke klantdata werkt?</p>
     <div class="kc-opties">
       <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Het gratis abonnement biedt geen verwerkersovereenkomst of geavanceerde beveiliging. Voor vertrouwelijke data is dit niet geschikt.')">Gratis</button>
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Teams biedt betere privacy, maar voor een advocatenkantoor met vertrouwelijke klantdata is Enterprise met verwerkersovereenkomst en auditlogs de betere keuze.')">Teams</button>
-      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Enterprise biedt verwerkersovereenkomst, SSO, auditlogs en prioriteitssupport. Precies wat je nodig hebt voor vertrouwelijke klantdata.')">Enterprise</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Teams biedt al een verwerkersovereenkomst, maar voor een advocatenkantoor met vertrouwelijke klantdata is Enterprise met SSO, auditlogs en prioriteitssupport de betere keuze.')">Teams</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Enterprise biedt SSO, auditlogs en prioriteitssupport bovenop de verwerkersovereenkomst. Precies wat je nodig hebt voor vertrouwelijke klantdata.')">Enterprise</button>
     </div>
     <div id="kc-feedback-1" class="kc-feedback"></div>
   </div>
@@ -191,7 +191,7 @@
 
 <!-- QUIZ_START -->
 [
-  {"vraag":"Wat is het belangrijkste verschil tussen Teams en Enterprise?","opties":["Enterprise is duurder","Enterprise biedt SSO, verwerkersovereenkomst en auditlogs","Teams heeft meer berichten","Er is geen verschil"],"correct":1,"uitleg":"Enterprise biedt geavanceerde beveiligingsopties (SSO, SAML), een verwerkersovereenkomst voor AVG-compliance, auditlogs en prioriteitssupport."},
+  {"vraag":"Wat is het belangrijkste verschil tussen Teams en Enterprise?","opties":["Enterprise is duurder","Enterprise biedt SSO, auditlogs en prioriteitssupport","Teams heeft meer berichten","Er is geen verschil"],"correct":1,"uitleg":"Beide bieden een verwerkersovereenkomst (DPA). Enterprise voegt daar SSO/SAML, auditlogs en prioriteitssupport aan toe voor organisaties met strengere beveiligingseisen."},
   {"vraag":"Wat is de beste aanpak om Claude in een team uit te rollen?","opties":["Iedereen tegelijk laten beginnen","Begin met een kleine groep en een concrete use case","Wachten tot iedereen er klaar voor is","Alleen de IT-afdeling laten beslissen"],"correct":1,"uitleg":"Begin klein met 3-5 medewerkers en een concrete use case die direct waarde oplevert. Verzamel feedback en breid dan uit."},
   {"vraag":"Wat moeten gedeelde Projects bevatten?","opties":["Alleen gesprekken","Documenten en context die relevant zijn voor het onderwerp of de klant","Alleen e-mails","Persoonlijke notities van medewerkers"],"correct":1,"uitleg":"Gedeelde Projects bevatten documenten, briefings en andere context die relevant is. Zo werkt iedereen met dezelfde informatie."},
   {"vraag":"Hoe ga je om met medewerkers die sceptisch zijn over Claude?","opties":["Het gebruik verplicht stellen","Resultaten laten spreken en niet afdwingen","Ze uitsluiten van het team","Wachten tot ze zelf interesse tonen"],"correct":1,"uitleg":"Dwing gebruik niet af. Laat resultaten spreken. Als collega's zien dat taken sneller gaan, volgt adoptie vanzelf."},
