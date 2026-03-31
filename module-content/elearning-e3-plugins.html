@@ -1,20 +1,20 @@
-<!-- TITLE: E3 - Claude Plugins -->
+<!-- TITLE: E3 - Projects en Custom Instructions -->
 <!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Wat zijn Projects?','screen-module-2':'Custom Instructions','screen-module-3':'Kennisbestanden','screen-module-4':'In de praktijk','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
     <div class="welcome-badge">Umely E-learning</div>
-    <h1>E3 - Claude Plugins</h1>
-    <p>Leer wat Plugins zijn, hoe ze complete werkflows bundelen en wanneer je ze inzet in plaats van losse Connectors.</p>
+    <h1>E3 - Projects en Custom Instructions</h1>
+    <p>Leer hoe je in claude.ai werkruimtes maakt met vaste instructies en referentiedocumenten, zodat Claude je context onthoudt zonder dat je jezelf herhaalt.</p>
   </div>
   <div class="leerdoelen">
     <h3>Na deze module kun je:</h3>
     <ul>
-      <li>Uitleggen wat Plugins zijn en hoe ze verschillen van Connectors</li>
-      <li>Voorbeelden geven van kant-en-klare Plugins per bedrijfsfunctie</li>
-      <li>Bepalen wanneer je een Plugin vs een Connector gebruikt</li>
-      <li>Begrijpen hoe je een eigen Plugin bouwt via Plugin Create</li>
+      <li>Uitleggen wat een Project is in claude.ai en waarvoor je het gebruikt</li>
+      <li>Custom Instructions schrijven die Claude's gedrag sturen voor een specifieke taak</li>
+      <li>Kennisbestanden toevoegen aan een Project zodat Claude er automatisch naar verwijst</li>
+      <li>Beperkingen benoemen van Projects en Custom Instructions</li>
     </ul>
   </div>
   <div class="tijdsbadge">Geschatte tijd: 12 minuten</div>
@@ -26,30 +26,36 @@
 <div id="screen-module-1" class="screen">
   <div class="module-header">
     <div class="module-num">Module 1 van 4</div>
-    <h2>Wat zijn Plugins?</h2>
+    <h2>Wat zijn Projects?</h2>
   </div>
   <div class="content-card">
-    <p>Plugins bundelen meerdere functies samen voor een specifieke afdeling of werksituatie. Waar een Connector een tool koppelt (bijv. Gmail), bundelt een Plugin meerdere Connectors, instructies en commando's voor een complete werkflow.</p>
+    <p>Een Project in claude.ai is een werkruimte waarin je drie dingen combineert:</p>
+    <ul style="margin:1rem 0;padding-left:1.5rem;">
+      <li><strong>Custom Instructions</strong> - vaste instructies die Claude volgt in elke conversatie binnen dat Project</li>
+      <li><strong>Kennisbestanden</strong> - documenten die Claude als referentie gebruikt (PDF, TXT, CSV, etc.)</li>
+      <li><strong>Conversaties</strong> - alle chats binnen het Project delen dezelfde context</li>
+    </ul>
+    <p>Het probleem dat Projects oplost: zonder Project moet je elke keer opnieuw uitleggen wie je bent, welke stijl je wilt en welke regels gelden. Met een Project stel je dat een keer in en Claude onthoudt het automatisch.</p>
   </div>
   <div class="content-card">
-    <h3>Connector vs Plugin</h3>
+    <h3>Vergelijking: met en zonder Project</h3>
     <table class="vergelijk-tabel">
-      <thead><tr><th>Connector</th><th>Plugin</th></tr></thead>
+      <thead><tr><th>Zonder Project</th><th>Met Project</th></tr></thead>
       <tbody>
-        <tr><td>Koppelt een tool</td><td>Bundelt meerdere tools + instructies</td></tr>
-        <tr><td>Bouwsteen</td><td>Complete werkoplossing</td></tr>
-        <tr><td>Voor losse taken</td><td>Voor terugkerende werkflows</td></tr>
-        <tr><td>Bijv. Gmail koppelen</td><td>Bijv. complete HR-workflow</td></tr>
+        <tr><td>Elke chat begint blanco</td><td>Claude kent je context direct</td></tr>
+        <tr><td>Je herhaalt steeds dezelfde instructies</td><td>Instructies gelden automatisch</td></tr>
+        <tr><td>Referentiedocumenten moet je elke keer uploaden</td><td>Documenten staan klaar in het Project</td></tr>
+        <tr><td>Geen samenhang tussen gesprekken</td><td>Alle chats delen dezelfde basis</td></tr>
       </tbody>
     </table>
   </div>
   <div id="kc-1" class="kennischeck">
     <h3>Kennischeck</h3>
-    <p class="kc-vraag">Wat bevat een HR-Plugin?</p>
+    <p class="kc-vraag">Wat lost een Project op in claude.ai?</p>
     <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Een Plugin bevat meer dan alleen een connector. Het combineert meerdere tools, instructies en commando\'s.')">Alleen een connector naar het HR-systeem</button>
-      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Een Plugin bundelt alles: connectors naar relevante systemen, instructies voor tone of voice, en slash commands voor veelvoorkomende taken.')">Connectors, instructies voor vacatureteksten en slash commands voor HR-taken</button>
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Een Plugin is meer dan alleen commando\'s. Het combineert tools, instructies en commando\'s in een complete werkoplossing.')">Alleen nieuwe slash commands</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Projects maken Claude niet slimmer. Ze zorgen ervoor dat je context niet steeds opnieuw hoeft te geven.')">Claude wordt slimmer door een Project aan te maken</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Een Project slaat je instructies en documenten op, zodat je ze niet elke chat opnieuw hoeft te geven.')">Je hoeft niet steeds opnieuw je context, stijl en regels uit te leggen</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Projects draaien geen code of automatiseren geen processen. Ze bieden een gedeelde context voor je gesprekken.')">Claude kan automatisch taken uitvoeren op de achtergrond</button>
     </div>
     <div id="kc-feedback-1" class="kc-feedback"></div>
   </div>
@@ -58,40 +64,36 @@
 <div id="screen-module-2" class="screen">
   <div class="module-header">
     <div class="module-num">Module 2 van 4</div>
-    <h2>Kant-en-klare Plugins</h2>
+    <h2>Custom Instructions schrijven</h2>
   </div>
   <div class="content-card">
-    <h3>Klik op een afdeling voor de mogelijkheden</h3>
-    <div class="flashcard-set">
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">HR</div>
-        <div class="fc-uitleg">Vacatureteksten schrijven, sollicitatiebrieven samenvatten, onboardingdocumenten genereren. Slash command: /vacature</div>
-        <div class="fc-hint">Klik voor details</div>
-      </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Finance</div>
-        <div class="fc-uitleg">Rapporten analyseren, facturen samenvatten, budgetvergelijkingen maken.</div>
-        <div class="fc-hint">Klik voor details</div>
-      </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Legal</div>
-        <div class="fc-uitleg">Contracten samenvatten, clausules uitleggen, correspondentie opstellen.</div>
-        <div class="fc-hint">Klik voor details</div>
-      </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Marketing</div>
-        <div class="fc-uitleg">Campagneteksten genereren, social media content plannen, briefings verwerken.</div>
-        <div class="fc-hint">Klik voor details</div>
-      </div>
+    <p>Custom Instructions zijn vaste instructies die je aan een Project toevoegt. Claude volgt deze instructies in elke conversatie binnen dat Project. Denk aan: schrijfstijl, doelgroep, taalregels, formats of inhoudelijke richtlijnen.</p>
+    <p>Goede Custom Instructions zijn concreet en specifiek. "Schrijf professioneel" is vaag. "Schrijf in de u-vorm, gebruik korte zinnen van maximaal 20 woorden en vermijd jargon" is bruikbaar.</p>
+  </div>
+  <div class="content-card">
+    <h3>Voorbeeld: Custom Instructions voor een klantenservice-team</h3>
+    <div style="background:var(--fg);color:var(--bg);border-radius:8px;padding:1.25rem;font-family:monospace;font-size:0.85rem;line-height:1.6;margin:0.75rem 0;">
+      Je bent een klantenservice-assistent voor [bedrijfsnaam].<br><br>
+      Regels:<br>
+      - Spreek de klant aan met "u"<br>
+      - Gebruik maximaal 3 alinea's per antwoord<br>
+      - Begin elk antwoord met een korte samenvatting van het probleem<br>
+      - Verwijs bij klachten altijd naar ons retourbeleid<br>
+      - Eindig met een concrete vervolgactie<br>
+      - Gebruik geen uitroeptekens
     </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Schrijf je Custom Instructions alsof je een nieuwe collega instrueert. Wat moet die persoon weten om het werk goed te doen? Welke fouten wil je voorkomen? Welke stijl is verplicht?</p>
   </div>
   <div id="scenario-1" class="scenario-blok">
     <div class="scenario-label">Praktijksituatie</div>
-    <p class="scenario-tekst">Je marketingbureau schrijft wekelijks social media posts, e-mailnieuwsbrieven en blogartikelen. Elke keer moet je de tone of voice uitleggen en de content kalender handmatig bijwerken. Wat is de beste oplossing?</p>
+    <p class="scenario-tekst">Je schrijft wekelijks nieuwsbrieven voor je bedrijf. Elke keer typ je in Claude: "Schrijf in de wij-vorm, houd het onder 300 woorden, gebruik een informele maar professionele toon." Wat is de beste oplossing?</p>
     <div class="scenario-keuzes">
-      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Alleen Gmail koppelen helpt niet bij de tone of voice en content kalender. Een Plugin bundelt alles voor deze werkflow.')">Alleen de Gmail-connector inschakelen</button>
-      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Een Marketing-plugin bundelt de Notion-connector (voor de content kalender), vaste instructies voor de tone of voice, en slash commands voor veelvoorkomende content-types.')">Een Marketing-plugin inschakelen met Notion-connector, tone of voice instructies en content-commando\'s</button>
-      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Elke keer de tone of voice uitleggen kost tijd. Een Plugin slaat die instructies permanent op.')">Elke keer de tone of voice opnieuw uitleggen in Claude</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Dat werkt, maar je blijft jezelf herhalen. Met Custom Instructions in een Project hoeft dat niet meer.')">Elke keer dezelfde instructies in de chat typen</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Door die instructies als Custom Instructions op te slaan in een Project, hoef je ze nooit meer te herhalen. Elke nieuwsbrief-chat volgt automatisch dezelfde regels.')">Een Project aanmaken met Custom Instructions voor je nieuwsbrief-stijl</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Templates kunnen helpen, maar ze bieden niet de vaste context die Custom Instructions geven. Claude past de instructies automatisch toe in een Project.')">De nieuwsbrief volledig zelf schrijven en Claude alleen laten redigeren</button>
     </div>
     <div id="scenario-feedback-1" class="scenario-feedback"></div>
     <div class="btn-wrap" style="margin-top:1rem;">
@@ -103,34 +105,42 @@
 <div id="screen-module-3" class="screen">
   <div class="module-header">
     <div class="module-num">Module 3 van 4</div>
-    <h2>Een eigen Plugin bouwen</h2>
+    <h2>Kennisbestanden in Projects</h2>
   </div>
   <div class="content-card">
-    <h3>Het Plugin Create-proces</h3>
+    <p>Naast Custom Instructions kun je bestanden uploaden naar een Project. Claude gebruikt deze bestanden als referentie in alle gesprekken binnen dat Project.</p>
+    <p>Voorbeelden van nuttige kennisbestanden:</p>
+    <ul style="margin:1rem 0;padding-left:1.5rem;">
+      <li>Huisstijlgids of brand guide</li>
+      <li>Productcatalogus of prijslijst</li>
+      <li>Interne procedures en richtlijnen</li>
+      <li>Eerder geschreven voorbeeldteksten</li>
+      <li>FAQ-documenten of kennisbank-artikelen</li>
+    </ul>
+  </div>
+  <div class="content-card">
+    <h3>Hoe een Project aanmaken</h3>
     <div class="processtroom">
-      <div class="proces-blok"><h4>Beschrijf</h4><p>Welke werkflow wil je?</p></div>
+      <div class="proces-blok"><h4>1. Nieuw Project</h4><p>Klik op "Projects" in claude.ai en maak een nieuw Project</p></div>
       <div class="proces-pijl">&#9658;</div>
-      <div class="proces-blok"><h4>Tools</h4><p>Welke Connectors nodig?</p></div>
+      <div class="proces-blok"><h4>2. Instructies</h4><p>Schrijf je Custom Instructions</p></div>
       <div class="proces-pijl">&#9658;</div>
-      <div class="proces-blok"><h4>Instructies</h4><p>Welke regels altijd gelden?</p></div>
+      <div class="proces-blok"><h4>3. Bestanden</h4><p>Upload je referentiedocumenten</p></div>
       <div class="proces-pijl">&#9658;</div>
-      <div class="proces-blok"><h4>Genereer</h4><p>Claude bouwt de Plugin</p></div>
+      <div class="proces-blok"><h4>4. Gebruik</h4><p>Start een chat binnen het Project</p></div>
     </div>
   </div>
-  <div class="content-card">
-    <p>Via Plugin Create stelt Claude je vragen over wat je wilt en genereert daarna de Plugin voor je. Je hoeft geen technische kennis te hebben. Wel moet je goed weten wat je wilt: welke werkflow, welke tools, welke instructies.</p>
-  </div>
-  <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>Begin niet met bouwen. Begin met nadenken. Welke taken doe je elke week? Welke tools gebruik je daarbij? Welke instructies herhaal je steeds? Die antwoorden vormen je Plugin.</p>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Kennisbestanden hebben een maximale bestandsgrootte (momenteel ongeveer 30 MB per Project). Zeer grote documenten of databases passen hier niet in. Claude leest de bestanden bij elke chat, dus houd ze relevant en beknopt voor de beste resultaten.</p>
   </div>
   <div id="kc-2" class="kennischeck">
     <h3>Kennischeck</h3>
-    <p class="kc-vraag">Heb je programmeerkennis nodig om een eigen Plugin te bouwen?</p>
+    <p class="kc-vraag">Waarom upload je een huisstijlgids als kennisbestand in een Project?</p>
     <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Programmeerkennis is niet nodig. Plugin Create werkt via een gesprek met Claude die je vragen stelt.')">Ja, je moet kunnen programmeren</button>
-      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Plugin Create werkt via een gesprek met Claude. Hij stelt je vragen en genereert de Plugin. Je moet wel goed weten wat je wilt.')">Nee, maar je moet goed weten welke werkflow je wilt stroomlijnen</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Kant-en-klare Plugins zijn er, maar je kunt ook zelf bouwen zonder hulp via Plugin Create.')">Je kunt geen eigen Plugin bouwen, alleen kant-en-klare gebruiken</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Door de huisstijlgids als kennisbestand toe te voegen, verwijst Claude er automatisch naar in elke conversatie binnen dat Project.')">Zodat Claude automatisch je huisstijl volgt zonder dat je die elke keer beschrijft</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Claude leert niet permanent van bestanden. Het gebruikt ze als referentie binnen het Project, maar onthoudt ze niet buiten die context.')">Zodat Claude de huisstijl permanent leert en ook buiten het Project toepast</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Kennisbestanden zijn niet verplicht. Ze zijn optioneel en nuttig als je wilt dat Claude referentiemateriaal bij de hand heeft.')">Dat is verplicht, anders werkt een Project niet</button>
     </div>
     <div id="kc-feedback-2" class="kc-feedback"></div>
   </div>
@@ -139,23 +149,44 @@
 <div id="screen-module-4" class="screen">
   <div class="module-header">
     <div class="module-num">Module 4 van 4</div>
-    <h2>Wanneer Plugin vs Connector?</h2>
+    <h2>In de praktijk</h2>
   </div>
   <div class="content-card">
-    <h3>Keuzewijzer</h3>
+    <h3>Klik op een sector voor een praktijkvoorbeeld</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Makelaarskantoor</div>
+        <div class="fc-uitleg">Project met woningbeschrijving-richtlijnen als Custom Instructions (maximaal aantal woorden, verplichte secties, toon). Kennisbestanden: voorbeeldbeschrijvingen en NVM-richtlijnen. Elke nieuwe woning beschrijf je in een chat binnen dit Project.</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Advocatenkantoor</div>
+        <div class="fc-uitleg">Project met juridische stijlgids als Custom Instructions (formele aanspreking, verplichte disclaimers, verwijzing naar wetsartikelen). Kennisbestanden: interne templates voor brieven en contracten. Claude volgt automatisch het kantoorformat.</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Accountantskantoor</div>
+        <div class="fc-uitleg">Project met rapportageformat als Custom Instructions (secties, nummering, terminologie). Kennisbestanden: standaard rapporttemplates en klantlijst. Elk nieuw rapport volgt hetzelfde format zonder dat je het uitlegt.</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Marketingbureau</div>
+        <div class="fc-uitleg">Project met tone-of-voice richtlijnen per klant. Kennisbestanden: merkhandboek, voorbeeldcampagnes en doelgroepomschrijving. Alle content die Claude schrijft past bij het merk zonder extra uitleg.</div>
+        <div class="fc-hint">Klik voor details</div>
+      </div>
+    </div>
+  </div>
+  <div class="content-card">
+    <h3>Beperkingen om rekening mee te houden</h3>
     <table class="vergelijk-tabel">
-      <thead><tr><th>Situatie</th><th>Keuze</th></tr></thead>
+      <thead><tr><th>Beperking</th><th>Wat betekent dit?</th></tr></thead>
       <tbody>
-        <tr><td>Je wilt Claude koppelen aan een tool voor losse taken</td><td>Connector</td></tr>
-        <tr><td>Je hebt een terugkerende werkflow met meerdere tools</td><td>Plugin</td></tr>
-        <tr><td>Je wilt snel aan de slag zonder setup</td><td>Connector</td></tr>
-        <tr><td>Je wilt vaste instructies en commando's voor een afdeling</td><td>Plugin</td></tr>
+        <tr><td>Maximale bestandsgrootte</td><td>Ongeveer 30 MB aan bestanden per Project. Grote databases passen er niet in.</td></tr>
+        <tr><td>Geen realtime data</td><td>Claude kan niet live je CRM of e-mail checken. Kennisbestanden zijn statisch.</td></tr>
+        <tr><td>Instructies zijn niet waterdicht</td><td>Een gebruiker kan in de chat vragen om de instructies te negeren. Custom Instructions zijn richtlijnen, geen harde blokkering.</td></tr>
+        <tr><td>Alleen op claude.ai</td><td>Projects zijn een functie van claude.ai. Ze werken niet in de API of in Claude Code.</td></tr>
       </tbody>
     </table>
-  </div>
-  <div class="tip-box waarschuwing">
-    <div class="tip-box-label waarschuwing">Let op</div>
-    <p>Plugins vereisen een goede setup. Een slecht geconfigureerde Plugin geeft inconsistente resultaten. Test altijd grondig voordat je een Plugin breed uitrolt.</p>
   </div>
   <div class="btn-wrap">
     <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
@@ -164,10 +195,10 @@
 
 <!-- QUIZ_START -->
 [
-  {"vraag":"Wat is een Plugin?","opties":["Een enkele koppeling met een tool","Een bundel van Connectors, instructies en commando's voor een complete werkflow","Een type abonnement","Een beveiligingsinstelling"],"correct":1,"uitleg":"Een Plugin bundelt meerdere Connectors, vaste instructies en slash commands tot een complete werkoplossing voor een specifieke afdeling of werkflow."},
-  {"vraag":"Wanneer kies je een Plugin boven een Connector?","opties":["Altijd, Plugins zijn beter","Bij terugkerende werkflows met meerdere tools en vaste instructies","Alleen bij Enterprise-abonnementen","Nooit, Connectors zijn genoeg"],"correct":1,"uitleg":"Gebruik een Plugin als je een complete werkflow wilt stroomlijnen die regelmatig terugkomt en meerdere tools en instructies combineert."},
-  {"vraag":"Hoe bouw je een eigen Plugin?","opties":["Door code te schrijven","Via Plugin Create in Claude.ai, waar Claude je vragen stelt","Door Anthropic te vragen het te bouwen","Dat kan niet, alleen kant-en-klare Plugins"],"correct":1,"uitleg":"Via Plugin Create in Claude.ai beschrijf je wat je wilt. Claude stelt je vragen en genereert de Plugin. Geen programmeerkennis nodig."},
-  {"vraag":"Wat bevat een typische Marketing-Plugin?","opties":["Alleen een Gmail-connector","Connectors naar content tools, instructies voor tone of voice en slash commands voor content-types","Alleen een kalender","Een complete website"],"correct":1,"uitleg":"Een Marketing-Plugin combineert connectors (bijv. Notion), vaste instructies (tone of voice, doelgroep) en commando's voor veelvoorkomende taken."},
-  {"vraag":"Waarom is testen belangrijk bij Plugins?","opties":["Het is niet belangrijk","Een slecht geconfigureerde Plugin geeft inconsistente resultaten","Om de kosten te controleren","Om sneltoetsen te leren"],"correct":1,"uitleg":"Plugins combineren meerdere tools en instructies. Een fout in de configuratie kan leiden tot inconsistente of onjuiste resultaten. Test altijd grondig."}
+  {"vraag":"Wat is een Project in claude.ai?","opties":["Een manier om Claude te laten programmeren","Een werkruimte met Custom Instructions en kennisbestanden die in elke chat gelden","Een betaald abonnement","Een map op je computer"],"correct":1,"uitleg":"Een Project combineert Custom Instructions en kennisbestanden in een werkruimte. Alle chats binnen dat Project delen dezelfde context."},
+  {"vraag":"Wat maakt Custom Instructions effectief?","opties":["Ze moeten zo kort mogelijk zijn","Ze moeten concreet en specifiek zijn, zoals een instructie aan een nieuwe collega","Ze moeten in het Engels geschreven zijn","Ze hoeven alleen een onderwerp te benoemen"],"correct":1,"uitleg":"Goede Custom Instructions zijn concreet: specifieke stijlregels, formats en richtlijnen die Claude kan volgen. Vaag formuleren geeft vage resultaten."},
+  {"vraag":"Wat is een goede reden om een kennisbestand aan een Project toe te voegen?","opties":["Het bestand is heel groot en past nergens anders","Je wilt dat Claude er in elke chat binnen dat Project automatisch naar verwijst","Het is verplicht om een Project te laten werken","Je wilt het bestand bewerken via Claude"],"correct":1,"uitleg":"Kennisbestanden zijn nuttig als referentiemateriaal dat Claude automatisch meeneemt in alle gesprekken binnen het Project."},
+  {"vraag":"Welke beperking geldt voor Custom Instructions?","opties":["Ze werken alleen in het Engels","Een gebruiker kan in de chat vragen om ze te negeren","Ze verdwijnen na 24 uur","Ze kosten extra per gebruik"],"correct":1,"uitleg":"Custom Instructions zijn richtlijnen, geen harde blokkering. Een gebruiker kan Claude vragen om ervan af te wijken. Ze zijn sturend, niet afdwingend."},
+  {"vraag":"Voor welk scenario is een Project het meest geschikt?","opties":["Een eenmalige vraag aan Claude","Een terugkerende taak met vaste stijl, regels en referentiedocumenten","Het opslaan van persoonlijke notities","Het automatiseren van e-mail"],"correct":1,"uitleg":"Projects zijn het meest waardevol bij terugkerende taken waar je steeds dezelfde context, stijl en documenten nodig hebt. Voor eenmalige vragen is een gewone chat voldoende."}
 ]
 <!-- QUIZ_END -->
