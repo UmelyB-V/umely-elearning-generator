@@ -182,11 +182,18 @@ app.get('/api/modules', requireAuth, async (req, res) => {
 
 // ── Beveiligd HTML-endpoint (Bearer token vereist) ──
 app.get('/api/module-html/:slug', requireAuth, async (req, res) => {
-  const { data, error } = await supabase
+  let { data, error } = await supabase
     .from('modules')
     .select('html')
     .eq('slug', req.params.slug)
     .single();
+  if (error || !data) {
+    ({ data, error } = await supabase
+      .from('modules')
+      .select('html')
+      .eq('filename', req.params.slug + '.html')
+      .single());
+  }
   if (error || !data) return res.status(404).send('Module niet gevonden');
   res.setHeader('Content-Type', 'text/html');
   res.send(data.html);
