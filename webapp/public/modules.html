@@ -63,7 +63,7 @@
   #loginBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
   header {
-    background: var(--gradient); border-bottom: none;
+    background: var(--charcoal); border-bottom: none;
     padding: 0 32px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
   }
@@ -172,7 +172,7 @@
 
   .drag-hint { font-size: 12px; color: #bbb; text-align: right; margin-bottom: 12px; }
 
-  footer { padding: 24px 32px; text-align: center; background: var(--gradient); margin-top: 64px; }
+  footer { padding: 24px 32px; text-align: center; background: var(--charcoal); margin-top: 64px; }
   footer p { font-size: 13px; color: rgba(255,255,255,0.85); }
   footer a { color: white; font-weight: 700; text-decoration: none; }
 
@@ -202,15 +202,19 @@
       <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
     </div>
     <button id="loginBtn" onclick="login()">Inloggen</button>
+    <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--gray-text);">
+      Nog geen account? <a href="#" id="toggleSignup" onclick="toggleAuthMode(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Registreer</a>
+    </p>
   </div>
 </div>
 
 <header>
   <a class="logo" href="/">
-    <img src="/logo.png" alt="Umely" style="height:65px;">
+    <img src="/logo.png" alt="Umely" style="height:65px;filter:brightness(0) invert(1);">
   </a>
   <div class="header-actions">
     <span class="header-user" id="headerUser"></span>
+    <a class="btn-sm btn-ghost" href="/account.html">Mijn account</a>
     <a class="btn-sm btn-ghost" href="/">+ Nieuwe e-learning</a>
     <button class="btn-logout" id="logoutBtn" onclick="logout()">Uitloggen</button>
   </div>
@@ -272,6 +276,28 @@ function showApp(session) {
   userEl.style.display = 'block';
 }
 
+let isSignupMode = false;
+
+function toggleAuthMode(e) {
+  e.preventDefault();
+  isSignupMode = !isSignupMode;
+  const btn = document.getElementById('loginBtn');
+  const toggle = document.getElementById('toggleSignup');
+  const errEl = document.getElementById('authError');
+  errEl.style.display = 'none';
+  if (isSignupMode) {
+    btn.textContent = 'Registreer';
+    btn.setAttribute('onclick', 'signup()');
+    toggle.textContent = 'Inloggen';
+    toggle.parentElement.firstChild.textContent = 'Al een account? ';
+  } else {
+    btn.textContent = 'Inloggen';
+    btn.setAttribute('onclick', 'login()');
+    toggle.textContent = 'Registreer';
+    toggle.parentElement.firstChild.textContent = 'Nog geen account? ';
+  }
+}
+
 async function login() {
   const email = document.getElementById('authEmail').value.trim();
   const password = document.getElementById('authPassword').value;
@@ -288,6 +314,39 @@ async function login() {
     errEl.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Inloggen';
+  }
+}
+
+async function signup() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('authError');
+
+  if (password.length < 6) {
+    errEl.textContent = 'Wachtwoord moet minimaal 6 tekens zijn.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Registreren...';
+
+  const { error } = await _supabase.auth.signUp({ email, password });
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Registreer';
+  } else {
+    errEl.style.display = 'block';
+    errEl.style.background = '#F0FDF4';
+    errEl.style.borderColor = '#BBF7D0';
+    errEl.style.color = '#15803D';
+    errEl.textContent = 'Account aangemaakt! Check je e-mail om te bevestigen, of log direct in.';
+    btn.disabled = false;
+    btn.textContent = 'Registreer';
   }
 }
 
@@ -322,6 +381,8 @@ function applyOrder(modules) {
   return [...ordered, ...rest];
 }
 
+let userRole = 'user';
+
 async function loadModules() {
   const grid = document.getElementById('grid');
   grid.className = 'loading';
@@ -329,8 +390,10 @@ async function loadModules() {
   try {
     const res = await fetch('/api/modules', { headers: authHeader() });
     if (res.status === 401) { showLogin(); return; }
-    const raw = await res.json();
-    const modules = applyOrder(raw);
+    const json = await res.json();
+    userRole = json.role || 'user';
+    const modules = applyOrder(json.modules);
+    const isAdmin = userRole === 'admin';
 
     if (modules.length === 0) {
       document.getElementById('searchWrap').style.display = 'none';
@@ -341,41 +404,45 @@ async function loadModules() {
           <div class="empty-icon">📭</div>
           <h2>Nog geen modules</h2>
           <p>Genereer je eerste e-learning via de homepage.</p>
-          <a href="/" class="btn-sm btn-primary" style="display:inline-flex;align-items:center;gap:6px;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:700;background:linear-gradient(135deg,#FF8514,#FF4D00);color:white;text-decoration:none;">✨ Maak eerste e-learning</a>
+          <a href="/" class="btn-sm btn-primary" style="display:inline-flex;align-items:center;gap:6px;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:700;background:linear-gradient(135deg,#FF8514,#FF4D00);color:white;text-decoration:none;">Maak eerste e-learning</a>
         </div>`;
       return;
     }
 
     document.getElementById('searchWrap').style.display = 'block';
-    document.getElementById('dragHint').style.display = 'block';
+    document.getElementById('dragHint').style.display = isAdmin ? 'block' : 'none';
     grid.className = 'grid';
     grid.innerHTML = modules.map((m, i) => {
       const icon = icons[i % icons.length];
       const dateFormatted = new Date(m.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+      const adminActions = isAdmin ? `
+            <div class="card-actions">
+              <button class="btn-rename" title="Naam wijzigen" onclick="renameModule('${m.slug}', this)">✏️</button>
+              <button class="btn-delete" title="Verwijder module" onclick="deleteModule('${m.slug}', '${m.title.replace(/'/g, "\\'")}', this)">🗑</button>
+            </div>` : '';
       return `
         <div class="module-card" data-slug="${m.slug}">
-          <span class="drag-handle" title="Versleep om te herordenen">⠿</span>
+          ${isAdmin ? '<span class="drag-handle" title="Versleep om te herordenen">⠿</span>' : ''}
           <div class="module-icon">${icon}</div>
           <div class="module-badge">Umely E-learning</div>
           <a class="module-title" href="${m.url}" target="_blank" style="color:var(--charcoal);text-decoration:none;">${m.title}</a>
           <div class="module-date">Aangemaakt op ${dateFormatted}</div>
           <div class="module-footer">
-            <a class="module-link" href="${m.url}" target="_blank">Bekijk module →</a>
-            <div class="card-actions">
-              <button class="btn-rename" title="Naam wijzigen" onclick="renameModule('${m.slug}', this)">✏️</button>
-              <button class="btn-delete" title="Verwijder module" onclick="deleteModule('${m.slug}', '${m.title.replace(/'/g, "\\'")}', this)">🗑</button>
-            </div>
+            <a class="module-link" href="${m.url}" target="_blank">Bekijk module</a>
+            ${adminActions}
           </div>
         </div>`;
     }).join('');
 
-    Sortable.create(grid, {
-      handle: '.drag-handle',
-      animation: 150,
-      ghostClass: 'sortable-ghost',
-      dragClass: 'sortable-drag',
-      onEnd: saveOrder
-    });
+    if (isAdmin) {
+      Sortable.create(grid, {
+        handle: '.drag-handle',
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        dragClass: 'sortable-drag',
+        onEnd: saveOrder
+      });
+    }
 
   } catch (e) {
     grid.innerHTML = '<div class="empty-state"><p>Kon modules niet laden. Is de server actief?</p></div>';

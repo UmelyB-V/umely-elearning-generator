@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mijn Account | Umely</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --amber: #FF8514;
+    --flame: #FF4D00;
+    --gold: #FFD964;
+    --charcoal: #27292D;
+    --warm-white: #FFF8F2;
+    --white: #FFFFFF;
+    --cream: #F7E6C2;
+    --peach: #FFD7AD;
+    --gray-text: #4A4A4A;
+    --gray-border: #EDE0D4;
+    --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--warm-white); color: var(--gray-text); min-height: 100vh; }
+
+  /* ── AUTH OVERLAY ── */
+  #authOverlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(39,41,45,0.85); backdrop-filter: blur(6px);
+    z-index: 1000; align-items: center; justify-content: center;
+  }
+  .auth-card {
+    background: var(--white); border-radius: 20px; padding: 48px;
+    max-width: 400px; width: 90%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  }
+  .auth-card .auth-logo { text-align: center; margin-bottom: 28px; }
+  .auth-card .auth-logo h2 { font-size: 22px; font-weight: 800; color: var(--charcoal); margin-bottom: 6px; }
+  .auth-card .auth-logo p { font-size: 14px; color: var(--gray-text); }
+  .auth-field { margin-bottom: 14px; }
+  .auth-field label { display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+  .auth-field input {
+    width: 100%; padding: 12px 16px;
+    border: 2px solid var(--gray-border); border-radius: 10px;
+    font-family: 'Inter', system-ui, sans-serif; font-size: 14px;
+    color: var(--charcoal); outline: none; transition: border-color 0.15s;
+  }
+  .auth-field input:focus { border-color: var(--amber); }
+  #authError {
+    display: none; background: #FEF2F2; border: 1px solid #FCA5A5;
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;
+    font-size: 13px; color: #991B1B;
+  }
+  #loginBtn {
+    width: 100%; padding: 14px; background: var(--gradient);
+    color: white; border: none; border-radius: 50px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: opacity 0.2s; margin-top: 6px;
+  }
+  #loginBtn:hover:not(:disabled) { opacity: 0.88; }
+  #loginBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  header {
+    background: var(--charcoal); border-bottom: none;
+    padding: 0 32px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: white; text-decoration: none; }
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+  .header-user { font-size: 13px; color: rgba(255,255,255,0.85); display: none; }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 700;
+    cursor: pointer; text-decoration: none; border: none;
+    transition: all 0.15s;
+  }
+  .btn-ghost { background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.6); backdrop-filter: blur(4px); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.35); }
+  .btn-logout {
+    background: none; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 600;
+    cursor: pointer; display: none; transition: all 0.15s;
+  }
+  .btn-logout:hover { background: rgba(255,255,255,0.15); color: white; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 48px 20px; }
+
+  .section { margin-bottom: 40px; }
+  .section h2 { font-size: 22px; font-weight: 800; color: var(--charcoal); margin-bottom: 16px; }
+
+  .profile-card {
+    background: var(--white); border: 1px solid var(--gray-border);
+    border-radius: 14px; padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    display: flex; gap: 20px; align-items: center;
+  }
+  .profile-avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--gradient); display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: white; font-weight: 800; flex-shrink: 0;
+  }
+  .profile-info h3 { font-size: 18px; font-weight: 700; color: var(--charcoal); }
+  .profile-info p { font-size: 14px; color: var(--gray-text); margin-top: 2px; }
+  .role-badge {
+    display: inline-block; padding: 3px 12px;
+    border-radius: 50px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-top: 6px;
+  }
+  .role-badge.admin { background: var(--cream); color: var(--flame); }
+  .role-badge.user { background: #E8E8E8; color: #666; }
+
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .stat-card {
+    background: var(--white); border: 1px solid var(--gray-border);
+    border-radius: 14px; padding: 24px; text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .stat-value { font-size: 32px; font-weight: 800; color: var(--charcoal); }
+  .stat-label { font-size: 13px; color: var(--gray-text); margin-top: 4px; }
+
+  .users-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    background: var(--white); border: 1px solid var(--gray-border);
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .users-table th {
+    background: var(--charcoal); color: var(--gold);
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 12px 16px; text-align: left;
+  }
+  .users-table td {
+    padding: 12px 16px; font-size: 14px;
+    border-top: 1px solid var(--gray-border);
+  }
+  .users-table tr:hover td { background: rgba(255,133,20,0.04); }
+  .role-select {
+    padding: 6px 12px; border: 2px solid var(--gray-border);
+    border-radius: 8px; font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px; font-weight: 600; color: var(--charcoal);
+    background: var(--white); cursor: pointer; outline: none;
+  }
+  .role-select:focus { border-color: var(--amber); }
+
+  .loading { text-align: center; padding: 40px; color: var(--gray-text); }
+
+  footer { padding: 24px 32px; text-align: center; background: var(--charcoal); margin-top: 64px; }
+  footer p { font-size: 13px; color: rgba(255,255,255,0.85); }
+  footer a { color: white; font-weight: 700; text-decoration: none; }
+
+  @media(max-width:600px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .profile-card { flex-direction: column; text-align: center; }
+    main { padding: 24px 16px; }
+    .users-table { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Auth overlay -->
+<div id="authOverlay" style="display:flex;">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="/logo.png" alt="Umely" style="height:80px;">
+      <h2>Welkom bij Umely</h2>
+      <p>Log in om je account te bekijken.</p>
+    </div>
+    <div id="authError"></div>
+    <div class="auth-field">
+      <label>E-mailadres</label>
+      <input id="authEmail" type="email" placeholder="naam@bedrijf.nl" autocomplete="email">
+    </div>
+    <div class="auth-field">
+      <label>Wachtwoord</label>
+      <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button id="loginBtn" onclick="login()">Inloggen</button>
+    <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--gray-text);">
+      Nog geen account? <a href="#" id="toggleSignup" onclick="toggleAuthMode(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Registreer</a>
+    </p>
+  </div>
+</div>
+
+<header>
+  <a class="logo" href="/">
+    <img src="/logo.png" alt="Umely" style="height:65px;filter:brightness(0) invert(1);">
+  </a>
+  <div class="header-actions">
+    <span class="header-user" id="headerUser"></span>
+    <a class="btn-sm btn-ghost" href="/modules.html">Bibliotheek</a>
+    <a class="btn-sm btn-ghost" href="/">+ Nieuwe e-learning</a>
+    <button class="btn-logout" id="logoutBtn" onclick="logout()">Uitloggen</button>
+  </div>
+</header>
+
+<main>
+  <div class="section">
+    <h2>Mijn profiel</h2>
+    <div id="profileCard" class="loading">Laden...</div>
+  </div>
+
+  <div class="section">
+    <h2>Mijn statistieken</h2>
+    <div id="statsGrid" class="loading">Laden...</div>
+  </div>
+
+  <div class="section" id="adminSection" style="display:none;">
+    <h2>Gebruikersbeheer (admin)</h2>
+    <div id="usersTable" class="loading">Laden...</div>
+  </div>
+</main>
+
+<footer>
+  <p><strong>Umely</strong> - Jouw vaste AI-partner | <a href="https://umely.ai" target="_blank">umely.ai</a></p>
+</footer>
+
+<script>
+let _supabase = null;
+let _session = null;
+
+async function initAuth() {
+  try {
+    const config = await fetch('/api/config').then(r => r.json());
+    _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+    showLogin();
+    _supabase.auth.onAuthStateChange((event, session) => {
+      _session = session;
+      if (event === 'SIGNED_IN') { showApp(session); loadAccount(); }
+      else if (event === 'SIGNED_OUT') showLogin();
+    });
+  } catch (e) {
+    console.error('Auth initialisatie mislukt:', e);
+    showLogin();
+  }
+}
+
+function showLogin() {
+  document.getElementById('authOverlay').style.display = 'flex';
+}
+
+function showApp(session) {
+  document.getElementById('authOverlay').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'block';
+  const userEl = document.getElementById('headerUser');
+  userEl.textContent = session.user.email;
+  userEl.style.display = 'block';
+}
+
+let isSignupMode = false;
+
+function toggleAuthMode(e) {
+  e.preventDefault();
+  isSignupMode = !isSignupMode;
+  const btn = document.getElementById('loginBtn');
+  const toggle = document.getElementById('toggleSignup');
+  const errEl = document.getElementById('authError');
+  errEl.style.display = 'none';
+  if (isSignupMode) {
+    btn.textContent = 'Registreer';
+    btn.setAttribute('onclick', 'signup()');
+    toggle.textContent = 'Inloggen';
+    toggle.parentElement.firstChild.textContent = 'Al een account? ';
+  } else {
+    btn.textContent = 'Inloggen';
+    btn.setAttribute('onclick', 'login()');
+    toggle.textContent = 'Registreer';
+    toggle.parentElement.firstChild.textContent = 'Nog geen account? ';
+  }
+}
+
+async function login() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('authError');
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Inloggen...';
+  const { error } = await _supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Inloggen';
+  }
+}
+
+async function signup() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('authError');
+
+  if (password.length < 6) {
+    errEl.textContent = 'Wachtwoord moet minimaal 6 tekens zijn.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Registreren...';
+
+  const { error } = await _supabase.auth.signUp({ email, password });
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Registreer';
+  } else {
+    errEl.style.display = 'block';
+    errEl.style.background = '#F0FDF4';
+    errEl.style.borderColor = '#BBF7D0';
+    errEl.style.color = '#15803D';
+    errEl.textContent = 'Account aangemaakt! Check je e-mail om te bevestigen, of log direct in.';
+    btn.disabled = false;
+    btn.textContent = 'Registreer';
+  }
+}
+
+async function logout() {
+  await _supabase.auth.signOut();
+  window.location.reload();
+}
+
+function authHeader() {
+  return _session ? { 'Authorization': `Bearer ${_session.access_token}` } : {};
+}
+
+async function loadAccount() {
+  try {
+    const res = await fetch('/api/user/profile', { headers: authHeader() });
+    if (res.status === 401) { showLogin(); return; }
+    const { profile, progress } = await res.json();
+
+    // Profiel kaart
+    const initial = (profile.email || '?')[0].toUpperCase();
+    document.getElementById('profileCard').innerHTML = `
+      <div class="profile-card">
+        <div class="profile-avatar">${initial}</div>
+        <div class="profile-info">
+          <h3>${profile.email}</h3>
+          <p>Lid sinds ${new Date(profile.created_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+          <span class="role-badge ${profile.role}">${profile.role === 'admin' ? 'Admin' : 'Gebruiker'}</span>
+        </div>
+      </div>`;
+
+    // Statistieken
+    const started = progress.length;
+    const completed = progress.filter(p => p.completed_at).length;
+    const scores = progress.filter(p => p.quiz_score !== null).map(p => p.quiz_score);
+    const avgScore = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+
+    document.getElementById('statsGrid').innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">${started}</div>
+          <div class="stat-label">Modules gestart</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${completed}</div>
+          <div class="stat-label">Modules afgerond</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${avgScore}%</div>
+          <div class="stat-label">Gemiddelde quizscore</div>
+        </div>
+      </div>`;
+
+    // Admin sectie
+    if (profile.role === 'admin') {
+      document.getElementById('adminSection').style.display = 'block';
+      loadUsers();
+    }
+  } catch (e) {
+    console.error(e);
+    document.getElementById('profileCard').innerHTML = '<p>Kon profiel niet laden.</p>';
+  }
+}
+
+async function loadUsers() {
+  try {
+    const res = await fetch('/api/users', { headers: authHeader() });
+    if (!res.ok) return;
+    const users = await res.json();
+
+    document.getElementById('usersTable').innerHTML = `
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>E-mail</th>
+            <th>Rol</th>
+            <th>Modules gestart</th>
+            <th>Modules afgerond</th>
+            <th>Gem. score</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${users.map(u => {
+            const started = u.progress.length;
+            const completed = u.progress.filter(p => p.completed_at).length;
+            const scores = u.progress.filter(p => p.quiz_score !== null).map(p => p.quiz_score);
+            const avg = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : '-';
+            return `
+              <tr>
+                <td>${u.email}</td>
+                <td>
+                  <select class="role-select" onchange="changeRole('${u.id}', this.value)" ${u.id === _session.user.id ? 'disabled title="Je kunt je eigen rol niet wijzigen"' : ''}>
+                    <option value="user" ${u.role === 'user' ? 'selected' : ''}>Gebruiker</option>
+                    <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+                  </select>
+                </td>
+                <td>${started}</td>
+                <td>${completed}</td>
+                <td>${avg}${avg !== '-' ? '%' : ''}</td>
+              </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
+  } catch (e) {
+    document.getElementById('usersTable').innerHTML = '<p>Kon gebruikers niet laden.</p>';
+  }
+}
+
+async function changeRole(userId, newRole) {
+  try {
+    const res = await fetch(`/api/users/${userId}/role`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
+      body: JSON.stringify({ role: newRole })
+    });
+    if (!res.ok) throw new Error('Kon rol niet wijzigen');
+  } catch (e) {
+    alert(e.message);
+    loadUsers();
+  }
+}
+
+initAuth();
+</script>
+</body>
+</html>

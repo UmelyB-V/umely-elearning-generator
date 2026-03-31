@@ -44,6 +44,24 @@ COMPOSITIEREGELS (verplicht):
 6. Varieer de structuur per module. Niet elke module begint met tekst.
 7. Kies componenten op basis van de inhoud. Een vergelijking vraagt om een tabel, een proces om een processtroom, een reeks stappen om een stappenuitleg.
 
+DIEPGANG PER ONDERWERP (verplicht):
+Ga NIET oppervlakkig door onderwerpen heen. Elk belangrijk begrip verdient een volledige behandeling.
+Volg dit patroon per kernonderwerp binnen een module:
+1. UITLEG - Leg het onderwerp grondig uit in 2-4 alinea's. Wat is het, waarom bestaat het, hoe werkt het in de praktijk.
+2. VOORBEELD - Geef een concreet, herkenbaar voorbeeld uit de praktijk.
+3. AANDACHTSPUNTEN - Benoem waar je rekening mee moet houden, veelgemaakte fouten, of beperkingen.
+4. INTERACTIE - Pas dan een kennischeck, invulveld of ander interactief component toe.
+
+Doe dit voor ELK belangrijk begrip. Een module mag meerdere van deze cycli bevatten.
+Schrijf NOOIT een begrip af in 2-3 zinnen om dan direct een vraag erover te stellen.
+
+FEITELIJKE NAUWKEURIGHEID (verplicht):
+- Maak geen overdreven claims (bijv. "verreweg de beste" of "absoluut veiligste").
+- Benoem altijd nuance en beperkingen. Geen enkele tool of technologie is perfect.
+- Als iets "niet kan" maar er een uitzondering is (bijv. een optionele plugin of instelling), benoem die uitzondering.
+- Baseer uitspraken op de transcriptie. Voeg geen eigen aannames of meningen toe die niet in de bron staan.
+- Bij twijfel: formuleer voorzichtiger ("over het algemeen", "in de meeste gevallen") in plaats van absoluut.
+
 BESCHIKBARE COMPONENTTYPEN (14 stuks):
 Tekst: tekstblok, stappenuitleg, tip/let-op box, vergelijkingstabel
 Interactief: kennischeck, invulveld, drag-and-drop, flashcard-set, klikbaar diagram, sorteer-oefening, scenario/casestudy
@@ -109,14 +127,14 @@ VERBODEN kleuren - gebruik deze NOOIT:
 COMPONENTEN - kopieer deze CSS letterlijk
 ════════════════════════════════════════════════════
 
-HEADER (sticky, warm wit - GEEN oranje achtergrond):
+HEADER (sticky, donkergrijs):
 
 header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg);
-  border-bottom: 1px solid var(--peach);
+  background: var(--fg);
+  border-bottom: 1px solid rgba(255,248,242,0.1);
   padding: 0.75rem 1.5rem 0;
 }
 .header-inner {
@@ -130,7 +148,7 @@ header {
   font-family: var(--font-h);
   font-weight: 700;
   font-size: 1.25rem;
-  color: var(--fg);
+  color: var(--bg);
   text-decoration: none;
 }
 .logo span { color: var(--amber); }
@@ -138,16 +156,16 @@ header {
   font-family: var(--font-h);
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--fg);
-  opacity: 0.7;
+  color: var(--bg);
+  opacity: 0.8;
   text-align: center;
 }
 .header-back {
   font-size: 0.8rem;
-  color: var(--fg);
+  color: var(--bg);
   text-decoration: none;
   font-weight: 600;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 .header-back:hover { opacity: 1; }
 
@@ -155,14 +173,14 @@ HEADER HTML (altijd exact zo, met moduletitel zichtbaar in het midden):
 
 <header>
   <div class="header-inner">
-    <a class="logo" href="#"><img src="/logo.png" alt="Umely" style="height:32px;"></a>
+    <a class="logo" href="#"><img src="/logo.png" alt="Umely" style="height:40px;object-fit:contain;filter:brightness(0) invert(1);"></a>
     <span class="header-title" id="header-module-title"></span>
     <a class="header-back" href="/modules.html">Bibliotheek</a>
   </div>
-  <div style="max-width:860px;margin:0.75rem auto 0;background:var(--peach);border-radius:50px;height:6px;overflow:hidden;">
+  <div style="max-width:860px;margin:0.75rem auto 0;background:rgba(255,248,242,0.15);border-radius:50px;height:6px;overflow:hidden;">
     <div id="progressBar" style="height:100%;background:var(--gradient);border-radius:50px;transition:width 0.4s ease;width:0%;"></div>
   </div>
-  <div id="progressLabel" style="text-align:right;font-size:0.75rem;color:var(--amber);font-weight:600;max-width:860px;margin:0.25rem auto 0.5rem;padding-right:0;">0% voltooid</div>
+  <div id="progressLabel" style="text-align:right;font-size:0.75rem;color:var(--gold);font-weight:600;max-width:860px;margin:0.25rem auto 0.5rem;padding-right:0;">0% voltooid</div>
 </header>
 
 KNOPPEN:
@@ -292,10 +310,10 @@ TIJDSBADGE:
   margin-bottom: 1.5rem;
 }
 
-MODULE-HEADERS (warm gradient, charcoal tekst):
+MODULE-HEADERS (donkergrijs, lichte tekst):
 
 .module-header {
-  background: var(--gradient-warm);
+  background: var(--fg);
   border-radius: var(--radius);
   padding: 1.25rem 1.5rem;
   margin-bottom: 1.5rem;
@@ -305,13 +323,13 @@ MODULE-HEADERS (warm gradient, charcoal tekst):
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--fg);
+  color: var(--gold);
   margin-bottom: 0.25rem;
 }
 .module-header h2 {
   font-family: var(--font-h);
   font-size: 1.5rem;
-  color: var(--fg);
+  color: var(--bg);
   margin: 0;
 }
 
@@ -859,6 +877,13 @@ function goTo(screenId) {
   }
 }
 
+function goBack() {
+  const huidig = [...document.querySelectorAll('.screen')].find(s => s.style.display === 'block');
+  if (!huidig) return;
+  const idx = SCHERMEN.indexOf(huidig.id);
+  if (idx > 0) goTo(SCHERMEN[idx - 1]);
+}
+
 function updateProgress(screenId) {
   const idx = SCHERMEN.indexOf(screenId);
   const pct = idx < 0 ? 100 : Math.round((idx / (SCHERMEN.length - 1)) * 100);
@@ -998,6 +1023,23 @@ function toonResultaat() {
     document.getElementById('cert-datum').textContent = 'Behaald op ' +
       new Date().toLocaleDateString('nl-NL', { day:'numeric', month:'long', year:'numeric' });
   }
+  slaVoortgangOp(true, pct);
+}
+
+function slaVoortgangOp(completed, quizScore) {
+  const slug = location.pathname.split('/modules/')[1];
+  if (!slug) return;
+  const headers = { 'Content-Type': 'application/json' };
+  if (window.__AUTH_TOKEN__) headers['Authorization'] = 'Bearer ' + window.__AUTH_TOKEN__;
+  fetch('/api/user/progress', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      module_filename: slug + '.html',
+      completed: !!completed,
+      quiz_score: quizScore || null
+    })
+  }).catch(() => {});
 }
 
 HERSTART:
@@ -1141,8 +1183,11 @@ Kies per module de meest passende componenten op basis van de inhoud.
 Combineer vrij uit deze 14 typen. Gebruik minimaal 5 verschillende typen per e-learning.
 Varieer altijd. Nooit twee dezelfde interactievormen achter elkaar.
 
-NAVIGATIEREGEL: Het LAATSTE component in elke module moet een knop bevatten
-die naar het volgende scherm navigeert via onclick="goTo('screen-module-N')".
+NAVIGATIEREGEL: Het LAATSTE component in elke module moet navigatieknoppen bevatten.
+Gebruik altijd een btn-wrap met daarin:
+- Een "Vorige" knop (btn btn-outline) met onclick="goBack()" - NIET tonen op screen-welcome.
+- Een "Volgende" knop (btn) met onclick="goTo('screen-module-N')".
+Voorbeeld: <div class="btn-wrap"><button class="btn btn-outline" onclick="goBack()">Vorige</button><button class="btn" onclick="goTo('screen-module-2')">Volgende</button></div>
 Tussenliggende componenten hoeven geen navigatieknop te hebben.
 Voeg aan interactieve componenten (kennischeck, invulveld, sorteer, scenario)
 altijd een "Volgende" knop toe zodat de gebruiker na interactie verder kan.
@@ -1480,6 +1525,7 @@ RESULTAAT HTML (gebruik de echte moduletitel, geen placeholder):
   </div>
   <div class="btn-wrap">
     <button class="btn btn-outline" onclick="herstart()">Opnieuw beginnen</button>
+    <a class="btn" href="/modules.html">Volgende module</a>
   </div>
 </div>
 

@@ -16,6 +16,7 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 3 });
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 // ── Auth middleware ──
 async function requireAuth(req, res, next) {
@@ -62,7 +63,7 @@ app.post('/generate', requireAuth, async (req, res) => {
     try {
       const stream = await client.messages.stream({
         model: 'claude-sonnet-4-6',
-        max_tokens: 32000,
+        max_tokens: 64000,
         system: SYSTEM_PROMPT,
         messages: [{
           role: 'user',
@@ -144,20 +145,30 @@ app.get('/api/job/:jobId', (req, res) => {
   res.json(job);
 });
 
-// ── API: lijst van alle modules ──
+// ── API: lijst van alle modules + gebruikersrol ──
 app.get('/api/modules', requireAuth, async (req, res) => {
   const { data, error } = await supabase
     .from('modules')
     .select('filename, title, created_at')
     .order('created_at', { ascending: true });
   if (error) return res.status(500).json({ error: error.message });
-  res.json(data.map(m => ({
-    filename: m.filename,
-    slug: m.filename.replace('.html', ''),
-    title: m.title,
-    date: m.created_at.slice(0, 10),
-    url: `/modules/${m.filename.replace('.html', '')}`
-  })));
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', req.user.id)
+    .single();
+
+  res.json({
+    role: profile?.role || 'user',
+    modules: data.map(m => ({
+      filename: m.filename,
+      slug: m.filename.replace('.html', ''),
+      title: m.title,
+      date: m.created_at.slice(0, 10),
+      url: `/modules/${m.filename.replace('.html', '')}`
+    }))
+  });
 });
 
 // ── Beveiligd HTML-endpoint (Bearer token vereist) ──
@@ -203,14 +214,22 @@ app.get('/modules/:slug', (req, res) => {
     window.location.href = '/?redirect=' + encodeURIComponent('/modules/${slug}');
     return;
   }
+  const token = session.access_token;
   const res = await fetch('/api/module-html/${slug}', {
-    headers: { 'Authorization': 'Bearer ' + session.access_token }
+    headers: { 'Authorization': 'Bearer ' + token }
   });
   if (!res.ok) {
     document.body.innerHTML = '<div style="text-align:center;padding:80px;font-family:system-ui"><h2>Module niet gevonden</h2><a href="/modules.html" style="color:#FF8514">← Terug naar bibliotheek</a></div>';
     return;
   }
+  // Registreer module als gestart
+  fetch('/api/user/progress', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ module_filename: '${slug}.html' })
+  }).catch(() => {});
   const html = await res.text();
+  window.__AUTH_TOKEN__ = token;
   document.open();
   document.write(html);
   document.close();
@@ -220,8 +239,110 @@ app.get('/modules/:slug', (req, res) => {
 </html>`);
 });
 
-// ── Hernoem een module ──
-app.patch('/api/modules/:slug', requireAuth, async (req, res) => {
+// ── Admin middleware ──
+async function requireAdmin(req, res, next) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', req.user.id)
+    .single();
+  if (error || !data || data.role !== 'admin') {
+    return res.status(403).json({ error: 'Geen admin-rechten' });
+  }
+  req.role = 'admin';
+  next();
+}
+
+// ── Profiel ophalen (eigen profiel + stats) ──
+app.get('/api/user/profile', requireAuth, async (req, res) => {
+  const { data: profile, error: pErr } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', req.user.id)
+    .single();
+
+  // Als profiel nog niet bestaat, maak het aan
+  if (pErr || !profile) {
+    const { data: newProfile, error: insertErr } = await supabase
+      .from('profiles')
+      .insert({ id: req.user.id, email: req.user.email, role: 'user' })
+      .select()
+      .single();
+    if (insertErr) return res.status(500).json({ error: insertErr.message });
+
+    const { data: progress } = await supabase
+      .from('user_progress')
+      .select('*')
+      .eq('user_id', req.user.id);
+
+    return res.json({ profile: newProfile, progress: progress || [] });
+  }
+
+  const { data: progress } = await supabase
+    .from('user_progress')
+    .select('*')
+    .eq('user_id', req.user.id);
+
+  res.json({ profile, progress: progress || [] });
+});
+
+// ── Alle gebruikers ophalen (admin) ──
+app.get('/api/users', requireAuth, requireAdmin, async (req, res) => {
+  const { data: users, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .order('created_at', { ascending: true });
+  if (error) return res.status(500).json({ error: error.message });
+
+  // Voortgang per gebruiker ophalen
+  const { data: allProgress } = await supabase
+    .from('user_progress')
+    .select('*');
+
+  const enriched = users.map(u => ({
+    ...u,
+    progress: (allProgress || []).filter(p => p.user_id === u.id)
+  }));
+
+  res.json(enriched);
+});
+
+// ── Gebruikersrol wijzigen (admin) ──
+app.patch('/api/users/:userId/role', requireAuth, requireAdmin, async (req, res) => {
+  const { role } = req.body;
+  if (!role || !['admin', 'user'].includes(role)) {
+    return res.status(400).json({ error: 'Ongeldige rol. Kies "admin" of "user".' });
+  }
+  const { error } = await supabase
+    .from('profiles')
+    .update({ role })
+    .eq('id', req.params.userId);
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ ok: true });
+});
+
+// ── Voortgang opslaan ──
+app.post('/api/user/progress', requireAuth, async (req, res) => {
+  const { module_filename, completed, quiz_score } = req.body;
+  if (!module_filename) return res.status(400).json({ error: 'module_filename is verplicht.' });
+
+  const record = {
+    user_id: req.user.id,
+    module_filename,
+    started_at: new Date().toISOString()
+  };
+  if (completed) record.completed_at = new Date().toISOString();
+  if (quiz_score !== undefined) record.quiz_score = quiz_score;
+
+  const { error } = await supabase
+    .from('user_progress')
+    .upsert(record, { onConflict: 'user_id,module_filename' });
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ ok: true });
+});
+
+// ── Hernoem een module (admin) ──
+app.patch('/api/modules/:slug', requireAuth, requireAdmin, async (req, res) => {
   const filename = req.params.slug + '.html';
   const { title } = req.body;
   if (!title || !title.trim()) return res.status(400).json({ error: 'Titel mag niet leeg zijn.' });
@@ -230,12 +351,130 @@ app.patch('/api/modules/:slug', requireAuth, async (req, res) => {
   res.json({ ok: true });
 });
 
-// ── Verwijder een module ──
-app.delete('/api/modules/:slug', requireAuth, async (req, res) => {
+// ── Verwijder een module (admin) ──
+app.delete('/api/modules/:slug', requireAuth, requireAdmin, async (req, res) => {
   const filename = req.params.slug + '.html';
   const { error } = await supabase.from('modules').delete().eq('filename', filename);
   if (error) return res.status(500).json({ error: error.message });
   res.json({ ok: true });
+});
+
+// ── Task 6: POST /api/auth/signup ──
+app.post('/api/auth/signup', async (req, res) => {
+  try {
+    const { firstName, lastName, email, password } = req.body;
+
+    // Validate input
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ error: 'Alle velden zijn verplicht.' });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({ error: 'Wachtwoord moet minstens 8 tekens zijn.' });
+    }
+
+    // Sign up with Supabase Auth
+    // Supabase will send verification email automatically (configured via SMTP)
+    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+      email: email,
+      password: password,
+      user_metadata: {
+        firstName: firstName,
+        lastName: lastName
+      },
+      email_confirm: false // Require email confirmation
+    });
+
+    if (error) {
+      console.error('Signup error:', error);
+      if (error.message.includes('already registered')) {
+        return res.status(400).json({ error: 'Dit e-mailadres is al geregistreerd.' });
+      }
+      return res.status(400).json({ error: error.message });
+    }
+
+    // Auto-create profile row (will be updated when email verified via auth hook)
+    await supabase
+      .from('profiles')
+      .insert({
+        id: data.user.id,
+        email: email,
+        role: 'user'
+      })
+      .select();
+
+    res.json({
+      success: true,
+      message: 'Account aangemaakt. Controleer je email voor verificatie.',
+      userId: data.user.id
+    });
+
+  } catch (error) {
+    console.error('Signup endpoint error:', error);
+    res.status(500).json({ error: 'Interne serverfout' });
+  }
+});
+
+// ── Task 7: GET /api/user/email-verified ──
+app.get('/api/user/email-verified', async (req, res) => {
+  try {
+    // Get auth header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ emailVerified: false, error: 'Niet ingelogd' });
+    }
+
+    const token = authHeader.substring(7);
+
+    // Verify token with Supabase
+    const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
+
+    if (error || !user) {
+      return res.status(401).json({ emailVerified: false, error: 'Token ongeldig' });
+    }
+
+    // Check if email is confirmed
+    const emailVerified = user.email_confirmed_at !== null;
+
+    res.json({ emailVerified });
+
+  } catch (error) {
+    console.error('Email verified check error:', error);
+    res.status(500).json({ emailVerified: false, error: 'Serverfout' });
+  }
+});
+
+// ── Task 8: POST /api/auth/resend-verification ──
+app.post('/api/auth/resend-verification', async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Niet ingelogd' });
+    }
+
+    const token = authHeader.substring(7);
+
+    // Verify token
+    const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);
+
+    if (userError || !user) {
+      return res.status(401).json({ error: 'Token ongeldig' });
+    }
+
+    // Resend email confirmation
+    const { error } = await supabaseAdmin.auth.resendEmailConfirmLink(user.email);
+
+    if (error) {
+      console.error('Resend error:', error);
+      return res.status(400).json({ error: 'Kon email niet verzenden. Probeer later opnieuw.' });
+    }
+
+    res.json({ success: true, message: 'Verificatiemail verzonden.' });
+
+  } catch (error) {
+    console.error('Resend endpoint error:', error);
+    res.status(500).json({ error: 'Serverfout' });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
