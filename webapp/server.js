@@ -94,7 +94,8 @@ app.post('/generate', requireAuth, async (req, res) => {
         const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
         const filename = `elearning-${slug}-${date}.html`;
 
-        await supabase.from('modules').insert({ filename, title: rawTitle, html: fullHtml });
+        const dbSlug = filename.replace('.html', '');
+        await supabase.from('modules').insert({ filename, slug: dbSlug, title: rawTitle, html: fullHtml });
 
         jobs[jobId] = {
           status: 'done',
