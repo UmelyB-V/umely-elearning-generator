@@ -44,14 +44,14 @@
   </div>
   <div class="tip-box waarschuwing">
     <div class="tip-box-label waarschuwing">Let op</div>
-    <p>Bij het gratis en standaard Pro-abonnement kan Anthropic je gesprekken gebruiken om hun modellen te verbeteren, tenzij je dit uitschakelt in je privacy-instellingen. Typ nooit klantgegevens, BSN-nummers, wachtwoorden of bankgegevens in Claude zonder de juiste privacyafspraken.</p>
+    <p>Bij het gratis abonnement kan Anthropic gesprekken gebruiken voor modelverbetering, tenzij je dit uitschakelt in je privacy-instellingen. Bij Pro en hogere abonnementen is dit standaard uitgeschakeld. Typ nooit klantgegevens, BSN-nummers, wachtwoorden of bankgegevens in Claude zonder de juiste privacyafspraken.</p>
   </div>
   <div id="kc-1" class="kennischeck">
     <h3>Kennischeck</h3>
     <p class="kc-vraag">Wat gebeurt er standaard met je gesprekken bij een gratis Claude-abonnement?</p>
     <div class="kc-opties">
       <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Gesprekken worden niet automatisch verwijderd. Ze worden opgeslagen en mogelijk gebruikt voor modelverbetering.')">Ze worden direct verwijderd na het gesprek</button>
-      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Bij gratis en standaard abonnementen kan Anthropic gesprekken gebruiken voor modeltraining, tenzij je dit uitschakelt in je privacy-instellingen.')">Anthropic kan ze gebruiken om modellen te verbeteren</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Bij het gratis abonnement kan Anthropic gesprekken gebruiken voor modeltraining, tenzij je dit uitschakelt in je privacy-instellingen. Bij Pro en hoger is dit standaard al uitgeschakeld.')">Anthropic kan ze gebruiken om modellen te verbeteren</button>
       <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Gesprekken worden niet gedeeld met andere gebruikers. Maar ze kunnen wel gebruikt worden voor modeltraining.')">Ze worden gedeeld met andere gebruikers</button>
     </div>
     <div id="kc-feedback-1" class="kc-feedback"></div>
@@ -71,12 +71,12 @@
   <div class="content-card">
     <h3>Gratis vs zakelijk</h3>
     <table class="vergelijk-tabel">
-      <thead><tr><th>Eigenschap</th><th>Gratis / Pro</th><th>Teams / Enterprise</th></tr></thead>
+      <thead><tr><th>Eigenschap</th><th>Gratis</th><th>Pro</th><th>Teams / Enterprise</th></tr></thead>
       <tbody>
-        <tr><td>Gesprekken voor training</td><td>Mogelijk (uitzetten kan)</td><td>Standaard niet</td></tr>
-        <tr><td>Verwerkersovereenkomst</td><td>Niet beschikbaar</td><td>Beschikbaar</td></tr>
-        <tr><td>Geschikt voor gevoelige data</td><td>Nee</td><td>Ja, met juiste afspraken</td></tr>
-        <tr><td>Extra beveiligingsopties</td><td>Beperkt</td><td>Uitgebreid</td></tr>
+        <tr><td>Gesprekken voor training</td><td>Mogelijk (uitzetten kan)</td><td>Standaard uitgeschakeld</td><td>Standaard uitgeschakeld</td></tr>
+        <tr><td>Verwerkersovereenkomst</td><td>Niet beschikbaar</td><td>Niet beschikbaar</td><td>Beschikbaar</td></tr>
+        <tr><td>Geschikt voor gevoelige data</td><td>Nee</td><td>Beperkt</td><td>Ja, met juiste afspraken</td></tr>
+        <tr><td>Extra beveiligingsopties</td><td>Beperkt</td><td>Beperkt</td><td>Uitgebreid</td></tr>
       </tbody>
     </table>
   </div>
@@ -139,6 +139,7 @@
   <div class="content-card">
     <p>De AVG (Algemene Verordening Gegevensbescherming) stelt eisen aan hoe je omgaat met persoonsgegevens. Als je persoonsgegevens van klanten in Claude invoert, ben jij als bedrijf verantwoordelijk voor hoe die gegevens worden verwerkt. Anthropic is dan een verwerker van die data.</p>
     <p>Voor zakelijk gebruik met persoonsgegevens heb je een verwerkersovereenkomst nodig met Anthropic. Die is beschikbaar bij zakelijke abonnementen. Dit is geen detail, dit is een juridische verplichting.</p>
+    <p>Een verwerkersovereenkomst legt vast: welke persoonsgegevens worden verwerkt, voor welk doel, hoe lang ze worden bewaard, en welke beveiligingsmaatregelen gelden. Zonder zo'n overeenkomst mag je als bedrijf in principe geen persoonsgegevens van klanten of medewerkers in Claude invoeren. Je kunt dan een boete riskeren en je klanten beschermen hun rechten niet adequaat.</p>
   </div>
   <div class="content-card">
     <h3>Wat je nodig hebt voor AVG-compliant gebruik</h3>
@@ -185,8 +186,8 @@
     <h2>Claude is geen autonoom systeem</h2>
   </div>
   <div class="content-card">
-    <p>Claude slaat informatie niet op tussen gesprekken (tenzij je Memory of Projects gebruikt). Hij belt niet zelf naar buiten, neemt geen beslissingen zonder jouw instructie en kan niets uitvoeren buiten het gespreksvenster tenzij je hem daar expliciet toegang voor geeft.</p>
-    <p>Claude is geen autonome agent die op de achtergrond dingen doet. Hij doet alleen wat jij hem vraagt, op het moment dat jij het vraagt.</p>
+    <p>Claude slaat informatie niet op tussen gesprekken (tenzij je Memory of Projects gebruikt). In de standaard web-app belt Claude niet zelf naar buiten, tenzij je web search inschakelt of Connectors activeert (zie module E2). Hij neemt geen beslissingen zonder jouw instructie en kan niets uitvoeren buiten het gespreksvenster tenzij je hem daar expliciet toegang voor geeft.</p>
+    <p>In de web-app is Claude geen autonome agent die op de achtergrond dingen doet. Via Claude Code en agentic workflows (zie module E6) kan hij wel zelfstandig taken uitvoeren, maar altijd op jouw instructie.</p>
   </div>
   <div class="tip-box">
     <div class="tip-box-label tip">Tip</div>
@@ -208,7 +209,7 @@
 <!-- QUIZ_START -->
 [
   {"vraag":"Waar worden je gegevens naartoe gestuurd als je Claude.ai gebruikt?","opties":["Ze blijven op je eigen computer","Naar servers van Anthropic in de VS","Naar een Europees datacenter","Nergens, Claude werkt lokaal"],"correct":1,"uitleg":"Als je iets typt in Claude.ai wordt die tekst verstuurd naar de servers van Anthropic in de Verenigde Staten."},
-  {"vraag":"Bij welk abonnement worden gesprekken standaard niet gebruikt voor modeltraining?","opties":["Het gratis abonnement","Het Pro-abonnement","Het Teams/Enterprise-abonnement","Alle abonnementen"],"correct":2,"uitleg":"Bij Teams- en Enterprise-abonnementen worden gesprekken standaard niet gebruikt voor modeltraining. Bij gratis en Pro kan dit wel, tenzij je het uitschakelt."},
+  {"vraag":"Bij welk abonnement kan Anthropic gesprekken standaard gebruiken voor modeltraining?","opties":["Het gratis abonnement","Het Pro-abonnement","Het Teams/Enterprise-abonnement","Alle abonnementen"],"correct":0,"uitleg":"Alleen bij het gratis abonnement is modeltraining standaard ingeschakeld (je kunt dit uitschakelen). Bij Pro en hogere abonnementen is dit standaard al uitgeschakeld."},
   {"vraag":"Welke gegevens mag je NOOIT in Claude invoeren?","opties":["Algemene vragen over je vakgebied","Eigen teksten die je wilt verbeteren","BSN-nummers en wachtwoorden","Publiek beschikbare informatie"],"correct":2,"uitleg":"BSN-nummers, wachtwoorden, bankgegevens en medische dossiers horen nooit in een AI-tool, ongeacht welk abonnement je hebt."},
   {"vraag":"Wat is een verwerkersovereenkomst?","opties":["Een contract tussen jou en je klant","Een juridische overeenkomst over hoe een derde partij persoonsgegevens verwerkt","Een licentie om Claude te mogen gebruiken","Een technische instelling in Claude"],"correct":1,"uitleg":"Een verwerkersovereenkomst regelt juridisch hoe Anthropic (als verwerker) omgaat met de persoonsgegevens die jij (als verantwoordelijke) aanlevert. Dit is verplicht onder de AVG."},
   {"vraag":"Slaat Claude informatie op tussen gesprekken?","opties":["Ja, alles wordt permanent opgeslagen","Nee, tenzij je Memory of Projects gebruikt","Ja, maar alleen bij een betaald abonnement","Nee, nooit"],"correct":1,"uitleg":"Claude slaat standaard geen informatie op tussen gesprekken. Alleen als je Memory of Projects gebruikt wordt context bewaard."}
