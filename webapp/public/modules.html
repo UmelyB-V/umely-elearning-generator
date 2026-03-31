@@ -6,7 +6,6 @@
 <title>E-learning Bibliotheek | Umely</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
   :root {
     --amber: #FF8514;
@@ -172,6 +171,23 @@
 
   .drag-hint { font-size: 12px; color: #bbb; text-align: right; margin-bottom: 12px; }
 
+  .category-group { margin-bottom: 1rem; border: 1px solid var(--gray-border); border-radius: 12px; overflow: hidden; }
+  .category-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; cursor: pointer;
+    background: var(--charcoal); color: white;
+    transition: background 0.2s; user-select: none;
+  }
+  .category-header:hover { background: #333538; }
+  .category-icon { font-size: 20px; }
+  .category-title { font-weight: 700; font-size: 15px; flex: 1; }
+  .category-count { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .category-chevron { font-size: 12px; color: rgba(255,255,255,0.5); transition: transform 0.3s; }
+  .category-group.open .category-chevron { transform: rotate(180deg); }
+  .category-modules { display: none; padding: 12px; background: var(--warm-white); }
+  .category-group.open .category-modules { display: block; }
+  .category-modules .grid { margin: 0; }
+
   footer { padding: 24px 32px; text-align: center; background: var(--charcoal); margin-top: 64px; }
   footer p { font-size: 13px; color: rgba(255,255,255,0.85); }
   footer a { color: white; font-weight: 700; text-decoration: none; }
@@ -241,6 +257,41 @@
 <script>
 const icons = ['📘','🎯','🧠','🚀','💡','🌿','📈','🤝','🔥','⚙️','💻','🍷','🦁'];
 const ORDER_KEY = 'umely_module_order';
+
+const CATEGORIES = [
+  { prefix: 'a', title: 'A - Introductie tot Claude', icon: '🎓' },
+  { prefix: 'b', title: 'B - Veiligheid & beperkingen', icon: '🔒' },
+  { prefix: 'c', title: 'C - Claude gebruiken', icon: '💻' },
+  { prefix: 'd', title: 'D - Claude Code', icon: '⌨️' },
+  { prefix: 'e', title: 'E - MCP & Skills', icon: '🔌' },
+  { prefix: 'i', title: 'I - Praktijktoets & certificaat', icon: '📋' }
+];
+
+function getCategoryForModule(slug) {
+  var match = slug.match(/^elearning-([a-z])\d/);
+  return match ? match[1] : null;
+}
+
+function renderModuleCard(m, idx, isAdmin) {
+  var icon = icons[idx % icons.length];
+  var dateFormatted = new Date(m.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+  var adminActions = isAdmin ? `
+        <div class="card-actions">
+          <button class="btn-rename" title="Naam wijzigen" onclick="renameModule('${m.slug}', this)">✏️</button>
+          <button class="btn-delete" title="Verwijder module" onclick="deleteModule('${m.slug}', '${m.title.replace(/'/g, "\\'")}', this)">🗑</button>
+        </div>` : '';
+  return `
+    <div class="module-card" data-slug="${m.slug}">
+      <div class="module-icon">${icon}</div>
+      <div class="module-badge">Umely E-learning</div>
+      <a class="module-title" href="${m.url}" target="_blank" style="color:var(--charcoal);text-decoration:none;">${m.title}</a>
+      <div class="module-date">Aangemaakt op ${dateFormatted}</div>
+      <div class="module-footer">
+        <a class="module-link" href="${m.url}" target="_blank">Bekijk module</a>
+        ${adminActions}
+      </div>
+    </div>`;
+}
 
 // ── AUTH ──
 let _supabase = null;
@@ -410,38 +461,79 @@ async function loadModules() {
     }
 
     document.getElementById('searchWrap').style.display = 'block';
-    document.getElementById('dragHint').style.display = isAdmin ? 'block' : 'none';
-    grid.className = 'grid';
-    grid.innerHTML = modules.map((m, i) => {
-      const icon = icons[i % icons.length];
-      const dateFormatted = new Date(m.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
-      const adminActions = isAdmin ? `
-            <div class="card-actions">
-              <button class="btn-rename" title="Naam wijzigen" onclick="renameModule('${m.slug}', this)">✏️</button>
-              <button class="btn-delete" title="Verwijder module" onclick="deleteModule('${m.slug}', '${m.title.replace(/'/g, "\\'")}', this)">🗑</button>
-            </div>` : '';
-      return `
-        <div class="module-card" data-slug="${m.slug}">
-          ${isAdmin ? '<span class="drag-handle" title="Versleep om te herordenen">⠿</span>' : ''}
-          <div class="module-icon">${icon}</div>
-          <div class="module-badge">Umely E-learning</div>
-          <a class="module-title" href="${m.url}" target="_blank" style="color:var(--charcoal);text-decoration:none;">${m.title}</a>
-          <div class="module-date">Aangemaakt op ${dateFormatted}</div>
-          <div class="module-footer">
-            <a class="module-link" href="${m.url}" target="_blank">Bekijk module</a>
-            ${adminActions}
-          </div>
-        </div>`;
-    }).join('');
+    document.getElementById('dragHint').style.display = 'none';
+    grid.className = '';
+    grid.innerHTML = '';
 
-    if (isAdmin) {
-      Sortable.create(grid, {
-        handle: '.drag-handle',
-        animation: 150,
-        ghostClass: 'sortable-ghost',
-        dragClass: 'sortable-drag',
-        onEnd: saveOrder
+    var globalIdx = 0;
+    var uncategorized = [];
+
+    for (var c = 0; c < CATEGORIES.length; c++) {
+      var cat = CATEGORIES[c];
+      var catModules = modules.filter(function(m) {
+        return getCategoryForModule(m.slug) === cat.prefix;
       });
+      if (catModules.length === 0) continue;
+
+      var group = document.createElement('div');
+      group.className = 'category-group';
+
+      var header = document.createElement('div');
+      header.className = 'category-header';
+      header.innerHTML = '<span class="category-icon">' + cat.icon + '</span>' +
+        '<span class="category-title">' + cat.title + '</span>' +
+        '<span class="category-count">' + catModules.length + ' module' + (catModules.length !== 1 ? 's' : '') + '</span>' +
+        '<span class="category-chevron">&#9660;</span>';
+      header.onclick = function(el) {
+        return function() { el.classList.toggle('open'); };
+      }(group);
+
+      var modulesDiv = document.createElement('div');
+      modulesDiv.className = 'category-modules';
+      var innerGrid = document.createElement('div');
+      innerGrid.className = 'grid';
+
+      for (var i = 0; i < catModules.length; i++) {
+        innerGrid.innerHTML += renderModuleCard(catModules[i], globalIdx++, isAdmin);
+      }
+
+      modulesDiv.appendChild(innerGrid);
+      group.appendChild(header);
+      group.appendChild(modulesDiv);
+      grid.appendChild(group);
+    }
+
+    // Modules without a recognized category
+    uncategorized = modules.filter(function(m) {
+      return getCategoryForModule(m.slug) === null;
+    });
+    if (uncategorized.length > 0) {
+      var group = document.createElement('div');
+      group.className = 'category-group';
+
+      var header = document.createElement('div');
+      header.className = 'category-header';
+      header.innerHTML = '<span class="category-icon">📦</span>' +
+        '<span class="category-title">Overige modules</span>' +
+        '<span class="category-count">' + uncategorized.length + ' module' + (uncategorized.length !== 1 ? 's' : '') + '</span>' +
+        '<span class="category-chevron">&#9660;</span>';
+      header.onclick = function(el) {
+        return function() { el.classList.toggle('open'); };
+      }(group);
+
+      var modulesDiv = document.createElement('div');
+      modulesDiv.className = 'category-modules';
+      var innerGrid = document.createElement('div');
+      innerGrid.className = 'grid';
+
+      for (var i = 0; i < uncategorized.length; i++) {
+        innerGrid.innerHTML += renderModuleCard(uncategorized[i], globalIdx++, isAdmin);
+      }
+
+      modulesDiv.appendChild(innerGrid);
+      group.appendChild(header);
+      group.appendChild(modulesDiv);
+      grid.appendChild(group);
     }
 
   } catch (e) {
@@ -485,7 +577,13 @@ async function deleteModule(slug, title, btn) {
       headers: authHeader()
     });
     if (!res.ok) throw new Error(`Server gaf ${res.status} terug`);
-    btn.closest('.module-card').remove();
+    const card = btn.closest('.module-card');
+    const categoryGroup = card.closest('.category-group');
+    card.remove();
+    // Remove empty category group
+    if (categoryGroup && categoryGroup.querySelectorAll('.module-card').length === 0) {
+      categoryGroup.remove();
+    }
     saveOrder();
     const grid = document.getElementById('grid');
     if (grid.querySelectorAll('.module-card').length === 0) {
@@ -516,6 +614,17 @@ function filterModules() {
     const show = title.includes(q);
     card.style.display = show ? '' : 'none';
     if (show) visible++;
+  });
+  // Show/hide category groups based on whether they have visible cards
+  document.querySelectorAll('.category-group').forEach(group => {
+    const visibleCards = group.querySelectorAll('.module-card:not([style*="display: none"])');
+    group.style.display = visibleCards.length > 0 ? '' : 'none';
+    // Auto-open groups when searching, collapse when cleared
+    if (q && visibleCards.length > 0) {
+      group.classList.add('open');
+    } else if (!q) {
+      group.classList.remove('open');
+    }
   });
   const grid = document.getElementById('grid');
   let noResults = grid.querySelector('.no-results');
