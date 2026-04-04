@@ -1,221 +1,521 @@
 <!-- TITLE: C1 - Claude.ai: de web-app -->
-<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-module-5','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-module-5':'Module 5','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1-1','screen-module-1-2','screen-module-1-3','screen-module-1-kc','screen-module-2-1','screen-module-2-2','screen-module-2-3','screen-module-2-kc','screen-module-3-1','screen-module-3-2','screen-module-3-3','screen-module-3-kc','screen-module-4-1','screen-module-4-2','screen-module-4-3','screen-module-4-kc','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1-1':'Account aanmaken en de interface','screen-module-1-2':'Bestanden uploaden','screen-module-1-3':'Je eerste gesprek starten','screen-module-1-kc':'Kennischeck: de interface','screen-module-2-1':'Gesprekken organiseren met Projects','screen-module-2-2':'Wanneer gebruik je Projects?','screen-module-2-3':'Projects in de praktijk','screen-module-2-kc':'Kennischeck: Projects','screen-module-3-1':'Geheugen: wat onthoudt Claude?','screen-module-3-2':'Geheugen instellen en beheren','screen-module-3-3':'Slim omgaan met context','screen-module-3-kc':'Kennischeck: geheugen','screen-module-4-1':'Abonnementen en limieten','screen-module-4-2':'Wat krijg je in welk abonnement?','screen-module-4-3':'Limieten in de praktijk','screen-module-4-kc':'Kennischeck: abonnementen','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 
+<!-- QUIZ_START -->
+[
+  {
+    "vraag": "Wat gebeurt er als je een bestand uploadt in een gewoon gesprek en daarna een nieuw gesprek start?",
+    "opties": [
+      "Het bestand blijft beschikbaar in je account",
+      "Het bestand is weg en je moet het opnieuw uploaden",
+      "Claude onthoudt de inhoud automatisch via het geheugen",
+      "Het bestand wordt opgeslagen in je meest recente Project"
+    ],
+    "correct": 1,
+    "uitleg": "In een gewoon gesprek slaat Claude het bestand niet op. Elk nieuw gesprek begint schoon. Als je een bestand vaker wil gebruiken, upload het dan in een Project."
+  },
+  {
+    "vraag": "Waarvoor gebruik je Projects in Claude.ai?",
+    "opties": [
+      "Om bestanden te versleutelen voordat je ze uploadt",
+      "Om gesprekken en bestanden rondom een onderwerp te groeperen",
+      "Om meerdere Claude-modellen tegelijk te vergelijken",
+      "Om de interface te personaliseren met je eigen kleuren"
+    ],
+    "correct": 1,
+    "uitleg": "Projects laat je gesprekken en bestanden rondom een thema of klant groeperen. Claude heeft dan altijd de context van die documenten beschikbaar. Dit is handig voor terugkerende projecten."
+  },
+  {
+    "vraag": "Claude heeft standaard geen geheugen tussen gesprekken. Wat betekent dit concreet?",
+    "opties": [
+      "Claude verwijdert je account na elk gesprek",
+      "Elk nieuw gesprek begint zonder kennis van eerdere gesprekken",
+      "Claude kan geen bestanden onthouden die je uploadt",
+      "Je moet elke keer opnieuw inloggen"
+    ],
+    "correct": 1,
+    "uitleg": "Elk gesprek begint schoon. Claude weet niet wat je gisteren hebt besproken, tenzij je geheugen hebt ingeschakeld of in een Project werkt met gedeelde documenten."
+  },
+  {
+    "vraag": "Via welk menu schakel je het geheugen in Claude.ai in?",
+    "opties": [
+      "Via de knop 'Nieuw gesprek' in de zijbalk",
+      "Via Settings > Memory",
+      "Via het paperclip-icoon in het invoerveld",
+      "Via je profiel > Abonnement"
+    ],
+    "correct": 1,
+    "uitleg": "Geheugen schakel je in via Settings > Memory. Vanuit datzelfde menu kun je ook bekijken en bewerken wat Claude heeft opgeslagen."
+  },
+  {
+    "vraag": "Welke versie van Claude.ai geeft toegang tot Projects?",
+    "opties": [
+      "De gratis versie",
+      "Alleen de Enterprise-versie",
+      "De betaalde versies (Pro en Teams)",
+      "Projects is beschikbaar voor iedereen, maar beperkt tot 3 projecten"
+    ],
+    "correct": 2,
+    "uitleg": "Projects is beschikbaar in de betaalde versies van Claude.ai: Pro en Teams. De gratis versie heeft geen toegang tot Projects."
+  }
+]
+<!-- QUIZ_END -->
+
+<!-- WELKOMSTSCHERM -->
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
     <div class="welcome-badge">Umely E-learning</div>
     <h1>C1 - Claude.ai: de web-app</h1>
-    <p>Leer de Claude.ai web-app gebruiken: van inloggen tot bestanden uploaden, van gesprekken organiseren tot geheugen inschakelen.</p>
+    <p>Leer de Claude.ai web-app gebruiken voor je dagelijkse werk - van account aanmaken tot gesprekken organiseren en geheugen instellen.</p>
   </div>
   <div class="leerdoelen">
     <h3>Na deze module kun je:</h3>
     <ul>
-      <li>Een account aanmaken en inloggen op Claude.ai</li>
-      <li>De interface gebruiken en bestanden uploaden</li>
-      <li>Gesprekken organiseren met Projects</li>
-      <li>Geheugen inschakelen en beheren</li>
-      <li>Het verschil uitleggen tussen gratis en betaalde abonnementen</li>
+      <li>Een account aanmaken en de interface van Claude.ai navigeren</li>
+      <li>Bestanden uploaden en weten wat Claude ermee kan en wat niet</li>
+      <li>Projects aanmaken en gebruiken voor terugkerende taken</li>
+      <li>Het geheugen van Claude instellen en beheren</li>
+      <li>De verschillen tussen gratis en betaalde abonnementen uitleggen</li>
     </ul>
   </div>
-  <div class="tijdsbadge">Geschatte tijd: 15 minuten</div>
+  <div class="tijdsbadge">&#x23F1; Geschatte tijd: 20 minuten</div>
   <div class="btn-wrap">
-    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+    <button class="btn" onclick="goTo('screen-module-1-1')">Start de module</button>
   </div>
 </div>
 
-<!-- MODULE 1 -->
-<div id="screen-module-1" class="screen">
+<!-- ═══════════════════════════════════════════
+     ONDERDEEL 1: ACCOUNT EN INTERFACE
+═══════════════════════════════════════════ -->
+
+<div id="screen-module-1-1" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 1 van 5</div>
+    <div class="module-num">Onderdeel 1 van 4</div>
     <h2>Account aanmaken en de interface</h2>
   </div>
   <div class="content-card">
-    <h3>Aan de slag in 3 stappen</h3>
-    <div class="stappen-lijst">
-      <div class="stap-item">
-        <div class="stap-nummer">1</div>
-        <div class="stap-content">
-          <h4>Ga naar claude.ai</h4>
-          <p>Open je browser en ga naar claude.ai. Klik op "Sign up".</p>
-        </div>
+    <p>Claude.ai is de officiële website waar je Claude kunt gebruiken via je browser. Je hebt geen software nodig - alleen een account en een internetverbinding. Ga naar <strong>claude.ai</strong> en klik op "Sign up" om te beginnen. Je kunt inloggen met een e-mailadres of via Google of Apple.</p>
+    <p>Na aanmelden zie je de interface direct. Die is bewust eenvoudig gehouden: geen tientallen knoppen of menu's. Je typt je vraag of opdracht onderin het scherm en Claude antwoordt.</p>
+  </div>
+  <div class="stappen-lijst">
+    <div class="stap-item">
+      <div class="stap-nummer">1</div>
+      <div class="stap-content">
+        <h4>Zijbalk links</h4>
+        <p>Hier staat je gespreksgeschiedenis. Eerder gevoerde gesprekken zijn terug te vinden. Je kunt ook een nieuw gesprek starten via de knop bovenaan.</p>
       </div>
-      <div class="stap-item">
-        <div class="stap-nummer">2</div>
-        <div class="stap-content">
-          <h4>Maak een account</h4>
-          <p>Log in met je e-mailadres of via Google of Apple. Na aanmaken ben je direct klaar.</p>
-        </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">2</div>
+      <div class="stap-content">
+        <h4>Gespreksvenster</h4>
+        <p>Het centrale vlak toont je huidige gesprek. Claude's antwoorden verschijnen hier, net als jouw berichten.</p>
       </div>
-      <div class="stap-item">
-        <div class="stap-nummer">3</div>
-        <div class="stap-content">
-          <h4>Begin met typen</h4>
-          <p>Je ziet een leeg gespreksvenster. Links je geschiedenis, onderaan het invoerveld. Typ je vraag en Claude antwoordt.</p>
-        </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">3</div>
+      <div class="stap-content">
+        <h4>Invoerveld onderaan</h4>
+        <p>Hier typ je je bericht. Het paperclip-icoon links laat je bestanden toevoegen. Rechts staat de verzendknop.</p>
       </div>
     </div>
   </div>
-  <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>De interface is bewust eenvoudig. Er zijn geen knoppen die je moet leren. Je typt en Claude antwoordt. Dat is alles.</p>
+  <div id="nav-screen-module-1-1"></div>
+</div>
+
+<div id="screen-module-1-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 1 van 4</div>
+    <h2>Bestanden uploaden</h2>
   </div>
-  <div id="kc-1" class="kennischeck">
+  <div class="content-card">
+    <p>Je kunt bestanden toevoegen door op het <strong>paperclip-icoon</strong> te klikken in het invoerveld, of door een bestand er rechtstreeks naartoe te slepen. Claude ondersteunt PDF, Word-documenten, tekst- en codebestanden en afbeeldingen.</p>
+  </div>
+  <div class="flashcard-set">
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">PDF uploaden</div>
+      <div class="flashcard-back">Upload een PDF en stel er vragen over. Handig voor contracten, rapporten of handleidingen. Claude leest de volledige inhoud en beantwoordt specifieke vragen over de tekst.</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Afbeelding uploaden</div>
+      <div class="flashcard-back">Stuur een screenshot, foto of diagram. Claude beschrijft wat hij ziet en beantwoordt vragen over de inhoud. Handig voor grafieken, formulieren of visuele data zoals een Excel-rapport als screenshot.</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Word-document uploaden</div>
+      <div class="flashcard-back">Upload een .docx-bestand en laat Claude de inhoud samenvatten, herschrijven of analyseren. De opmaak wordt gelezen, maar Claude genereert geen opgemaakte Word-bestanden terug.</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Codebestand uploaden</div>
+      <div class="flashcard-back">Upload een scriptbestand en vraag Claude het te reviewen, debuggen of uit te leggen. Dit werkt voor de meeste gangbare programmeertalen.</div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Claude leest de inhoud van een bestand maar <strong>slaat het niet op</strong> in een gewoon gesprek. Start je een nieuw gesprek, dan is het bestand weg en moet je het opnieuw uploaden. Wil je een bestand vaker gebruiken? Voeg het toe aan een Project.</p>
+  </div>
+  <div id="nav-screen-module-1-2"></div>
+</div>
+
+<div id="screen-module-1-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 1 van 4</div>
+    <h2>Je eerste gesprek starten</h2>
+  </div>
+  <div class="content-card">
+    <p>Een gesprek starten is eenvoudig: typ je vraag of opdracht en stuur hem in. Er zijn geen speciale commando's nodig. Je kunt schrijven zoals je zou schrijven aan een collega die veel weet.</p>
+    <p>De gratis versie geeft toegang tot Claude, maar met een dagelijks berichtenlimiet. Bereik je dat limiet, dan zie je een melding en moet je wachten tot de volgende dag of upgraden naar een betaald abonnement.</p>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Scenario</div>
+    <p class="scenario-tekst">Je hebt een huurcontract als PDF en wil weten welke verplichtingen erin staan. Hoe pak je dit het beste aan in Claude.ai?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Dit werkt ook, maar je moet dan de hele tekst handmatig kopiëren en plakken. Dat is omslachtig bij een lang contract en je riskeert dat opmaak of tekst verloren gaat.')">De tekst uit het PDF kopiëren en in het invoerveld plakken</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Precies. Upload het PDF via het paperclip-icoon en typ dan een gerichte vraag zoals: \"Wat zijn mijn belangrijkste verplichtingen als huurder?\" Claude leest het volledige document en geeft een gestructureerd overzicht.')">Het PDF uploaden via het paperclip-icoon en een gerichte vraag stellen</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Claude heeft standaard geen internettoegang om bestanden op externe locaties op te halen. Je moet het bestand zelf uploaden via het invoerveld.')">De link naar het PDF in de chat plakken zodat Claude het kan ophalen</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+  </div>
+  <div id="nav-screen-module-1-3"></div>
+</div>
+
+<div id="screen-module-1-kc" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 1 van 4</div>
+    <h2>Kennischeck</h2>
+  </div>
+  <div class="kennischeck" id="kc-1">
     <h3>Kennischeck</h3>
-    <p class="kc-vraag">Wat heb je nodig om Claude.ai te gebruiken?</p>
+    <p class="kc-vraag">Je uploadt een PDF in een gesprek en bespreekt het uitgebreid met Claude. Daarna sluit je het gesprek en start een nieuw gesprek. Wat is er met het PDF-bestand gebeurd?</p>
     <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Je hoeft geen software te installeren. Claude.ai werkt volledig in de browser.')">Speciale software installeren</button>
-      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Claude.ai werkt in elke browser. Je hebt alleen een account en internet nodig.')">Een account en een internetverbinding</button>
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Je hebt geen technische kennis nodig. Claude.ai is ontworpen voor iedereen.')">Programmeerkennis</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2-1', 'Claude slaat bestanden niet op in je account. Na het gesprek is het bestand weg en moet je het opnieuw uploaden als je het nog een keer nodig hebt.')">Het bestand staat opgeslagen in mijn account en is altijd beschikbaar</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2-1', 'Correct. Bestanden in een gewoon gesprek worden niet bewaard. Elk nieuw gesprek begint schoon. Gebruik een Project als je een bestand vaker wil kunnen raadplegen.')">Het bestand is weg - in het nieuwe gesprek moet ik het opnieuw uploaden</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2-1', 'Claude slaat de inhoud van bestanden niet automatisch op in zijn geheugen. Geheugen werkt anders: het slaat specifieke informatie op die jij noemt of die relevant lijkt, geen volledige documenten.')">Claude heeft de inhoud automatisch in zijn geheugen opgeslagen</button>
     </div>
     <div id="kc-feedback-1" class="kc-feedback"></div>
   </div>
 </div>
 
-<!-- MODULE 2 -->
-<div id="screen-module-2" class="screen">
-  <div class="module-header">
-    <div class="module-num">Module 2 van 5</div>
-    <h2>Bestanden uploaden</h2>
-  </div>
-  <div class="content-card">
-    <p>Je kunt bestanden uploaden door op het paperclip-icoon te klikken of een bestand in het invoerveld te slepen. Claude ondersteunt PDF, Word, Excel, CSV, tekst- en codebestanden, en afbeeldingen.</p>
-    <p>Praktisch voorbeeld: upload een huurcontract als PDF en vraag Claude om de belangrijkste verplichtingen samen te vatten. Of upload een Excel-bestand direct en vraag Claude om de data te analyseren of samen te vatten.</p>
-  </div>
-  <div class="tip-box waarschuwing">
-    <div class="tip-box-label waarschuwing">Let op</div>
-    <p>Claude leest de inhoud van het bestand maar slaat het niet op. Als je een nieuw gesprek start, is het bestand weg en moet je het opnieuw uploaden, tenzij je het bestand in een Project hebt geplaatst. Bestanden in Projects blijven beschikbaar over meerdere gesprekken.</p>
-  </div>
-  <div id="scenario-1" class="scenario-blok">
-    <div class="scenario-label">Praktijksituatie</div>
-    <p class="scenario-tekst">Je bent makelaar en hebt een huurcontract van 25 pagina's ontvangen. Je wilt snel weten wat de opzegtermijn en boeteclausules zijn. Hoe pak je dit aan?</p>
-    <div class="scenario-keuzes">
-      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Upload het PDF en geef Claude een specifieke vraag. Hoe specifieker je vraag, hoe bruikbaarder het antwoord.')">Upload de PDF en vraag: &quot;Wat zijn de opzegtermijnen en boeteclausules in dit contract?&quot;</button>
-      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Het hele contract overtypen is onnodig. Je kunt het bestand direct uploaden als PDF.')">Het hele contract overtypen in het invoerveld</button>
-      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Claude kan geen links openen of bestanden downloaden. Je moet het bestand zelf uploaden.')">Een link naar het bestand sturen</button>
-    </div>
-    <div id="scenario-feedback-1" class="scenario-feedback"></div>
-    <div class="btn-wrap" style="margin-top:1rem;">
-      <button class="btn btn-outline" onclick="goTo('screen-module-3')">Volgende</button>
-    </div>
-  </div>
-</div>
+<!-- ═══════════════════════════════════════════
+     ONDERDEEL 2: PROJECTS
+═══════════════════════════════════════════ -->
 
-<!-- MODULE 3 -->
-<div id="screen-module-3" class="screen">
+<div id="screen-module-2-1" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 3 van 5</div>
-    <h2>Projects</h2>
+    <div class="module-num">Onderdeel 2 van 4</div>
+    <h2>Gesprekken organiseren met Projects</h2>
   </div>
   <div class="content-card">
-    <p>Projects is een functie waarmee je gesprekken en documenten kunt groeperen rondom een onderwerp of klant. Je kunt een Project aanmaken, daarin bestanden uploaden die altijd beschikbaar zijn, en Claude geeft dan altijd antwoord in de context van die informatie.</p>
-  </div>
-  <div class="content-card">
-    <h3>Voorbeelden per sector</h3>
-    <table class="vergelijk-tabel">
-      <thead><tr><th>Sector</th><th>Project-idee</th></tr></thead>
-      <tbody>
-        <tr><td>Advocatenkantoor</td><td>Een Project per zaak met alle relevante documenten</td></tr>
-        <tr><td>Marketingbureau</td><td>Een Project per klant met briefing, tone of voice en eerdere content</td></tr>
-        <tr><td>Makelaarskantoor</td><td>Een Project per vastgoedobject met brochures en contracten</td></tr>
-        <tr><td>Accountantskantoor</td><td>Een Project per klant met jaarrekeningen en correspondentie</td></tr>
-      </tbody>
-    </table>
+    <p>Projects is een functie waarmee je gesprekken en bestanden rondom een onderwerp kunt groeperen. Maak een Project aan voor een klant, een lopend project of een terugkerende taak - en alles wat daarin staat is altijd beschikbaar als context voor Claude.</p>
+    <p>Binnen een Project kun je bestanden uploaden die persistent zijn: ze verdwijnen niet na een gesprek. Claude gebruikt de inhoud van die bestanden automatisch als achtergrondkennis bij elk gesprek in dat Project.</p>
   </div>
   <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>Projects zijn beschikbaar in de betaalde versie (Pro en Teams). Dit is een van de functies die het Pro-abonnement de moeite waard maakt voor zakelijk gebruik.</p>
+    <div class="tip-box-label tip">Beschikbaarheid</div>
+    <p>Projects zijn beschikbaar in de betaalde versies van Claude.ai (Pro en Teams). De gratis versie heeft geen toegang tot Projects.</p>
   </div>
-  <div id="kc-2" class="kennischeck">
+  <div class="processtroom">
+    <div class="proces-blok">
+      <div class="proces-stap">1</div>
+      <div class="proces-tekst">Maak een nieuw Project aan via de zijbalk</div>
+    </div>
+    <div class="proces-pijl">&#8594;</div>
+    <div class="proces-blok">
+      <div class="proces-stap">2</div>
+      <div class="proces-tekst">Upload relevante bestanden in het Project</div>
+    </div>
+    <div class="proces-pijl">&#8594;</div>
+    <div class="proces-blok">
+      <div class="proces-stap">3</div>
+      <div class="proces-tekst">Start gesprekken binnen het Project</div>
+    </div>
+    <div class="proces-pijl">&#8594;</div>
+    <div class="proces-blok">
+      <div class="proces-stap">4</div>
+      <div class="proces-tekst">Claude antwoordt met kennis van de projectbestanden</div>
+    </div>
+  </div>
+  <div id="nav-screen-module-2-1"></div>
+</div>
+
+<div id="screen-module-2-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 2 van 4</div>
+    <h2>Wanneer gebruik je Projects?</h2>
+  </div>
+  <div class="content-card">
+    <p>Projects zijn het meest nuttig als je regelmatig terugkeert naar hetzelfde onderwerp en steeds dezelfde bestanden of context nodig hebt. Bij eenmalige vragen heb je er weinig aan.</p>
+  </div>
+  <table class="vergelijk-tabel">
+    <thead>
+      <tr><th>Situatie</th><th>Gewoon gesprek</th><th>Project</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Eenmalige vraag</td>
+        <td>Prima - snel en geen setup nodig</td>
+        <td>Overkill voor een losse vraag</td>
+      </tr>
+      <tr>
+        <td>Terugkerende klant</td>
+        <td>Elke keer opnieuw context meegeven</td>
+        <td>Briefing en eerdere documenten staan er al in</td>
+      </tr>
+      <tr>
+        <td>Lopend project met documenten</td>
+        <td>Bestanden verdwijnen na gesprek</td>
+        <td>Documenten blijven altijd beschikbaar</td>
+      </tr>
+      <tr>
+        <td>Vaste schrijfstijl of tone of voice</td>
+        <td>Elke keer opnieuw uitleggen</td>
+        <td>Eenmalig uploaden, altijd actief als context</td>
+      </tr>
+    </tbody>
+  </table>
+  <div id="nav-screen-module-2-2"></div>
+</div>
+
+<div id="screen-module-2-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 2 van 4</div>
+    <h2>Projects in de praktijk</h2>
+  </div>
+  <div class="flashcard-set">
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Voorbeeld: advocatenkantoor</div>
+      <div class="flashcard-back">Een medewerker maakt per rechtszaak een Project aan. Daarin staan het dossier, relevante jurisprudentie en eerdere correspondentie. Claude beantwoordt gerichte vragen over de zaak zonder dat context steeds opnieuw ingevoerd hoeft te worden.</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Voorbeeld: marketingbureau</div>
+      <div class="flashcard-back">Per klant bestaat er een Project met de merkrichtlijnen, tone of voice en eerdere content. Claude schrijft automatisch in de stijl van die klant, zonder dat je de stijlregels elke keer opnieuw hoeft in te typen.</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Wat upload je in een Project?</div>
+      <div class="flashcard-back">Denk aan: een stijlgids of tone of voice document, bestaande content als referentie, een briefing of projectomschrijving, een FAQ over een product of dienst, of interne richtlijnen. Houd het beknopt - te veel ongerelateerde bestanden werkt averechts.</div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Beperking</div>
+    <p>Meer bestanden in een Project betekent niet automatisch betere antwoorden. Een Project vol ongerelateerde documenten kan Claude juist verwarren. Upload alleen wat direct relevant is voor dat specifieke onderwerp.</p>
+  </div>
+  <div id="nav-screen-module-2-3"></div>
+</div>
+
+<div id="screen-module-2-kc" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 2 van 4</div>
+    <h2>Kennischeck</h2>
+  </div>
+  <div class="kennischeck" id="kc-2">
     <h3>Kennischeck</h3>
-    <p class="kc-vraag">Wat is het voordeel van Projects?</p>
+    <p class="kc-vraag">Je werkt voor drie vaste klanten en schrijft elke week content voor hen. Voor elke klant heb je een stijlgids. Wat is de meest efficiënte manier om dit in Claude.ai te organiseren?</p>
     <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Projects maken Claude niet sneller. Ze zorgen ervoor dat Claude altijd de juiste context heeft.')">Claude reageert sneller</button>
-      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Met Projects upload je documenten die altijd beschikbaar zijn in die context. Claude kent dan de achtergrond van je project zonder dat je elke keer alles opnieuw moet uitleggen.')">Documenten zijn altijd beschikbaar en Claude kent de context</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Projects zijn niet bedoeld voor bestanden delen. Daarvoor gebruik je je normale cloudopslag.')">Je kunt bestanden delen met collega\'s</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-3-1', 'Dit werkt, maar is omslachtig. Elke keer de stijlgids kopiëren en plakken kost tijd en vergroot het risico dat je het vergeet of de verkeerde versie gebruikt.')">Bij elk gesprek de stijlgids kopiëren en plakken als context</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-3-1', 'Correct. Maak per klant een Project aan en upload de stijlgids daarin. Claude heeft die context dan altijd beschikbaar, zonder dat jij er elke keer aan hoeft te denken.')">Per klant een Project aanmaken en de stijlgids daarin uploaden</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-3-1', 'Claude onthoudt geen gedetailleerde documenten via het geheugen. Geheugen slaat losse feiten op, geen volledige stijlgidsen of uitgebreide richtlijnen.')">De stijlgids eenmalig noemen en erop vertrouwen dat Claude het onthoudt</button>
     </div>
     <div id="kc-feedback-2" class="kc-feedback"></div>
   </div>
 </div>
 
-<!-- MODULE 4 -->
-<div id="screen-module-4" class="screen">
+<!-- ═══════════════════════════════════════════
+     ONDERDEEL 3: GEHEUGEN
+═══════════════════════════════════════════ -->
+
+<div id="screen-module-3-1" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 4 van 5</div>
-    <h2>Geheugen</h2>
+    <div class="module-num">Onderdeel 3 van 4</div>
+    <h2>Geheugen: wat onthoudt Claude?</h2>
   </div>
   <div class="content-card">
-    <p>Claude heeft standaard geen geheugen tussen gesprekken. Elk nieuw gesprek begint schoon. Als je wilt dat Claude iets onthoudt, zoals jouw naam, je functie of de tone of voice van je bedrijf, kun je dit inschakelen via Settings > Memory.</p>
-    <p>Claude slaat dan relevante informatie op en gebruikt die in toekomstige gesprekken.</p>
+    <p>Claude heeft <strong>standaard geen geheugen</strong> tussen gesprekken. Elk nieuw gesprek begint schoon - Claude weet niet wat je eerder hebt besproken, wie je bent of wat je voorkeur is. Dit is een bewuste keuze rond privacy en architectuur.</p>
+    <p>Via <strong>Settings &gt; Memory</strong> kun je geheugen inschakelen. Als dat actief is, slaat Claude relevante informatie op die je noemt - zoals je functie, voorkeur voor een bepaalde schrijfstijl, of de naam van je bedrijf. Die informatie wordt dan meegenomen in toekomstige gesprekken.</p>
   </div>
   <div class="tip-box waarschuwing">
-    <div class="tip-box-label waarschuwing">Let op</div>
-    <p>Het geheugen is niet perfect. Claude kiest zelf wat hij onthoudt en kan dingen verkeerd interpreteren. Controleer af en toe wat er in je geheugen staat via de instellingen.</p>
+    <div class="tip-box-label waarschuwing">Beperking van geheugen</div>
+    <p>Het geheugen is niet perfect. Claude kiest zelf wat hij opslaat en kan dingen verkeerd interpreteren of onvolledig noteren. Controleer regelmatig via de instellingen wat er is opgeslagen en verwijder wat niet klopt of wat je liever niet deelt.</p>
   </div>
-  <div class="content-card">
-    <h3>Geheugen activeren</h3>
-    <div class="stappen-lijst">
-      <div class="stap-item">
-        <div class="stap-nummer">1</div>
-        <div class="stap-content">
-          <h4>Ga naar Settings</h4>
-          <p>Klik op je profielicoon en kies Settings.</p>
-        </div>
+  <div id="nav-screen-module-3-1"></div>
+</div>
+
+<div id="screen-module-3-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 3 van 4</div>
+    <h2>Geheugen instellen en beheren</h2>
+  </div>
+  <div class="stappen-lijst">
+    <div class="stap-item">
+      <div class="stap-nummer">1</div>
+      <div class="stap-content">
+        <h4>Geheugen inschakelen</h4>
+        <p>Ga naar Settings &gt; Memory en zet de schakelaar aan. Vanaf dat moment slaat Claude relevante informatie op die in gesprekken aan bod komt.</p>
       </div>
-      <div class="stap-item">
-        <div class="stap-nummer">2</div>
-        <div class="stap-content">
-          <h4>Schakel Memory in</h4>
-          <p>Zet de Memory-optie aan. Claude onthoudt nu relevante informatie uit je gesprekken.</p>
-        </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">2</div>
+      <div class="stap-content">
+        <h4>Wat wordt er opgeslagen?</h4>
+        <p>Claude besluit zelf wat relevant is. Dat kan zijn: je naam, functie, bedrijf, taalvoorkeur, schrijfstijl of terugkerende instructies. Je ziet dit terug in de instellingen.</p>
       </div>
-      <div class="stap-item">
-        <div class="stap-nummer">3</div>
-        <div class="stap-content">
-          <h4>Controleer regelmatig</h4>
-          <p>Bekijk af en toe wat Claude heeft onthouden en verwijder wat niet klopt.</p>
-        </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">3</div>
+      <div class="stap-content">
+        <h4>Geheugen controleren en bewerken</h4>
+        <p>Open Settings &gt; Memory om te zien wat er staat. Je kunt losse herinneringen verwijderen of aanpassen als iets niet klopt of niet meer actueel is.</p>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">4</div>
+      <div class="stap-content">
+        <h4>Geheugen uitschakelen</h4>
+        <p>Wil je dat Claude niets meer onthoudt? Zet de schakelaar uit. Bestaande herinneringen blijven staan totdat je ze zelf verwijdert.</p>
       </div>
     </div>
   </div>
-  <div class="btn-wrap">
-    <button class="btn" onclick="goTo('screen-module-5')">Volgende</button>
+  <div id="nav-screen-module-3-2"></div>
+</div>
+
+<div id="screen-module-3-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 3 van 4</div>
+    <h2>Slim omgaan met context</h2>
+  </div>
+  <div class="content-card">
+    <p>Geheugen en Projects vullen elkaar aan, maar zijn niet hetzelfde. Begrijpen wanneer je welke optie gebruikt, helpt je efficiënter werken.</p>
+  </div>
+  <table class="vergelijk-tabel">
+    <thead>
+      <tr><th></th><th>Geheugen</th><th>Project</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Wat sla je op?</strong></td>
+        <td>Persoonlijke voorkeuren, naam, functie</td>
+        <td>Bestanden en context per onderwerp of klant</td>
+      </tr>
+      <tr>
+        <td><strong>Waar actief?</strong></td>
+        <td>In alle gesprekken, overal</td>
+        <td>Alleen binnen dat specifieke Project</td>
+      </tr>
+      <tr>
+        <td><strong>Wie beheert het?</strong></td>
+        <td>Claude kiest zelf wat op te slaan</td>
+        <td>Jij uploadt en beheert de bestanden</td>
+      </tr>
+      <tr>
+        <td><strong>Abonnement nodig?</strong></td>
+        <td>Beschikbaar voor alle gebruikers</td>
+        <td>Alleen Pro en Teams</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Praktische tip</div>
+    <p>Gebruik geheugen voor wie je bent en hoe je werkt. Gebruik Projects voor wat je aan het doen bent. Samen geven ze Claude de context die nodig is, zonder dat jij het elke keer opnieuw hoeft in te typen.</p>
+  </div>
+  <div id="nav-screen-module-3-3"></div>
+</div>
+
+<div id="screen-module-3-kc" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 3 van 4</div>
+    <h2>Kennischeck</h2>
+  </div>
+  <div class="kennischeck" id="kc-3">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Je hebt geheugen ingeschakeld en merkt dat Claude iets verkeerd heeft onthouden over je functie. Wat doe je?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-4-1', 'Dit helpt voor dat ene gesprek, maar de foutieve informatie blijft in het geheugen staan en beïnvloedt alle toekomstige gesprekken.')">In elk gesprek de correcte informatie herhalen</button>
+      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-4-1', 'Dan verlies je ook alle andere opgeslagen informatie die wel correct is. Dat is onnodig als je alleen één vermelding wil aanpassen.')">Het geheugen volledig wissen en opnieuw beginnen</button>
+      <button class="kc-optie" onclick="checkKC(3, this, true, 'screen-module-4-1', 'Correct. Via Settings > Memory zie je alle opgeslagen vermeldingen. Je kunt de foutieve vermelding aanpassen of verwijderen, zonder de rest kwijt te raken.')">Via Settings &gt; Memory de foutieve vermelding aanpassen of verwijderen</button>
+    </div>
+    <div id="kc-feedback-3" class="kc-feedback"></div>
   </div>
 </div>
 
-<!-- MODULE 5 -->
-<div id="screen-module-5" class="screen">
+<!-- ═══════════════════════════════════════════
+     ONDERDEEL 4: ABONNEMENTEN EN LIMIETEN
+═══════════════════════════════════════════ -->
+
+<div id="screen-module-4-1" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 5 van 5</div>
+    <div class="module-num">Onderdeel 4 van 4</div>
     <h2>Abonnementen en limieten</h2>
   </div>
   <div class="content-card">
-    <h3>Overzicht abonnementen</h3>
-    <table class="vergelijk-tabel">
-      <thead><tr><th>Abonnement</th><th>Prijs</th><th>Kenmerken</th></tr></thead>
-      <tbody>
-        <tr><td>Gratis</td><td>Gratis</td><td>Berichtlimiet per dag, basisfuncties</td></tr>
-        <tr><td>Pro</td><td>Circa $20/maand</td><td>Meer berichten, krachtigere modellen, Projects</td></tr>
-        <tr><td>Teams</td><td>Per gebruiker/maand</td><td>Meerdere gebruikers, betere privacyopties</td></tr>
-        <tr><td>Enterprise</td><td>Op maat</td><td>Grote organisaties, specifieke beveiligingseisen</td></tr>
-      </tbody>
-    </table>
+    <p>Claude.ai heeft een gratis versie en meerdere betaalde versies. De gratis versie geeft je toegang tot Claude, maar met een <strong>dagelijks berichtenlimiet</strong>. Bereik je dat limiet, dan zie je een melding en moet je wachten tot de volgende dag of upgraden.</p>
+    <p>De limieten bestaan omdat het draaien van AI-modellen veel rekenkracht vergt. Dat is geen willekeurige beperking, maar een economische realiteit. Lange gesprekken, grote bestanden en complexe instructies kosten meer van je dagelijks budget dan korte vragen.</p>
   </div>
   <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>De limieten zijn er omdat het draaien van grote AI-modellen veel rekenkracht kost. Dat is geen willekeurige beperking maar een economische realiteit. Begin gratis, en upgrade als je tegen de limieten aanloopt.</p>
+    <div class="tip-box-label tip">Actuele prijzen</div>
+    <p>De precieze kosten van abonnementen kunnen veranderen. Bekijk altijd de actuele prijzen op <strong>claude.ai/pricing</strong> voordat je een keuze maakt.</p>
+  </div>
+  <div id="nav-screen-module-4-1"></div>
+</div>
+
+<div id="screen-module-4-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 4 van 4</div>
+    <h2>Wat krijg je in welk abonnement?</h2>
+  </div>
+  <div class="flashcard-set">
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Gratis</div>
+      <div class="flashcard-back">Toegang tot Claude met een dagelijks berichtenlimiet. Geen Projects. Geschikt voor incidenteel gebruik of om de tool te verkennen. Gesprekken kunnen worden gebruikt voor modeltraining - lees de privacyvoorwaarden voor je vertrouwelijke data uploadt.</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Pro (betaald abonnement)</div>
+      <div class="flashcard-back">Meer berichten per dag, toegang tot krachtigere modellen en de Projects-functie. Geschikt voor dagelijks professioneel gebruik als individu. Zie claude.ai/pricing voor actuele kosten.</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Teams (betaald abonnement)</div>
+      <div class="flashcard-back">Bedoeld voor meerdere gebruikers. Biedt betere privacyopties: gesprekken worden standaard niet gebruikt voor modeltraining. Hogere limieten en beheerfuncties voor organisaties.</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="flashcard-front">Enterprise</div>
+      <div class="flashcard-back">Voor grote organisaties met specifieke beveiligings- en compliancevereisten. Biedt SSO, uitgebreide beheerfuncties en aanvullende privacygaranties voor organisaties met strenge datavereisten.</div>
+    </div>
+  </div>
+  <div id="nav-screen-module-4-2"></div>
+</div>
+
+<div id="screen-module-4-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 4 van 4</div>
+    <h2>Limieten in de praktijk</h2>
+  </div>
+  <div class="content-card">
+    <p>Een berichtenlimiet klinkt abstract, maar in de praktijk merk je het pas als je Claude intensief gebruikt voor langere gesprekken of complexe taken. Gewone, korte vragen gebruiken weinig van je dagelijks budget.</p>
+    <p>Als je merkt dat je de limiet snel bereikt, is het vaak een teken dat je werkwijze baat heeft bij een betaald abonnement - of dat je gesprekken efficiënter kunt indelen door beter voorbereide opdrachten te sturen.</p>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Slim gebruik</div>
+    <p>Begin elk gesprek met een duidelijke, specifieke opdracht. Langdradige gesprekken waarbij je steeds bijstuurt kosten meer dan een goed voorbereide vraag in één keer. Dat geldt zowel voor de limiet als voor de kwaliteit van het antwoord.</p>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Privacy en gratis gebruik</div>
+    <p>Bij de gratis versie kunnen gesprekken worden gebruikt om het model te verbeteren. Stuur geen vertrouwelijke bedrijfsinformatie via de gratis versie zonder de actuele privacyvoorwaarden te kennen en te vergelijken met de betaalde opties.</p>
   </div>
   <div class="btn-wrap">
     <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
   </div>
 </div>
 
-<!-- QUIZ_START -->
-[
-  {"vraag":"Wat heb je nodig om Claude.ai te gebruiken?","opties":["Een speciale app downloaden","Alleen een account en een browser","Een betaald abonnement","Programmeerkennis"],"correct":1,"uitleg":"Claude.ai werkt volledig in je browser. Je hebt alleen een account en een internetverbinding nodig."},
-  {"vraag":"Wat gebeurt er met een geupload bestand als je een nieuw gesprek start?","opties":["Het blijft beschikbaar in alle gesprekken","Het wordt permanent opgeslagen","Het is weg en moet opnieuw worden geupload","Het wordt automatisch in je Projects gezet"],"correct":2,"uitleg":"Claude leest het bestand maar slaat het niet op. Bij een nieuw gesprek moet je het opnieuw uploaden, tenzij je Projects gebruikt."},
-  {"vraag":"Waarvoor zijn Projects bedoeld?","opties":["Om Claude sneller te maken","Om gesprekken en documenten te groeperen rondom een onderwerp","Om bestanden met collega's te delen","Om je gespreksgeschiedenis te verwijderen"],"correct":1,"uitleg":"Projects laten je gesprekken en documenten groeperen zodat Claude altijd de juiste context heeft voor een specifiek onderwerp of klant."},
-  {"vraag":"Wat moet je doen als je wilt dat Claude je naam en functie onthoudt?","opties":["Het elke keer opnieuw vertellen","Memory inschakelen via Settings","Een betaald abonnement nemen","Het in je profiel zetten"],"correct":1,"uitleg":"Via Settings > Memory kun je Claude laten onthouden wat relevant is voor je gesprekken. Controleer regelmatig wat er is opgeslagen."},
-  {"vraag":"Waarom heeft de gratis versie een berichtlimiet?","opties":["Om je te dwingen te betalen","Omdat grote AI-modellen veel rekenkracht kosten","Omdat Anthropic niet genoeg servers heeft","Om misbruik te voorkomen"],"correct":1,"uitleg":"Het draaien van grote AI-modellen kost veel rekenkracht. De berichtlimieten zijn een economische noodzaak, geen willekeurige beperking."}
-]
-<!-- QUIZ_END -->
+<div id="screen-module-4-kc" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 4 van 4</div>
+    <h2>Kennischeck</h2>
+  </div>
+  <div class="kennischeck" id="kc-4">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Een collega wil vertrouwelijke klantdata verwerken via de gratis versie van Claude.ai. Wat is het belangrijkste bezwaar?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(4, this, false, 'screen-quiz', 'Het berichtenlimiet is geen reden om dit specifiek af te raden bij vertrouwelijke data. Het privacy-aspect is het kernprobleem.')">De gratis versie heeft een berichtenlimiet, dus het gesprek kan worden afgebroken</button>
+      <button class="kc-optie" onclick="checkKC(4, this, true, 'screen-quiz', 'Correct. Bij de gratis versie kunnen gesprekken worden gebruikt voor modeltraining, wat betekent dat vertrouwelijke data op een manier bij Anthropic terechtkomt die je niet volledig controleert. Controleer altijd de actuele privacyvoorwaarden.')">Gesprekken via de gratis versie kunnen worden gebruikt voor modeltraining</button>
+      <button class="kc-optie" onclick="checkKC(4, this, false, 'screen-quiz', 'Claude kan klantdata technisch verwerken. De vraag is of dat qua privacy toelaatbaar is op basis van de voorwaarden van het abonnement, niet of het technisch werkt.')">De gratis versie kan geen bestanden met klantdata verwerken</button>
+    </div>
+    <div id="kc-feedback-4" class="kc-feedback"></div>
+  </div>
+</div>
