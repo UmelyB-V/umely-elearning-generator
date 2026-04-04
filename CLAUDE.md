@@ -187,3 +187,60 @@ DELETE FROM elearning.modules WHERE slug ~ '-2026[0-9]{4}$';
 - Laagdrempelig, eerlijk, beperkingen benoemen
 - Nederlandse taal
 - `ANTHROPIC_API_KEY` alleen in `server.js`, nooit in lokale scripts
+
+## Kwaliteitsregels voor module-content (VERPLICHT)
+
+Dit zijn de regels die bij elke module gecontroleerd en gehandhaafd moeten worden. Afwijkingen zijn fouten, geen stijlkeuzes.
+
+### Welkomscherm
+- `class="screen start"` op het welkomscherm (niet alleen `class="screen"`)
+- Verplichte classes: `welcome-badge`, `leerdoelen` (als `<ul>`), `tijdsbadge`
+- Leerdoelen zijn specifiek en sluiten aan bij de inhoud — niet "Je begrijpt Claude beter"
+
+### MODULE_TITELS
+- Altijd beschrijvende namen — NOOIT "Module 1", "Module 2", "Topic 1", "Onderdeel 1" etc.
+- Correct voorbeeld: `'screen-module-1-1':'Wat is een prompt?'`
+- Fout voorbeeld: `'screen-module-1-1':'Module 1'`
+
+### Schermstructuur
+- Standaard per onderdeel: `-1` (uitleg), `-2` (verdieping), `-3` (praktijk), `-kc` (kennischeck)
+- Kennischeck staat ALTIJD op een eigen `screen-module-X-kc` scherm — nooit embedded in een contentscherm
+- Elke kennischeck (`checkKC`) heeft zinvolle feedbacktekst bij zowel correct als fout antwoord
+
+### Navigatie
+- GEEN inline Volgende/Ga verder/Verder-knoppen in contentschermen (`onclick="goTo(...)"`)
+- Navigatie loopt uitsluitend via `renderNavButtons` — dat injecteert automatisch de juiste knoppen
+- Uitzondering: de knop "Naar de afsluitquiz" op het laatste contentscherm is toegestaan
+
+### Quiz
+- Exact **5 vragen** — niet 6, niet 7
+- Elk quizvraag heeft een `uitleg`-veld met inhoudelijke toelichting
+- Quiz JSON staat altijd tussen `<!-- QUIZ_START -->` en `<!-- QUIZ_END -->`
+
+### Prijzen en datums
+- GEEN specifieke prijsbedragen ("$20/maand", "$25/gebruiker", "10-15 euro")
+- Vervang altijd door: "zie actuele pricing op claude.ai" of "betaald abonnement"
+- GEEN specifieke jaren of datums als voorbeeldinhoud ("in 2026", "Klanten 2026")
+- Technische limieten die snel verouderen (bv. "30 MB uploadlimiet") benoemen als "controleer actuele limiet"
+
+### Zelfpromotie
+- GEEN marketingclaims over Umely in instructiemateriaal
+- Verwijzingen naar Umely zijn informatief, niet promotioneel
+- Geen persoonsgebonden marketing (bv. "Sonny de Leeuw beoordeelt persoonlijk")
+
+### Componentvariatie
+- Minimaal 5 verschillende componenttypen per module
+- Maximaal 2 opeenvolgende `content-card` blokken zonder visueel element ertussen
+- Flashcards hebben altijd `onclick="toggleFlashcard(this)"` op elke kaart
+
+### Checklist voor nieuwe of bewerkte modules
+Doorloop deze lijst voor elke module vóór upload:
+- [ ] `class="screen start"` op welkomscherm
+- [ ] `welcome-badge`, `leerdoelen`, `tijdsbadge` aanwezig
+- [ ] MODULE_TITELS zijn beschrijvend
+- [ ] Kennischecks op eigen -kc schermen
+- [ ] Geen inline navigatieknoppen
+- [ ] Quiz heeft exact 5 vragen met uitleg
+- [ ] Geen prijsbedragen of verouderde datums
+- [ ] Minimaal 5 componenttypen gebruikt
+- [ ] Flashcards hebben onclick-handler
