@@ -443,19 +443,25 @@ function showLogin() {
 }
 
 async function showApp(session) {
-  document.getElementById('authOverlay').style.display = 'none';
-  document.getElementById('logoutBtn').style.display = 'block';
-  const userEl = document.getElementById('headerUser');
-  userEl.style.display = 'block';
   try {
     const { data: profile } = await _supabase
       .from('profiles')
-      .select('first_name')
+      .select('first_name, role')
       .eq('id', session.user.id)
       .single();
+
+    if (!profile || profile.role !== 'admin') {
+      window.location.href = '/modules.html';
+      return;
+    }
+
+    document.getElementById('authOverlay').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'block';
+    const userEl = document.getElementById('headerUser');
+    userEl.style.display = 'block';
     userEl.textContent = profile?.first_name || session.user.email;
   } catch {
-    userEl.textContent = session.user.email;
+    window.location.href = '/modules.html';
   }
 }
 
