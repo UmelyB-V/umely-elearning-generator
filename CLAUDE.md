@@ -274,3 +274,35 @@ Doorloop deze lijst voor elke module vóór upload:
 - [ ] Geen prijsbedragen of verouderde datums
 - [ ] Minimaal 5 componenttypen gebruikt
 - [ ] Flashcards hebben onclick-handler
+
+## Kwaliteitsproces: content audit en factcheck
+
+### Content audit
+Gebruik een agent om alle modules te scannen op:
+- AI-opvulling (platitudes, loze zinnen)
+- Te oppervlakkige schermen (alleen tip-box, geen concrete handeling)
+- Tijdsgebonden taal ("op dit moment", "binnenkort", specifieke getallen)
+- Ontbrekende nuance bij verificatie (slechts één bron zonder alternatieven)
+
+Resultaat opslaan in `content-audit.md` in de projectroot.
+
+### Factcheck
+Gebruik een agent om alle modules te scannen op verifieerbare claims:
+
+**Categorieën om te markeren:**
+1. Specifieke feiten over Claude/Anthropic (oprichtingsjaar, versienamen, contextvenster-groottes)
+2. Claims over hoe Claude werkt (functies, geheugen, Projects, Connectors, MCP)
+3. Claims over andere tools/bedrijven (OpenAI, ChatGPT, Gemini, Microsoft Copilot)
+4. UI-paden en menu-namen in claude.ai (verouderen bij interface-updates)
+5. Getallen en limieten (bestandsgroottes, token-limieten, prijzen)
+
+**Output:** `factcheck.md` in de projectroot — per claim: exacte zin, module, scherm-ID, type, risico (Hoog/Middel/Laag).
+
+**Factcheck.md staat op:** `umely-elearning-generator/factcheck.md`
+
+Na een factcheck: laat Dave of Sonny de Hoog-risico claims handmatig verifiëren via Anthropic's documentatie (docs.anthropic.com) of claude.ai zelf. Daarna modules fixen en opnieuw uploaden.
+
+### Wanneer uitvoeren
+- Na het schrijven of herschrijven van modules
+- Minimaal eens per kwartaal (Claude-features veranderen snel)
+- Na een grote Claude-update van Anthropic
