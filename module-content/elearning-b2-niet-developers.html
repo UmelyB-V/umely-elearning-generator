@@ -2,18 +2,13 @@
 <!-- SCHERMEN: 'screen-welcome','screen-module-1-1','screen-module-1-2','screen-module-1-3','screen-module-1-kc','screen-module-2-1','screen-module-2-2','screen-module-2-3','screen-module-2-kc','screen-module-3-1','screen-module-3-2','screen-module-3-3','screen-module-3-kc','screen-module-4-1','screen-module-4-2','screen-module-4-3','screen-module-4-kc','screen-quiz','screen-result' -->
 <!-- MODULE_TITELS: 'screen-welcome':'Welkom','screen-module-1-1':'Onderdeel 1 - Uitleg','screen-module-1-2':'Onderdeel 1 - Verdieping','screen-module-1-3':'Onderdeel 1 - Praktijk','screen-module-1-kc':'Kennischeck 1','screen-module-2-1':'Onderdeel 2 - Uitleg','screen-module-2-2':'Onderdeel 2 - Verdieping','screen-module-2-3':'Onderdeel 2 - Praktijk','screen-module-2-kc':'Kennischeck 2','screen-module-3-1':'Onderdeel 3 - Uitleg','screen-module-3-2':'Onderdeel 3 - Verdieping','screen-module-3-3':'Onderdeel 3 - Praktijk','screen-module-3-kc':'Kennischeck 3','screen-module-4-1':'Onderdeel 4 - Uitleg','screen-module-4-2':'Onderdeel 4 - Verdieping','screen-module-4-3':'Onderdeel 4 - Praktijk','screen-module-4-kc':'Kennischeck 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 
-<div id="screen-welcome" class="screen">
+<div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
-    <div class="welcome-tag">Module B2</div>
-    <h1>Claude voor niet-developers</h1>
-    <p class="welcome-intro">Je hoeft geen programmeur te zijn om Claude goed te gebruiken. Of je nu marketeer, jurist, HR-medewerker of ondernemer bent: Claude is voor iedereen. In deze module leer je wat je ermee kunt, wat je ervoor nodig hebt en waar de grenzen liggen.</p>
-    <div class="welcome-meta">
-      <span>&#128337; 15 minuten</span>
-      <span>&#128221; 4 onderdelen</span>
-      <span>&#10003; Afsluitquiz</span>
-    </div>
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>B2 - Claude voor niet-developers</h1>
+    <p>Je hoeft geen programmeur te zijn om Claude goed te gebruiken. Of je nu marketeer, jurist, HR-medewerker of ondernemer bent: Claude is voor iedereen toegankelijk.</p>
   </div>
-  <div class="welcome-leerdoelen">
+  <div class="leerdoelen">
     <h3>Na deze module weet je:</h3>
     <ul>
       <li>Dat technische kennis niet vereist is voor de meeste toepassingen</li>
@@ -23,7 +18,10 @@
       <li>Wat Claude niet kan zonder technische koppelingen</li>
     </ul>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-1-1')">Start de module</button></div>
+  <div class="tijdsbadge">Geschatte tijd: 15 minuten</div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-1-1')">Start de module</button>
+  </div>
 </div>
 
 <!-- ============================================================ -->
@@ -37,14 +35,18 @@
   </div>
   <div class="content-card">
     <p>Claude is ontworpen voor iedereen die gewone taal spreekt. Je typt wat je wilt weten of gedaan wilt hebben, en Claude reageert. Geen code, geen technische commando's, geen handleiding vereist.</p>
-    <p>De enige drie dingen die je nodig hebt: een account, een internetverbinding en de bereidheid om te experimenteren. Dat is het.</p>
-    <p>Technische kennis maakt Claude krachtiger, dat is eerlijk gezegd zo. Maar voor zo'n 80% van de dagelijkse use cases, zoals teksten schrijven, documenten samenvatten en vragen beantwoorden, heb je die kennis simpelweg niet nodig.</p>
+    <p>De enige drie dingen die je nodig hebt: een account, een internetverbinding en de bereidheid om te experimenteren.</p>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Eerlijk gezegd</div>
+    <p>Technische kennis maakt Claude krachtiger. Maar voor zo'n 80% van de dagelijkse use cases, zoals teksten schrijven, documenten samenvatten en vragen beantwoorden, heb je die kennis simpelweg niet nodig.</p>
+  </div>
+  <div class="content-card">
   </div>
   <div class="tip-box">
     <div class="tip-box-label tip">Goed om te weten</div>
     <p>Claude begrijpt context. Als je een beetje achtergrond geeft, zoals je functie, het doel van de tekst of wie de lezer is, worden de antwoorden direct veel beter. Dat is geen technische vaardigheid, dat is gewoon goed communiceren.</p>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-1-2')">Volgende</button></div>
 </div>
 
 <div id="screen-module-1-2" class="screen">
@@ -74,7 +76,6 @@
       <div class="fc-hint">Klik voor uitleg</div>
     </div>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-1-3')">Volgende</button></div>
 </div>
 
 <div id="screen-module-1-3" class="screen">
@@ -92,7 +93,6 @@
     </div>
     <div id="scenario-feedback-1" class="scenario-feedback"></div>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-1-kc')">Volgende</button></div>
 </div>
 
 <div id="screen-module-1-kc" class="screen">
@@ -130,7 +130,6 @@
     <div class="tip-box-label tip">Concrete aanpak</div>
     <p>Geef Claude altijd het origineel mee plus wat je wilt bereiken. Schrijf bijvoorbeeld: "Hier is mijn conceptmail. Maak hem professioneler en korter, maximaal drie alinea's." Dat werkt veel beter dan "verbeter deze mail".</p>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-2-2')">Volgende</button></div>
 </div>
 
 <div id="screen-module-2-2" class="screen">
@@ -174,7 +173,6 @@
       </tr>
     </tbody>
   </table>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-2-3')">Volgende</button></div>
 </div>
 
 <div id="screen-module-2-3" class="screen">
@@ -192,7 +190,7 @@
     </div>
     <div id="scenario-feedback-2" class="scenario-feedback"></div>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-2-kc')">Volgende</button></div>
+
 </div>
 
 <div id="screen-module-2-kc" class="screen">
@@ -223,14 +221,16 @@
   </div>
   <div class="content-card">
     <p>Claude is uitstekend in het lezen en samenvatten van grote hoeveelheden tekst. Upload een contract, een lang rapport of een reeks e-mails, en vraag Claude om de kern samen te vatten, hoofdpunten te benoemen of specifieke informatie eruit te halen.</p>
-    <p>Belangrijk om te weten: Claude leest wat jij hem geeft. Hij heeft geen toegang tot je inbox, je cloudopslag of je bedrijfssystemen, tenzij je die expliciet hebt gekoppeld. Kopiëren of uploaden is altijd noodzakelijk.</p>
-    <p>Als sparringpartner werkt Claude ook goed. Beschrijf een probleem, vraag om opties of andere invalshoeken. Hij geeft altijd antwoord. Maar: niet altijd het beste antwoord. Gebruik zijn output als startpunt, niet als eindoordeel.</p>
+    <p><strong>Belangrijk:</strong> Claude leest wat jij hem geeft. Hij heeft geen toegang tot je inbox, je cloudopslag of je bedrijfssystemen tenzij je die expliciet hebt gekoppeld. Kopiëren of uploaden is altijd noodzakelijk.</p>
   </div>
   <div class="tip-box">
-    <div class="tip-box-label info">Beperkingen</div>
-    <p>Claude heeft een limiet aan hoeveel tekst hij in één gesprek kan verwerken. Heel lange documenten moet je soms in stukken knippen. En zijn kennis heeft een einddatum: recente gebeurtenissen of nieuwe wetgeving kent hij mogelijk niet.</p>
+    <div class="tip-box-label tip">Claude als sparringpartner</div>
+    <p>Beschrijf een probleem, vraag om opties of andere invalshoeken. Hij geeft altijd antwoord. Maar niet altijd het beste antwoord. Gebruik zijn output als startpunt, niet als eindoordeel.</p>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-3-2')">Volgende</button></div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Beperkingen</div>
+    <p>Claude heeft een limiet aan hoeveel tekst hij in één gesprek kan verwerken. Heel lange documenten moet je soms in stukken knippen. Zijn kennis heeft ook een einddatum: recente gebeurtenissen of nieuwe wetgeving kent hij mogelijk niet.</p>
+  </div>
 </div>
 
 <div id="screen-module-3-2" class="screen">
@@ -275,7 +275,6 @@
       </div>
     </div>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-3-3')">Volgende</button></div>
 </div>
 
 <div id="screen-module-3-3" class="screen">
@@ -293,7 +292,6 @@
     </div>
     <div id="scenario-feedback-3" class="scenario-feedback"></div>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-3-kc')">Volgende</button></div>
 </div>
 
 <div id="screen-module-3-kc" class="screen">
@@ -331,7 +329,6 @@
     <div class="tip-box-label info">Wat betekent dit in de praktijk?</div>
     <p>Zie Claude als een slimme collega die je kunt bellen voor advies. Hij kan je helpen nadenken, teksten schrijven en informatie verwerken, maar hij loopt niet zelf naar de printer of verstuurt geen e-mails namens jou tenzij je hem daarvoor de juiste tools geeft.</p>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-4-2')">Volgende</button></div>
 </div>
 
 <div id="screen-module-4-2" class="screen">
@@ -380,7 +377,6 @@
       </tr>
     </tbody>
   </table>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-4-3')">Volgende</button></div>
 </div>
 
 <div id="screen-module-4-3" class="screen">
@@ -398,7 +394,6 @@
     </div>
     <div id="scenario-feedback-4" class="scenario-feedback"></div>
   </div>
-  <div class="btn-wrap"><button class="btn" onclick="goTo('screen-module-4-kc')">Volgende</button></div>
 </div>
 
 <div id="screen-module-4-kc" class="screen">

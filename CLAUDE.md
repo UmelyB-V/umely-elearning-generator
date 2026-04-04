@@ -131,8 +131,47 @@ Uit `_shared-js.html`:
 
 ## Database (Supabase)
 
-Project: `ummcgaazziivvxgfwsio`
-Tabel `modules`: `id`, `filename`, `title`, `slug`, `html`, `created_at`, `created_date`
+**MCP project ID:** `dsxyygvvtwnsoiubrwxc`
+**Schema:** `elearning` (niet `public` — altijd `elearning.modules` schrijven, nooit alleen `modules`)
+**Tabel:** `elearning.modules`: `id`, `filename`, `title`, `slug`, `html`, `created_at`, `created_date`
+
+### Hoe de Supabase MCP gebruiken
+
+Gebruik altijd de MCP-tools, nooit Node.js scripts of dotenv voor databasetoegang.
+
+1. **Lijst opvragen:**
+   ```
+   mcp__claude_ai_Supabase__list_projects → geeft project ID dsxyygvvtwnsoiubrwxc
+   ```
+   Alleen nodig als je het project ID wil verifiëren.
+
+2. **SQL uitvoeren:**
+   ```
+   mcp__claude_ai_Supabase__execute_sql
+     project_id: dsxyygvvtwnsoiubrwxc
+     query: SELECT ... FROM elearning.modules ...
+   ```
+
+3. **Schema opzoeken als je twijfelt:**
+   ```sql
+   SELECT table_schema, table_name FROM information_schema.tables WHERE table_name = 'modules';
+   ```
+   Resultaat: `elearning` en `public` bestaan beide — gebruik altijd `elearning`.
+
+**Veelgemaakte fouten die je moet vermijden:**
+- Project ID `ummcgaazziivvxgfwsio` staat in de `.env` maar is NIET het MCP project ID — het juiste ID is `dsxyygvvtwnsoiubrwxc`
+- `FROM modules` zonder schema geeft lege resultaten — schrijf altijd `FROM elearning.modules`
+- De MCP `execute_sql` werkt alleen met het juiste project ID; bij twijfel eerst `list_projects` aanroepen
+
+### Slugs
+Modules worden opgeslagen met een schone slug zonder datum, bv. `elearning-a1-wat-is-claude`.
+Bij een nieuwe upload: upsert op slug zodat de bestaande rij wordt overschreven, geen nieuwe aangemaakt.
+
+### Opruimen van oude gedateerde versies
+Als er dubbele slugs met datum-suffix in de database staan:
+```sql
+DELETE FROM elearning.modules WHERE slug ~ '-2026[0-9]{4}$';
+```
 
 ## Huisstijl modules
 

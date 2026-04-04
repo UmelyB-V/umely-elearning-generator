@@ -414,6 +414,50 @@ app.post('/api/newsletter/unsubscribe', requireAuth, async (req, res) => {
   res.json({ ok: true });
 });
 
+// ── Review-pagina: alle modules als leesbare broncode op één pagina (admin) ──
+app.get('/admin/review', requireAuth, requireAdmin, async (req, res) => {
+  const { data, error } = await supabase
+    .from('modules')
+    .select('slug, title, html')
+    .order('slug', { ascending: true });
+
+  if (error) return res.status(500).send('Fout: ' + error.message);
+
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  let page = `<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Module Review — ${new Date().toLocaleDateString('nl-NL')}</title>
+<style>
+  body { font-family: system-ui, sans-serif; padding: 2rem; background: #f5f5f5; color: #111; }
+  h1 { font-size: 1.4rem; margin-bottom: 2rem; }
+  .mod { background: #fff; border: 1px solid #ddd; border-radius: 8px; margin: 1.5rem 0; padding: 1.5rem; }
+  .mod h2 { font-size: 1rem; margin: 0 0 .75rem; color: #FF4D00; font-family: monospace; }
+  pre { font-size: 11px; line-height: 1.55; white-space: pre-wrap; word-break: break-all; background: #fafafa; padding: 1rem; border-radius: 4px; border: 1px solid #eee; }
+</style>
+</head>
+<body>
+<h1>Umely Module Review &mdash; ${data.length} modules &mdash; ${new Date().toLocaleDateString('nl-NL')}</h1>\n`;
+
+  for (const mod of data) {
+    let content = mod.html;
+    content = content.replace(/<style[\s\S]*?<\/style>/gi, '');
+    content = content.replace(/<script[\s\S]*?<\/script>/gi, '');
+    content = content.replace(/\n{3,}/g, '\n\n').trim();
+
+    page += `<div class="mod">
+  <h2>${esc(mod.slug)} &mdash; ${esc(mod.title)}</h2>
+  <pre>${esc(content)}</pre>
+</div>\n`;
+  }
+
+  page += `</body></html>`;
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(page);
+});
+
 // ── Verwijder een module (admin) ──
 app.delete('/api/modules/:slug', requireAuth, requireAdmin, async (req, res) => {
   const filename = req.params.slug + '.html';
