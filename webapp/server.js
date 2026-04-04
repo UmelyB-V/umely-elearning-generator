@@ -247,7 +247,7 @@ app.get('/modules/:slug', (req, res) => {
     body: JSON.stringify({ module_slug: '${slug}', score_pct: 0, completed: false })
   }).catch(() => {});
   const html = await res.text();
-  const tokenScript = '<script>window.__AUTH_TOKEN__ = ' + JSON.stringify(token) + ';<\/script>';
+  const tokenScript = '<script>window.__AUTH_TOKEN__ = ' + JSON.stringify(token) + ';<' + '/script>';
   const injected = html.replace('</head>', tokenScript + '</head>');
   document.open();
   document.write(injected);
