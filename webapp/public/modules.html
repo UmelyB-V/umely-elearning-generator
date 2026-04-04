@@ -261,6 +261,13 @@
 </head>
 <body>
 
+<!-- Email bevestigd toast -->
+<div id="emailConfirmedToast" style="display:none;position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:9999;background:#27292D;color:#fff;border-radius:12px;padding:16px 24px;box-shadow:0 8px 32px rgba(0,0,0,0.25);display:none;align-items:center;gap:12px;font-size:15px;font-weight:500;max-width:90vw;">
+  <span style="font-size:20px;">✓</span>
+  <span>Je e-mailadres is bevestigd. Welkom bij Umely!</span>
+  <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:#aaa;font-size:18px;cursor:pointer;margin-left:8px;line-height:1;">&times;</button>
+</div>
+
 <!-- Auth overlay -->
 <div id="authOverlay" style="display:none;">
   <div class="auth-card">
@@ -387,6 +394,13 @@ async function initAuth() {
     const { data: { session } } = await _supabase.auth.getSession();
     if (session) { _session = session; showApp(session); loadModules(); checkNewsletterPopup(session); }
     else showLogin();
+
+    if (sessionStorage.getItem('emailJustConfirmed')) {
+      sessionStorage.removeItem('emailJustConfirmed');
+      const toast = document.getElementById('emailConfirmedToast');
+      toast.style.display = 'flex';
+      setTimeout(() => { toast.style.display = 'none'; }, 6000);
+    }
 
     _supabase.auth.onAuthStateChange((event, session) => {
       _session = session;

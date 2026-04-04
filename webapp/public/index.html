@@ -429,7 +429,12 @@ async function initAuth() {
 
     _supabase.auth.onAuthStateChange((event, session) => {
       _session = session;
-      if (event === 'SIGNED_IN') showApp(session);
+      if (event === 'SIGNED_IN') {
+        if (window.location.hash.includes('type=signup')) {
+          sessionStorage.setItem('emailJustConfirmed', '1');
+        }
+        showApp(session);
+      }
       else if (event === 'SIGNED_OUT') showLogin();
     });
   } catch (e) {
