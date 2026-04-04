@@ -342,6 +342,7 @@ app.patch('/api/users/:userId/role', requireAuth, requireAdmin, async (req, res)
 
 // ── Voortgang opslaan ──
 app.post('/api/user/progress', requireAuth, async (req, res) => {
+  console.log('[progress] POST ontvangen voor user:', req.user?.id, 'body:', JSON.stringify(req.body));
   const { module_slug, score_pct, completed } = req.body;
   if (!module_slug) return res.status(400).json({ error: 'module_slug is verplicht.' });
 
