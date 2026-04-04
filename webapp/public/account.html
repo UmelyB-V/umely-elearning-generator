@@ -247,6 +247,12 @@
     <h2>Gebruikersbeheer (admin)</h2>
     <div id="usersTable" class="loading">Laden...</div>
   </div>
+
+  <div class="section" id="adminToolsSection" style="display:none;">
+    <h2>Beheerhulpmiddelen (admin)</h2>
+    <a href="/admin/review" target="_blank" class="btn-sm btn-primary" style="display:inline-flex;">Module review openen</a>
+    <p style="margin-top:10px;font-size:13px;color:var(--gray-text);">Toont alle modules als leesbare broncode op één pagina. Gebruik dit met de Claude Chrome-extensie voor een kwaliteitsbeoordeling.</p>
+  </div>
 </main>
 
 <footer>
@@ -451,6 +457,7 @@ async function loadAccount() {
     // Admin sectie
     if (profile.role === 'admin') {
       document.getElementById('adminSection').style.display = 'block';
+      document.getElementById('adminToolsSection').style.display = 'block';
       loadUsers();
     }
   } catch (e) {
