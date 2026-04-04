@@ -791,7 +791,13 @@ function filterModules() {
     if (q && visibleCards.length > 0) {
       group.classList.add('open');
     } else if (!q) {
-      group.classList.remove('open');
+      const savedOpen = getOpenCats();
+      const cat = group.dataset.cat;
+      if (savedOpen.includes(cat)) {
+        group.classList.add('open');
+      } else {
+        group.classList.remove('open');
+      }
     }
   });
   const grid = document.getElementById('grid');

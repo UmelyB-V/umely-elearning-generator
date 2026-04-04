@@ -354,9 +354,10 @@ app.post('/api/user/progress', requireAuth, async (req, res) => {
   };
   if (completed) record.completed_at = new Date().toISOString();
 
+  const isStartedOnly = (score_pct ?? 0) === 0 && !completed;
   const { error } = await supabase
     .from('user_progress')
-    .upsert(record, { onConflict: 'user_id,module_slug' });
+    .upsert(record, { onConflict: 'user_id,module_slug', ignoreDuplicates: isStartedOnly });
   if (error) return res.status(500).json({ error: error.message });
   res.json({ ok: true });
 });
