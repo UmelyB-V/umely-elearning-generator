@@ -1,0 +1,28 @@
+{
+  "name": "Umely",
+  "tagline": "Jouw vaste AI-partner",
+  "email": "info@umely.ai",
+  "website": "umely.ai",
+  "colors": {
+    "bg": "#FFF8F2",
+    "fg": "#27292D",
+    "amber": "#FF8514",
+    "flame": "#FF4D00",
+    "gold": "#FFD964",
+    "peach": "#FFD7AD",
+    "cream": "#F7E6C2",
+    "gradient": "linear-gradient(90deg,#FF8514,#FF4D00)",
+    "gradientWarm": "linear-gradient(90deg,#FFD964,#FF8514,#FF4D00)",
+    "headerBg": "#27292D",
+    "headerText": "#FFF8F2",
+    "footerBg": "#27292D",
+    "footerText": "rgba(255,248,242,0.7)"
+  },
+  "fonts": {
+    "heading": "Arimo",
+    "body": "Montserrat",
+    "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+  },
+  "logo": "logo.png",
+  "logoSmall": "logo-small.png"
+}
