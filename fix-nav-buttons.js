@@ -14,12 +14,12 @@ const REMOVE_LABELS = [
   'Verder',
   'Naar kennischeck',
   'Naar de kennischeck',
+  'Naar de afsluitquiz',
 ];
 
 // Label dat BEWAARD blijft (ook al gaat het naar een volgend scherm)
 const KEEP_LABELS = [
   'Start de module',
-  'Naar de afsluitquiz',
 ];
 
 let totalRemoved = 0;
