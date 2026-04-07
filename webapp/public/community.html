@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community (BETA) | Umely</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --amber: #FF8514;
+  --flame: #FF4D00;
+  --charcoal: #27292D;
+  --warm-white: #FFF8F2;
+  --white: #FFFFFF;
+  --gray-text: #5A5A5A;
+  --gray-light: #F0E6DC;
+  --gray-border: #E8D9CC;
+  --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Montserrat', sans-serif; background: var(--warm-white); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ── HEADER ── */
+header { background: var(--charcoal); height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.header-logo img { height: 32px; }
+.header-nav { display: flex; align-items: center; gap: 8px; }
+.nav-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 14px; border-radius: 20px; transition: all 0.15s; }
+.nav-link:hover { color: #fff; background: rgba(255,255,255,0.1); }
+.nav-link.active { color: #fff; background: rgba(255,133,20,0.25); }
+.nav-link.beta { color: var(--amber); font-weight: 600; }
+.logout-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.15s; font-family: 'Montserrat', sans-serif; }
+.logout-btn:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+/* ── LAYOUT ── */
+.page { display: flex; flex: 1; height: calc(100vh - 64px); overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar { width: 220px; background: var(--charcoal); padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+.sidebar-title { color: rgba(255,255,255,0.4); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0 10px 8px; }
+.room-btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: none; background: none; color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 500; cursor: pointer; text-align: left; width: 100%; transition: all 0.15s; font-family: 'Montserrat', sans-serif; }
+.room-btn:hover:not(.locked) { background: rgba(255,255,255,0.08); color: #fff; }
+.room-btn.active { background: rgba(255,133,20,0.2); color: var(--amber); }
+.room-btn.locked { cursor: default; opacity: 0.4; }
+.room-icon { font-size: 16px; flex-shrink: 0; }
+.level-badge { margin-left: auto; font-size: 10px; font-weight: 600; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); padding: 2px 7px; border-radius: 10px; }
+.room-btn.active .level-badge { background: rgba(255,133,20,0.3); color: var(--amber); }
+
+/* ── CHAT AREA ── */
+.chat-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.chat-header { padding: 16px 24px; border-bottom: 1px solid var(--gray-border); background: var(--white); }
+.chat-header h2 { font-family: 'Arimo', sans-serif; font-size: 18px; font-weight: 700; color: var(--charcoal); }
+.chat-header p { font-size: 13px; color: var(--gray-text); margin-top: 2px; }
+
+/* Locked state */
+.locked-state { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; padding: 40px; text-align: center; }
+.locked-state .lock-icon { font-size: 40px; }
+.locked-state h3 { font-family: 'Arimo', sans-serif; font-size: 20px; font-weight: 700; }
+.locked-state p { font-size: 14px; color: var(--gray-text); max-width: 320px; line-height: 1.6; }
+
+/* Messages */
+.messages-wrap { flex: 1; overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; background: var(--warm-white); }
+.message { display: flex; gap: 10px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-family: 'Arimo', sans-serif; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+.msg-body { flex: 1; }
+.msg-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.msg-name { font-size: 13px; font-weight: 600; color: var(--charcoal); }
+.msg-admin-badge { font-size: 10px; font-weight: 700; background: var(--gradient); color: white; padding: 1px 7px; border-radius: 10px; }
+.msg-time { font-size: 11px; color: var(--gray-text); }
+.msg-content { font-size: 14px; line-height: 1.55; color: var(--charcoal); white-space: pre-wrap; word-break: break-word; }
+
+.empty-state { text-align: center; color: var(--gray-text); font-size: 14px; padding: 40px; }
+
+/* Input */
+.chat-input-area { padding: 16px 24px; border-top: 1px solid var(--gray-border); background: var(--white); display: flex; gap: 10px; align-items: flex-end; }
+.chat-input { flex: 1; border: 2px solid var(--gray-border); border-radius: 14px; padding: 10px 14px; font-size: 14px; font-family: 'Montserrat', sans-serif; color: var(--charcoal); resize: none; outline: none; min-height: 44px; max-height: 120px; transition: border-color 0.15s; line-height: 1.4; }
+.chat-input:focus { border-color: var(--amber); }
+.send-btn { background: var(--gradient); color: white; border: none; border-radius: 22px; padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Montserrat', sans-serif; flex-shrink: 0; transition: opacity 0.15s; }
+.send-btn:hover:not(:disabled) { opacity: 0.88; }
+.send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Loading */
+#loadingScreen { position: fixed; inset: 0; background: var(--warm-white); display: flex; align-items: center; justify-content: center; z-index: 999; }
+.spinner { width: 36px; height: 36px; border: 4px solid #FFD7AD; border-top-color: var(--flame); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div id="loadingScreen"><div class="spinner"></div></div>
+
+<header>
+  <a href="/modules.html" class="header-logo">
+    <img src="/logo-small.png" alt="Umely">
+  </a>
+  <nav class="header-nav">
+    <a href="/modules.html" class="nav-link">Modules</a>
+    <a href="/community.html" class="nav-link beta active">Community (BETA)</a>
+    <a href="/account.html" class="nav-link">Account</a>
+    <button class="logout-btn" id="logoutBtn">Uitloggen</button>
+  </nav>
+</header>
+
+<div class="page">
+  <aside class="sidebar">
+    <div class="sidebar-title">Chatrooms</div>
+    <button class="room-btn" data-level="1" id="room1">
+      <span class="room-icon">🟢</span>
+      <span>Level 1</span>
+      <span class="level-badge">Lv.1</span>
+    </button>
+    <button class="room-btn locked" data-level="2" id="room2">
+      <span class="room-icon">🔒</span>
+      <span>Level 2</span>
+      <span class="level-badge">Lv.2</span>
+    </button>
+    <button class="room-btn locked" data-level="3" id="room3">
+      <span class="room-icon">🔒</span>
+      <span>Level 3</span>
+      <span class="level-badge">Lv.3</span>
+    </button>
+    <button class="room-btn locked" data-level="4" id="room4">
+      <span class="room-icon">🔒</span>
+      <span>Level 4</span>
+      <span class="level-badge">Lv.4</span>
+    </button>
+  </aside>
+
+  <div class="chat-area" id="chatArea">
+    <!-- Ingevuld door JS -->
+  </div>
+</div>
+
+<script>
+const ROOM_NAMES = {
+  1: { name: 'Level 1 — Starter', desc: 'Module A en B afgerond. Stel vragen, deel ervaringen.' },
+  2: { name: 'Level 2 — Gevorderd', desc: 'Meer dan de helft van de modules afgerond.' },
+  3: { name: 'Level 3 — Expert', desc: 'Alle modules afgerond met certificaat.' },
+  4: { name: 'Level 4 — Master', desc: 'Alle modules met 100% score afgerond.' },
+};
+
+let _supabase, _token, _userLevel = 0, _isAdmin = false;
+let _activeRoom = null, _pollInterval = null, _lastMessageCount = 0;
+
+async function init() {
+  const config = await fetch('/api/config').then(r => r.json());
+  _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+
+  const { data: { session } } = await _supabase.auth.getSession();
+  if (!session) {
+    window.location.href = '/?redirect=/community.html';
+    return;
+  }
+  _token = session.access_token;
+
+  // Haal level op
+  const levelRes = await fetch('/api/community/level', {
+    headers: { 'Authorization': 'Bearer ' + _token }
+  });
+
+  if (levelRes.status === 403) {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.querySelector('.page').innerHTML = `
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;flex-direction:column;gap:12px">
+        <div style="font-size:40px">🔧</div>
+        <h2 style="font-family:Arimo,sans-serif;font-size:22px">Community komt eraan</h2>
+        <p style="color:#5A5A5A;max-width:340px;line-height:1.6">De community is nog in ontwikkeling. Je wordt als eerste op de hoogte gesteld zodra die live gaat.</p>
+      </div>`;
+    return;
+  }
+
+  const levelData = await levelRes.json();
+  _userLevel = levelData.level || 0;
+  _isAdmin = levelData.isAdmin || false;
+
+  updateSidebar();
+  document.getElementById('loadingScreen').style.display = 'none';
+
+  // Open eerste toegankelijke room
+  const firstAccessible = _isAdmin ? 1 : ([1,2,3,4].find(l => l <= _userLevel) || null);
+  if (firstAccessible) openRoom(firstAccessible);
+  else renderLockedDefault();
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await _supabase.auth.signOut();
+    window.location.href = '/';
+  });
+}
+
+function updateSidebar() {
+  [1,2,3,4].forEach(level => {
+    const btn = document.getElementById('room' + level);
+    const accessible = _isAdmin || level <= _userLevel;
+    if (accessible) {
+      btn.classList.remove('locked');
+      btn.querySelector('.room-icon').textContent = ['🟢','🔵','🟣','⭐'][level-1];
+      btn.onclick = () => openRoom(level);
+    } else {
+      btn.classList.add('locked');
+      btn.querySelector('.room-icon').textContent = '🔒';
+      btn.onclick = null;
+    }
+  });
+}
+
+async function openRoom(level) {
+  if (_pollInterval) clearInterval(_pollInterval);
+  _activeRoom = level;
+  _lastMessageCount = 0;
+
+  // Markeer actieve room in sidebar
+  document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('room' + level).classList.add('active');
+
+  const room = ROOM_NAMES[level];
+  document.getElementById('chatArea').innerHTML = `
+    <div class="chat-header">
+      <h2>${room.name}</h2>
+      <p>${room.desc}</p>
+    </div>
+    <div class="messages-wrap" id="messagesList"><div class="empty-state">Berichten laden...</div></div>
+    <div class="chat-input-area">
+      <textarea class="chat-input" id="msgInput" placeholder="Typ een bericht..." rows="1"></textarea>
+      <button class="send-btn" id="sendBtn">Stuur</button>
+    </div>`;
+
+  document.getElementById('sendBtn').addEventListener('click', sendMessage);
+  document.getElementById('msgInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  await loadMessages();
+  _pollInterval = setInterval(loadMessages, 5000);
+}
+
+async function loadMessages() {
+  const res = await fetch('/api/community/messages/' + _activeRoom, {
+    headers: { 'Authorization': 'Bearer ' + _token }
+  });
+  if (!res.ok) return;
+  const { messages } = await res.json();
+  if (messages.length === _lastMessageCount) return;
+  _lastMessageCount = messages.length;
+
+  const list = document.getElementById('messagesList');
+  const wasAtBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 60;
+
+  if (messages.length === 0) {
+    list.innerHTML = '<div class="empty-state">Nog geen berichten. Wees de eerste!</div>';
+    return;
+  }
+
+  list.innerHTML = messages.map(m => {
+    const initials = m.user_name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+    const time = new Date(m.created_at).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+    const adminBadge = m.is_admin ? '<span class="msg-admin-badge">Admin</span>' : '';
+    return `<div class="message">
+      <div class="avatar">${initials}</div>
+      <div class="msg-body">
+        <div class="msg-meta">
+          <span class="msg-name">${escHtml(m.user_name)}</span>
+          ${adminBadge}
+          <span class="msg-time">${time}</span>
+        </div>
+        <div class="msg-content">${escHtml(m.content)}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  if (wasAtBottom) list.scrollTop = list.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const content = input.value.trim();
+  if (!content) return;
+
+  sendBtn.disabled = true;
+  input.disabled = true;
+
+  const res = await fetch('/api/community/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _token },
+    body: JSON.stringify({ room_level: _activeRoom, content }),
+  });
+
+  sendBtn.disabled = false;
+  input.disabled = false;
+
+  if (res.ok) {
+    input.value = '';
+    await loadMessages();
+    const list = document.getElementById('messagesList');
+    list.scrollTop = list.scrollHeight;
+  } else {
+    const err = await res.json();
+    alert(err.error || 'Kon bericht niet versturen.');
+  }
+}
+
+function renderLockedDefault() {
+  document.getElementById('chatArea').innerHTML = `
+    <div class="locked-state">
+      <div class="lock-icon">🔒</div>
+      <h3>Rooms zijn nog vergrendeld</h3>
+      <p>Rond de A- en B-modules af om toegang te krijgen tot de eerste chatroom.</p>
+    </div>`;
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+init();
+</script>
+</body>
+</html>
