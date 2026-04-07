@@ -58,9 +58,8 @@ for (const file of contentFiles) {
   const currentIdx = MODULE_ORDER.indexOf(baseSlug);
   const nextBaseSlug = currentIdx >= 0 && currentIdx < MODULE_ORDER.length - 1
     ? MODULE_ORDER[currentIdx + 1] : null;
-  const nextSlug = nextBaseSlug ? nextBaseSlug + '-' + today : null;
-  const nextModuleBtn = nextSlug
-    ? '<a class="btn" href="/modules/' + nextSlug + '">Volgende module &#8594;</a>'
+  const nextModuleBtn = nextBaseSlug
+    ? '<a class="btn" href="/modules/' + nextBaseSlug + '">Volgende module &#8594;</a>'
     : '<a class="btn" href="/modules.html">Terug naar overzicht</a>';
 
   const content = fs.readFileSync(path.join(TEMPLATE_DIR, file), 'utf8');
@@ -175,7 +174,7 @@ async function saveProgress(scorePct) {
     await fetch('/api/user/progress', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ module_slug: '${currentSlug}', score_pct: scorePct, completed: scorePct >= 70 })
+      body: JSON.stringify({ module_slug: '${baseSlug}', score_pct: scorePct, completed: scorePct >= 70 })
     });
   } catch(e) {}
 }
