@@ -4,96 +4,161 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Community (BETA) | Umely</title>
-<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
+  --sidebar-bg: #1C1E21;
+  --sidebar-hover: rgba(255,255,255,0.06);
+  --sidebar-active-bg: rgba(255,133,20,0.12);
+  --sidebar-active-border: #FF8514;
+  --chat-bg: #FAFAFA;
+  --chat-header-bg: #FFFFFF;
+  --input-bg: #FFFFFF;
   --amber: #FF8514;
   --flame: #FF4D00;
   --charcoal: #27292D;
-  --warm-white: #FFF8F2;
-  --white: #FFFFFF;
-  --gray-text: #5A5A5A;
-  --gray-light: #F0E6DC;
-  --gray-border: #E8D9CC;
   --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
+  --border: #EBEBEB;
+  --msg-hover: rgba(0,0,0,0.025);
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B7280;
+  --focus-ring: rgba(255,133,20,0.2);
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Montserrat', sans-serif; background: var(--warm-white); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
 
-/* ── HEADER ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--chat-bg); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+
+/* HEADER */
 header { background: var(--charcoal); height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.header-left { display: flex; align-items: center; gap: 12px; }
 .header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .header-logo img { height: 32px; }
 .header-nav { display: flex; align-items: center; gap: 8px; }
-.nav-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 14px; border-radius: 20px; transition: all 0.15s; }
+.nav-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 14px; border-radius: 20px; transition: all 0.2s; cursor: pointer; }
 .nav-link:hover { color: #fff; background: rgba(255,255,255,0.1); }
 .nav-link.active { color: #fff; background: rgba(255,133,20,0.25); }
 .nav-link.beta { color: var(--amber); font-weight: 600; }
-.logout-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.15s; font-family: 'Montserrat', sans-serif; }
+.logout-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
 .logout-btn:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; padding: 6px; }
 
-/* ── LAYOUT ── */
+/* LAYOUT */
 .page { display: flex; flex: 1; height: calc(100vh - 64px); overflow: hidden; }
 
-/* ── SIDEBAR ── */
-.sidebar { width: 220px; background: var(--charcoal); padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
-.sidebar-title { color: rgba(255,255,255,0.4); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0 10px 8px; }
-.room-btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: none; background: none; color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 500; cursor: pointer; text-align: left; width: 100%; transition: all 0.15s; font-family: 'Montserrat', sans-serif; }
-.room-btn:hover:not(.locked) { background: rgba(255,255,255,0.08); color: #fff; }
-.room-btn.active { background: rgba(255,133,20,0.2); color: var(--amber); }
+/* SIDEBAR */
+.sidebar { width: 240px; background: var(--sidebar-bg); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+.sidebar-rooms { flex: 1; overflow-y: auto; padding: 20px 10px 12px; }
+.sidebar-label { color: rgba(255,255,255,0.35); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0 10px 10px; }
+
+.room-btn { display: flex; align-items: center; gap: 10px; padding: 9px 10px 9px 13px; border-radius: 8px; border: none; background: none; color: rgba(255,255,255,0.6); cursor: pointer; text-align: left; width: 100%; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); font-family: 'Plus Jakarta Sans', sans-serif; border-left: 3px solid transparent; }
+.room-btn:hover:not(.locked) { background: var(--sidebar-hover); color: rgba(255,255,255,0.9); }
+.room-btn.active { background: var(--sidebar-active-bg); border-left-color: var(--sidebar-active-border); color: var(--amber); }
 .room-btn.locked { cursor: default; opacity: 0.4; }
-.room-icon { font-size: 16px; flex-shrink: 0; }
-.level-badge { margin-left: auto; font-size: 10px; font-weight: 600; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); padding: 2px 7px; border-radius: 10px; }
-.room-btn.active .level-badge { background: rgba(255,133,20,0.3); color: var(--amber); }
+.room-icon { flex-shrink: 0; display: flex; }
+.room-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.room-name { font-size: 13.5px; font-weight: 600; line-height: 1.2; }
+.room-desc { font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.3; font-weight: 400; }
+.room-btn.active .room-desc { color: rgba(255,133,20,0.6); }
 
-/* ── CHAT AREA ── */
-.chat-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-.chat-header { padding: 16px 24px; border-bottom: 1px solid var(--gray-border); background: var(--white); }
-.chat-header h2 { font-family: 'Arimo', sans-serif; font-size: 18px; font-weight: 700; color: var(--charcoal); }
-.chat-header p { font-size: 13px; color: var(--gray-text); margin-top: 2px; }
+.sidebar-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 14px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.sidebar-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; }
+.sidebar-username { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sidebar-badges { display: flex; gap: 4px; flex-shrink: 0; }
+.badge-pill { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+.badge-level { background: var(--gradient); color: white; }
+.badge-admin { background: var(--charcoal); color: white; border: 1px solid rgba(255,255,255,0.15); }
 
-/* Locked state */
-.locked-state { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; padding: 40px; text-align: center; }
-.locked-state .lock-icon { font-size: 40px; }
-.locked-state h3 { font-family: 'Arimo', sans-serif; font-size: 20px; font-weight: 700; }
-.locked-state p { font-size: 14px; color: var(--gray-text); max-width: 320px; line-height: 1.6; }
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; }
+
+/* CHAT AREA */
+.chat-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--chat-bg); }
+.chat-header { padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--chat-header-bg); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.chat-header-left { display: flex; flex-direction: column; gap: 3px; }
+.chat-header-title { font-size: 17px; font-weight: 700; color: var(--text-primary); }
+.chat-header-desc { font-size: 13px; color: var(--text-secondary); }
+.chat-header-stat { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
 
 /* Messages */
-.messages-wrap { flex: 1; overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; background: var(--warm-white); }
-.message { display: flex; gap: 10px; }
-.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-family: 'Arimo', sans-serif; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
-.msg-body { flex: 1; }
-.msg-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
-.msg-name { font-size: 13px; font-weight: 600; color: var(--charcoal); }
-.msg-admin-badge { font-size: 10px; font-weight: 700; background: var(--gradient); color: white; padding: 1px 7px; border-radius: 10px; }
-.msg-time { font-size: 11px; color: var(--gray-text); }
-.msg-content { font-size: 14px; line-height: 1.55; color: var(--charcoal); white-space: pre-wrap; word-break: break-word; }
+.messages-wrap { flex: 1; overflow-y: auto; padding: 16px 0; display: flex; flex-direction: column; background: var(--chat-bg); }
+.message { display: flex; gap: 12px; padding: 8px 24px; transition: background 0.15s; }
+.message:hover { background: var(--msg-hover); }
+.msg-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; margin-top: 2px; }
+.msg-body { flex: 1; min-width: 0; }
+.msg-meta { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.msg-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.badge-admin-msg { font-size: 10px; font-weight: 600; background: var(--charcoal); color: white; padding: 1px 7px; border-radius: 10px; }
+.msg-time { font-size: 11px; color: var(--text-secondary); opacity: 0; transition: opacity 0.15s; }
+.message:hover .msg-time { opacity: 1; }
+.msg-content { font-size: 14px; line-height: 1.6; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; }
 
-.empty-state { text-align: center; color: var(--gray-text); font-size: 14px; padding: 40px; }
+@keyframes msgFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.message.new { animation: msgFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Empty / locked / beta states */
+.empty-state { flex: 1; display: flex; align-items: center; justify-content: center; }
+.empty-card { background: white; border-radius: 16px; padding: 40px 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.empty-card h4 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.empty-card p { font-size: 14px; color: var(--text-secondary); max-width: 260px; line-height: 1.5; }
+.locked-state { flex: 1; display: flex; align-items: center; justify-content: center; }
+.state-card { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 48px 32px; max-width: 380px; }
+.state-card h3 { font-size: 19px; font-weight: 700; color: var(--text-primary); }
+.state-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 300px; }
+.state-link { color: var(--amber); text-decoration: none; font-size: 14px; font-weight: 600; transition: opacity 0.15s; }
+.state-link:hover { opacity: 0.75; }
 
 /* Input */
-.chat-input-area { padding: 16px 24px; border-top: 1px solid var(--gray-border); background: var(--white); display: flex; gap: 10px; align-items: flex-end; }
-.chat-input { flex: 1; border: 2px solid var(--gray-border); border-radius: 14px; padding: 10px 14px; font-size: 14px; font-family: 'Montserrat', sans-serif; color: var(--charcoal); resize: none; outline: none; min-height: 44px; max-height: 120px; transition: border-color 0.15s; line-height: 1.4; }
-.chat-input:focus { border-color: var(--amber); }
-.send-btn { background: var(--gradient); color: white; border: none; border-radius: 22px; padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Montserrat', sans-serif; flex-shrink: 0; transition: opacity 0.15s; }
+.chat-input-area { padding: 16px 24px; border-top: 1px solid var(--border); background: var(--input-bg); display: flex; gap: 10px; align-items: flex-end; flex-shrink: 0; }
+.chat-input { flex: 1; border: 1.5px solid var(--border); border-radius: 14px; padding: 10px 14px; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-primary); resize: none; outline: none; min-height: 44px; max-height: 120px; transition: border-color 0.2s, box-shadow 0.2s; line-height: 1.5; background: var(--input-bg); }
+.chat-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px var(--focus-ring); }
+.send-btn { background: var(--gradient); color: white; border: none; border-radius: 22px; padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; flex-shrink: 0; transition: opacity 0.15s, transform 0.1s; }
 .send-btn:hover:not(:disabled) { opacity: 0.88; }
+.send-btn:active:not(:disabled) { transform: scale(0.97); }
 .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* Loading */
-#loadingScreen { position: fixed; inset: 0; background: var(--warm-white); display: flex; align-items: center; justify-content: center; z-index: 999; }
-.spinner { width: 36px; height: 36px; border: 4px solid #FFD7AD; border-top-color: var(--flame); border-radius: 50%; animation: spin 0.8s linear infinite; }
+#loadingScreen { position: fixed; inset: 0; background: var(--chat-bg); display: flex; align-items: center; justify-content: center; z-index: 999; }
+.spinner { width: 36px; height: 36px; border: 3px solid rgba(255,133,20,0.2); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Responsive */
+@media (max-width: 1024px) { .sidebar { width: 220px; } }
+@media (max-width: 768px) {
+  .sidebar { width: 200px; }
+  .message { padding: 8px 16px; }
+  .chat-header { padding: 14px 16px; }
+  .chat-input-area { padding: 12px 16px; }
+}
+@media (max-width: 375px) {
+  .sidebar { position: fixed; top: 64px; left: 0; bottom: 0; z-index: 50; transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { display: block; }
+  .hamburger { display: flex; }
+}
 </style>
 </head>
 <body>
 
 <div id="loadingScreen"><div class="spinner"></div></div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <header>
-  <a href="/modules.html" class="header-logo">
-    <img src="/logo-small.png" alt="Umely">
-  </a>
+  <div class="header-left">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect y="3" width="20" height="2" rx="1" fill="rgba(255,255,255,0.8)"/>
+        <rect y="9" width="20" height="2" rx="1" fill="rgba(255,255,255,0.8)"/>
+        <rect y="15" width="20" height="2" rx="1" fill="rgba(255,255,255,0.8)"/>
+      </svg>
+    </button>
+    <a href="/modules.html" class="header-logo">
+      <img src="/logo-small.png" alt="Umely">
+    </a>
+  </div>
   <nav class="header-nav">
     <a href="/modules.html" class="nav-link">Modules</a>
     <a href="/community.html" class="nav-link beta active">Community (BETA)</a>
@@ -103,44 +168,71 @@ header { background: var(--charcoal); height: 64px; padding: 0 24px; display: fl
 </header>
 
 <div class="page">
-  <aside class="sidebar">
-    <div class="sidebar-title">Chatrooms</div>
-    <button class="room-btn" data-level="1" id="room1">
-      <span class="room-icon">🟢</span>
-      <span>Level 1</span>
-      <span class="level-badge">Lv.1</span>
-    </button>
-    <button class="room-btn locked" data-level="2" id="room2">
-      <span class="room-icon">🔒</span>
-      <span>Level 2</span>
-      <span class="level-badge">Lv.2</span>
-    </button>
-    <button class="room-btn locked" data-level="3" id="room3">
-      <span class="room-icon">🔒</span>
-      <span>Level 3</span>
-      <span class="level-badge">Lv.3</span>
-    </button>
-    <button class="room-btn locked" data-level="4" id="room4">
-      <span class="room-icon">🔒</span>
-      <span>Level 4</span>
-      <span class="level-badge">Lv.4</span>
-    </button>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-rooms">
+      <div class="sidebar-label">Chatrooms</div>
+      <button class="room-btn" data-level="1" id="room1">
+        <span class="room-icon" id="icon1"></span>
+        <span class="room-text">
+          <span class="room-name">Level 1 — Starter</span>
+          <span class="room-desc" id="desc1">A en B afgerond</span>
+        </span>
+      </button>
+      <button class="room-btn locked" data-level="2" id="room2">
+        <span class="room-icon" id="icon2"></span>
+        <span class="room-text">
+          <span class="room-name">Level 2 — Gevorderd</span>
+          <span class="room-desc" id="desc2">Nog 4 modules</span>
+        </span>
+      </button>
+      <button class="room-btn locked" data-level="3" id="room3">
+        <span class="room-icon" id="icon3"></span>
+        <span class="room-text">
+          <span class="room-name">Level 3 — Expert</span>
+          <span class="room-desc" id="desc3">Nog 12 modules</span>
+        </span>
+      </button>
+      <button class="room-btn locked" data-level="4" id="room4">
+        <span class="room-icon" id="icon4"></span>
+        <span class="room-text">
+          <span class="room-name">Level 4 — Master</span>
+          <span class="room-desc" id="desc4">Nog 25 modules</span>
+        </span>
+      </button>
+    </div>
+    <div class="sidebar-footer" id="sidebarFooter" style="display:none">
+      <div class="sidebar-avatar" id="sidebarAvatar"></div>
+      <span class="sidebar-username" id="sidebarUsername"></span>
+      <div class="sidebar-badges" id="sidebarBadges"></div>
+    </div>
   </aside>
 
-  <div class="chat-area" id="chatArea">
-    <!-- Ingevuld door JS -->
-  </div>
+  <div class="chat-area" id="chatArea"></div>
 </div>
 
 <script>
-const ROOM_NAMES = {
-  1: { name: 'Level 1 — Starter', desc: 'Module A en B afgerond. Stel vragen, deel ervaringen.' },
-  2: { name: 'Level 2 — Gevorderd', desc: 'Meer dan de helft van de modules afgerond.' },
-  3: { name: 'Level 3 — Expert', desc: 'Alle modules afgerond met certificaat.' },
-  4: { name: 'Level 4 — Master', desc: 'Alle modules met 100% score afgerond.' },
-};
+const SVG_CHAT = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3a1 1 0 011-1h10a1 1 0 011 1v7a1 1 0 01-1 1H9.5l-2 2-2-2H3a1 1 0 01-1-1V3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+const SVG_LOCK = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3.5" y="7" width="9" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 7V5a3 3 0 116 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+const SVG_CHAT_BIG = `<svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M5 7.5A2.5 2.5 0 017.5 5h25A2.5 2.5 0 0135 7.5V25a2.5 2.5 0 01-2.5 2.5H23l-3 4-3-4H7.5A2.5 2.5 0 015 25V7.5z" stroke="#FF8514" stroke-width="2" stroke-linejoin="round"/></svg>`;
+const SVG_LOCK_BIG = `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="9" y="21" width="30" height="21" rx="4" stroke="#D1D5DB" stroke-width="2.5"/><path d="M14 21V17a10 10 0 0120 0v4" stroke="#D1D5DB" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="31" r="2.5" fill="#D1D5DB"/></svg>`;
+const SVG_WRENCH = `<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M34 6a10 10 0 00-9.9 11.5L8 33.5A4.5 4.5 0 1014.5 40l16-16.1A10 10 0 1034 6z" stroke="#D1D5DB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="37" r="2" fill="#D1D5DB"/></svg>`;
 
-let _supabase, _token, _userLevel = 0, _isAdmin = false;
+const AVATAR_COLORS = ['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F'];
+function getAvatarColor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0x7FFFFFFF;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+
+const ROOM_NAMES = {
+  1: { name: 'Level 1 — Starter', desc: 'A en B afgerond' },
+  2: { name: 'Level 2 — Gevorderd', desc: 'Meer dan de helft afgerond' },
+  3: { name: 'Level 3 — Expert', desc: 'Alle modules afgerond' },
+  4: { name: 'Level 4 — Master', desc: 'Alles met 100% score' },
+};
+const ROOM_LOCKED_HINTS = { 1: 'A en B afgerond', 2: 'Nog 4 modules', 3: 'Nog 12 modules', 4: 'Nog 25 modules' };
+
+let _supabase, _token, _userLevel = 0, _isAdmin = false, _userName = '';
 let _activeRoom = null, _pollInterval = null, _lastMessageCount = 0;
 
 async function init() {
@@ -148,13 +240,12 @@ async function init() {
   _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
 
   const { data: { session } } = await _supabase.auth.getSession();
-  if (!session) {
-    window.location.href = '/?redirect=/community.html';
-    return;
-  }
+  if (!session) { window.location.href = '/?redirect=/community.html'; return; }
   _token = session.access_token;
 
-  // Haal level op
+  const meta = session.user.user_metadata || {};
+  _userName = meta.full_name || meta.name || session.user.email.split('@')[0];
+
   const levelRes = await fetch('/api/community/level', {
     headers: { 'Authorization': 'Bearer ' + _token }
   });
@@ -162,10 +253,12 @@ async function init() {
   if (levelRes.status === 403) {
     document.getElementById('loadingScreen').style.display = 'none';
     document.querySelector('.page').innerHTML = `
-      <div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;flex-direction:column;gap:12px">
-        <div style="font-size:40px">🔧</div>
-        <h2 style="font-family:Arimo,sans-serif;font-size:22px">Community komt eraan</h2>
-        <p style="color:#5A5A5A;max-width:340px;line-height:1.6">De community is nog in ontwikkeling. Je wordt als eerste op de hoogte gesteld zodra die live gaat.</p>
+      <div class="locked-state">
+        <div class="state-card">
+          ${SVG_WRENCH}
+          <h3>Community komt eraan</h3>
+          <p>Je wordt als eerste op de hoogte gesteld zodra de community live gaat.</p>
+        </div>
       </div>`;
     return;
   }
@@ -175,9 +268,9 @@ async function init() {
   _isAdmin = levelData.isAdmin || false;
 
   updateSidebar();
+  renderSidebarFooter();
   document.getElementById('loadingScreen').style.display = 'none';
 
-  // Open eerste toegankelijke room
   const firstAccessible = _isAdmin ? 1 : ([1,2,3,4].find(l => l <= _userLevel) || null);
   if (firstAccessible) openRoom(firstAccessible);
   else renderLockedDefault();
@@ -186,22 +279,50 @@ async function init() {
     await _supabase.auth.signOut();
     window.location.href = '/';
   });
+
+  const hamburger = document.getElementById('hamburgerBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('open'); });
+  overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
 }
 
 function updateSidebar() {
   [1,2,3,4].forEach(level => {
     const btn = document.getElementById('room' + level);
+    const iconEl = document.getElementById('icon' + level);
+    const descEl = document.getElementById('desc' + level);
     const accessible = _isAdmin || level <= _userLevel;
     if (accessible) {
       btn.classList.remove('locked');
-      btn.querySelector('.room-icon').textContent = ['🟢','🔵','🟣','⭐'][level-1];
+      iconEl.innerHTML = SVG_CHAT;
+      iconEl.style.color = 'rgba(255,255,255,0.5)';
+      descEl.textContent = ROOM_NAMES[level].desc;
       btn.onclick = () => openRoom(level);
     } else {
       btn.classList.add('locked');
-      btn.querySelector('.room-icon').textContent = '🔒';
+      iconEl.innerHTML = SVG_LOCK;
+      iconEl.style.color = 'rgba(255,255,255,0.4)';
+      descEl.textContent = ROOM_LOCKED_HINTS[level];
       btn.onclick = null;
     }
   });
+}
+
+function renderSidebarFooter() {
+  const footer = document.getElementById('sidebarFooter');
+  const avatarEl = document.getElementById('sidebarAvatar');
+  const usernameEl = document.getElementById('sidebarUsername');
+  const badgesEl = document.getElementById('sidebarBadges');
+  const initials = _userName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+  avatarEl.textContent = initials;
+  avatarEl.style.background = getAvatarColor(_userName);
+  const parts = _userName.split(' ');
+  const shortName = parts.length > 1 ? parts[0] + ' ' + parts[parts.length-1][0] + '.' : _userName;
+  usernameEl.textContent = shortName;
+  const lvl = _userLevel || (_isAdmin ? 1 : 0);
+  badgesEl.innerHTML = `<span class="badge-pill badge-level">Lv.${lvl}</span>${_isAdmin ? '<span class="badge-pill badge-admin">Admin</span>' : ''}`;
+  footer.style.display = 'flex';
 }
 
 async function openRoom(level) {
@@ -209,17 +330,28 @@ async function openRoom(level) {
   _activeRoom = level;
   _lastMessageCount = 0;
 
-  // Markeer actieve room in sidebar
-  document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+
+  document.querySelectorAll('.room-btn').forEach(b => {
+    b.classList.remove('active');
+    const icon = b.querySelector('.room-icon');
+    if (icon && !b.classList.contains('locked')) icon.style.color = 'rgba(255,255,255,0.5)';
+  });
   document.getElementById('room' + level).classList.add('active');
+  const activeIcon = document.getElementById('icon' + level);
+  if (activeIcon) activeIcon.style.color = 'var(--amber)';
 
   const room = ROOM_NAMES[level];
   document.getElementById('chatArea').innerHTML = `
     <div class="chat-header">
-      <h2>${room.name}</h2>
-      <p>${room.desc}</p>
+      <div class="chat-header-left">
+        <div class="chat-header-title">${room.name}</div>
+        <div class="chat-header-desc">${room.desc}</div>
+      </div>
+      <div class="chat-header-stat" id="activeToday"></div>
     </div>
-    <div class="messages-wrap" id="messagesList"><div class="empty-state">Berichten laden...</div></div>
+    <div class="messages-wrap" id="messagesList"></div>
     <div class="chat-input-area">
       <textarea class="chat-input" id="msgInput" placeholder="Typ een bericht..." rows="1"></textarea>
       <button class="send-btn" id="sendBtn">Stuur</button>
@@ -241,22 +373,44 @@ async function loadMessages() {
   if (!res.ok) return;
   const { messages } = await res.json();
   if (messages.length === _lastMessageCount) return;
+
+  const isFirstLoad = _lastMessageCount === 0;
+  const prevCount = _lastMessageCount;
   _lastMessageCount = messages.length;
 
   const list = document.getElementById('messagesList');
+  if (!list) return;
   const wasAtBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 60;
 
+  const today = new Date().toDateString();
+  const uniqueSenders = new Set(
+    messages.filter(m => new Date(m.created_at).toDateString() === today).map(m => m.user_name)
+  );
+  const activeTodayEl = document.getElementById('activeToday');
+  if (activeTodayEl && uniqueSenders.size > 0) {
+    activeTodayEl.textContent = uniqueSenders.size + ' actief vandaag';
+  }
+
   if (messages.length === 0) {
-    list.innerHTML = '<div class="empty-state">Nog geen berichten. Wees de eerste!</div>';
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-card">
+          ${SVG_CHAT_BIG}
+          <h4>Nog geen berichten</h4>
+          <p>Wees de eerste die iets deelt in deze room.</p>
+        </div>
+      </div>`;
     return;
   }
 
-  list.innerHTML = messages.map(m => {
+  list.innerHTML = messages.map((m, idx) => {
     const initials = m.user_name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+    const color = getAvatarColor(m.user_name);
     const time = new Date(m.created_at).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
-    const adminBadge = m.is_admin ? '<span class="msg-admin-badge">Admin</span>' : '';
-    return `<div class="message">
-      <div class="avatar">${initials}</div>
+    const adminBadge = m.is_admin ? '<span class="badge-admin-msg">Admin</span>' : '';
+    const isNew = !isFirstLoad && idx >= prevCount;
+    return `<div class="message${isNew ? ' new' : ''}">
+      <div class="msg-avatar" style="background:${color}">${initials}</div>
       <div class="msg-body">
         <div class="msg-meta">
           <span class="msg-name">${escHtml(m.user_name)}</span>
@@ -293,7 +447,7 @@ async function sendMessage() {
     input.value = '';
     await loadMessages();
     const list = document.getElementById('messagesList');
-    list.scrollTop = list.scrollHeight;
+    if (list) list.scrollTop = list.scrollHeight;
   } else {
     const err = await res.json();
     alert(err.error || 'Kon bericht niet versturen.');
@@ -303,9 +457,12 @@ async function sendMessage() {
 function renderLockedDefault() {
   document.getElementById('chatArea').innerHTML = `
     <div class="locked-state">
-      <div class="lock-icon">🔒</div>
-      <h3>Rooms zijn nog vergrendeld</h3>
-      <p>Rond de A- en B-modules af om toegang te krijgen tot de eerste chatroom.</p>
+      <div class="state-card">
+        ${SVG_LOCK_BIG}
+        <h3>Rooms worden ontgrendeld naarmate je leert</h3>
+        <p>Rond alle A- en B-modules af om Level 1 te openen.</p>
+        <a href="/modules.html" class="state-link">→ Ga naar modules</a>
+      </div>
     </div>`;
 }
 
