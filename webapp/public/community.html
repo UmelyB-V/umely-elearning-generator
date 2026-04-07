@@ -487,7 +487,7 @@ async function loadMessages() {
     const time = new Date(m.created_at).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
     const adminBadge = m.is_admin ? '<span class="badge-admin-msg">Admin</span>' : '';
     const isNew = !isFirstLoad && idx >= prevCount;
-    const avatarHtml = `<div class="msg-avatar${isOwn ? '' : ' clickable'}" style="background:${color}" ${isOwn ? '' : `onclick="openProfileModal('${m.user_id}')"`}>${initials}</div>`;
+    const avatarHtml = `<div class="msg-avatar${isOwn ? '' : ' clickable'}" style="background:${color}" ${isOwn ? '' : `data-userid="${escHtml(m.user_id)}"`}>${initials}</div>`;
     if (isOwn) {
       return `<div class="message own${isNew ? ' new' : ''}">
         <div class="msg-body">
@@ -511,6 +511,10 @@ async function loadMessages() {
       </div>
     </div>`;
   }).join('');
+
+  list.querySelectorAll('.msg-avatar.clickable[data-userid]').forEach(el => {
+    el.addEventListener('click', () => openProfileModal(el.dataset.userid));
+  });
 
   if (wasAtBottom) list.scrollTop = list.scrollHeight;
 }
@@ -558,6 +562,15 @@ function renderLockedDefault() {
 
 function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function safeUrl(url) {
+  try {
+    const u = new URL(url);
+    return (u.protocol === 'https:' || u.protocol === 'http:') ? url : '#';
+  } catch {
+    return '#';
+  }
 }
 
 function closeProfileModal(e) {
@@ -658,10 +671,10 @@ async function openProfileModal(userId) {
 
   // Links
   const links = [];
-  if (profile.website) links.push(`<a class="modal-social-link" href="${escHtml(profile.website)}" target="_blank" rel="noopener"><span class="modal-social-icon">🌐</span>${escHtml(profile.website.replace(/^https?:\/\//, ''))}</a>`);
+  if (profile.website) links.push(`<a class="modal-social-link" href="${safeUrl(profile.website)}" target="_blank" rel="noopener"><span class="modal-social-icon">🌐</span>${escHtml(profile.website.replace(/^https?:\/\//, ''))}</a>`);
   if (profile.instagram) links.push(`<a class="modal-social-link" href="https://instagram.com/${encodeURIComponent(profile.instagram.replace('@',''))}" target="_blank" rel="noopener"><span class="modal-social-icon">📷</span>${escHtml(profile.instagram)}</a>`);
   if (profile.twitter) links.push(`<a class="modal-social-link" href="https://x.com/${encodeURIComponent(profile.twitter.replace('@',''))}" target="_blank" rel="noopener"><span class="modal-social-icon">𝕏</span>${escHtml(profile.twitter)}</a>`);
-  if (profile.linkedin) links.push(`<a class="modal-social-link" href="${escHtml(profile.linkedin)}" target="_blank" rel="noopener"><span class="modal-social-icon">in</span>LinkedIn</a>`);
+  if (profile.linkedin) links.push(`<a class="modal-social-link" href="${safeUrl(profile.linkedin)}" target="_blank" rel="noopener"><span class="modal-social-icon">in</span>LinkedIn</a>`);
   if (links.length > 0) {
     html += `<hr class="modal-divider"><div class="modal-section"><div class="modal-section-label">Links</div><div class="modal-social-links">${links.join('')}</div></div>`;
   }
