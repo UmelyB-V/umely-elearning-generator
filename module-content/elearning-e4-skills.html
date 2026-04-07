@@ -29,7 +29,7 @@
     <h2>Wat is een Skill?</h2>
   </div>
   <div class="content-card">
-    <p>Een Skill is een herbruikbaar instructiepakket voor een specifieke taak. Je schrijft een keer op wat Claude moet doen, stap voor stap, met regels en voorkeuren, en slaat dat op in een SKILL.md-bestand. Claude Code kan Skills laden via slash-commando's (bijv. /skill-naam) of automatisch via de Skill tool wanneer de taakomschrijving overeenkomt met de skill-beschrijving. Je kunt Skills ook handmatig activeren.</p>
+    <p>Een Skill is een herbruikbaar instructiepakket voor een specifieke taak. Je schrijft een keer op wat Claude moet doen, stap voor stap, met regels en voorkeuren, en slaat dat op in een SKILL.md-bestand. Claude Code kan Skills laden via slash-commando's (bijv. /skill-naam) of automatisch via de Skill tool wanneer de taakomschrijving overeenkomt met de skill-beschrijving. Je kunt Skills ook handmatig activeren door de naam van de Skill expliciet te noemen in je opdracht aan Claude Code, bijvoorbeeld: "Gebruik de review-skill om dit rapport te beoordelen."</p>
     <p>Vergelijk het met een werkprocedure in een bedrijf: je schrijft een keer op hoe iets gedaan moet worden, en iedereen, inclusief Claude, volgt die procedure.</p>
   </div>
   <div class="content-card">
@@ -131,7 +131,7 @@
     <div class="kc-opties">
       <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Skills staan niet in CLAUDE.md. CLAUDE.md is voor projectcontext. Skills staan in .claude/skills/.')">In het CLAUDE.md-bestand</button>
       <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Skills worden opgeslagen als SKILL.md-bestanden in de map .claude/skills/ in je projectmap.')">In de map .claude/skills/ in je projectmap</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Skills staan niet op de Anthropic-servers. Ze staan lokaal in je projectmap.')">Op de servers van Anthropic</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Skills staan momenteel niet op de Anthropic-servers — ze worden lokaal opgeslagen in je projectmap. Cloud-gebaseerde opslag kan in toekomstige versies beschikbaar komen.')">Op de servers van Anthropic</button>
     </div>
     <div id="kc-feedback-2" class="kc-feedback"></div>
   </div>

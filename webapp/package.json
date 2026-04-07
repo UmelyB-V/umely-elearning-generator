@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "cd .. && node build-modules.js && node upload-modules.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",

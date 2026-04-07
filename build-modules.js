@@ -103,17 +103,18 @@ ${sharedCSS}
 
 <header>
   <div class="header-inner">
-    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:0.25rem;">
-      <a href="/modules.html"><img src="/logo.png" alt="Umely" style="height:65px;filter:brightness(0) invert(1);display:block;"></a>
-      <a href="/modules.html" style="color:rgba(255,248,242,0.6);font-size:0.75rem;text-decoration:none;font-weight:600;">&#8592; Overzicht</a>
-    </div>
+    <a href="/modules.html" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;">
+      <img src="/logo.png" alt="Umely" style="height:90px;filter:brightness(0) invert(1);display:block;">
+    </a>
     <span class="header-title" id="header-module-title"></span>
-    <span style="width:100px;"></span>
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <span id="progressLabel" style="font-size:0.8rem;color:rgba(255,248,242,0.8);font-weight:700;white-space:nowrap;">0% voltooid</span>
+      <a href="/modules.html" style="color:rgba(255,248,242,0.7);font-size:0.8rem;text-decoration:none;font-weight:600;padding:6px 14px;border:1.5px solid rgba(255,248,242,0.25);border-radius:50px;white-space:nowrap;transition:all 0.15s;">&#8592; Overzicht</a>
+    </div>
   </div>
-  <div style="max-width:860px;margin:0.75rem auto 0;background:rgba(255,248,242,0.15);border-radius:50px;height:6px;overflow:hidden;">
-    <div id="progressBar" style="height:100%;background:var(--gradient);border-radius:50px;transition:width 0.4s ease;width:0%;"></div>
+  <div style="background:rgba(255,248,242,0.12);height:8px;overflow:hidden;margin-top:0.5rem;">
+    <div id="progressBar" style="height:100%;background:var(--gradient);transition:width 0.5s ease;width:0%;box-shadow:0 0 8px rgba(255,133,20,0.5);"></div>
   </div>
-  <div id="progressLabel" style="text-align:right;font-size:0.75rem;color:rgba(255,248,242,0.6);font-weight:600;max-width:860px;margin:0.25rem auto 0.5rem;padding-right:0;">0% voltooid</div>
 </header>
 
 ${content

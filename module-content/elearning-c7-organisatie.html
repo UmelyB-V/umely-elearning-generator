@@ -34,7 +34,7 @@
     <table class="vergelijk-tabel">
       <thead><tr><th>Eigenschap</th><th>Teams</th><th>Enterprise</th></tr></thead>
       <tbody>
-        <tr><td>Voor wie?</td><td>Kleine tot middelgrote organisaties</td><td>Grotere organisaties</td></tr>
+        <tr><td>Voor wie?</td><td>Organisaties met min. 5 seats</td><td>Grotere organisaties met compliance-eisen</td></tr>
         <tr><td>Gedeelde Projects</td><td>Ja</td><td>Ja</td></tr>
         <tr><td>Gesprekken voor training</td><td>Standaard niet</td><td>Standaard niet</td></tr>
         <tr><td>SSO / SAML</td><td>Nee</td><td>Ja</td></tr>
@@ -46,7 +46,7 @@
   </div>
   <div class="tip-box">
     <div class="tip-box-label tip">Tip</div>
-    <p>Voor de meeste MKB-kantoren is Teams voldoende. Teams biedt al een standaard verwerkersovereenkomst (DPA). Enterprise is pas nodig als je specifieke beveiligingseisen hebt zoals SSO, auditlogs en prioriteitssupport.</p>
+    <p>Voor de meeste MKB-kantoren is Teams voldoende. Teams heeft een minimum van 5 seats en de DPA is automatisch inbegrepen in de Commercial Terms. Enterprise is nodig als je specifieke beveiligingseisen hebt zoals SSO, auditlogs en prioriteitssupport. Zie <strong>anthropic.com/legal/data-processing-addendum</strong> voor de actuele DPA-tekst. Controleer <strong>claude.com/pricing</strong> voor de actuele features per plan.</p>
   </div>
   <div id="kc-1" class="kennischeck">
     <h3>Kennischeck</h3>
@@ -146,7 +146,7 @@
     <div class="kc-opties">
       <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Met gedeelde Projects werkt iedereen met dezelfde context. Niemand hoeft de briefing of achtergrond opnieuw in te voeren.')">Iedereen in het team werkt met dezelfde context en documenten</button>
       <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Projects maken Claude niet sneller. Ze zorgen voor consistente context binnen een team.')">Claude reageert sneller bij gedeelde Projects</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Projects geven geen korting. Het is een functie voor betere samenwerking.')">Je krijgt korting op het abonnement</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Projects geven geen korting. Het voordeel van gedeelde Projects is dat iedereen in het team met dezelfde context en documenten werkt, zodat niemand informatie opnieuw hoeft in te voeren.')">Je krijgt korting op het abonnement</button>
     </div>
     <div id="kc-feedback-2" class="kc-feedback"></div>
   </div>
@@ -179,7 +179,7 @@
   </div>
   <div class="tip-box">
     <div class="tip-box-label tip">Tip</div>
-    <p>Een interne richtlijn hoeft geen lang document te zijn. Een A4 met duidelijke regels is genoeg. Belangrijker dan de lengte is dat iedereen het leest en begrijpt.</p>
+    <p>Houd de richtlijn beknopt en praktisch. Belangrijker dan de lengte is dat iedereen weet waar de grens ligt en bij wie ze terecht kunnen met vragen.</p>
   </div>
   <div class="btn-wrap">
     <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>

@@ -204,3 +204,212 @@ Geen significante problemen gevonden. Kosten voor domeinnamen zijn indicatief ma
 | Laag | elearning-b2-niet-developers.html | screen-module-3-1 | Constatering zonder handelingsperspectief |
 | Laag | elearning-i1-praktijktoets.html | quiz-uitleg | "Momenteel tijdrovend" tijdsgebonden formulering |
 | Laag | elearning-a1-wat-is-claude.html | screen-module-1-2 | "Over drie maanden" tijdsgebonden claim |
+
+---
+
+## Aanvullende audit — C2, C3, C4, C7, D1, D2, E1, E4, E5, E6
+
+Datum: 2026-04-04
+Methode: volledig regel voor regel gelezen
+
+---
+
+### MODULE: elearning-c2-desktop.html
+
+**Geen kritieke bevindingen.** De module is inhoudelijk solide: concrete vergelijkingstabel, flashcards met onclick, scenario's met directe feedback, en een kennischeck per onderdeel. De beperkingen van Cowork en Code worden eerlijk benoemd.
+
+Aandachtspunt (laag):
+
+```
+MODULE: elearning-c2-desktop.html
+SCHERM: screen-module-3-1
+TYPE: Te oppervlakkig
+CLAIM: "Bij Chat geef jij het antwoord uit. Bij Cowork voert Claude de actie zelf uit op je computer."
+SUGGESTIE: Grammaticaal onhandig ("geef jij het antwoord uit" is geen gangbare zin). Beter: "Bij Chat geeft Claude een antwoord en voer jij de actie zelf uit."
+```
+
+```
+MODULE: elearning-c2-desktop.html
+SCHERM: screen-module-3-3 (scenario-keuze, knooptekst)
+TYPE: Interne tegenstrijdigheid (HTML-fout met dubbele aanhalingstekens)
+CLAIM: Knoptekst bevat een kapotte HTML-entiteit: `onclick="checkScenario(3, this, true, '...')">Cowork openen, toegang geven tot de map, en vragen: "Maak van elk PDF een samenvatting als tekstbestand in een nieuwe map Samenvattingen."')">` — de knooptekst wordt daarna nogmaals herhaald als zichtbare tekst op de knop.
+SUGGESTIE: Technische fout: de onclick-attribuut sluit te vroeg door de aanhalingstekens in de knooptekst. Vervang binnenste aanhalingstekens in de onclick-string door &quot; of gebruik enkele aanhalingstekens consistent.
+```
+
+---
+
+### MODULE: elearning-c3-chrome.html
+
+**Geen inhoudelijke bevindingen.** Module is kort, gefocust en volledig. Beperkingen (geen Firefox/Safari, geen klikken op knoppen) zijn expliciet en concreet benoemd. Privacy-waarschuwing is praktisch geformuleerd.
+
+---
+
+### MODULE: elearning-c4-cowork.html
+
+**Geen kritieke bevindingen.** Inhoudelijk sterk: concrete tabel met wel/niet, stappenproces, back-up waarschuwing. Scenario's zijn situationeel relevant.
+
+Aandachtspunt (laag):
+
+```
+MODULE: elearning-c4-cowork.html
+SCHERM: screen-module-3 (tabel "Niet geschikt")
+TYPE: Ontbrekende nuance
+CLAIM: "Alles met real-time data (beperkt web mogelijk via browserfunctie)"
+SUGGESTIE: De toevoeging "beperkt web mogelijk via browserfunctie" is te kort door de bocht in een tabelcel. Wat is die browserfunctie precies, hoe schakel je die in, en wat zijn de beperkingen ervan? Als dit niet uitgelegd kan worden in een tabelcel, verwijder de toevoeging dan en laat de beperking staan als absolute grens.
+```
+
+---
+
+### MODULE: elearning-c7-organisatie.html
+
+**Geen kritieke bevindingen.** Inhoudelijk solide: concrete vergelijkingstabel Teams vs Enterprise zonder prijzen, stappenplan voor uitrol, aandacht voor adoptie-uitdagingen. Richtlijn-content is concreet (vier blokken in processtroom).
+
+Aandachtspunt (medium):
+
+```
+MODULE: elearning-c7-organisatie.html
+SCHERM: screen-module-2 (stap 4 in uitrolproces)
+TYPE: AI-opvulling / platitude
+CLAIM: "Laat resultaten spreken. Als collega's zien dat een taak van een uur nu tien minuten duurt, volgt adoptie vanzelf."
+SUGGESTIE: Dezelfde zin staat ook letterlijk in screen-module-4 (tweede alinea). Dit is een interne herhaling van dezelfde frase op twee afzonderlijke schermen. Eén keer is genoeg; de andere instantie aanpassen of verwijderen.
+```
+
+```
+MODULE: elearning-c7-organisatie.html
+SCHERM: screen-module-1 (kennischeck, foutantwoord-feedback op "Enterprise")
+TYPE: Ontbrekende nuance
+CLAIM: "Enterprise is wel geschikt, maar is niet het enige geschikte abonnement. Teams biedt ook al een verwerkersovereenkomst en is voor veel kantoren voldoende."
+SUGGESTIE: De vraag luidt: "Welk abonnement is NIET geschikt?" Het foutantwoord "Enterprise" krijgt de feedback dat het wél geschikt is, maar er staat niet waarom iemand dan toch voor Enterprise zou kiezen boven Teams. Voeg toe: "Enterprise voegt SSO en auditlogs toe, wat bij grotere of strikter gereguleerde kantoren een vereiste kan zijn."
+```
+
+---
+
+### MODULE: elearning-d1-claude-code.html
+
+**Geen kritieke bevindingen.** Module is concreet en goed opgebouwd: installatiestappen, flashcards met echte voorbeeldopdrachten, duidelijke beperkingtabel. De positionering voor niet-technische gebruikers is consequent doorgevoerd.
+
+Aandachtspunt (medium):
+
+```
+MODULE: elearning-d1-claude-code.html
+SCHERM: screen-module-5 (beperkingstabel, "Kan wel"-kolom)
+TYPE: Tijdsgebonden / mogelijk onjuist
+CLAIM: "Internettoegang (web search en web fetch)"
+SUGGESTIE: Internettoegang in Claude Code is geen standaardfunctie maar een optionele tool die per sessie en per configuratie verschilt. De tabel presenteert het als een vaststaande mogelijkheid zonder voorbehoud. Voeg een noot toe: "Internettoegang via web search en web fetch is beschikbaar als Claude Code daarvoor toestemming heeft binnen de sessie."
+```
+
+```
+MODULE: elearning-d1-claude-code.html
+SCHERM: screen-module-2 (tip-box)
+TYPE: AI-opvulling / platitude
+CLAIM: "De terminal ziet er misschien intimiderend uit, maar je hoeft geen technische commando's te kennen. Claude Code begrijpt gewone taal."
+SUGGESTIE: Dit is de derde keer in de module dat "gewone taal" als geruststelling wordt gebruikt (ook in de welkomstintro en in module 1). Op zichzelf is de boodschap correct, maar als losse tip-box zonder aanvullende inhoud draagt dit scherm niets nieuws bij. De tip-box kan worden versterkt door een concreet voorbeeld van een gewone-taal-opdracht toe te voegen, of samengevoegd met een ander scherm.
+```
+
+---
+
+### MODULE: elearning-d2-claude-md.html
+
+**Geen kritieke bevindingen.** Module is inhoudelijk sterk en praktisch: concrete voorbeelden in alle vier flashcards, helder verschil CLAUDE.md vs zonder, het "levend document"-concept is consistent doorgevoerd.
+
+Aandachtspunt (laag):
+
+```
+MODULE: elearning-d2-claude-md.html
+SCHERM: screen-module-3 (tip-box)
+TYPE: Tijdsgebonden / arbitrair getal
+CLAIM: "Houd CLAUDE.md onder de 200 regels."
+SUGGESTIE: "200 regels" is een vuistregel zonder bronvermelding of onderbouwing. Als dit een concrete aanbeveling is op basis van contextvenster-limieten of praktijkervaring, onderbouw het dan kort: "Claude Code heeft een contextvenster. Een bestand van meer dan 200 regels raakt aan die grens en kan Claude afleiden." Als het puur een praktijkregel is, formuleer dan: "Houd CLAUDE.md beheersbaar. Als je het in vijf minuten niet kunt lezen, is het waarschijnlijk te lang."
+```
+
+---
+
+### MODULE: elearning-e1-mcp.html
+
+**Geen kritieke bevindingen.** Module is uitgebreid en structureel sterk: vier onderdelen met elk een verdieping en praktijkscherm, concrete voorbeelden per beroep, heldere risicotabel voor lees- vs schrijftoegang.
+
+Aandachtspunt (medium):
+
+```
+MODULE: elearning-e1-mcp.html
+SCHERM: screen-module-2-1 (content-card, eerste alinea)
+TYPE: Tijdsgebonden taal
+CLAIM: "Er zijn meer dan 50 kant-en-klare MCP-connectoren beschikbaar."
+SUGGESTIE: Een concreet getal ("meer dan 50") veroudert zodra het aanbod groeit of krimpt. Formuleer als: "Er zijn tientallen kant-en-klare MCP-connectoren beschikbaar voor de meest gebruikte tools." Hetzelfde getal wordt herhaald in screen-module-2-3 stap 3: "Meer dan 50 connectoren zijn beschikbaar." Beide instanties aanpassen.
+```
+
+```
+MODULE: elearning-e1-mcp.html
+SCHERM: screen-module-4-2 (stap 2: kleine organisatie zonder IT-afdeling)
+TYPE: AI-opvulling / zelfpromotie
+CLAIM: "Je hebt hulp nodig van een implementatiepartner, zoals Umely."
+SUGGESTIE: Het noemen van Umely bij naam in een inhoudelijk scherm is ongebruikelijk voor een e-learning die objectieve kennis overdraagt. Verwijder "zoals Umely" of vervang door "zoals een gespecialiseerde implementatiepartner". Zelfverwijzing in lesinhoud ondermijnt de geloofwaardigheid van de module als onafhankelijke bron.
+```
+
+---
+
+### MODULE: elearning-e4-skills.html
+
+**Geen kritieke bevindingen.** Compacte, goed gestructureerde module. Besliswijzer (tabel) en het laadproces (processtroom) zijn helder en concreet.
+
+Aandachtspunt (laag):
+
+```
+MODULE: elearning-e4-skills.html
+SCHERM: screen-module-3 (content-card, eerste alinea)
+TYPE: Te oppervlakkig
+CLAIM: "Skills sla je op in de map .claude/skills/ in je projectmap. Claude Code kan de juiste Skill laden via slash-commando's, automatisch via de Skill tool wanneer de taakomschrijving matcht, of je activeert een Skill handmatig."
+SUGGESTIE: "Handmatig activeren" wordt in dit scherm twee keer vermeld (ook in de processtroom) maar nergens uitgelegd hoe dat handmatig activeren concreet werkt. Voeg één zin toe: "Handmatig activeren doe je door de Skill-naam expliciet te noemen in je opdracht aan Claude Code."
+```
+
+---
+
+### MODULE: elearning-e5-eerste-skill.html
+
+**Geen kritieke bevindingen.** Module is praktisch en goed opgebouwd: concrete vergelijkingstabel vaag vs specifiek, iteratief testproces, flashcards voor veelgemaakte fouten.
+
+Aandachtspunt (laag):
+
+```
+MODULE: elearning-e5-eerste-skill.html
+SCHERM: screen-module-1 (tabel "Slecht")
+TYPE: Te oppervlakkig
+CLAIM: "Taken waar je de aanpak nog niet kent"
+SUGGESTIE: Dit criterium (aanpak nog niet kennen) is logisch maar staat zonder uitleg. Een gebruiker die dit leest weet niet wat de praktische gevolg is: als je de aanpak niet kent, kun je geen concrete stappen schrijven, en een Skill zonder concrete stappen werkt niet. Voeg één zin toe als toelichting onder de tabel of maak er een flashcard van.
+```
+
+---
+
+### MODULE: elearning-e6-agentic-workflows.html
+
+**Geen kritieke bevindingen.** Dit is inhoudelijk de sterkste module van de reeks: concrete criteria voor wel/niet automatiseren, een uitgewerkt werkend voorbeeld (accountantskantoor), en expliciete aandacht voor foutafhandeling. De nuance bij screen-module-2-2 (wanneer NIET automatiseren) en de foutafhandeling in screen-module-4-2 zijn uitstekend.
+
+Aandachtspunt (laag):
+
+```
+MODULE: elearning-e6-agentic-workflows.html
+SCHERM: screen-module-2-2 (flashcard "Fout heeft grote gevolgen")
+TYPE: Spelfout
+CLAIM: "Bij financiele transacties..."
+SUGGESTIE: "financiele" moet "financiële" zijn (trema ontbreekt). Kleine fout maar zichtbaar voor de eindgebruiker.
+```
+
+---
+
+## Samenvatting aanvullende audit
+
+| Prioriteit | Module | Scherm | Type |
+|------------|--------|--------|------|
+| Hoog | elearning-c2-desktop.html | screen-module-3-3 | HTML-fout: kapotte onclick door aanhalingstekens in knooptekst |
+| Medium | elearning-e1-mcp.html | screen-module-2-1 en screen-module-2-3 | Tijdsgebonden getal ("meer dan 50 connectoren") |
+| Medium | elearning-e1-mcp.html | screen-module-4-2 | Zelfpromotie ("zoals Umely") in inhoudelijk scherm |
+| Medium | elearning-c7-organisatie.html | screen-module-2 + screen-module-4 | Exacte frase letterlijk herhaald op twee schermen |
+| Medium | elearning-d1-claude-code.html | screen-module-5 | Internettoegang als vaststaande mogelijkheid gepresenteerd zonder voorbehoud |
+| Laag | elearning-c4-cowork.html | screen-module-3 | "browserfunctie" niet uitgelegd in tabelcel |
+| Laag | elearning-d2-claude-md.html | screen-module-3 | "200 regels" als vuistregel zonder onderbouwing |
+| Laag | elearning-d1-claude-code.html | screen-module-2 | Tip-box herhaalt "gewone taal" zonder nieuwe inhoud toe te voegen |
+| Laag | elearning-e4-skills.html | screen-module-3 | "Handmatig activeren" twee keer vermeld zonder uitleg hoe |
+| Laag | elearning-e5-eerste-skill.html | screen-module-1 | Criterium "aanpak nog niet kennen" staat zonder toelichting |
+| Laag | elearning-e6-agentic-workflows.html | screen-module-2-2 | Spelfout: "financiele" moet "financiële" zijn |
+| Laag | elearning-c2-desktop.html | screen-module-3-1 | Grammaticale fout: "geef jij het antwoord uit" |
+| Laag | elearning-c7-organisatie.html | screen-module-1 (kennischeck feedback) | Foutantwoord-feedback mist reden waarom Enterprise wél nuttig kan zijn |
