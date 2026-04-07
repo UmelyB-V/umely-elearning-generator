@@ -14,7 +14,7 @@ function computeLevel(allModules, userProgress) {
   const totalAB = abModules.length;
 
   const done = userProgress.filter(p => p.completed && p.score_pct >= 70);
-  const perfect = userProgress.filter(p => p.score_pct === 100);
+  const perfect = userProgress.filter(p => p.completed && p.score_pct === 100);
   const abDone = done.filter(p => /^elearning-[ab]/.test(p.module_slug));
 
   if (perfect.length >= total) return 4;
@@ -64,18 +64,22 @@ module.exports = function mountCommunityRoutes(app, supabase, requireAuth) {
    */
   async function requireCommunityAccess(req, res, next) {
     if (!COMMUNITY_BETA) return next();
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', req.user.id)
+        .single();
 
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', req.user.id)
-      .single();
-
-    if (!profile || profile.role !== 'admin') {
-      return res.status(403).json({ error: 'Community is nog niet publiek beschikbaar.' });
+      if (!profile || profile.role !== 'admin') {
+        return res.status(403).json({ error: 'Community is nog niet publiek beschikbaar.' });
+      }
+      req.isAdmin = true;
+      next();
+    } catch (err) {
+      console.error('[community/access]', err.message);
+      res.status(500).json({ error: 'Kon toegang niet controleren.' });
     }
-    req.isAdmin = true;
-    next();
   }
 
   /**
@@ -113,35 +117,41 @@ module.exports = function mountCommunityRoutes(app, supabase, requireAuth) {
    * Geeft de laatste 100 berichten terug voor de opgegeven room.
    */
   app.get('/api/community/messages/:level', requireAuth, requireCommunityAccess, async (req, res) => {
-    const roomLevel = parseInt(req.params.level, 10);
-    if (![1, 2, 3, 4].includes(roomLevel)) {
-      return res.status(400).json({ error: 'Ongeldig room-level.' });
-    }
-
-    // Resolve admin status (requireCommunityAccess zet req.isAdmin alleen als COMMUNITY_BETA=true)
-    let isAdmin = req.isAdmin || false;
-    if (!isAdmin) {
-      const { data: profile } = await supabase.from('profiles').select('role').eq('id', req.user.id).single();
-      isAdmin = profile?.role === 'admin';
-    }
-
-    // Controleer of gebruiker dit level heeft (admins altijd toegestaan)
-    if (!isAdmin) {
-      const { level } = await fetchLevel(req.user.id, supabase);
-      if (!canAccessRoom(level, roomLevel)) {
-        return res.status(403).json({ error: 'Geen toegang tot deze room.' });
+    try {
+      const roomLevel = parseInt(req.params.level, 10);
+      if (![1, 2, 3, 4].includes(roomLevel)) {
+        return res.status(400).json({ error: 'Ongeldig room-level.' });
       }
+
+      // Resolve admin status (requireCommunityAccess zet req.isAdmin alleen als COMMUNITY_BETA=true)
+      let isAdmin = req.isAdmin || false;
+      if (!isAdmin) {
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', req.user.id).single();
+        isAdmin = profile?.role === 'admin';
+        req.isAdmin = isAdmin; // cache voor consistentie
+      }
+
+      // Controleer of gebruiker dit level heeft (admins altijd toegestaan)
+      if (!isAdmin) {
+        const { level } = await fetchLevel(req.user.id, supabase);
+        if (!canAccessRoom(level, roomLevel)) {
+          return res.status(403).json({ error: 'Geen toegang tot deze room.' });
+        }
+      }
+
+      const { data, error } = await supabase
+        .from('community_messages')
+        .select('id, user_name, is_admin, content, created_at')
+        .eq('room_level', roomLevel)
+        .order('created_at', { ascending: true })
+        .limit(100);
+
+      if (error) return res.status(500).json({ error: error.message });
+      res.json({ messages: data || [] });
+    } catch (err) {
+      console.error('[community/messages/get]', err.message);
+      res.status(500).json({ error: 'Kon berichten niet ophalen.' });
     }
-
-    const { data, error } = await supabase
-      .from('community_messages')
-      .select('id, user_name, is_admin, content, created_at')
-      .eq('room_level', roomLevel)
-      .order('created_at', { ascending: true })
-      .limit(100);
-
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ messages: data || [] });
   });
 
   /**
@@ -171,6 +181,7 @@ module.exports = function mountCommunityRoutes(app, supabase, requireAuth) {
         .eq('id', req.user.id)
         .single();
       isAdmin = profile?.role === 'admin';
+      req.isAdmin = isAdmin; // cache voor consistentie
     }
 
     if (!isAdmin) {
