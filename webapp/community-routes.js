@@ -152,7 +152,7 @@ module.exports = function mountCommunityRoutes(app, supabase, requireAuth) {
 
       const { data, error } = await supabase
         .from('community_messages')
-        .select('id, user_name, is_admin, content, created_at')
+        .select('id, user_id, user_name, is_admin, content, created_at')
         .eq('room_level', roomLevel)
         .order('created_at', { ascending: true })
         .limit(100);
