@@ -314,6 +314,7 @@
       <p style="font-size:12px;margin-top:12px;">
         Nog geen mail? <a href="#" id="resendEmailLink" onclick="resendVerificationEmail(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Stuur opnieuw</a>
       </p>
+      <p id="resendSuccessMsg" style="display:none;font-size:12px;color:#15803D;margin-top:8px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:6px;padding:8px 12px;"></p>
     </div>
   </div>
 </div>
@@ -420,7 +421,10 @@ let _session = null;
 
 async function initAuth() {
   try {
-    const config = await fetch('/api/config').then(r => r.json());
+    const configRes = await fetch('/api/config');
+    if (!configRes.ok) throw new Error('Config ophalen mislukt (HTTP ' + configRes.status + ')');
+    const config = await configRes.json();
+    if (!config.supabaseUrl || !config.supabaseAnonKey) throw new Error('Ongeldige config: supabaseUrl of supabaseAnonKey ontbreekt');
     _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
 
     const { data: { session } } = await _supabase.auth.getSession();
@@ -429,12 +433,7 @@ async function initAuth() {
 
     _supabase.auth.onAuthStateChange((event, session) => {
       _session = session;
-      if (event === 'SIGNED_IN') {
-        if (window.location.hash.includes('type=signup')) {
-          sessionStorage.setItem('emailJustConfirmed', '1');
-        }
-        showApp(session);
-      }
+      if (event === 'SIGNED_IN') showApp(session);
       else if (event === 'SIGNED_OUT') showLogin();
     });
   } catch (e) {
@@ -505,6 +504,14 @@ async function login() {
   btn.disabled = true;
   btn.textContent = 'Inloggen...';
 
+  if (!_supabase) {
+    errEl.textContent = 'App nog niet geladen. Herlaad de pagina.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Inloggen';
+    return;
+  }
+
   const { error } = await _supabase.auth.signInWithPassword({ email, password });
   if (error) {
     var msg = error.message;
@@ -562,8 +569,9 @@ async function signup() {
     document.getElementById('authSubtitle').textContent = '';
     document.getElementById('verificationEmail').textContent = email;
 
-    // Store email for polling
+    // Store credentials for verification check (password field gets hidden after this)
     window._verifyEmail = email;
+    window._verifyPassword = password;
 
   } catch (err) {
     showAuthError(err.message);
@@ -589,7 +597,12 @@ function authHeader() {
 
 async function checkVerification() {
   const email = window._verifyEmail;
-  const password = document.getElementById('signupPassword').value;
+  const password = window._verifyPassword || document.getElementById('signupPassword').value;
+
+  if (!email || !password) {
+    showAuthError('Sessie verlopen. Ga terug en registreer opnieuw.');
+    return;
+  }
 
   document.getElementById('verifyCheckBtn').disabled = true;
   document.getElementById('verifyCheckBtn').textContent = 'Controleren...';
@@ -608,8 +621,7 @@ async function checkVerification() {
 
     // Successfully logged in = email is verified
     hideAuthError();
-    document.getElementById('authOverlay').style.display = 'none';
-    document.getElementById('logoutBtn').style.display = 'inline';
+    window._verifyPassword = null;
     if (data?.session) showApp(data.session);
 
   } finally {
@@ -621,14 +633,18 @@ async function checkVerification() {
 async function resendVerificationEmail(e) {
   e.preventDefault();
   const resendLink = document.getElementById('resendEmailLink');
+  const successMsg = document.getElementById('resendSuccessMsg');
   resendLink.style.pointerEvents = 'none';
   resendLink.style.opacity = '0.5';
+  successMsg.style.display = 'none';
   hideAuthError();
 
   try {
     const email = window._verifyEmail;
     if (!email) {
       showAuthError('Geen e-mailadres bekend. Probeer opnieuw te registreren.');
+      resendLink.style.pointerEvents = 'auto';
+      resendLink.style.opacity = '1';
       return;
     }
 
@@ -639,18 +655,22 @@ async function resendVerificationEmail(e) {
     });
 
     if (response.ok) {
-      showAuthError('Verificatiemail opnieuw verzonden. Controleer je inbox.');
-
+      successMsg.textContent = 'Verificatiemail opnieuw verzonden. Controleer je inbox.';
+      successMsg.style.display = 'block';
+      // Re-enable after 30s cooldown
       setTimeout(() => {
         resendLink.style.pointerEvents = 'auto';
         resendLink.style.opacity = '1';
       }, 30000);
     } else {
       showAuthError('Kon email niet verzenden. Probeer later opnieuw.');
+      resendLink.style.pointerEvents = 'auto';
+      resendLink.style.opacity = '1';
     }
-  } catch (error) {
-    console.error('Resend error:', error);
-    showAuthError('Verbindingsfout.');
+  } catch (err) {
+    showAuthError('Verbindingsfout. Probeer het opnieuw.');
+    resendLink.style.pointerEvents = 'auto';
+    resendLink.style.opacity = '1';
   }
 }
 
@@ -745,8 +765,9 @@ async function generate() {
     });
 
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Server fout');
+      let errMsg = 'Server fout (HTTP ' + response.status + ')';
+      try { const err = await response.json(); errMsg = err.error || errMsg; } catch {}
+      throw new Error(errMsg);
     }
 
     const { jobId } = await response.json();
@@ -755,6 +776,11 @@ async function generate() {
       pollInterval = setInterval(async () => {
         try {
           const poll = await fetch(`/api/job/${jobId}`);
+          if (!poll.ok) {
+            clearInterval(pollInterval);
+            reject(new Error('Job status ophalen mislukt (HTTP ' + poll.status + ')'));
+            return;
+          }
           const job = await poll.json();
 
           if (job.status === 'error') {
@@ -766,6 +792,10 @@ async function generate() {
           if (job.status === 'done') {
             clearInterval(pollInterval);
             const htmlRes = await fetch(job.url);
+            if (!htmlRes.ok) {
+              reject(new Error('Module ophalen mislukt (HTTP ' + htmlRes.status + ')'));
+              return;
+            }
             generatedHTML = await htmlRes.text();
             document.getElementById('moduleUrl').style.display = 'block';
             document.getElementById('moduleUrlText').textContent = job.url;
@@ -781,7 +811,7 @@ async function generate() {
       }, 2000);
     });
 
-    if (!generatedHTML.includes('<!DOCTYPE html>')) {
+    if (!generatedHTML.toLowerCase().includes('<!doctype html>')) {
       throw new Error('De gegenereerde output is ongeldig. Probeer opnieuw.');
     }
 

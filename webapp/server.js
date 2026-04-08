@@ -17,7 +17,6 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 3 });
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, { db: { schema: 'elearning' } });
-const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, { db: { schema: 'elearning' } });
 
 // ── Auth middleware ──
 async function requireAuth(req, res, next) {
@@ -56,6 +55,9 @@ app.post('/generate', requireAuth, async (req, res) => {
   if (!transcription || transcription.trim().length < 10) {
     return res.status(400).json({ error: 'Transcriptie is te kort of leeg.' });
   }
+  if (transcription.length > 500000) {
+    return res.status(400).json({ error: 'Transcriptie is te lang (max. 500.000 tekens).' });
+  }
 
   const jobId = Date.now().toString(36) + Math.random().toString(36).slice(2);
   jobs[jobId] = { status: 'generating', progress: 0 };
@@ -89,22 +91,27 @@ app.post('/generate', requireAuth, async (req, res) => {
         const rawTitle = titleMatch
           ? titleMatch[1].replace(' | Umely E-learning', '').trim()
           : 'elearning';
-        const slug = rawTitle
+        const slugBase = rawTitle
           .toLowerCase()
-          .replace(/[^a-z0-9]+/gi, '-')
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // strip diacritics
+          .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-|-$/g, '')
-          .slice(0, 40);
+          .slice(0, 40) || 'module';  // fallback als slug leeg is (bijv. volledig niet-ASCII)
         const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-        const filename = `elearning-${slug}-${date}.html`;
+        const filename = `elearning-${slugBase}-${date}.html`;
 
         const dbSlug = filename.replace('.html', '');
-        await supabase.from('modules').insert({ filename, slug: dbSlug, title: rawTitle, html: fullHtml });
-
-        jobs[jobId] = {
-          status: 'done',
-          slug: filename.replace('.html', ''),
-          url: `/modules/${filename.replace('.html', '')}`
-        };
+        const { error: insertErr } = await supabase.from('modules').insert({ filename, slug: dbSlug, title: rawTitle, html: fullHtml });
+        if (insertErr) {
+          console.error('DB insert fout na generatie:', insertErr.message);
+          jobs[jobId] = { status: 'error', error: 'Module gegenereerd maar opslaan mislukt: ' + insertErr.message };
+        } else {
+          jobs[jobId] = {
+            status: 'done',
+            slug: dbSlug,
+            url: `/modules/${dbSlug}`
+          };
+        }
       } else {
         jobs[jobId] = { status: 'error', error: 'Gegenereerde output is ongeldig.' };
       }
@@ -143,7 +150,7 @@ app.post('/extract-text', requireAuth, upload.single('file'), async (req, res) =
 });
 
 // ── Poll job status ──
-app.get('/api/job/:jobId', (req, res) => {
+app.get('/api/job/:jobId', requireAuth, (req, res) => {
   const job = jobs[req.params.jobId];
   if (!job) return res.status(404).json({ error: 'Job niet gevonden' });
   res.json(job);
@@ -390,6 +397,7 @@ app.patch('/api/modules/:slug', requireAuth, requireAdmin, async (req, res) => {
   const filename = req.params.slug + '.html';
   const { title } = req.body;
   if (!title || !title.trim()) return res.status(400).json({ error: 'Titel mag niet leeg zijn.' });
+  if (title.trim().length > 200) return res.status(400).json({ error: 'Titel mag maximaal 200 tekens zijn.' });
   const { error } = await supabase.from('modules').update({ title: title.trim() }).eq('filename', filename);
   if (error) return res.status(500).json({ error: error.message });
   res.json({ ok: true });
@@ -515,6 +523,12 @@ app.post('/api/auth/signup', async (req, res) => {
     if (password.length < 8) {
       return res.status(400).json({ error: 'Wachtwoord moet minstens 8 tekens zijn.' });
     }
+    if (!/[A-Z]/.test(password)) {
+      return res.status(400).json({ error: 'Wachtwoord moet minimaal 1 hoofdletter bevatten.' });
+    }
+    if (!/[0-9]/.test(password)) {
+      return res.status(400).json({ error: 'Wachtwoord moet minimaal 1 cijfer bevatten.' });
+    }
 
     // Standaard signUp: werkt met anon én service role key, verstuurt verificatiemail via Resend
     const { data, error } = await supabase.auth.signUp({
@@ -543,8 +557,7 @@ app.post('/api/auth/signup', async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Account aangemaakt. Controleer je email voor verificatie.',
-      userId: data.user?.id
+      message: 'Account aangemaakt. Controleer je email voor verificatie.'
     });
 
   } catch (error) {
@@ -565,14 +578,14 @@ app.get('/api/user/email-verified', async (req, res) => {
     const token = authHeader.substring(7);
 
     // Verify token with Supabase
-    const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
+    const { data: { user }, error } = await supabase.auth.getUser(token);
 
     if (error || !user) {
       return res.status(401).json({ emailVerified: false, error: 'Token ongeldig' });
     }
 
     // Check if email is confirmed
-    const emailVerified = user.email_confirmed_at !== null;
+    const emailVerified = !!user.email_confirmed_at;
 
     res.json({ emailVerified });
 
@@ -588,7 +601,7 @@ app.post('/api/auth/resend-verification', async (req, res) => {
   if (!email) return res.status(400).json({ error: 'Email vereist' });
 
   try {
-    const { error } = await supabaseAdmin.auth.resend({
+    const { error } = await supabase.auth.resend({
       type: 'signup',
       email: email
     });

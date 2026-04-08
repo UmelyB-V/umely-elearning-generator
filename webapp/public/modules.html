@@ -502,10 +502,12 @@ async function login() {
   const password = document.getElementById('authPassword').value;
   const btn = document.getElementById('loginBtn');
   const errEl = document.getElementById('authError');
+  if (!email || !password) { errEl.textContent = 'Vul je e-mailadres en wachtwoord in.'; errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
   btn.disabled = true; btn.textContent = 'Inloggen...';
   const { error } = await _supabase.auth.signInWithPassword({ email, password });
   if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Inloggen'; }
+  else { btn.disabled = false; btn.textContent = 'Inloggen'; }
 }
 
 async function signup() {
@@ -513,6 +515,7 @@ async function signup() {
   const password = document.getElementById('authPassword').value;
   const btn = document.getElementById('loginBtn');
   const errEl = document.getElementById('authError');
+  if (!email) { errEl.textContent = 'Vul je e-mailadres in.'; errEl.style.display = 'block'; return; }
   if (password.length < 6) { errEl.textContent = 'Wachtwoord moet minimaal 6 tekens zijn.'; errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
   btn.disabled = true; btn.textContent = 'Registreren...';
@@ -599,10 +602,11 @@ function updateSidebar() {
 
 // ── STATS ──
 function updateStats() {
-  const completedCount = allModules.filter(m => isCompleted(m.slug)).length;
+  const opened = getOpened();
+  const openedCount = allModules.filter(m => opened.includes(m.slug) || isCompleted(m.slug)).length;
   const activeCats = new Set(allModules.map(m => getCat(m.slug)).filter(Boolean)).size;
   document.getElementById('statTotal').textContent = allModules.length;
-  document.getElementById('statOpened').textContent = completedCount;
+  document.getElementById('statOpened').textContent = openedCount;
   document.getElementById('statCats').textContent = activeCats;
 }
 
@@ -614,7 +618,8 @@ function showContinue() {
   const icon = CAT_ICONS[cat] || '📘';
   const label = getCatLabel(last.slug);
   document.getElementById('continueIcon').textContent = icon;
-  document.getElementById('continueTag').textContent = label + (CATEGORIES[cat] ? ' — ' + CATEGORIES[cat].title.split(' — ')[1] : '');
+  const catInfo = CATEGORIES[cat];
+  document.getElementById('continueTag').textContent = label + (catInfo ? ' — ' + (catInfo.title.split(' — ')[1] || catInfo.title) : '');
   document.getElementById('continueTitle').textContent = last.title;
   document.getElementById('continueBtn').href = last.url;
   document.getElementById('continueSection').style.display = 'block';
@@ -650,7 +655,7 @@ function renderModuleCard(m) {
   const wasOpened = getOpened().includes(m.slug);
   const done = isCompleted(m.slug);
   const score = getScore(m.slug);
-  const barWidth = done ? (score ?? 100) : (wasOpened ? 100 : 0);
+  const barWidth = done ? (score ?? 100) : (wasOpened ? 50 : 0);
   const statusClass = done ? ' done' : (wasOpened ? ' started' : '');
   const statusText = done ? `✓ Afgerond${score !== null ? ' (' + score + '%)' : ''}` : (wasOpened ? '● Geopend' : 'Nog te starten');
   const linkText = (done || wasOpened) ? 'Opnieuw starten' : 'Starten';
@@ -758,14 +763,10 @@ function trackOpen(slug, title, url, cat) {
     const statusEl = card.querySelector('.mod-status');
     if (statusEl) { statusEl.textContent = '● Geopend'; statusEl.className = 'mod-status started'; }
     const bar = card.querySelector('.prog-bar');
-    if (bar) bar.style.width = '100%';
+    if (bar) bar.style.width = '50%';
     const link = card.querySelector('.module-link');
     if (link) link.textContent = 'Opnieuw starten ›';
   }
-}
-
-function filterModules() {
-  renderGrid();
 }
 
 // ── ADMIN ACTIONS ──
@@ -773,21 +774,52 @@ async function renameModule(slug, btn) {
   const card = btn.closest('.module-card');
   const titleEl = card.querySelector('.module-title');
   const currentTitle = titleEl.textContent;
-  const newTitle = prompt('Nieuwe naam voor deze e-learning:', currentTitle);
-  if (!newTitle || newTitle.trim() === currentTitle) return;
-  btn.disabled = true; btn.textContent = '⏳';
-  try {
-    const res = await fetch(`/api/modules/${slug}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', ...authHeader() },
-      body: JSON.stringify({ title: newTitle.trim() })
-    });
-    if (!res.ok) throw new Error('Server gaf ' + res.status + ' terug');
-    titleEl.textContent = newTitle.trim();
-    const mod = allModules.find(m => m.slug === slug);
-    if (mod) mod.title = newTitle.trim();
-  } catch (e) { alert('Fout: ' + e.message); }
-  finally { btn.disabled = false; btn.textContent = '✏️'; }
+
+  const input = document.createElement('input');
+  input.value = currentTitle;
+  input.style.cssText = 'width:100%;font:inherit;font-size:inherit;font-weight:600;border:none;border-bottom:2px solid #FF8514;outline:none;background:transparent;padding:0;';
+  titleEl.replaceWith(input);
+  input.focus();
+  input.select();
+  btn.style.display = 'none';
+
+  let saveTriggered = false;
+
+  async function save(overrideTitle) {
+    if (saveTriggered) return;
+    saveTriggered = true;
+    input.removeEventListener('blur', onBlur);
+    const newTitle = (overrideTitle !== undefined ? overrideTitle : input.value).trim();
+    const span = document.createElement('span');
+    span.className = 'module-title';
+    if (input.isConnected) input.replaceWith(span);
+    btn.style.display = '';
+    if (!newTitle || newTitle === currentTitle) { span.textContent = currentTitle; return; }
+    span.textContent = newTitle;
+    btn.disabled = true; btn.textContent = '⏳';
+    try {
+      const res = await fetch(`/api/modules/${slug}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify({ title: newTitle })
+      });
+      if (!res.ok) throw new Error('Server gaf ' + res.status + ' terug');
+      const mod = allModules.find(m => m.slug === slug);
+      if (mod) mod.title = newTitle;
+    } catch (e) {
+      span.textContent = currentTitle;
+      span.style.color = 'red';
+      setTimeout(() => span.style.color = '', 2000);
+    } finally { btn.disabled = false; btn.textContent = '✏️'; }
+  }
+
+  function onBlur() { save(); }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); save(); }
+    if (e.key === 'Escape') { e.preventDefault(); save(currentTitle); }
+  });
+  input.addEventListener('blur', onBlur);
 }
 
 async function deleteModule(slug, title, btn) {

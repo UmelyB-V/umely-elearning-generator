@@ -249,16 +249,7 @@ async function showApp(session) {
   document.getElementById('logoutBtn').style.display = 'block';
   const userEl = document.getElementById('headerUser');
   userEl.style.display = 'block';
-  try {
-    const { data: profile } = await _supabase
-      .from('profiles')
-      .select('first_name')
-      .eq('id', session.user.id)
-      .single();
-    userEl.textContent = profile?.first_name || session.user.email;
-  } catch {
-    userEl.textContent = session.user.email;
-  }
+  userEl.textContent = session.user.email;
 }
 
 let isSignupMode = false;
@@ -270,16 +261,17 @@ function toggleAuthMode(e) {
   const toggle = document.getElementById('toggleSignup');
   const errEl = document.getElementById('authError');
   errEl.style.display = 'none';
+  const switchPara = toggle.parentElement;
   if (isSignupMode) {
     btn.textContent = 'Registreer';
     btn.setAttribute('onclick', 'signup()');
     toggle.textContent = 'Inloggen';
-    toggle.parentElement.firstChild.textContent = 'Al een account? ';
+    switchPara.innerHTML = 'Al een account? <a href="#" id="toggleSignup" onclick="toggleAuthMode(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Inloggen</a>';
   } else {
     btn.textContent = 'Inloggen';
     btn.setAttribute('onclick', 'login()');
     toggle.textContent = 'Registreer';
-    toggle.parentElement.firstChild.textContent = 'Nog geen account? ';
+    switchPara.innerHTML = 'Nog geen account? <a href="#" id="toggleSignup" onclick="toggleAuthMode(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Registreer</a>';
   }
 }
 
@@ -346,7 +338,11 @@ async function loadAccount() {
   try {
     const res = await fetch('/api/user/profile', { headers: authHeader() });
     if (res.status === 401) { showLogin(); return; }
-    const { profile, progress } = await res.json();
+    const data = await res.json();
+    if (!data || !data.profile || !Array.isArray(data.progress)) {
+      throw new Error('Onverwacht antwoord van server');
+    }
+    const { profile, progress } = data;
 
     // Profiel hero
     const initial = (profile.email || '?')[0].toUpperCase();
@@ -410,7 +406,7 @@ async function loadAccount() {
         const dateStr = p.completed_at
           ? new Date(p.completed_at).toLocaleDateString('nl-NL', { day:'numeric', month:'long', year:'numeric' })
           : '';
-        const title = p.module_slug.replace(/^elearning-/, '').replace(/-\d{8}$/, '').replace(/-/g, ' ');
+        const title = (p.module_slug || '').replace(/^elearning-/, '').replace(/-\d{8}$/, '').replace(/-/g, ' ') || 'Onbekende module';
         const titleCap = title.charAt(0).toUpperCase() + title.slice(1);
         return `<div class="cert-card">
           <div class="cert-badge">Behaald</div>
@@ -437,7 +433,10 @@ async function loadAccount() {
     }
   } catch (e) {
     console.error(e);
-    document.getElementById('profileCard').innerHTML = '<p>Kon profiel niet laden.</p>';
+    document.getElementById('profileCard').innerHTML = '<p>Kon profiel niet laden. Ververs de pagina om het opnieuw te proberen.</p>';
+    document.getElementById('statsGrid').innerHTML = '';
+    document.getElementById('certGrid').innerHTML = '';
+    document.getElementById('nlSection').innerHTML = '';
   }
 }
 
@@ -491,15 +490,16 @@ async function loadUsers() {
         </thead>
         <tbody>
           ${users.map(u => {
-            const started = u.progress.length;
-            const completed = u.progress.filter(p => p.completed).length;
-            const scores = u.progress.filter(p => p.score_pct > 0).map(p => p.score_pct);
+            const progress = Array.isArray(u.progress) ? u.progress : [];
+            const started = progress.length;
+            const completed = progress.filter(p => p.completed).length;
+            const scores = progress.filter(p => p.score_pct > 0).map(p => p.score_pct);
             const avg = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : '-';
             return `
               <tr>
                 <td>${u.email}</td>
                 <td>
-                  <select class="role-select" onchange="changeRole('${u.id}', this.value)" ${u.id === _session.user.id ? 'disabled title="Je kunt je eigen rol niet wijzigen"' : ''}>
+                  <select class="role-select" onchange="changeRole('${u.id}', this.value)" ${_session && u.id === _session.user.id ? 'disabled title="Je kunt je eigen rol niet wijzigen"' : ''}>
                     <option value="user" ${u.role === 'user' ? 'selected' : ''}>Gebruiker</option>
                     <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
                   </select>
@@ -523,7 +523,11 @@ async function changeRole(userId, newRole) {
       headers: { 'Content-Type': 'application/json', ...authHeader() },
       body: JSON.stringify({ role: newRole })
     });
-    if (!res.ok) throw new Error('Kon rol niet wijzigen');
+    if (!res.ok) {
+      let msg = 'Kon rol niet wijzigen.';
+      try { const err = await res.json(); msg = err.error || err.message || msg; } catch {}
+      throw new Error(msg);
+    }
   } catch (e) {
     alert(e.message);
     loadUsers();
