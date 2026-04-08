@@ -570,6 +570,33 @@ function getScore(slug) { return supabaseProgress[slug]?.score_pct ?? null; }
 async function loadModules() {
   const grid = document.getElementById('grid');
   grid.innerHTML = skeletonHTML();
+
+  // ── Subscription gate ──
+  try {
+    const subRes = await fetch('/api/user/subscription', { headers: authHeader() });
+    if (subRes.ok) {
+      const sub = await subRes.json();
+      // Admins hebben altijd toegang — check rol eerst via modules endpoint wordt later gedaan,
+      // maar we weten de rol pas na het laden. Geef users zonder actief abonnement geen toegang.
+      if (sub.subscription_status !== 'active') {
+        // Check of de gebruiker admin is via het profiel
+        const profileRes = await fetch('/api/user/profile', { headers: authHeader() });
+        if (profileRes.ok) {
+          const { profile } = await profileRes.json();
+          if (profile?.role !== 'admin') {
+            window.location.href = '/pricing.html';
+            return;
+          }
+        } else {
+          window.location.href = '/pricing.html';
+          return;
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Subscription check mislukt, doorgaan:', e.message);
+  }
+
   try {
     const [res] = await Promise.all([
       fetch('/api/modules', { headers: authHeader() }),

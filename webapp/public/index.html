@@ -83,6 +83,25 @@
   }
   #verifyCheckBtn:hover:not(:disabled) { opacity: 0.88; }
   #verifyCheckBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+  #forgotBtn {
+    width: 100%; padding: 14px; background: var(--gradient);
+    color: white; border: none; border-radius: 50px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: opacity 0.2s; margin-top: 6px;
+  }
+  #forgotBtn:hover:not(:disabled) { opacity: 0.88; }
+  #forgotBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .forgot-link {
+    display: block; text-align: right; font-size: 12px;
+    color: var(--amber); font-weight: 600; text-decoration: none;
+    margin-top: 4px; margin-bottom: 2px;
+  }
+  .forgot-link:hover { text-decoration: underline; }
+  .auth-success {
+    background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px;
+    padding: 14px 16px; text-align: center; font-size: 14px;
+    color: #15803D; font-weight: 500;
+  }
 
   header {
     background: var(--charcoal); border-bottom: none;
@@ -264,6 +283,7 @@
         <div class="auth-field">
           <label for="authPassword">Wachtwoord</label>
           <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password">
+          <a href="#" class="forgot-link" onclick="showForgotState(event)">Wachtwoord vergeten?</a>
         </div>
         <button id="loginBtn" type="submit" style="margin-top:6px;">Inloggen</button>
       </form>
@@ -319,6 +339,27 @@
         Nog geen mail? <a href="#" id="resendEmailLink" onclick="resendVerificationEmail(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Stuur opnieuw</a>
       </p>
       <p id="resendSuccessMsg" style="display:none;font-size:12px;color:#15803D;margin-top:8px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:6px;padding:8px 12px;"></p>
+    </div>
+
+    <!-- WACHTWOORD VERGETEN STATE -->
+    <div id="forgotState" style="display:none;">
+      <div id="forgotForm">
+        <div class="auth-field">
+          <label>E-mailadres</label>
+          <input id="forgotEmail" type="email" placeholder="naam@bedrijf.nl" autocomplete="email" onkeydown="if(event.key==='Enter')sendResetEmail()">
+        </div>
+        <button id="forgotBtn" onclick="sendResetEmail()">Verstuur herstelmail</button>
+        <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--gray-text);">
+          <a href="#" onclick="showLoginState(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Terug naar inloggen</a>
+        </p>
+      </div>
+      <div id="forgotSuccess" style="display:none;">
+        <div style="font-size:48px;text-align:center;margin-bottom:16px;">📬</div>
+        <div class="auth-success">Check je inbox voor de herstelmail. De link is 1 uur geldig.</div>
+        <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--gray-text);">
+          <a href="#" onclick="showLoginState(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Terug naar inloggen</a>
+        </p>
+      </div>
     </div>
   </div>
 </div>
@@ -635,6 +676,59 @@ async function checkVerification() {
   } finally {
     document.getElementById('verifyCheckBtn').disabled = false;
     document.getElementById('verifyCheckBtn').textContent = 'Ik heb mijn email geverifieerd';
+  }
+}
+
+function showForgotState(e) {
+  e.preventDefault();
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('signupForm').style.display = 'none';
+  document.getElementById('verificationState').style.display = 'none';
+  document.getElementById('forgotState').style.display = 'block';
+  document.getElementById('authTitle').textContent = 'Wachtwoord herstellen';
+  document.getElementById('authSubtitle').textContent = 'Voer je e-mailadres in. Je ontvangt een link om je wachtwoord te resetten.';
+  hideAuthError();
+}
+
+function showLoginState(e) {
+  e.preventDefault();
+  document.getElementById('forgotState').style.display = 'none';
+  document.getElementById('verificationState').style.display = 'none';
+  document.getElementById('signupForm').style.display = 'none';
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('authTitle').textContent = 'Welkom bij Umely';
+  document.getElementById('authSubtitle').textContent = 'Log in om de e-learning generator te gebruiken.';
+  isSignupMode = false;
+  hideAuthError();
+}
+
+async function sendResetEmail() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const btn = document.getElementById('forgotBtn');
+
+  if (!email) {
+    showAuthError('Vul je e-mailadres in.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verzenden...';
+  hideAuthError();
+
+  try {
+    const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/reset-password.html'
+    });
+    if (error) throw error;
+
+    document.getElementById('forgotForm').style.display = 'none';
+    document.getElementById('forgotSuccess').style.display = 'block';
+    document.getElementById('authSubtitle').textContent = '';
+  } catch (err) {
+    showAuthError('Versturen mislukt. Controleer je e-mailadres en probeer opnieuw.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Verstuur herstelmail';
   }
 }
 

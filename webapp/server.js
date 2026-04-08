@@ -1,3 +1,9 @@
+// ── Eenmalig uitvoeren in Supabase (SQL) ──────────────────────────────────────
+// ALTER TABLE elearning.profiles ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT;
+// ALTER TABLE elearning.profiles ADD COLUMN IF NOT EXISTS subscription_status TEXT DEFAULT 'inactive';
+// ALTER TABLE elearning.profiles ADD COLUMN IF NOT EXISTS subscription_end TEXT;
+// ─────────────────────────────────────────────────────────────────────────────
+
 require('dotenv').config();
 const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
@@ -7,8 +13,55 @@ const fs = require('fs');
 const multer = require('multer');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
+const Stripe = require('stripe');
+const stripe = process.env.STRIPE_SECRET_KEY ? Stripe(process.env.STRIPE_SECRET_KEY) : null;
 
 const app = express();
+
+// ── Stripe webhook moet raw body ontvangen — VOOR express.json() ──
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  if (!stripe) return res.status(500).json({ error: 'Stripe niet geconfigureerd' });
+
+  const sig = req.headers['stripe-signature'];
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.error('Stripe webhook verificatie mislukt:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  const subscription = event.data.object;
+
+  if (
+    event.type === 'customer.subscription.created' ||
+    event.type === 'customer.subscription.updated'
+  ) {
+    const status = subscription.status === 'active' ? 'active' : 'inactive';
+    const endDate = subscription.current_period_end
+      ? new Date(subscription.current_period_end * 1000).toISOString()
+      : null;
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ subscription_status: status, subscription_end: endDate })
+      .eq('stripe_customer_id', subscription.customer);
+
+    if (error) console.error('Webhook: subscription update fout:', error.message);
+  }
+
+  if (event.type === 'customer.subscription.deleted') {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ subscription_status: 'inactive', subscription_end: null })
+      .eq('stripe_customer_id', subscription.customer);
+
+    if (error) console.error('Webhook: subscription delete fout:', error.message);
+  }
+
+  res.json({ received: true });
+});
+
 app.use(express.json({ limit: '10mb' }));
 app.get('/', (req, res) => res.redirect('/modules.html'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -641,6 +694,69 @@ app.post('/api/auth/resend-verification', async (req, res) => {
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
   res.status(500).json({ error: 'Interne serverfout' });
+});
+
+// ── Stripe: maak checkout sessie aan ──────────────────────────────────────────
+app.post('/api/stripe/create-checkout', requireAuth, async (req, res) => {
+  if (!stripe) return res.status(500).json({ error: 'Stripe niet geconfigureerd' });
+
+  try {
+    // Haal bestaand stripe_customer_id op uit profiel
+    const { data: profile, error: profileErr } = await supabase
+      .from('profiles')
+      .select('stripe_customer_id, email')
+      .eq('id', req.user.id)
+      .single();
+
+    if (profileErr) return res.status(500).json({ error: profileErr.message });
+
+    let customerId = profile?.stripe_customer_id;
+
+    // Maak nieuwe Stripe customer aan als die nog niet bestaat
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: profile?.email || req.user.email,
+        metadata: { supabase_user_id: req.user.id }
+      });
+      customerId = customer.id;
+
+      // Sla customer ID op in profiel
+      await supabase
+        .from('profiles')
+        .update({ stripe_customer_id: customerId })
+        .eq('id', req.user.id);
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      customer: customerId,
+      mode: 'subscription',
+      line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+      success_url: process.env.STRIPE_SUCCESS_URL || `${req.headers.origin || ''}/modules.html?subscribed=1`,
+      cancel_url: process.env.STRIPE_CANCEL_URL || `${req.headers.origin || ''}/pricing.html`,
+      allow_promotion_codes: true
+    });
+
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error('Stripe checkout fout:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── Subscription status ophalen ───────────────────────────────────────────────
+app.get('/api/user/subscription', requireAuth, async (req, res) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('subscription_status, subscription_end')
+    .eq('id', req.user.id)
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  res.json({
+    subscription_status: data?.subscription_status || 'inactive',
+    subscription_end: data?.subscription_end || null
+  });
 });
 
 require('./community-routes')(app, supabase, requireAuth);
