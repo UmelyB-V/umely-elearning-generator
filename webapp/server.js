@@ -609,11 +609,13 @@ app.post('/api/auth/signup', async (req, res) => {
     }
 
     // Standaard signUp: werkt met anon én service role key, verstuurt verificatiemail via Resend
+    const siteUrl = process.env.SITE_URL || 'https://umely-elearning-generator-dev.up.railway.app';
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
-        data: { firstName, lastName }
+        data: { firstName, lastName },
+        emailRedirectTo: siteUrl + '/auth-callback.html'
       }
     });
 
