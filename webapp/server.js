@@ -10,6 +10,7 @@ const mammoth = require('mammoth');
 
 const app = express();
 app.use(express.json({ limit: '10mb' }));
+app.get('/', (req, res) => res.redirect('/modules.html'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
