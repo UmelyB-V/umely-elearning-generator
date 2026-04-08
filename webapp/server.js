@@ -9,7 +9,12 @@ const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
 
 const app = express();
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({
+  limit: '10mb',
+  verify: (req, res, buf) => {
+    if (req.path === '/api/stripe/webhook') req.rawBody = buf;
+  }
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
@@ -17,6 +22,7 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 3 });
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, { db: { schema: 'elearning' } });
 const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, { db: { schema: 'elearning' } });
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // ── Auth middleware ──
 async function requireAuth(req, res, next) {
@@ -639,6 +645,95 @@ app.post('/api/admin/settings', requireAuth, requireAdmin, async (req, res) => {
   );
   if (error) return res.status(500).json({ error: error.message });
   res.json({ ok: true });
+});
+
+// ── Stripe: maak checkout sessie aan ──
+app.post('/api/stripe/create-checkout', requireAuth, async (req, res) => {
+  try {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('email, stripe_customer_id')
+      .eq('id', req.user.id)
+      .single();
+
+    let customerId = profile?.stripe_customer_id;
+
+    // Zoek of maak Stripe customer
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: profile?.email || req.user.email,
+        metadata: { supabase_id: req.user.id }
+      });
+      customerId = customer.id;
+      await supabase
+        .from('profiles')
+        .update({ stripe_customer_id: customerId })
+        .eq('id', req.user.id);
+    }
+
+    const siteUrl = process.env.SITE_URL || 'http://localhost:3000';
+    const session = await stripe.checkout.sessions.create({
+      customer: customerId,
+      mode: 'subscription',
+      line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+      client_reference_id: req.user.id,
+      success_url: `${siteUrl}/account.html?checkout=success`,
+      cancel_url: `${siteUrl}/pricing.html`,
+    });
+
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error('Stripe checkout fout:', err.message);
+    res.status(500).json({ error: 'Checkout aanmaken mislukt' });
+  }
+});
+
+// ── Stripe: webhook ──
+app.post('/api/stripe/webhook', async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.error('Webhook signature fout:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    const userId = session.client_reference_id;
+    if (userId) {
+      await supabase
+        .from('profiles')
+        .update({ subscription_status: 'active' })
+        .eq('id', userId);
+    }
+  }
+
+  if (event.type === 'customer.subscription.deleted') {
+    const sub = event.data.object;
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('stripe_customer_id', sub.customer);
+    if (profiles?.length) {
+      await supabase
+        .from('profiles')
+        .update({ subscription_status: 'inactive' })
+        .eq('stripe_customer_id', sub.customer);
+    }
+  }
+
+  if (event.type === 'invoice.payment_failed') {
+    const invoice = event.data.object;
+    await supabase
+      .from('profiles')
+      .update({ subscription_status: 'inactive' })
+      .eq('stripe_customer_id', invoice.customer);
+  }
+
+  res.json({ received: true });
 });
 
 require('./community-routes')(app, supabase, requireAuth);
