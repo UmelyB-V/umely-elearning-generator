@@ -6,6 +6,7 @@
 
 require('dotenv').config();
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const Anthropic = require('@anthropic-ai/sdk');
 const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
@@ -94,6 +95,23 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// ── Rate limiting ──
+app.use('/api/', rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minuten
+  max: 200,                  // max 200 requests per IP per venster
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Te veel verzoeken. Probeer het over 15 minuten opnieuw.' }
+}));
+
+app.use('/generate', rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 uur
+  max: 10,                   // max 10 generaties per IP per uur
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Generatielimiet bereikt. Probeer het over een uur opnieuw.' }
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
