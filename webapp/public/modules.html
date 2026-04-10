@@ -127,7 +127,7 @@ header { background: var(--charcoal); height: 64px; padding: 0 24px; display: fl
 .cat-d { background: #FFF0F0; color: #B91C1C; }
 .cat-e { background: #F5F0FF; color: #5B21B6; }
 .cat-i { background: #FFFBEB; color: #92400E; }
-.mod-status { font-size: 11px; font-weight: 600; color: #BBB; white-space: nowrap; flex-shrink: 0; }
+.mod-status { font-size: 12px; font-weight: 600; color: #BBB; white-space: nowrap; flex-shrink: 0; }
 .mod-status.started { color: var(--amber); }
 .mod-status.done { color: #16A34A; }
 .module-title { font-size: 14.5px; font-weight: 700; color: var(--charcoal); line-height: 1.35; }
@@ -709,9 +709,14 @@ function setFilter(cat, sidebarEl) {
   const sNav = document.getElementById('nav-' + (cat === 'all' ? 'all' : cat));
   if (sNav) sNav.classList.add('active');
 
-  // Update section title
-  const titleMap = { all: 'Alle modules', a: 'A — Introductie tot Claude', b: 'B — Veiligheid & beperkingen', c: 'C — Claude gebruiken', d: 'D — Claude Code', e: 'E — MCP & Skills', i: 'I — Afsluiting' };
-  document.getElementById('sectionTitle').textContent = titleMap[cat] || 'Modules';
+  // Update section title — hide when single category (category header already shows it)
+  const titleEl = document.getElementById('sectionTitle');
+  if (cat === 'all') {
+    titleEl.textContent = 'Alle modules';
+    titleEl.style.display = '';
+  } else {
+    titleEl.style.display = 'none';
+  }
 
   renderGrid();
 }
