@@ -911,7 +911,7 @@ async function generate() {
       if (pollInterval) clearInterval(pollInterval);
       pollInterval = setInterval(async () => {
         try {
-          const poll = await fetch(`/api/job/${jobId}`);
+          const poll = await fetch(`/api/job/${jobId}`, { headers: authHeader() });
           if (!poll.ok) {
             clearInterval(pollInterval);
             reject(new Error('Job status ophalen mislukt (HTTP ' + poll.status + ')'));

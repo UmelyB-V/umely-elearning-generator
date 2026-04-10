@@ -187,7 +187,7 @@ app.post('/generate', requireAuth, async (req, res) => {
   }
 
   const jobId = Date.now().toString(36) + Math.random().toString(36).slice(2);
-  jobs[jobId] = { status: 'generating', progress: 0, createdAt: Date.now() };
+  jobs[jobId] = { status: 'generating', progress: 0, createdAt: Date.now(), userId };
   res.json({ jobId });
 
   // Genereer op de achtergrond
@@ -280,6 +280,7 @@ app.post('/extract-text', requireAuth, upload.single('file'), async (req, res) =
 app.get('/api/job/:jobId', requireAuth, (req, res) => {
   const job = jobs[req.params.jobId];
   if (!job) return res.status(404).json({ error: 'Job niet gevonden' });
+  if (job.userId !== req.user.id) return res.status(403).json({ error: 'Geen toegang tot deze job' });
   res.json(job);
 });
 
