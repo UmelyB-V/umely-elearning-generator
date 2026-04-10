@@ -463,6 +463,8 @@ let pollInterval = null;
 // ── AUTH ──
 let _supabase = null;
 let _session = null;
+let _verifyEmail = null;
+let _verifyPassword = null;
 
 async function initAuth() {
   try {
@@ -619,8 +621,8 @@ async function signup() {
     document.getElementById('verificationEmail').textContent = email;
 
     // Store credentials for verification check (password field gets hidden after this)
-    window._verifyEmail = email;
-    window._verifyPassword = password;
+    _verifyEmail = email;
+    _verifyPassword = password;
 
   } catch (err) {
     showAuthError(err.message);
@@ -645,8 +647,8 @@ function authHeader() {
 
 
 async function checkVerification() {
-  const email = window._verifyEmail;
-  const password = window._verifyPassword || document.getElementById('signupPassword').value;
+  const email = _verifyEmail;
+  const password = _verifyPassword || document.getElementById('signupPassword').value;
 
   if (!email || !password) {
     showAuthError('Sessie verlopen. Ga terug en registreer opnieuw.');
@@ -670,7 +672,7 @@ async function checkVerification() {
 
     // Successfully logged in = email is verified
     hideAuthError();
-    window._verifyPassword = null;
+    _verifyPassword = null;
     if (data?.session) showApp(data.session);
 
   } finally {
@@ -742,7 +744,7 @@ async function resendVerificationEmail(e) {
   hideAuthError();
 
   try {
-    const email = window._verifyEmail;
+    const email = _verifyEmail;
     if (!email) {
       showAuthError('Geen e-mailadres bekend. Probeer opnieuw te registreren.');
       resendLink.style.pointerEvents = 'auto';

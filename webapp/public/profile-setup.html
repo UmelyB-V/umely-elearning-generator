@@ -313,8 +313,8 @@ async function saveProfile() {
   }
 
   const raw = new URLSearchParams(window.location.search).get('redirect') || '';
-  // Alleen echte relatieve paden toestaan — geen //, /\ of andere bypass-varianten
-  const safe = /^\/[a-zA-Z0-9\-_./]*$/.test(raw) ? raw : '/community.html';
+  const allowed = ['/modules.html', '/account.html', '/pricing.html', '/community.html', '/'];
+  const safe = allowed.includes(raw) ? raw : '/community.html';
   window.location.href = safe;
 }
 

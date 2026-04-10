@@ -47,7 +47,10 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
       .update({ subscription_status: status, subscription_end: endDate })
       .eq('stripe_customer_id', subscription.customer);
 
-    if (error) console.error('Webhook: subscription update fout:', error.message);
+    if (error) {
+      console.error('Webhook: subscription update fout:', error.message);
+      return res.status(500).json({ error: 'Database update mislukt' });
+    }
   }
 
   if (event.type === 'customer.subscription.deleted') {
@@ -56,7 +59,10 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
       .update({ subscription_status: 'inactive', subscription_end: null })
       .eq('stripe_customer_id', subscription.customer);
 
-    if (error) console.error('Webhook: subscription delete fout:', error.message);
+    if (error) {
+      console.error('Webhook: subscription delete fout:', error.message);
+      return res.status(500).json({ error: 'Database update mislukt' });
+    }
   }
 
   res.json({ received: true });
@@ -70,6 +76,15 @@ app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Content-Security-Policy', [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://instant.page",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: https:",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+    "frame-ancestors 'none'"
+  ].join('; '));
   const origin = process.env.ALLOWED_ORIGIN || '*';
   res.setHeader('Access-Control-Allow-Origin', origin);
   if (req.method === 'OPTIONS') {
@@ -106,9 +121,17 @@ async function requireAuth(req, res, next) {
 const jobs = {};
 const generateTimestamps = {};
 setInterval(() => {
-  const cutoff = Date.now() - 60 * 60 * 1000;
+  const now = Date.now();
+  const maxAge = 60 * 60 * 1000;       // 1 uur: job verwijderen
+  const stuckAge = 10 * 60 * 1000;     // 10 minuten: generating → error
   for (const id of Object.keys(jobs)) {
-    if (jobs[id].createdAt && jobs[id].createdAt < cutoff) delete jobs[id];
+    const age = now - (jobs[id].createdAt || 0);
+    if (age > maxAge) {
+      delete jobs[id];
+    } else if (jobs[id].status === 'generating' && age > stuckAge) {
+      jobs[id].status = 'error';
+      jobs[id].error = 'Generatie duurde te lang. Probeer opnieuw.';
+    }
   }
 }, 10 * 60 * 1000);
 
@@ -182,7 +205,7 @@ app.post('/generate', requireAuth, async (req, res) => {
           .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // strip diacritics
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-|-$/g, '')
-          .slice(0, 40) || 'module';  // fallback als slug leeg is (bijv. volledig niet-ASCII)
+          .slice(0, 40) || ('module-' + Date.now().toString(36));  // fallback met unieke suffix als slug leeg is
         const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
         const filename = `elearning-${slugBase}-${date}.html`;
 
@@ -279,6 +302,9 @@ app.get('/api/modules', requireAuth, requireSubscription, async (req, res) => {
 
 // ── Beveiligd HTML-endpoint (Bearer token vereist) ──
 app.get('/api/module-html/:slug', requireAuth, requireSubscription, async (req, res) => {
+  if (!/^[a-z0-9-]{1,80}$/.test(req.params.slug)) {
+    return res.status(400).json({ error: 'Ongeldige module-URL' });
+  }
   let { data, error } = await supabase
     .from('modules')
     .select('html')
@@ -299,6 +325,9 @@ app.get('/api/module-html/:slug', requireAuth, requireSubscription, async (req, 
 // ── Auth-wrapper voor directe module-URL's ──
 app.get('/modules/:slug', (req, res) => {
   const slug = req.params.slug;
+  if (!/^[a-z0-9-]{1,80}$/.test(slug)) {
+    return res.status(400).send('Ongeldige module-URL');
+  }
   res.setHeader('Content-Type', 'text/html');
   res.send(`<!DOCTYPE html>
 <html lang="nl">
@@ -442,6 +471,9 @@ app.patch('/api/users/:userId/role', requireAuth, requireAdmin, async (req, res)
   if (!role || !['admin', 'user'].includes(role)) {
     return res.status(400).json({ error: 'Ongeldige rol. Kies "admin" of "user".' });
   }
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(req.params.userId)) {
+    return res.status(400).json({ error: 'Ongeldig gebruikers-ID.' });
+  }
   const { error } = await supabase
     .from('profiles')
     .update({ role })
@@ -468,10 +500,9 @@ app.post('/api/user/progress', requireAuth, async (req, res) => {
   const isStartedOnly = (score_pct ?? 0) === 0 && !completed;
   let error;
   if (isStartedOnly) {
-    // Eerste bezoek: alleen invoegen als er nog geen record is
-    const result = await supabase.from('user_progress').insert(record);
+    // Eerste bezoek: alleen invoegen als er nog geen record is — negeer conflict atomair
+    const result = await supabase.from('user_progress').upsert(record, { onConflict: 'user_id,module_slug', ignoreDuplicates: true });
     error = result.error;
-    if (error && error.code === '23505') error = null; // conflict = al gestart, negeer
   } else {
     // Quiz afgerond: altijd opslaan
     const result = await supabase.from('user_progress').upsert(record, { onConflict: 'user_id,module_slug' });
@@ -496,6 +527,9 @@ app.get('/api/user/progress', requireAuth, async (req, res) => {
 
 // ── Hernoem een module (admin) ──
 app.patch('/api/modules/:slug', requireAuth, requireAdmin, async (req, res) => {
+  if (!/^[a-z0-9-]{1,80}$/.test(req.params.slug)) {
+    return res.status(400).json({ error: 'Ongeldige module-URL' });
+  }
   const filename = req.params.slug + '.html';
   const { title } = req.body;
   if (!title || !title.trim()) return res.status(400).json({ error: 'Titel mag niet leeg zijn.' });
@@ -606,6 +640,9 @@ app.get('/admin/review-data', requireAuth, requireAdmin, async (req, res) => {
 
 // ── Verwijder een module (admin) ──
 app.delete('/api/modules/:slug', requireAuth, requireAdmin, async (req, res) => {
+  if (!/^[a-z0-9-]{1,80}$/.test(req.params.slug)) {
+    return res.status(400).json({ error: 'Ongeldige module-URL' });
+  }
   const filename = req.params.slug + '.html';
   const { error } = await supabase.from('modules').delete().eq('filename', filename);
   if (error) return res.status(500).json({ error: error.message });
@@ -803,7 +840,7 @@ app.post('/api/stripe/create-checkout', requireAuth, async (req, res) => {
     res.json({ url: session.url });
   } catch (err) {
     console.error('Stripe checkout fout:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Betaling starten mislukt. Probeer het opnieuw.' });
   }
 });
 

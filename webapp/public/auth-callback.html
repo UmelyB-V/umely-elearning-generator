@@ -179,15 +179,21 @@ async function init() {
     // Implicit flow: hash met access_token
     const hash = window.location.hash;
     if (hash.includes('access_token') && hash.includes('type=signup')) {
-      // Supabase JS verwerkt de hash automatisch via onAuthStateChange
-      _supabase.auth.onAuthStateChange((event) => {
-        if (event === 'SIGNED_IN') {
-          show('successState');
-          setTimeout(() => { window.location.href = '/modules.html'; }, 2500);
-        }
+      // Wacht op SIGNED_IN event, maximaal 5 seconden
+      const signedIn = await new Promise(resolve => {
+        const { data: { subscription } } = _supabase.auth.onAuthStateChange((event) => {
+          if (event === 'SIGNED_IN') {
+            subscription.unsubscribe();
+            resolve(true);
+          }
+        });
+        setTimeout(() => { subscription.unsubscribe(); resolve(false); }, 5000);
       });
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      if (document.getElementById('successState').style.display !== 'none') return;
+      if (signedIn) {
+        show('successState');
+        setTimeout(() => { window.location.href = '/modules.html'; }, 2500);
+        return;
+      }
     }
 
     // Niets gevonden
