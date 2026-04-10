@@ -270,6 +270,9 @@
       <p id="authSubtitle">Log in om de e-learning generator te gebruiken.</p>
     </div>
 
+    <!-- REDIRECT NOTICE -->
+    <div id="redirectNotice" style="display:none;background:#FFF0E5;border:1.5px solid #FFD0A0;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#8A4000;text-align:center;"></div>
+
     <!-- ERROR BOX -->
     <div id="authError" role="alert" aria-live="polite"></div>
 
@@ -312,7 +315,7 @@
         </div>
         <div class="auth-field">
           <label for="signupPassword">Wachtwoord</label>
-          <span class="auth-hint">Min. 8 tekens, 1 hoofletter, 1 cijfer</span>
+          <span class="auth-hint">Min. 8 tekens</span>
           <input id="signupPassword" type="password" placeholder="••••••••" autocomplete="new-password">
         </div>
         <button id="signupBtn" type="submit" style="margin-top:6px;">Account aanmaken</button>
@@ -333,7 +336,7 @@
         Controleer je inbox (en spam-map) en klik op de link.
       </p>
       <button id="verifyCheckBtn" onclick="checkVerification()" style="margin-bottom:8px;">
-        ✓ Ik heb mijn email geverifieerd
+        Ik heb de link geklikt, ga verder
       </button>
       <p style="font-size:12px;margin-top:12px;">
         Nog geen mail? <a href="#" id="resendEmailLink" onclick="resendVerificationEmail(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Stuur opnieuw</a>
@@ -493,6 +496,13 @@ function showLogin() {
   const overlay = document.getElementById('authOverlay');
   overlay.style.display = 'flex';
   overlay.removeAttribute('aria-hidden');
+
+  const redirectParam = new URLSearchParams(window.location.search).get('redirect');
+  if (redirectParam) {
+    const notice = document.getElementById('redirectNotice');
+    notice.textContent = 'Log in om verder te gaan.';
+    notice.style.display = 'block';
+  }
 }
 
 async function showApp(session) {
@@ -504,7 +514,9 @@ async function showApp(session) {
       .single();
 
     if (!profile || profile.role !== 'admin') {
-      window.location.href = '/modules.html';
+      const allowed = ['/modules.html', '/account.html', '/pricing.html', '/community.html', '/'];
+      const raw = new URLSearchParams(window.location.search).get('redirect') || '';
+      window.location.href = allowed.includes(raw) ? raw : '/modules.html';
       return;
     }
 
@@ -677,7 +689,7 @@ async function checkVerification() {
 
   } finally {
     document.getElementById('verifyCheckBtn').disabled = false;
-    document.getElementById('verifyCheckBtn').textContent = 'Ik heb mijn email geverifieerd';
+    document.getElementById('verifyCheckBtn').textContent = 'Ik heb de link geklikt, ga verder';
   }
 }
 
@@ -759,12 +771,14 @@ async function resendVerificationEmail(e) {
     });
 
     if (response.ok) {
-      successMsg.textContent = 'Verificatiemail opnieuw verzonden. Controleer je inbox.';
+      successMsg.textContent = 'Verificatiemail verstuurd. Controleer je inbox (en spammap).';
       successMsg.style.display = 'block';
+      resendLink.textContent = 'Wacht 30 seconden...';
       // Re-enable after 30s cooldown
       setTimeout(() => {
         resendLink.style.pointerEvents = 'auto';
         resendLink.style.opacity = '1';
+        resendLink.textContent = 'Stuur opnieuw';
       }, 30000);
     } else {
       showAuthError('Kon email niet verzenden. Probeer later opnieuw.');

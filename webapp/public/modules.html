@@ -141,6 +141,10 @@ header { background: var(--charcoal); height: 64px; padding: 0 24px; display: fl
 .btn-delete, .btn-rename { background: none; border: none; cursor: pointer; color: #DDD; font-size: 14px; padding: 3px 5px; border-radius: 5px; transition: color 0.12s, background 0.12s; line-height: 1; }
 .btn-delete:hover { color: #EF4444; background: #FEF2F2; }
 .btn-rename:hover { color: var(--amber); background: #FFF0E5; }
+@media (hover: none) {
+  .btn-delete { color: #EF4444; }
+  .btn-rename { color: var(--amber); }
+}
 
 /* ── STATES ── */
 .loading-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--gray-text); font-size: 15px; }
@@ -346,6 +350,7 @@ footer a { color: white; font-weight: 700; text-decoration: none; }
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#BBB" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         <input type="text" id="searchInput" placeholder="Zoeken..." oninput="filterModules()" style="display:none;">
       </div>
+      <span id="searchCount" style="display:none;font-size:12px;color:var(--gray-text);margin-left:8px;white-space:nowrap;"></span>
     </div>
 
 
@@ -725,7 +730,7 @@ function renderModuleCard(m) {
   const wasOpened = getOpened().includes(m.slug);
   const done = isCompleted(m.slug);
   const score = getScore(m.slug);
-  const barWidth = done ? (score ?? 100) : (wasOpened ? 50 : 0);
+  const barWidth = done ? (score ?? 100) : (wasOpened ? 10 : 0);
   const statusClass = done ? ' done' : (wasOpened ? ' started' : '');
   const statusText = done ? `✓ Afgerond${score !== null ? ' (' + score + '%)' : ''}` : (wasOpened ? '● Geopend' : 'Nog te starten');
   const linkText = (done || wasOpened) ? 'Opnieuw starten' : 'Starten';
@@ -786,8 +791,9 @@ function renderGrid() {
     const info = CATEGORIES[cat];
     const catIcon = CAT_ICONS[cat] || '📘';
 
+    const toggleAttr = activeFilter === 'all' ? 'onclick="toggleCat(this.parentElement)"' : 'style="cursor:default;"';
     html += `<div class="cat-group${isOpen ? ' open' : ''}" data-cat="${cat}">
-      <div class="cat-group-header" onclick="toggleCat(this.parentElement)">
+      <div class="cat-group-header" ${toggleAttr}>
         <span class="cat-group-icon">${catIcon}</span>
         <span class="cat-group-title">${info.title}</span>
         <span class="cat-group-meta">
@@ -806,10 +812,22 @@ function renderGrid() {
 
   if (!anyVisible) {
     grid.innerHTML = '<div class="no-results">Geen modules gevonden.</div>';
+    if (q) { const sc = document.getElementById('searchCount'); sc.textContent = '0 resultaten'; sc.style.display = 'inline'; }
     return;
   }
 
   grid.innerHTML = html;
+
+  const sc = document.getElementById('searchCount');
+  if (q) {
+    const total = catsToShow.reduce((n, cat) => {
+      return n + allModules.filter(m => getCat(m.slug) === cat && m.title.toLowerCase().includes(q)).length;
+    }, 0);
+    sc.textContent = total + ' resultaat' + (total !== 1 ? 'en' : '');
+    sc.style.display = 'inline';
+  } else {
+    sc.style.display = 'none';
+  }
 }
 
 function toggleCat(group) {
@@ -832,7 +850,7 @@ function trackOpen(slug, title, url, cat) {
     const statusEl = card.querySelector('.mod-status');
     if (statusEl) { statusEl.textContent = '● Geopend'; statusEl.className = 'mod-status started'; }
     const bar = card.querySelector('.prog-bar');
-    if (bar) bar.style.width = '50%';
+    if (bar) bar.style.width = '10%';
     const link = card.querySelector('.module-link');
     if (link) link.textContent = 'Opnieuw starten ›';
   }
@@ -844,10 +862,18 @@ async function renameModule(slug, btn) {
   const titleEl = card.querySelector('.module-title');
   const currentTitle = titleEl.textContent;
 
+  const wrap = document.createElement('span');
+  wrap.style.cssText = 'display:flex;align-items:center;gap:4px;width:100%;';
   const input = document.createElement('input');
   input.value = currentTitle;
-  input.style.cssText = 'width:100%;font:inherit;font-size:inherit;font-weight:600;border:none;border-bottom:2px solid #FF8514;outline:none;background:transparent;padding:0;';
-  titleEl.replaceWith(input);
+  input.style.cssText = 'flex:1;font:inherit;font-size:inherit;font-weight:600;border:none;border-bottom:2px solid #FF8514;outline:none;background:transparent;padding:0;min-width:0;';
+  const saveBtn = document.createElement('button');
+  saveBtn.textContent = '✓';
+  saveBtn.title = 'Opslaan (Enter)';
+  saveBtn.style.cssText = 'background:#FF8514;color:white;border:none;border-radius:4px;padding:2px 6px;font-size:13px;cursor:pointer;flex-shrink:0;line-height:1.4;';
+  wrap.appendChild(input);
+  wrap.appendChild(saveBtn);
+  titleEl.replaceWith(wrap);
   input.focus();
   input.select();
   btn.style.display = 'none';
@@ -861,7 +887,7 @@ async function renameModule(slug, btn) {
     const newTitle = (overrideTitle !== undefined ? overrideTitle : input.value).trim();
     const span = document.createElement('span');
     span.className = 'module-title';
-    if (input.isConnected) input.replaceWith(span);
+    if (wrap.isConnected) wrap.replaceWith(span);
     btn.style.display = '';
     if (!newTitle || newTitle === currentTitle) { span.textContent = currentTitle; return; }
     span.textContent = newTitle;
@@ -882,13 +908,18 @@ async function renameModule(slug, btn) {
     } finally { btn.disabled = false; btn.textContent = '✏️'; }
   }
 
-  function onBlur() { save(); }
+  function onBlur(e) {
+    // Blur naar saveBtn = niet opslaan via blur, saveBtn click handelt het af
+    if (e.relatedTarget === saveBtn) return;
+    save();
+  }
 
   input.addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); save(); }
     if (e.key === 'Escape') { e.preventDefault(); save(currentTitle); }
   });
   input.addEventListener('blur', onBlur);
+  saveBtn.addEventListener('click', () => save());
 }
 
 async function deleteModule(slug, title, btn) {
@@ -928,7 +959,7 @@ async function checkNewsletterPopup(session) {
     document.getElementById('newsletterPopup').classList.add('open');
     const onNlEsc = (e) => { if (e.key === 'Escape') { closeNewsletter(); document.removeEventListener('keydown', onNlEsc); } };
     document.addEventListener('keydown', onNlEsc);
-  }, 1200);
+  }, 5000);
 }
 
 function closeNewsletter() {
