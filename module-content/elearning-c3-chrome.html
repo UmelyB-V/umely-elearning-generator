@@ -171,28 +171,29 @@
     <h2>Beperkingen</h2>
   </div>
   <div class="content-card">
-    <h3>Wat de extensie niet kan</h3>
+    <h3>Wat de extensie wel en niet kan</h3>
     <table class="vergelijk-tabel">
       <thead><tr><th>Kan wel</th><th>Kan niet</th></tr></thead>
       <tbody>
-        <tr><td>Tekst op een pagina lezen en samenvatten</td><td>Formulieren invullen</td></tr>
-        <tr><td>Helpen bij het schrijven van e-mails</td><td>Op knoppen klikken</td></tr>
-        <tr><td>Vragen beantwoorden over pagina-inhoud</td><td>Acties uitvoeren op websites</td></tr>
-        <tr><td>Tekst vertalen</td><td>Werken in Firefox of Safari</td></tr>
+        <tr><td>Tekst op een pagina lezen en samenvatten</td><td>Werken in Firefox of Safari</td></tr>
+        <tr><td>Helpen bij het schrijven van e-mails</td><td>Pagina's openen die je zelf niet hebt geopend</td></tr>
+        <tr><td>Vragen beantwoorden over pagina-inhoud</td><td>Acties uitvoeren zonder jouw bevestiging</td></tr>
+        <tr><td>Tekst vertalen</td><td>Lokale bestanden lezen zonder toestemming</td></tr>
+        <tr><td>Formulieren invullen en op knoppen klikken (in agentic modus)</td><td>Zelfstandig handelen buiten jouw opdracht</td></tr>
       </tbody>
     </table>
   </div>
   <div class="tip-box">
     <div class="tip-box-label tip">Tip</div>
-    <p>De extensie leest mee en geeft advies. Hij handelt niet namens jou. Dat is een bewuste beperking. Claude klikt niet en vult niets in.</p>
+    <p>De extensie leest standaard mee en geeft advies. In agentic modus kan Claude ook acties uitvoeren op websites — zoals formulieren invullen of op knoppen klikken — maar alleen als jij dat expliciet vraagt en bevestigt. Claude handelt nooit zelfstandig buiten jouw opdracht.</p>
   </div>
   <div id="kc-2" class="kennischeck">
     <h3>Kennischeck</h3>
-    <p class="kc-vraag">Wat kan de Chrome-extensie NIET doen?</p>
+    <p class="kc-vraag">Wanneer kan de Chrome-extensie acties uitvoeren op een website, zoals formulieren invullen?</p>
     <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'De extensie kan wel tekst op een pagina samenvatten. Dat is juist een van de hoofdfuncties.')">Tekst op een pagina samenvatten</button>
-      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. De extensie leest mee maar handelt niet. Hij kan geen formulieren invullen, niet op knoppen klikken en geen acties uitvoeren op websites.')">Formulieren invullen en op knoppen klikken</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'De extensie kan wel helpen bij het schrijven van e-mails in Gmail.')">Helpen bij het schrijven van e-mails</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Dat klopt niet. De extensie kan nooit volledig zelfstandig handelen — hij wacht altijd op een opdracht van jou.')">Altijd — de extensie handelt zelfstandig</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. In agentic modus kan Claude acties uitvoeren, maar alleen als jij dat expliciet vraagt en bevestigt. De extensie handelt nooit buiten jouw opdracht.')">Alleen in agentic modus, na een expliciete opdracht van jou</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Dat klopt niet. De extensie kan ook buiten Gmail acties uitvoeren in agentic modus, en lezen kan hij altijd.')">Nooit — de extensie kan alleen lezen, niet handelen</button>
     </div>
     <div id="kc-feedback-2" class="kc-feedback"></div>
   </div>
@@ -226,6 +227,6 @@
   {"vraag":"Wat kan de Chrome-extensie doen?","opties":["Formulieren automatisch invullen","Tekst op een pagina samenvatten en e-mails helpen schrijven","Bestanden downloaden van websites","Wachtwoorden beheren"],"correct":1,"uitleg":"De extensie kan tekst op pagina's samenvatten, helpen bij e-mails in Gmail, vragen beantwoorden over pagina-inhoud en tekst vertalen."},
   {"vraag":"Wat is een belangrijk privacy-aspect van de extensie?","opties":["De extensie werkt volledig offline","De extensie heeft toegang tot de inhoud van pagina's die je bekijkt","De extensie slaat alles lokaal op","Er zijn geen privacy-aspecten"],"correct":1,"uitleg":"De extensie leest de inhoud van pagina's mee. Wees je hiervan bewust bij vertrouwelijke informatie en schakel de extensie uit wanneer nodig."},
   {"vraag":"In welke browsers werkt de Claude-extensie?","opties":["Chrome, Firefox en Safari","Chrome en andere Chromium-browsers zoals Edge en Brave","Alleen Firefox","Alle browsers"],"correct":1,"uitleg":"De extensie is beschikbaar via de Chrome Web Store en werkt in Chrome en andere Chromium-browsers zoals Edge en Brave. Firefox en Safari worden niet ondersteund."},
-  {"vraag":"Handelt de Chrome-extensie namens jou op websites?","opties":["Ja, hij kan klikken en formulieren invullen","Nee, hij leest mee en geeft advies maar handelt niet","Ja, maar alleen in Gmail","Alleen met een betaald abonnement"],"correct":1,"uitleg":"De extensie leest mee en geeft advies maar handelt niet namens jou. Hij klikt niet, vult geen formulieren in en voert geen acties uit op websites."}
+  {"vraag":"Kan de Chrome-extensie acties uitvoeren op websites, zoals klikken of formulieren invullen?","opties":["Nee, de extensie kan alleen lezen en adviseren","Ja, altijd en volledig zelfstandig","Ja, in agentic modus — maar alleen na een expliciete opdracht van de gebruiker","Alleen op websites van Google"],"correct":2,"uitleg":"In agentic modus kan de extensie wel degelijk acties uitvoeren, zoals formulieren invullen of op knoppen klikken. Maar dit gebeurt alleen op jouw expliciete verzoek — Claude handelt nooit zelfstandig buiten jouw opdracht."}
 ]
 <!-- QUIZ_END -->
