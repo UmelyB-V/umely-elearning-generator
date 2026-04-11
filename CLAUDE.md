@@ -1,34 +1,28 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Werkmap
 
-**Alle bash- en git-commando's beginnen altijd met:**
 ```bash
-cd "C:\Users\davem\Desktop\DataDenkt\umely-elearning-generator\umely-elearning-generator"
+cd "C:\Users\davem\OneDrive\AI Space\Umely\umely-elearning-generator\umely-elearning-generator"
 ```
 
 ## Wat doet deze app?
 
-Webapplicatie waar betalende gebruikers (95 euro/maand) toegang krijgen tot curated e-learning modules over Claude AI. Dave of Sonny bepalen welke modules beschikbaar zijn. Gebruikers consumeren de modules, zij genereren ze niet zelf. Modules worden opgeslagen in Supabase en geserveerd als standalone HTML-bestanden.
+Betalende gebruikers (95 euro/maand) krijgen toegang tot curated e-learning modules over Claude AI. Dave en Sonny maken de modules, gebruikers consumeren ze. Modules staan in Supabase en worden geserveerd als standalone HTML.
 
 ## Lokaal draaien
 
 ```bash
-cd "C:\Users\davem\Desktop\DataDenkt\umely-elearning-generator\umely-elearning-generator\webapp"
-npm install
-node server.js
+cd webapp && npm install && node server.js
 # Open http://localhost:3000
 ```
 
-## Omgevingsvariabelen (webapp/.env)
-
+**Omgevingsvariabelen (webapp/.env):**
 ```
 ANTHROPIC_API_KEY=sk-ant-...
 SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_KEY=eyJ...           # service role key (server-side)
-SUPABASE_ANON_KEY=eyJ...      # anon key (frontend config endpoint)
+SUPABASE_KEY=eyJ...        # service role key
+SUPABASE_ANON_KEY=eyJ...   # anon key (frontend)
 PORT=3000
 ```
 
@@ -36,46 +30,78 @@ PORT=3000
 
 ```
 umely-elearning-generator/
-├── CLAUDE.md                       <- dit bestand
-├── transcriptie-*.md               <- 25 transcripties als bronmateriaal
-├── module-content/                 <- 25 HTML content-bestanden + _shared-css/js
-├── output/                         <- lokaal gebouwde HTML (gitignored)
-├── build-modules.js                <- combineert shared CSS/JS + content -> output/
-├── upload-modules.js               <- uploadt output/ naar Supabase
+├── CLAUDE.md
+├── transcriptie-*.md          <- 25 transcripties als bronmateriaal
+├── module-content/            <- 25 HTML content-bestanden + _shared-css/js
+├── output/                    <- lokaal gebouwde HTML (gitignored)
+├── build-modules.js           <- combineert shared CSS/JS + content -> output/
+├── upload-modules.js          <- uploadt output/ naar Supabase
 └── webapp/
-    ├── server.js                   <- Express backend
-    ├── prompt.md                   <- instructies + structuurregels (~70 regels)
-    ├── boilerplate.html            <- alle CSS, JS en vaste HTML-blokken (startbasis)
-    ├── public/
-    │   ├── index.html              <- login UI
-    │   ├── modules.html            <- modulebiblioteek
-    │   ├── account.html            <- gebruikersbeheer
-    │   ├── logo.png
-    │   └── logo-small.png
-    └── package.json
+    ├── server.js              <- Express backend
+    ├── prompt.md              <- instructies + structuurregels
+    ├── boilerplate.html       <- alle CSS, JS en vaste HTML-blokken
+    └── public/
+        ├── index.html         <- login UI
+        ├── modules.html       <- modulebibliotheek
+        ├── account.html       <- gebruikersbeheer
+        └── community.html     <- community feature
 ```
 
 ## Modulebouwpipeline
 
 1. Schrijf/bewerk content in `module-content/elearning-*.html`
-2. Run `node build-modules.js` -> genereert `output/elearning-*-YYYYMMDD.html`
-3. Fix Supabase slug kolom (zie SQL hieronder), dan `node upload-modules.js`
+2. Run `node build-modules.js` → genereert `output/elearning-*-YYYYMMDD.html`
+3. Run `node upload-modules.js` → upsert op slug naar `elearning.modules`
 
-### Supabase slug-kolom (eenmalig uitvoeren als kolom ontbreekt)
+Modules worden opgeslagen met een schone slug zonder datum, bv. `elearning-a1-wat-is-claude`. Bij upload altijd upsert op slug — nooit duplicaten aanmaken.
 
+Opruimen van gedateerde dubbelen:
 ```sql
-ALTER TABLE modules ADD COLUMN IF NOT EXISTS slug TEXT;
-CREATE UNIQUE INDEX IF NOT EXISTS modules_slug_unique ON modules(slug);
+DELETE FROM elearning.modules WHERE slug ~ '-2026[0-9]{4}$';
 ```
 
-## Contentbestand-structuur (module-content/)
+## Database (Supabase)
 
-Elk content-HTML-bestand heeft metadata-comments bovenaan:
+**Project ID:** `dsxyygvvtwnsoiubrwxc` | **Regio:** eu-west-1
+
+Gebruik altijd schema `elearning`, nooit `public`. Dit Supabase-project wordt gedeeld met andere projecten van Dave — `public` bevat tabellen van Notulizer, Paphos en andere apps.
+
+### Tabellen `elearning`
+
+| Tabel | Doel |
+|---|---|
+| `modules` | id, filename, title, slug (unique), html, created_at, created_date |
+| `profiles` | id, email, role (user/admin), stripe_customer_id, subscription_status (active/inactive), subscription_start, subscription_end, newsletter_subscribed |
+| `user_progress` | user_id, module_slug, score_pct, completed, completed_at, updated_at |
+| `community_messages` | room_level (1-4), user_id, user_name, is_admin, content |
+| `community_profiles` | bio, specializations, company, socials, avatar_url, is_public, community_access, stripe velden |
+| `community_follows` | requester_id, target_id, status (pending/accepted/declined) |
+| `community_dm_rooms` | user1_id, user2_id |
+| `community_dm_messages` | room_id, sender_id, sender_name, content |
+| `app_settings` | key, value, updated_at |
+| `news_items` | title, summary, relevance, url, categorie, datum, used |
+
+### Supabase MCP gebruiken
+
+```
+project_id: dsxyygvvtwnsoiubrwxc
+query:       SELECT ... FROM elearning.modules ...
+```
+
+**Valkuilen:**
+- Project ID in `.env` (`ummcgaazziivvxgfwsio`) is NIET het MCP project ID
+- `FROM modules` zonder schema geeft lege resultaten
+- REST API gebruikt standaard `public` — stuur altijd header `Content-Profile: elearning`
+- Verifieer na upload: `html LIKE '%zoekterm%'`
+
+## Contentbestand-structuur
+
+Elk `module-content/elearning-*.html` begint met:
 
 ```html
 <!-- TITLE: A1 - Wat is Claude? -->
-<!-- SCHERMEN: 'screen-welcome','screen-module-1-1','screen-module-1-2','screen-module-1-3','screen-module-1-kc',...,'screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1-1':'Onderdeel 1 - Uitleg',... -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1-1',...,'screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-module-1-1':'Wat is een prompt?',... -->
 <!-- QUIZ_START -->
 [ { "vraag": "...", "opties": ["..."], "correct": 0, "uitleg": "..." } ]
 <!-- QUIZ_END -->
@@ -83,275 +109,218 @@ Elk content-HTML-bestand heeft metadata-comments bovenaan:
 
 Daarna de schermen als `<div id="screen-*" class="screen">` blokken.
 
-### Schermstructuur per module (standaard)
+### Schermstructuur per onderdeel
 
-Per onderdeel (1-5): 3 sub-schermen + kennischeck:
-- `screen-module-X-1` — Uitleg (kern van het onderwerp)
-- `screen-module-X-2` — Verdieping (tabel, flashcards, scenario of vergelijking)
-- `screen-module-X-3` — Praktijk (concrete toepassing, stappen of scenario)
-- `screen-module-X-kc` — Kennischeck (multiple choice via `checkKC()`)
+- `screen-module-X-1` — Uitleg
+- `screen-module-X-2` — Verdieping (tabel, flashcards, scenario)
+- `screen-module-X-3` — Praktijk (concrete toepassing)
+- `screen-module-X-kc` — Kennischeck (altijd op eigen scherm)
 
-`screen-quiz` en `screen-result` worden toegevoegd door `build-modules.js`.
+`screen-quiz` en `screen-result` worden automatisch toegevoegd door `build-modules.js`.
 
-### Beschikbare CSS-componenten
+### CSS-componenten (`_shared-css.html`)
 
-Uit `_shared-css.html`:
-- `.content-card` — standaard tekstblok
-- `.module-header` — donkergrijze sectionheader met titel
-- `.kennischeck` — donker blok voor multiple choice vragen
-- `.tip-box` / `.tip-box.waarschuwing` — info- of waarschuwingsblok
-- `.flashcard-set` / `.flashcard` — klikbare kaartjes
-- `.stappen-lijst` / `.stap-item` — genummerde stappenlijst
-- `.vergelijk-tabel` — vergelijkingstabel
-- `.scenario-blok` / `.scenario-keuze` — klikbaar scenario
-- `.processtroom` / `.proces-blok` — visuele processtroom
-- `.tijdlijn` / `.tijdlijn-punt` — tijdlijn
-- `.sorteer-lijst` / `.sorteer-item` — drag-to-sort
-- `.drag-items` / `.drop-zone` — drag-and-drop
-- `.invul-wrap` / `.invul-input` — invulvak in zin
-- `.visual-block` — wrapper voor inline SVG-illustraties (margin, border-radius, overflow:hidden)
+| Class | Gebruik |
+|---|---|
+| `.content-card` | standaard tekstblok |
+| `.module-header` | donkergrijze sectionheader |
+| `.kennischeck` | multiple choice blok |
+| `.tip-box` / `.tip-box.waarschuwing` | info / waarschuwing |
+| `.flashcard-set` / `.flashcard` | klikbare kaartjes |
+| `.stappen-lijst` / `.stap-item` | genummerde stappen |
+| `.vergelijk-tabel` | vergelijkingstabel |
+| `.scenario-blok` / `.scenario-keuze` | klikbaar scenario |
+| `.processtroom` / `.proces-blok` | visuele processtroom |
+| `.tijdlijn` / `.tijdlijn-punt` | tijdlijn |
+| `.sorteer-lijst` / `.sorteer-item` | drag-to-sort |
+| `.drag-items` / `.drop-zone` | drag-and-drop |
+| `.invul-wrap` / `.invul-input` | invulvak in zin |
+| `.visual-block` | wrapper voor inline SVG |
 
-### Visuele illustraties in modules (SVG-mockups)
+### JS-functies (`_shared-js.html`)
 
-Gebruik altijd **inline SVG** voor visuele uitbeelding — geen externe afbeeldingen, geen screenshots als bestanden. SVG wordt direct in het HTML-bestand geschreven en werkt altijd, ook als de echte UI van Claude verandert.
-
-**Wanneer een visual toevoegen:**
-- Bij schermen die een interface uitleggen (web-app, desktop-app, Chrome-extensie)
-- Bij architectuurdiagrammen (MCP-flow, Connectors-flow)
-- Bij concepten die beter te begrijpen zijn met een visueel schema dan met tekst
-
-**Hoe een visual plaatsen:**
-```html
-<div class="visual-block">
-  <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
-    <!-- SVG inhoud hier -->
-  </svg>
-</div>
-```
-
-**Regels voor SVG-illustraties:**
-- Altijd `viewBox="0 0 580 [hoogte]"` + `width:100%` zodat het responsive is
-- Gebruik uitsluitend Umely-kleuren: `#27292D` (charcoal), `#FF8514` (amber), `#FFF8F2` (warm wit), `#EAE6E0` (border)
-- Gebruik `font-family="Arial, sans-serif"` (geen Google Fonts in SVG)
-- Mockups van UI: toon alleen de essentiële elementen die in de module worden uitgelegd — geen decoratieve details
-- Architectuurdiagrammen: gebruik blokken + pijlen, label elk blok kort, voeg een beschrijvende voetnoot toe
-- SVG staat ALTIJD in een `.visual-block` div
-- Positie: direct na de uitlegparagraaf, vóór de tip-box of kennischeck
-
-**Huidige visuals per module:**
-- `elearning-a2-ecosysteem.html` — web-app mockup (module-1-1), desktop-app mockup (module-2-1), Chrome-extensie + zijpaneel (module-3-1)
-- `elearning-c1-webapp.html` — web-app interface met genummerde callouts (module-1-1)
-- `elearning-c3-chrome.html` — Chrome-extensie browser + zijpaneel (module-1)
-- `elearning-e1-mcp.html` — MCP architectuurdiagram Jij→Claude→MCP→tools (module-1-1)
-- `elearning-e2-connectors.html` — Connectors flow Jij→Claude→Connector→services (module-1)
-
-### Beschikbare JS-functies
-
-Uit `_shared-js.html`:
 - `goTo(screenId)` — navigeer naar scherm
-- `checkKC(nr, el, isCorrect, volgendeScherm, uitleg)` — kennischeck antwoord verwerken
+- `checkKC(nr, el, isCorrect, volgendeScherm, uitleg)` — kennischeck verwerken
 - `resetKC(nr)` — reset kennischeck
 - `toggleFlashcard(el)` — open/sluit flashcard
 - `checkScenario(nr, el, isCorrect, uitleg)` — scenario antwoord
 - `checkInvul(inputId, correctAntwoord, feedbackId)` — invulvak check
-- `checkSorteer(lijstId, correcteVolgorde, feedbackId)` — sorteeroefening check
+- `checkSorteer(lijstId, correcteVolgorde, feedbackId)` — sorteeroefening
 - `toggleLeesMeer(btn, contentId)` — lees-meer knop
 - `togglePopup(popupId)` — diagram popup
 
-## Architectuur (webapp)
+### SVG-illustraties
 
-- Auth via Supabase JWT (`requireAuth` middleware)
-- `prompt.md` + `boilerplate.html` worden samengevoegd tot `FULL_PROMPT` in `server.js`
-- Endpoints: `GET /api/modules`, `GET /modules/:slug`, `PATCH /api/modules/:slug`, `DELETE /api/modules/:slug`
+Gebruik altijd **inline SVG** in een `.visual-block` — geen externe afbeeldingen.
 
-## Database (Supabase)
-
-**MCP project ID:** `dsxyygvvtwnsoiubrwxc`
-**Schema:** `elearning` (niet `public` — altijd `elearning.modules` schrijven, nooit alleen `modules`)
-**Tabel:** `elearning.modules`: `id`, `filename`, `title`, `slug`, `html`, `created_at`, `created_date`
-
-### Hoe de Supabase MCP gebruiken
-
-Gebruik altijd de MCP-tools, nooit Node.js scripts of dotenv voor databasetoegang.
-
-1. **Lijst opvragen:**
-   ```
-   mcp__claude_ai_Supabase__list_projects → geeft project ID dsxyygvvtwnsoiubrwxc
-   ```
-   Alleen nodig als je het project ID wil verifiëren.
-
-2. **SQL uitvoeren:**
-   ```
-   mcp__claude_ai_Supabase__execute_sql
-     project_id: dsxyygvvtwnsoiubrwxc
-     query: SELECT ... FROM elearning.modules ...
-   ```
-
-3. **Schema opzoeken als je twijfelt:**
-   ```sql
-   SELECT table_schema, table_name FROM information_schema.tables WHERE table_name = 'modules';
-   ```
-   Resultaat: `elearning` en `public` bestaan beide — gebruik altijd `elearning`.
-
-**Veelgemaakte fouten die je moet vermijden:**
-- Project ID `ummcgaazziivvxgfwsio` staat in de `.env` maar is NIET het MCP project ID — het juiste ID is `dsxyygvvtwnsoiubrwxc`
-- `FROM modules` zonder schema geeft lege resultaten — schrijf altijd `FROM elearning.modules`
-- De MCP `execute_sql` werkt alleen met het juiste project ID; bij twijfel eerst `list_projects` aanroepen
-- De Supabase REST API (`/rest/v1/modules`) gebruikt standaard het `public` schema — gebruik altijd de header `Content-Profile: elearning` bij POST/PATCH via de REST API, anders gaat de upsert naar de verkeerde tabel
-- Verifieer na elke upload via MCP SQL of de HTML ook echt de verwachte inhoud bevat (bv. `html LIKE '%zoekterm%'`)
-
-### Slugs
-Modules worden opgeslagen met een schone slug zonder datum, bv. `elearning-a1-wat-is-claude`.
-Bij een nieuwe upload: upsert op slug zodat de bestaande rij wordt overschreven, geen nieuwe aangemaakt.
-
-### Opruimen van oude gedateerde versies
-Als er dubbele slugs met datum-suffix in de database staan:
-```sql
-DELETE FROM elearning.modules WHERE slug ~ '-2026[0-9]{4}$';
+```html
+<div class="visual-block">
+  <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+    <!-- inhoud -->
+  </svg>
+</div>
 ```
+
+Regels: `viewBox="0 0 580 [hoogte]"`, alleen Umely-kleuren (`#27292D`, `#FF8514`, `#FFF8F2`, `#EAE6E0`), `font-family="Arial, sans-serif"`, positie direct na uitlegparagraaf.
+
+## Modules (25 stuks)
+
+| Slug | Titel |
+|---|---|
+| elearning-a1-wat-is-claude | A1 - Wat is Claude en Anthropic? |
+| elearning-a2-ecosysteem | A2 - Het Claude-ecosysteem |
+| elearning-a3-prompts | A3 - Hoe schrijf je goede prompts? |
+| elearning-b1-veiligheid | B1 - Veiligheid & Privacy bij Claude |
+| elearning-b2-niet-developers | B2 - Claude voor niet-developers |
+| elearning-b3-fouten | B3 - Fouten, troubleshooting en grenzen van Claude |
+| elearning-c1-webapp | C1 - Claude.ai: de web-app |
+| elearning-c2-desktop | C2 - Desktop-app: Chat, Cowork en Code |
+| elearning-c3-chrome | C3 - Claude in Chrome |
+| elearning-c4-cowork | C4 - Cowork: taken delegeren aan Claude |
+| elearning-c5-excel-powerpoint | C5 - Claude in Excel en PowerPoint |
+| elearning-c6-settings | C6 - Claude Settings instellen |
+| elearning-c7-organisatie | C7 - Claude als organisatie |
+| elearning-d1-claude-code | D1 - Claude Code: wat is het en hoe start je? |
+| elearning-d2-claude-md | D2 - CLAUDE.md: projectgeheugen voor Claude Code |
+| elearning-d3-plan-mode | D3 - Plan Mode, commando's en hooks |
+| elearning-e1-mcp | E1 - MCP: Claude verbinden met externe tools |
+| elearning-e2-connectors | E2 - Claude Connectors |
+| elearning-e3-plugins | E3 - Projects en Custom Instructions |
+| elearning-e4-skills | E4 - Agent Skills en SKILL.md begrijpen |
+| elearning-e5-eerste-skill | E5 - Je eerste Skill bouwen |
+| elearning-e6-agentic-workflows | E6 - Agentic Workflows Ontwerpen |
+| elearning-e7-portfolio-website | E7 - Portfolio website bouwen met Claude |
+| elearning-i1-praktijktoets | I1 - Praktijktoets: bouw een volledig project |
+| elearning-i2-certificaat | I2 - Het Umely Certificaat |
+
+Slugnaam = bestandsnaam zonder `.html`. Bij nieuwe module: kies een slug die past in de reeks (a/b/c/d/e/i), upsert op slug bij upload.
+
+## Webapp-architectuur
+
+- Auth via Supabase JWT (`requireAuth` middleware op alle beveiligde endpoints)
+- Abonnementscheck via `requireSubscription` — geeft 402 als `subscription_status` niet `active` is
+- Admincheck via `requireAdmin` — geeft 403 als `role` niet `admin` is
+
+**Endpoints:**
+- `GET /api/config` — Supabase URL + anon key naar frontend
+- `GET /api/modules` — lijst alle modules + user role
+- `GET /api/module-html/:slug` — serveert module HTML (vereist Bearer token)
+- `GET /modules/:slug` — publieke loader die auth token + protection script injecteert
+- `POST /api/user/progress` — voortgang opslaan (score_pct, completed)
+- `PATCH /api/modules/:slug` — module hernoemen (admin)
+- `DELETE /api/modules/:slug` — module verwijderen (admin)
+- `GET /api/users` — alle gebruikers + voortgang (admin)
+- `PATCH /api/users/:userId/role` — rol wijzigen (admin)
+- `POST /api/newsletter/subscribe` — nieuwsbrief aanmelding (Supabase + MailerLite)
+- `POST /api/stripe/webhook` — Stripe webhook voor abonnementsbeheer
+
+**Stripe webhook events:**
+- `customer.subscription.created` → `subscription_status: active`, slaat `subscription_start` op
+- `customer.subscription.updated` → update status + `subscription_end` datum
+- `customer.subscription.deleted` → `subscription_status: inactive`
+
+**Module HTML-injectie:** bij `/modules/:slug` injecteert de server vóór `</head>`:
+```html
+<script>
+  window.__AUTH_TOKEN__  = "...";   // JWT token voor API-calls vanuit de module
+  window.__USER_EMAIL__  = "...";   // e-mailadres van de ingelogde gebruiker
+  window.__USER_NAME__   = "...";   // naam (of email als fallback)
+</script>
+<script src="/protection.js"></script>  <!-- niet voor admins -->
+```
+Admins krijgen geen `protection.js` — zij kunnen de module normaal bekijken voor review.
+
+**Admin-rechten:** admins omzeilen ook `requireSubscription` (geen betaald abonnement vereist). Exclusieve admin-endpoints:
+- `GET /api/users` — alle gebruikers + voortgang
+- `PATCH /api/users/:userId/role` — rol wijzigen (admin/user)
+- `PATCH /api/modules/:slug` — module hernoemen
+- `DELETE /api/modules/:slug` — module verwijderen
+- `GET /admin/review-data` — alle modules als één HTML-pagina voor review
+- `GET /api/admin/activity` — activiteitenlog
+
+**protection.js** doet 4 dingen voor niet-admin gebruikers:
+1. **Watermark** — naam + e-mail als herhalend canvas-patroon over de volledige pagina
+2. **Print block** — CSS `@media print` verbergt alle content, toont alleen een melding
+3. **Rechtermuisknop / selecteren / kopiëren** — geblokkeerd binnen `.screen`, `#app`, `.module-wrapper`
+4. **Devtools detectie** — bij >200px verschil tussen outer/innerWidth of Height: content wordt geblurred
+
+**Community-feature:** tabellen bestaan (`community_messages`, `community_profiles`, etc.) maar de feature is nog niet volledig actief in de webapp. Niet verwijderen — in ontwikkeling.
+
+**Legacy generator-bestanden:** `webapp/prompt.md` en `webapp/boilerplate.html` zijn overblijfsels van de oude generator waarbij Claude direct HTML genereerde via de webapp. Die workflow wordt niet meer gebruikt. Modules worden nu handmatig gebouwd in `module-content/` via deze CLAUDE.md als leidraad.
 
 ## Huisstijl modules
 
 - Fonts: **Arimo** (headings) + **Montserrat** (body). Nooit Inter/Roboto/Poppins.
 - Kleuren: `--amber: #FF8514`, `--flame: #FF4D00`, `--gold: #FFD964`, `--fg: #27292D`
-- Module-header: donkergrijs (`#27292D`), niet oranje gradient
+- Module-header: donkergrijs (`#27292D`), geen oranje gradient
 
-## Schrijfregels
-
-- Geen m-dashes (`--`) in tekst
-- Geen placeholder-tekst in modules
-- Geen aannames of overstatements (niet: "Claude is verreweg de veiligste")
-- Laagdrempelig, eerlijk, beperkingen benoemen
-- Nederlandse taal
-- `ANTHROPIC_API_KEY` alleen in `server.js`, nooit in lokale scripts
-
-### Universele/tijdloze formulering
-
-Content moet tijdloos zijn. Vermijd:
-- Vergelijkingen met andere tools ("beter dan GPT", "anders dan Copilot")
-- Tijdsgebonden claims ("Claude kan nu X", "nieuwste versie")
-- Specifieke limieten die snel verouderen — gebruik in plaats daarvan "controleer actuele limiet"
-- Zinnen als "op dit moment" of "recent" — die worden snel onjuist
-
-Formuleer altijd zo dat de inhoud over 6 maanden nog klopt.
-
-### Diepgang verplicht
-
-Elke uitleg moet verder gaan dan de oppervlakte. Verboden:
-- Uitleggen WAT Claude doet zonder uit te leggen WAAROM of HOE
-- Waarschuwingen zonder concrete handelswijze ("controleer altijd de inhoud" is te vaag — geef aan wat te controleren en hoe)
-- Schermen met alleen een tip-box als enige inhoud
-
-Verplicht: elk contentscherm heeft minstens één concrete handeling, voorbeeld of oefening.
-
-### Geen AI-opvulling
-
-Verwijder automatisch gegenereerde loze zinnen zoals:
-- "zonder andere tools af te kraken"
-- "dit is geen vervanging voor menselijk denken"
-- "gebruik Claude verstandig"
-- "de mogelijkheden zijn eindeloos"
-- Elke zin die niets concreets toevoegt aan de leerdoelen
-
-## Kwaliteitsregels voor module-content (VERPLICHT)
-
-Dit zijn de regels die bij elke module gecontroleerd en gehandhaafd moeten worden. Afwijkingen zijn fouten, geen stijlkeuzes.
+## Kwaliteitsregels (VERPLICHT)
 
 ### Welkomscherm
-- `class="screen start"` op het welkomscherm (niet alleen `class="screen"`)
+- `class="screen start"` (niet alleen `class="screen"`)
 - Verplichte classes: `welcome-badge`, `leerdoelen` (als `<ul>`), `tijdsbadge`
-- Leerdoelen zijn specifiek en sluiten aan bij de inhoud — niet "Je begrijpt Claude beter"
+- Leerdoelen zijn specifiek — niet "Je begrijpt Claude beter"
 
 ### MODULE_TITELS
-- Altijd beschrijvende namen — NOOIT "Module 1", "Module 2", "Topic 1", "Onderdeel 1" etc.
-- Correct voorbeeld: `'screen-module-1-1':'Wat is een prompt?'`
-- Fout voorbeeld: `'screen-module-1-1':'Module 1'`
-
-### Schermstructuur
-- Standaard per onderdeel: `-1` (uitleg), `-2` (verdieping), `-3` (praktijk), `-kc` (kennischeck)
-- Kennischeck staat ALTIJD op een eigen `screen-module-X-kc` scherm — nooit embedded in een contentscherm
-- Elke kennischeck (`checkKC`) heeft zinvolle feedbacktekst bij zowel correct als fout antwoord
+- Altijd beschrijvende namen — nooit "Module 1", "Onderdeel 1"
+- Goed: `'screen-module-1-1':'Wat is een prompt?'`
 
 ### Navigatie
-- GEEN inline Volgende/Ga verder/Verder-knoppen in contentschermen (`onclick="goTo(...)"`)
-- Navigatie loopt uitsluitend via `renderNavButtons` — dat injecteert automatisch de juiste knoppen
-- Uitzondering: de knop "Naar de afsluitquiz" op het laatste contentscherm is toegestaan
+- Geen inline navigatieknoppen in contentschermen
+- Navigatie loopt via `renderNavButtons` — die injecteert automatisch de knoppen
+- Uitzondering: "Naar de afsluitquiz" op het laatste contentscherm is toegestaan
 
 ### Quiz
-- **5–7 vragen**
-- Elk quizvraag heeft een `uitleg`-veld met inhoudelijke toelichting
-- Quiz JSON staat altijd tussen `<!-- QUIZ_START -->` en `<!-- QUIZ_END -->`
+- 5-7 vragen, elk met een inhoudelijk `uitleg`-veld
+- JSON altijd tussen `<!-- QUIZ_START -->` en `<!-- QUIZ_END -->`
 
-### Prijzen en datums
-- GEEN specifieke prijsbedragen ("$20/maand", "$25/gebruiker", "10-15 euro")
-- Vervang altijd door: "zie actuele pricing op claude.ai" of "betaald abonnement"
-- GEEN specifieke jaren of datums als voorbeeldinhoud ("in 2026", "Klanten 2026")
-- Technische limieten die snel verouderen (bv. "30 MB uploadlimiet") benoemen als "controleer actuele limiet"
-
-### Zelfpromotie
-- GEEN marketingclaims over Umely in instructiemateriaal
-- Verwijzingen naar Umely zijn informatief, niet promotioneel
-- Geen persoonsgebonden marketing (bv. "Sonny de Leeuw beoordeelt persoonlijk")
-
-### Componentvariatie
+### Schrijven
+- Geen m-dashes in tekst
+- Geen placeholder-tekst
+- Geen marketingclaims over Umely
+- Geen specifieke prijsbedragen — vervang door "zie claude.ai/pricing"
+- Geen tijdsgebonden taal ("op dit moment", "binnenkort", specifieke jaren)
+- Geen AI-opvulling ("gebruik Claude verstandig", "mogelijkheden zijn eindeloos")
+- Elke waarschuwing heeft een concrete vervolgstap — niet alleen "controleer altijd"
+- Elk contentscherm heeft minimaal één concrete handeling, voorbeeld of oefening
 - Minimaal 5 verschillende componenttypen per module
-- Maximaal 2 opeenvolgende `content-card` blokken zonder visueel element ertussen
-- Flashcards hebben altijd `onclick="toggleFlashcard(this)"` op elke kaart
+- Flashcards altijd met `onclick="toggleFlashcard(this)"`
+- `ANTHROPIC_API_KEY` is alleen voor `server.js` — nooit gebruiken in lokale scripts of build-scripts
 
-### Checklist voor nieuwe of bewerkte modules
-Doorloop deze lijst voor elke module vóór upload:
+### Upload-checklist
 - [ ] `class="screen start"` op welkomscherm
 - [ ] `welcome-badge`, `leerdoelen`, `tijdsbadge` aanwezig
-- [ ] MODULE_TITELS zijn beschrijvend
-- [ ] Kennischecks op eigen -kc schermen
+- [ ] MODULE_TITELS beschrijvend
+- [ ] Kennischecks op eigen `-kc` schermen
 - [ ] Geen inline navigatieknoppen
-- [ ] Quiz heeft 5–7 vragen met uitleg
-- [ ] Geen prijsbedragen of verouderde datums
-- [ ] Minimaal 5 componenttypen gebruikt
+- [ ] Quiz 5-7 vragen met uitleg
+- [ ] Geen prijsbedragen of tijdsgebonden claims
+- [ ] Minimaal 5 componenttypen
 - [ ] Flashcards hebben onclick-handler
 
-## Kwaliteitsproces: content audit en factcheck
-
-### Content audit
-Gebruik een agent om alle modules te scannen op:
-- AI-opvulling (platitudes, loze zinnen)
-- Te oppervlakkige schermen (alleen tip-box, geen concrete handeling)
-- Tijdsgebonden taal ("op dit moment", "binnenkort", specifieke getallen)
-- Ontbrekende nuance bij verificatie (slechts één bron zonder alternatieven)
-
-Resultaat opslaan in `content-audit.md` in de projectroot.
-
-### Factcheck
-Gebruik een agent om alle modules te scannen op verifieerbare claims:
-
-**Categorieën om te markeren:**
-1. Specifieke feiten over Claude/Anthropic (oprichtingsjaar, versienamen, contextvenster-groottes)
-2. Claims over hoe Claude werkt (functies, geheugen, Projects, Connectors, MCP)
-3. Claims over andere tools/bedrijven (OpenAI, ChatGPT, Gemini, Microsoft Copilot)
-4. UI-paden en menu-namen in claude.ai (verouderen bij interface-updates)
-5. Getallen en limieten (bestandsgroottes, token-limieten, prijzen)
-
-**Output:** `factcheck.md` in de projectroot — per claim: exacte zin, module, scherm-ID, type, risico (Hoog/Middel/Laag).
-
-**Factcheck.md staat op:** `umely-elearning-generator/factcheck.md`
-
-Na een factcheck: laat Dave of Sonny de Hoog-risico claims handmatig verifiëren via Anthropic's documentatie (docs.anthropic.com) of claude.ai zelf. Daarna modules fixen en opnieuw uploaden.
-
-### Referentiebronnen voor factcheck en modulebouw
-
-Bij het schrijven of controleren van modules: gebruik uitsluitend onderstaande officiële bronnen als bron voor feitelijke claims. Voeg bij tijdgevoelige claims een `(controleer via [url])` toe in de moduletekst.
+## Referentiebronnen
 
 | Onderwerp | Bron |
 |---|---|
-| Claude-modellen, API, functies, context, limieten | docs.anthropic.com |
-| Abonnementen, prijzen, beschikbaarheid | claude.ai/pricing |
+| Claude-modellen, API, functies, limieten | docs.anthropic.com |
+| Abonnementen, prijzen | claude.ai/pricing |
 | Anthropic bedrijfsinformatie | anthropic.com |
 | Claude in Microsoft 365 / Azure AI | learn.microsoft.com + azure.microsoft.com |
 | Claude Chrome-extensie | chromewebstore.google.com |
-| MCP-servers en integraties | docs.anthropic.com/mcp |
+| MCP-servers | docs.anthropic.com/mcp |
 | Claude Code (CLI) | docs.anthropic.com/claude-code |
 
-### Wanneer uitvoeren
-- Na het schrijven of herschrijven van modules
-- Minimaal eens per kwartaal (Claude-features veranderen snel)
-- Na een grote Claude-update van Anthropic
+## Kwaliteitsproces
+
+**Content audit** — scan alle modules op: AI-opvulling, oppervlakkige schermen, tijdsgebonden taal, vage instructies zonder concrete actie. Sla op in `content-audit.md`.
+
+**Factcheck** — scan op verifieerbare claims. Per claim: exacte zin, module, scherm-ID, risico (Hoog/Middel/Laag). Sla op in `factcheck.md`. Hoog-risico claims handmatig verifiëren via Anthropic docs, daarna fixen en opnieuw uploaden.
+
+Categorieën om te markeren:
+1. Feiten over Claude/Anthropic (oprichtingsjaar, versienamen, contextvenster-groottes)
+2. Claims over hoe Claude werkt (functies, geheugen, Projects, Connectors, MCP)
+3. Claims over andere tools (OpenAI, ChatGPT, Gemini, Copilot)
+4. UI-paden en menu-namen in claude.ai (verouderen bij interface-updates)
+5. Getallen en limieten (bestandsgroottes, token-limieten, prijzen)
+
+**Wanneer:** na schrijven/herschrijven van modules, minimaal eens per kwartaal.
