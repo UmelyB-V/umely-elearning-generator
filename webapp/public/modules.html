@@ -988,7 +988,7 @@ function closeNewsletter() {
 
 async function subscribeNewsletter() {
   const email = document.getElementById('nlEmailInput').value.trim();
-  if (!email) return;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
   const btn = document.querySelector('.nl-submit');
   btn.disabled = true; btn.textContent = 'Bezig...';
   try {
