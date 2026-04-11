@@ -269,7 +269,15 @@ app.get('/modules/:slug', (req, res) => {
     body: JSON.stringify({ module_slug: '${slug}', score_pct: 0, completed: false })
   }).catch(() => {});
   const html = await res.text();
-  const tokenScript = '<script>window.__AUTH_TOKEN__ = ' + JSON.stringify(token) + ';<' + '/script>';
+  const userEmail = session.user.email || '';
+  const userName  = session.user.user_metadata?.full_name || session.user.user_metadata?.name || userEmail.split('@')[0] || '';
+  const tokenScript =
+    '<script>' +
+    'window.__AUTH_TOKEN__  = ' + JSON.stringify(token)     + ';' +
+    'window.__USER_EMAIL__  = ' + JSON.stringify(userEmail) + ';' +
+    'window.__USER_NAME__   = ' + JSON.stringify(userName)  + ';' +
+    '<' + '/script>' +
+    '<script src="/protection.js"><' + '/script>';
   const injected = html.replace('</head>', tokenScript + '</head>');
   document.open();
   document.write(injected);
