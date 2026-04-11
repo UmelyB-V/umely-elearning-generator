@@ -298,7 +298,7 @@ footer a { color: white; font-weight: 700; text-decoration: none; }
 
     <div class="sidebar-bottom">
       <div class="prog-label">
-        <span>Geopend</span>
+        <span>Afgerond</span>
         <span id="progText">0 / 0</span>
       </div>
       <div class="prog-track">
@@ -335,7 +335,7 @@ footer a { color: white; font-weight: 700; text-decoration: none; }
         <div class="stat-sub">in de bibliotheek</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Geopend</div>
+        <div class="stat-label">Afgerond</div>
         <div class="stat-value" id="statOpened">0</div>
         <div class="stat-sub">van de modules</div>
       </div>
@@ -684,20 +684,19 @@ function updateSidebar() {
     if (el) el.textContent = count;
   });
 
-  // Progress: all modules with any progress (Supabase)
+  // Progress: alleen daadwerkelijk afgeronde modules
   const completedCount = allModules.filter(m => isCompleted(m.slug)).length;
-  const doneOrOpened = allModules.filter(m => supabaseProgress[normalizeSlug(m.slug)] != null).length;
-  document.getElementById('progText').textContent = doneOrOpened + ' / ' + allModules.length;
+  document.getElementById('progText').textContent = completedCount + ' / ' + allModules.length;
   const pct = allModules.length ? Math.round((completedCount / allModules.length) * 100) : 0;
   document.getElementById('progFill').style.width = pct + '%';
 }
 
 // ── STATS ──
 function updateStats() {
-  const openedCount = allModules.filter(m => supabaseProgress[normalizeSlug(m.slug)] != null).length;
+  const completedCount = allModules.filter(m => isCompleted(m.slug)).length;
   const activeCats = new Set(allModules.map(m => getCat(m.slug)).filter(Boolean)).size;
   document.getElementById('statTotal').textContent = allModules.length;
-  document.getElementById('statOpened').textContent = openedCount;
+  document.getElementById('statOpened').textContent = completedCount;
   document.getElementById('statCats').textContent = activeCats;
 }
 
