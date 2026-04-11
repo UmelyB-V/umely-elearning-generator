@@ -92,6 +92,22 @@ Gebruik alleen interacties die daadwerkelijk werken via de beschikbare JS-functi
 
 Als je schrijft "Klik op X om Y te zien", MOET de onclick-handler ook echt X laten zien. Test de logica.
 
+## BRONNEN
+
+Bij het schrijven van modules over Claude, Anthropic of gerelateerde integraties: baseer feitelijke claims uitsluitend op de onderstaande officiële bronnen. Raadpleeg ze mentaal als referentie; voeg bij tijdgevoelige claims een `(controleer via [url])` verwijzing toe in de content.
+
+| Onderwerp | Gezaghebbende bron |
+|---|---|
+| Claude-modellen, API, functies, limieten | docs.anthropic.com |
+| Abonnementen, prijzen, beschikbaarheid | claude.ai/pricing |
+| Anthropic bedrijfsinformatie | anthropic.com |
+| Claude in Microsoft 365 / Azure AI | learn.microsoft.com + azure.microsoft.com |
+| Claude Chrome-extensie | chromewebstore.google.com |
+| MCP-servers en integraties | docs.anthropic.com/mcp |
+| Claude Code (CLI) | docs.anthropic.com/claude-code |
+
+**Regel:** maak nooit een specifieke claim over abonnementsstructuren, beschikbaarheid per regio, integratie-status of exacte limieten zonder een `(controleer actuele status op [url])` toevoeging. Schrijf beperkingen als structurele eigenschappen, niet als versiespecifieke feiten.
+
 ## VERBODEN
 
 - Witte (#FFFFFF) of zwarte (#000000) achtergrond
@@ -102,3 +118,4 @@ Als je schrijft "Klik op X om Y te zien", MOET de onclick-handler ook echt X lat
 - Tijdgebonden uitspraken over AI-tools of versies
 - Marketingpraat of lege disclaimers
 - Verkeerde flashcard-classnames (flashcard-voorzijde/achterzijde)
+- Specifieke claims over integratie-status, regiobeschikbaarheid of exact limieten zonder bronverwijzing

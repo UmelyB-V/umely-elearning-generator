@@ -278,7 +278,7 @@ Dit zijn de regels die bij elke module gecontroleerd en gehandhaafd moeten worde
 - Uitzondering: de knop "Naar de afsluitquiz" op het laatste contentscherm is toegestaan
 
 ### Quiz
-- Exact **5 vragen** — niet 6, niet 7
+- **5–7 vragen**
 - Elk quizvraag heeft een `uitleg`-veld met inhoudelijke toelichting
 - Quiz JSON staat altijd tussen `<!-- QUIZ_START -->` en `<!-- QUIZ_END -->`
 
@@ -305,7 +305,7 @@ Doorloop deze lijst voor elke module vóór upload:
 - [ ] MODULE_TITELS zijn beschrijvend
 - [ ] Kennischecks op eigen -kc schermen
 - [ ] Geen inline navigatieknoppen
-- [ ] Quiz heeft exact 5 vragen met uitleg
+- [ ] Quiz heeft 5–7 vragen met uitleg
 - [ ] Geen prijsbedragen of verouderde datums
 - [ ] Minimaal 5 componenttypen gebruikt
 - [ ] Flashcards hebben onclick-handler
@@ -336,6 +336,20 @@ Gebruik een agent om alle modules te scannen op verifieerbare claims:
 **Factcheck.md staat op:** `umely-elearning-generator/factcheck.md`
 
 Na een factcheck: laat Dave of Sonny de Hoog-risico claims handmatig verifiëren via Anthropic's documentatie (docs.anthropic.com) of claude.ai zelf. Daarna modules fixen en opnieuw uploaden.
+
+### Referentiebronnen voor factcheck en modulebouw
+
+Bij het schrijven of controleren van modules: gebruik uitsluitend onderstaande officiële bronnen als bron voor feitelijke claims. Voeg bij tijdgevoelige claims een `(controleer via [url])` toe in de moduletekst.
+
+| Onderwerp | Bron |
+|---|---|
+| Claude-modellen, API, functies, context, limieten | docs.anthropic.com |
+| Abonnementen, prijzen, beschikbaarheid | claude.ai/pricing |
+| Anthropic bedrijfsinformatie | anthropic.com |
+| Claude in Microsoft 365 / Azure AI | learn.microsoft.com + azure.microsoft.com |
+| Claude Chrome-extensie | chromewebstore.google.com |
+| MCP-servers en integraties | docs.anthropic.com/mcp |
+| Claude Code (CLI) | docs.anthropic.com/claude-code |
 
 ### Wanneer uitvoeren
 - Na het schrijven of herschrijven van modules
