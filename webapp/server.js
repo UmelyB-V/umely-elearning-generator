@@ -457,7 +457,7 @@ app.post('/api/newsletter/subscribe', requireAuth, async (req, res) => {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + process.env.MAILERLITE_API_KEY
       },
-      body: JSON.stringify({ email: profile.email })
+      body: JSON.stringify({ email: profile.email, groups: ['181913132846810970'] })
     }).catch(err => console.error('MailerLite subscribe fout:', err));
   }
 
