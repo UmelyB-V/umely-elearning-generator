@@ -413,6 +413,7 @@ function startEindopdracht() {
   window._deelnemerUseCase = usecase;
   localStorage.setItem('umely_naam', naam);
   localStorage.setItem('umely_usecase', usecase);
+  if (window.__AUTH_TOKEN__) { fetch('/api/user/usecase', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.__AUTH_TOKEN__ }, body: JSON.stringify({ use_case: usecase }) }).catch(function() {}); }
   document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
   document.querySelectorAll('.deelnemer-usecase').forEach(function(el) { el.textContent = usecase; });
   document.querySelectorAll('[id^="usecase-balk-"]').forEach(function(el) { el.style.display = 'block'; });
@@ -490,6 +491,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (uci) uci.value = usecase;
     document.querySelectorAll('.deelnemer-usecase').forEach(function(el) { el.textContent = usecase; });
     document.querySelectorAll('[id^="usecase-balk-"]').forEach(function(el) { el.style.display = 'block'; });
+  }
+  if (window.__AUTH_TOKEN__) {
+    fetch('/api/user/usecase', { headers: { 'Authorization': 'Bearer ' + window.__AUTH_TOKEN__ } })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.use_case) {
+          var ucEl = document.getElementById('usecase-input');
+          if (ucEl) ucEl.value = d.use_case;
+          window._deelnemerUseCase = d.use_case;
+          document.querySelectorAll('.deelnemer-usecase').forEach(function(el) { el.textContent = d.use_case; });
+          document.querySelectorAll('[id^="usecase-balk-"]').forEach(function(el) { el.style.display = 'block'; });
+        }
+      }).catch(function() {});
   }
 });
 </script>

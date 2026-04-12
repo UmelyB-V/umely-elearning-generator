@@ -912,6 +912,29 @@ app.post('/api/stripe/cancel-subscription', requireAuth, async (req, res) => {
   res.json({ ok: true, cancel_at: new Date(subscriptions.data[0].current_period_end * 1000).toISOString() });
 });
 
+// ── Use case ophalen ──
+app.get('/api/user/usecase', requireAuth, async (req, res) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('use_case')
+    .eq('id', req.user.id)
+    .single();
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ use_case: data?.use_case || '' });
+});
+
+// ── Use case opslaan ──
+app.post('/api/user/usecase', requireAuth, async (req, res) => {
+  const { use_case } = req.body;
+  if (!use_case || !use_case.trim()) return res.status(400).json({ error: 'use_case is verplicht.' });
+  const { error } = await supabase
+    .from('profiles')
+    .update({ use_case: use_case.trim() })
+    .eq('id', req.user.id);
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ ok: true });
+});
+
 require('./community-routes')(app, supabase, requireAuth);
 
 const PORT = process.env.PORT || 3000;
