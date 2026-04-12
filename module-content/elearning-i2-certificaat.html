@@ -1,188 +1,370 @@
-<!-- TITLE: I2 - Het Umely Certificaat -->
-<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Wat is het certificaat','screen-module-2':'Hoe je het ontvangt','screen-module-3':'Wat er op staat','screen-module-4':'Wat het betekent','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- TITLE: I2 - Afsluiting en certificaat -->
+<!-- SCHERMEN: 'screen-welcome','screen-terugblik','screen-ambassadeur','screen-certificaat','screen-wat-nu','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-terugblik':'Terugblik op de cursus','screen-ambassadeur':'De ambassadeursopdracht','screen-certificaat':'Jouw certificaat','screen-wat-nu':'Wat nu?','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is het kernverschil tussen Claude.ai en Claude Code?","opties":["Claude Code is duurder dan Claude.ai","Claude Code draait via de terminal en kan meerdere stappen achter elkaar uitvoeren op je computer","Claude.ai werkt niet op mobiel","Claude Code vereist een apart Anthropic-account"],"correct":1,"uitleg":"Claude.ai gebruik je via de browser. Claude Code is een CLI die via de terminal draait en zelfstandig bestanden kan lezen, bewerken en opdrachten uitvoeren — zonder dat jij elke stap aanstuurt."},
+  {"vraag":"Wat is het doel van een systeemprompt?","opties":["Claude sneller laten reageren","De taal van Claude instellen op Nederlands","Jouw werkcontext één keer beschrijven zodat Claude altijd vanuit dat profiel reageert","Claude toegang geven tot je bestanden"],"correct":2,"uitleg":"Een systeemprompt beschrijft wie je bent, wat je doet en welke toon past. Je schrijft hem eenmalig en gebruikt hem als startpunt voor elk gesprek."},
+  {"vraag":"Waarvoor gebruik je MCP?","opties":["Om Claude sneller te maken","Om Claude te verbinden met externe tools en systemen zoals Gmail, agenda of CRM","Om de interface van Claude.ai aan te passen","Om Claude lokaal te draaien zonder internet"],"correct":1,"uitleg":"MCP (Model Context Protocol) stelt Claude in staat om externe tools en diensten te gebruiken. Zo kun je Claude automatisch data laten ophalen uit andere systemen."},
+  {"vraag":"Wat is een Project in Claude.ai?","opties":["Een archief van afgeronde gesprekken","Een aparte Claude-instantie met eigen abonnement","Een afgebakende omgeving met eigen context, documenten en systeemprompt die persistent zijn","Een exporteerbaar chatverslag"],"correct":2,"uitleg":"Met Projects maak je een afgebakende omgeving per klant, onderwerp of werkproces. De context, documenten en systeemprompt zijn persistent — Claude onthoudt ze in elk gesprek binnen dat Project."},
+  {"vraag":"Wat is de sleutelvraag om te bepalen of Pad B bij jou past?","opties":["Hoe lang gebruik ik Claude al?","Welk abonnement heb ik?","Doe ik minstens wekelijks een taak met meerdere stappen waarbij ik informatie uit verschillende systemen combineer?","Hoeveel collega's in mijn bedrijf gebruiken Claude?"],"correct":2,"uitleg":"De kernvraag is of je herhalend, meerstaps werk hebt dat systemen combineert. Als dat zo is, loont de investering in Claude Code of MCP vrijwel altijd."}
+]
+<!-- QUIZ_END -->
 
+<style>
+.i2-naam-wrap{background:#fff;border:2px solid rgba(39,41,45,0.12);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem;display:none}
+.i2-naam-wrap.zichtbaar{display:block}
+.i2-fase-input{width:100%;border:2px solid rgba(39,41,45,0.15);border-radius:12px;padding:0.75rem 1rem;font-family:var(--font-b);font-size:0.95rem;color:#27292D;background:#fff;outline:none;transition:border-color 0.2s;resize:vertical}
+.i2-fase-input:focus{border-color:#FF8514}
+.i2-input-label{font-family:var(--font-h);font-size:0.85rem;font-weight:700;color:#27292D;margin-bottom:0.4rem;display:block}
+.i2-input-hint{font-size:0.8rem;color:rgba(39,41,45,0.5);margin-top:0.35rem;margin-bottom:1.25rem}
+.i2-voortgang-btn{display:inline-block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;font-family:var(--font-b);font-weight:700;font-size:0.95rem;padding:0.8rem 2rem;border-radius:50px;border:none;cursor:pointer;transition:opacity 0.2s,transform 0.1s;margin-top:1rem}
+.i2-voortgang-btn:disabled{opacity:0.35;cursor:not-allowed}
+.i2-voortgang-btn:not(:disabled):hover{opacity:0.9;transform:translateY(-1px)}
+.tb-kaart{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(39,41,45,0.1);padding:1.75rem;margin-top:1.5rem;display:none;border-left:4px solid #FF8514}
+.tb-kaart-header{font-family:var(--font-h);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#FF8514;margin-bottom:1rem}
+.tb-antwoord-blok{margin-bottom:1rem}
+.tb-antwoord-blok:last-child{margin-bottom:0}
+.tb-vraag-label{font-size:0.8rem;font-weight:700;color:rgba(39,41,45,0.5);margin-bottom:0.25rem}
+.tb-antwoord-tekst{font-size:0.95rem;color:#27292D;line-height:1.5}
+.ambas-opties{display:flex;flex-direction:column;gap:0.65rem;margin:1.25rem 0}
+.ambas-optie{display:flex;align-items:flex-start;gap:0.75rem;background:#FFF8F2;border:2px solid #EAE6E0;border-radius:10px;padding:0.9rem 1rem;cursor:pointer;transition:border-color 0.2s}
+.ambas-optie:hover{border-color:#FF8514}
+.ambas-optie input[type="radio"]{flex-shrink:0;margin-top:0.15rem;accent-color:#FF8514;width:16px;height:16px;cursor:pointer}
+.ambas-optie label{cursor:pointer;font-size:0.95rem;line-height:1.4}
+.ambas-optioneel{margin-top:1.25rem}
+.cert-wrap{display:none;margin-top:1.5rem}
+.cert-blok{background:#FFF8F2;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(39,41,45,0.12)}
+.cert-streep-top{height:8px;background:linear-gradient(90deg,#FF8514,#FF4D00)}
+.cert-inhoud{padding:2.5rem;text-align:center}
+.cert-academie{font-family:var(--font-h);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#27292D;margin-bottom:1.25rem}
+.cert-titel{font-family:var(--font-h);font-size:1.6rem;font-weight:700;color:#27292D;margin-bottom:1.75rem}
+.cert-body{font-family:var(--font-b);font-size:1rem;color:#27292D;line-height:1.8;margin-bottom:1.75rem}
+.cert-naam{font-family:var(--font-h);font-size:2rem;font-weight:700;color:#FF8514;display:block;margin:0.5rem 0}
+.cert-datum{font-size:0.85rem;color:rgba(39,41,45,0.5);margin-top:1rem}
+.cert-sign{font-family:var(--font-h);font-size:0.9rem;font-weight:700;color:#27292D;margin-top:0.5rem}
+.cert-streep-bottom{height:8px;background:linear-gradient(90deg,#FF4D00,#FF8514)}
+.print-hint{font-size:0.82rem;color:rgba(39,41,45,0.5);margin-top:0.5rem}
+.wat-nu-grid{display:flex;gap:1rem;flex-wrap:wrap;margin:1.25rem 0}
+.wat-nu-kaart{flex:1 1 220px;background:#fff;border-radius:12px;padding:1.5rem;box-shadow:0 1px 6px rgba(39,41,45,0.08);border-top:3px solid #FF8514}
+.wat-nu-icoon{font-size:1.75rem;margin-bottom:0.75rem}
+.wat-nu-kaart h4{font-family:var(--font-h);font-size:1rem;margin-bottom:0.5rem;color:#27292D}
+.wat-nu-kaart p{font-size:0.9rem;color:rgba(39,41,45,0.75);margin-bottom:0.75rem}
+.wat-nu-kaart a{font-size:0.85rem;font-weight:700;color:#FF8514;text-decoration:none}
+.wat-nu-kaart a:hover{text-decoration:underline}
+.afsluiting-tekst{text-align:center;padding:2.5rem 1rem 1rem;font-family:var(--font-h);font-size:1.3rem;color:#27292D;line-height:1.5}
+.afsluiting-copyright{text-align:center;font-size:0.8rem;color:rgba(39,41,45,0.4);margin-top:0.5rem}
+.i2-error{color:#dc2626;font-size:0.85rem;margin-top:0.4rem;display:none}
+#nav-screen-terugblik .btn,
+#nav-screen-ambassadeur .btn,
+#nav-screen-certificaat .btn{display:none!important}
+@media print {
+  header,footer,.nav-buttons,.btn-wrap,#cert-genereer-wrap,.module-header,.tijdsbadge,.leerdoelen,
+  #screen-terugblik,#screen-ambassadeur,#screen-wat-nu,#screen-quiz,#screen-result,#screen-welcome,
+  .claude-float{display:none!important}
+  #screen-certificaat{display:block!important;max-width:100%!important;padding:0!important;margin:0!important}
+  .cert-wrap{display:block!important}
+  .cert-blok{box-shadow:none!important}
+  body{background:#FFF8F2!important}
+}
+@media(max-width:600px){.wat-nu-grid{flex-direction:column}}
+</style>
+
+<!-- WELKOMSTSCHERM -->
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
     <div class="welcome-badge">Umely E-learning</div>
-    <h1>Het Umely Certificaat</h1>
-    <p>Wat het certificaat inhoudt, hoe je het ontvangt en wat het voor jou betekent.</p>
+    <h1>Gefeliciteerd, <span class="i2-welkom-naam">...</span>.</h1>
+    <p>Je hebt de volledige Claude AI cursus doorlopen. In deze module kijk je terug, maak je een kleine stap vooruit en ontvang je je certificaat.</p>
   </div>
+
+  <div class="i2-naam-wrap" id="i2-naam-fallback">
+    <label class="i2-input-label" for="i2-naam-input">Vul je naam in om door te gaan:</label>
+    <input type="text" id="i2-naam-input" class="i2-fase-input" style="resize:none;" placeholder="Jouw naam" autocomplete="name">
+    <div id="i2-naam-error" class="i2-error">Vul je naam in om verder te gaan.</div>
+  </div>
+
   <div class="leerdoelen">
-    <h3>Na deze module kun je:</h3>
+    <h3>In deze module:</h3>
     <ul>
-      <li>Uitleggen wanneer je het Umely Certificaat ontvangt</li>
-      <li>Beschrijven wat er op het certificaat staat</li>
-      <li>Benoemen wat het certificaat in de praktijk betekent</li>
+      <li>Je kijkt terug op wat je hebt geleerd en wat je al hebt toegepast</li>
+      <li>Je maakt één concrete afspraak met jezelf voor de komende week</li>
+      <li>Je ontvangt je Umely-certificaat en kunt het afdrukken of opslaan</li>
     </ul>
   </div>
+
   <div class="tijdsbadge">Geschatte tijd: 10 minuten</div>
+
   <div class="btn-wrap">
-    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+    <button class="btn" onclick="startI2()">Begin →</button>
   </div>
 </div>
 
-<div id="screen-module-1" class="screen">
+<!-- TERUGBLIK -->
+<div id="screen-terugblik" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 1 van 4</div>
-    <h2>Wat is het certificaat</h2>
+    <div class="module-num">Onderdeel 1 van 4</div>
+    <h2>Terugblik op de cursus</h2>
   </div>
+
   <div class="content-card">
-    <p>Het Umely Certificaat is het bewijs dat je het volledige leertraject hebt doorlopen en de praktijktoets succesvol hebt afgerond. Het laat zien dat je Claude zelfstandig en verantwoord kunt inzetten in een echte werksituatie.</p>
-    <p>Het is geen automatisch certificaat op basis van alleen quizscores. Je rondt het traject af met een praktijktoets waarbij je een werkende workflow bouwt en aantoont dat je de stof kunt toepassen.</p>
+    <p>Je hebt 26 modules doorlopen over prompting, Claude-tools, Claude Code, MCP, connectors, skills en agentic workflows. Neem even de tijd om terug te kijken. Niet om een rapportcijfer te geven — maar om te benoemen wat er werkelijk is blijven hangen.</p>
   </div>
-  <div class="content-card">
-    <h3>Wat maakt het certificaat waardevol?</h3>
-    <div class="flashcard-set">
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Praktijkgericht</div>
-        <div class="fc-uitleg">Je toont aan dat je Claude kunt toepassen op een echt werkproces, niet alleen theorie begrijpt.</div>
-        <div class="fc-hint">Klik voor details</div>
+
+  <div id="tb-formulier">
+    <div class="content-card">
+      <div class="fase-input-wrap" style="margin-top:0">
+        <label class="i2-input-label" for="tb-1">Wat heeft je het meest verrast in deze cursus?</label>
+        <textarea id="tb-1" class="i2-fase-input" rows="3" placeholder="Bijv: dat Claude Code zoveel voor je kan uitvoeren zonder dat je kunt programmeren" oninput="checkTerugblikVelden()"></textarea>
       </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Volledig traject</div>
-        <div class="fc-uitleg">Je hebt alle onderdelen doorlopen: begrip, toepassing, tools, én de praktijktoets.</div>
-        <div class="fc-hint">Klik voor details</div>
+      <div class="fase-input-wrap">
+        <label class="i2-input-label" for="tb-2">Waar heb je tijdens de cursus al iets mee gedaan?</label>
+        <textarea id="tb-2" class="i2-fase-input" rows="3" placeholder="Bijv: ik gebruik nu Projects per klant, dat scheelt me echt tijd" oninput="checkTerugblikVelden()"></textarea>
       </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Verifieerbaar</div>
-        <div class="fc-uitleg">Het certificaat bevat je naam, de datum en het onderwerp van je praktijktoets.</div>
-        <div class="fc-hint">Klik voor details</div>
+      <div class="fase-input-wrap">
+        <label class="i2-input-label" for="tb-3">Wat ga je als eerste toepassen in je werk?</label>
+        <textarea id="tb-3" class="i2-fase-input" rows="3" placeholder="Bijv: de prompttemplate die ik in de praktijktoets heb gebouwd" oninput="checkTerugblikVelden()"></textarea>
       </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Eerlijk</div>
-        <div class="fc-uitleg">Het certificaat zegt niet dat je perfecte AI bent. Het zegt dat je het verantwoord kunt inzetten.</div>
-        <div class="fc-hint">Klik voor details</div>
-      </div>
+      <div id="tb-error" class="i2-error">Vul alle drie de velden in (minimaal 10 tekens per veld).</div>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="i2-voortgang-btn" id="btn-tb-toon" onclick="toonTerugblikKaart()" disabled>Bekijk mijn terugblik →</button>
     </div>
   </div>
-  <div id="kc-1" class="kennischeck">
-    <h3>Kennischeck</h3>
-    <p class="kc-vraag">Wat toont het Umely Certificaat aan?</p>
-    <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Het certificaat gaat niet over hoe snel je het traject hebt doorlopen.')">Dat je het traject snel hebt afgerond</button>
-      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. Het certificaat bewijst dat je Claude zelfstandig en verantwoord kunt inzetten in een echte werksituatie.')">Dat je Claude zelfstandig en verantwoord kunt inzetten</button>
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Het gaat niet over het aantal tools dat je hebt gebruikt, maar om vakbekwaam en verantwoord gebruik.')">Dat je zoveel mogelijk tools hebt gebruikt</button>
+
+  <div class="tb-kaart" id="tb-kaart">
+    <div class="tb-kaart-header">Dit is wat <span id="tb-kaart-naam">jij</span> meeneemt uit deze cursus</div>
+    <div class="tb-antwoord-blok">
+      <div class="tb-vraag-label">Wat me het meest verraste</div>
+      <div class="tb-antwoord-tekst" id="tb-antwoord-1"></div>
     </div>
-    <div id="kc-feedback-1" class="kc-feedback"></div>
+    <div class="tb-antwoord-blok">
+      <div class="tb-vraag-label">Wat ik al heb toegepast</div>
+      <div class="tb-antwoord-tekst" id="tb-antwoord-2"></div>
+    </div>
+    <div class="tb-antwoord-blok">
+      <div class="tb-vraag-label">Wat ik als eerste ga doen</div>
+      <div class="tb-antwoord-tekst" id="tb-antwoord-3"></div>
+    </div>
+  </div>
+
+  <div id="tb-verder-wrap" style="display:none;" class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-ambassadeur')">Verder →</button>
   </div>
 </div>
 
-<div id="screen-module-2" class="screen">
+<!-- AMBASSADEUR -->
+<div id="screen-ambassadeur" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 2 van 4</div>
-    <h2>Hoe je het ontvangt</h2>
+    <div class="module-num">Onderdeel 2 van 4</div>
+    <h2>De ambassadeursopdracht</h2>
   </div>
-  <div class="content-card">
-    <h3>Het traject stap voor stap</h3>
-    <div class="stappen-lijst">
-      <div class="stap-item">
-        <div class="stap-nummer">1</div>
-        <div class="stap-content">
-          <h4>Doorloop alle modules</h4>
-          <p>Alle tracks A t/m E plus de I-modules. Elke module sluit af met een quiz. Je hebt minimaal 70% nodig om een module als afgerond te tellen.</p>
-        </div>
-      </div>
-      <div class="stap-item">
-        <div class="stap-nummer">2</div>
-        <div class="stap-content">
-          <h4>Rond de praktijktoets af</h4>
-          <p>In module I1 bouw je een werkende workflow voor een echt werkproces. Je legt uit wat je hebt gemaakt, waarom je bepaalde keuzes hebt gemaakt en wat de beperkingen zijn.</p>
-        </div>
-      </div>
-      <div class="stap-item">
-        <div class="stap-nummer">3</div>
-        <div class="stap-content">
-          <h4>Ontvang je certificaat</h4>
-          <p>Na het succesvol afronden van de praktijktoets ontvang je het Umely Certificaat. Het certificaat wordt op je naam uitgegeven.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>Je praktijktoets is sterker als je een werkproces kiest dat je al goed kent. Dan kun je duidelijk uitleggen waarom je bepaalde stappen wel of niet hebt geautomatiseerd.</p>
-  </div>
-  <div id="kc-2" class="kennischeck">
-    <h3>Kennischeck</h3>
-    <p class="kc-vraag">Wat is de laatste stap voor je het certificaat ontvangt?</p>
-    <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-3', 'Alle quizzen halen is onderdeel van het traject, maar het certificaat vereist ook de praktijktoets.')">Alle module-quizzen halen</button>
-      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-3', 'Correct. Na het succesvol afronden van de praktijktoets ontvang je het certificaat.')">De praktijktoets succesvol afronden</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-3', 'Er is geen apart online examen. De praktijktoets is de afsluitende beoordeling.')">Een apart online examen maken</button>
-    </div>
-    <div id="kc-feedback-2" class="kc-feedback"></div>
-  </div>
-</div>
 
-<div id="screen-module-3" class="screen">
-  <div class="module-header">
-    <div class="module-num">Module 3 van 4</div>
-    <h2>Wat er op staat</h2>
-  </div>
   <div class="content-card">
-    <h3>De inhoud van het certificaat</h3>
-    <table class="vergelijk-tabel">
-      <thead><tr><th>Gegeven</th><th>Toelichting</th></tr></thead>
-      <tbody>
-        <tr><td>Je naam</td><td>Je volledige naam als bewijs dat jij het traject hebt afgerond.</td></tr>
-        <tr><td>Datum</td><td>De datum waarop je de praktijktoets hebt afgerond.</td></tr>
-        <tr><td>Onderwerp</td><td>Het werkproces van je praktijktoets, zodat duidelijk is wat je hebt geautomatiseerd.</td></tr>
-        <tr><td>Traject</td><td>Vermelding dat je het volledige Umely-leertraject hebt doorlopen.</td></tr>
-      </tbody>
-    </table>
+    <p>Je weet nu meer over Claude dan vrijwel iedereen in je organisatie. Dat is geen kleine prestatie. De meest waardevolle stap die je nu kunt zetten is niet nog meer leren — maar één collega laten zien wat jij al kunt.</p>
+    <p>Kies hieronder één concrete stap die je deze week zet.</p>
   </div>
-  <div class="tip-box">
-    <div class="tip-box-label tip">Gebruik</div>
-    <p>Het certificaat kun je gebruiken als bewijs van vakbekwaamheid — voor jezelf, voor je werkgever of voor opdrachtgevers. Het laat zien dat je Claude niet alleen gebruikt, maar ook begrijpt wat je doet.</p>
-  </div>
-  <div id="kc-3" class="kennischeck">
-    <h3>Kennischeck</h3>
-    <p class="kc-vraag">Wat staat er op het certificaat als onderwerp?</p>
-    <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-4', 'Je quizscore staat niet op het certificaat.')">Je gemiddelde quizscore</button>
-      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-4', 'De naam van de module is niet het onderwerp op het certificaat.')">De naam van de laatste module</button>
-      <button class="kc-optie" onclick="checkKC(3, this, true, 'screen-module-4', 'Correct. Het werkproces van je praktijktoets staat als onderwerp op het certificaat, zodat duidelijk is wat je hebt gebouwd.')">Het werkproces van je praktijktoets</button>
-    </div>
-    <div id="kc-feedback-3" class="kc-feedback"></div>
-  </div>
-</div>
 
-<div id="screen-module-4" class="screen">
-  <div class="module-header">
-    <div class="module-num">Module 4 van 4</div>
-    <h2>Wat het betekent</h2>
-  </div>
   <div class="content-card">
-    <p>Het traject is afgerond maar het leren stopt niet. Claude krijgt regelmatig nieuwe functies. Houd de releasenotes bij via het Anthropic-blog of de changelog in de app. Experimenteer actief met nieuwe functies in je eigen werkproces zodra ze beschikbaar komen.</p>
-    <p>Als er fundamentele wijzigingen zijn in hoe Claude werkt, ontvangen gecertificeerde deelnemers een notificatie via het e-mailadres waarmee je bent geregistreerd.</p>
-  </div>
-  <div class="content-card">
-    <h3>Wat het certificaat in de praktijk zegt</h3>
-    <div class="processtroom">
-      <div class="proces-blok"><h4>Vakbekwaam</h4><p>Je kunt Claude zelfstandig inzetten</p></div>
-      <div class="proces-pijl">&#9658;</div>
-      <div class="proces-blok"><h4>Verantwoord</h4><p>Je kent de grenzen en risico's</p></div>
-      <div class="proces-pijl">&#9658;</div>
-      <div class="proces-blok"><h4>Praktisch</h4><p>Je kunt echte waarde leveren</p></div>
-      <div class="proces-pijl">&#9658;</div>
-      <div class="proces-blok"><h4>Eerlijk</h4><p>Je weet wat wel en niet kan</p></div>
+    <div class="ambas-opties" id="ambas-opties">
+      <div class="ambas-optie" onclick="selecteerAmbas(this)">
+        <input type="radio" name="ambas" id="ambas-1" value="demo">
+        <label for="ambas-1">Ik geef een korte demo aan een collega — ik laat zien hoe ik Claude gebruik voor een concrete taak.</label>
+      </div>
+      <div class="ambas-optie" onclick="selecteerAmbas(this)">
+        <input type="radio" name="ambas" id="ambas-2" value="prompt">
+        <label for="ambas-2">Ik stuur een prompt door die ik nuttig vond — met een korte toelichting waarom.</label>
+      </div>
+      <div class="ambas-optie" onclick="selecteerAmbas(this)">
+        <input type="radio" name="ambas" id="ambas-3" value="uitrol">
+        <label for="ambas-3">Ik stel voor om dit breder uit te rollen in mijn team — en plan een gesprek met mijn leidinggevende.</label>
+      </div>
+    </div>
+
+    <div class="ambas-optioneel">
+      <label class="i2-input-label" for="ambas-wie">Wie of welk team ga je benaderen? (optioneel)</label>
+      <input type="text" id="ambas-wie" class="i2-fase-input" style="resize:none;" placeholder="Bijv: mijn directe collega Martijn, of het communicatieteam">
     </div>
   </div>
-  <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>Het certificaat is geen eindpunt. Claude blijft zich ontwikkelen. Gebruik het als vertrekpunt om te blijven experimenteren in je eigen werksituatie.</p>
-  </div>
+
   <div class="btn-wrap">
+    <button class="i2-voortgang-btn" id="btn-ambas-door" onclick="goTo('screen-certificaat')" disabled>Dit ga ik doen →</button>
   </div>
 </div>
 
-<!-- QUIZ_START -->
-[
-  {"vraag":"Wat toont het Umely Certificaat aan?","opties":["Dat je alle modules perfect hebt afgerond","Dat je Claude vakbekwaam en verantwoord kunt inzetten","Dat je een AI-developer bent","Dat je het traject als eerste hebt afgerond"],"correct":1,"uitleg":"Het certificaat bewijst vakbekwaamheid: je kunt Claude zelfstandig en verantwoord inzetten. Niet perfect, maar met begrip van de mogelijkheden en de grenzen."},
-  {"vraag":"Wat is de afsluitende stap van het traject?","opties":["Het halen van alle quizzen met 100%","Het schrijven van een verslag","De praktijktoets succesvol afronden","Een mondelinge presentatie geven"],"correct":2,"uitleg":"Na het doorlopen van alle modules sluit je het traject af met de praktijktoets. Na een succesvol resultaat ontvang je het certificaat."},
-  {"vraag":"Wat staat er als onderwerp op het certificaat?","opties":["Je gemiddelde quizscore","De datum van de eerste module","Het werkproces van je praktijktoets","De naam van de cursus"],"correct":2,"uitleg":"Het werkproces dat je hebt geautomatiseerd in de praktijktoets staat als onderwerp op het certificaat. Zo is het direct toepasbaar als bewijs van relevante ervaring."},
-  {"vraag":"Voor wie is het certificaat bedoeld?","opties":["Alleen voor IT-professionals","Voor iedereen die Claude vakbekwaam wil inzetten in zijn of haar werk","Alleen voor developers","Alleen voor managers"],"correct":1,"uitleg":"Het traject is opgezet voor iedereen die Claude zelfstandig en verantwoord wil gebruiken in een werksituatie, ongeacht achtergrond of functie."},
-  {"vraag":"Wat betekent het certificaat NIET?","opties":["Dat je Claude vakbekwaam kunt inzetten","Dat je de grenzen en risico's kent","Dat je nooit meer fouten maakt met Claude","Dat je praktische waarde kunt leveren"],"correct":2,"uitleg":"Het certificaat zegt niet dat je foutloos bent. Het zegt dat je weet wat Claude kan en wat niet, en dat je er verantwoord mee omgaat."}
-]
-<!-- QUIZ_END -->
+<!-- CERTIFICAAT -->
+<div id="screen-certificaat" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 3 van 4</div>
+    <h2>Jouw certificaat</h2>
+  </div>
+
+  <div class="content-card">
+    <p>Je certificaat staat klaar. Controleer je naam en klik op genereren. Daarna kun je het afdrukken of opslaan als PDF.</p>
+  </div>
+
+  <div id="cert-genereer-wrap" class="content-card">
+    <label class="i2-input-label" for="cert-naam-input">Jouw naam op het certificaat:</label>
+    <input type="text" id="cert-naam-input" class="i2-fase-input" style="resize:none;" placeholder="Jouw volledige naam">
+    <div id="cert-naam-error" class="i2-error">Vul je naam in om het certificaat te genereren.</div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn" onclick="genereerCertificaat()">Genereer mijn certificaat →</button>
+    </div>
+  </div>
+
+  <div class="cert-wrap" id="cert-wrap">
+    <div class="cert-blok" id="cert-blok">
+      <div class="cert-streep-top"></div>
+      <div class="cert-inhoud">
+        <div class="cert-academie">Umely AI Academy</div>
+        <div class="cert-titel">Certificaat van voltooiing</div>
+        <div class="cert-body">
+          Dit certificaat bevestigt dat<br>
+          <span class="cert-naam" id="cert-naam-display"></span>
+          de cursus <strong>Claude AI voor professionals</strong><br>
+          succesvol heeft afgerond.<br><br>
+          De cursus omvatte 26 modules over prompting,<br>
+          Claude-tools, Claude Code, MCP-connectors,<br>
+          skills en agentic workflows.
+        </div>
+        <div class="cert-datum" id="cert-datum-display"></div>
+        <div class="cert-sign">Umely AI Academy &mdash; umely.ai</div>
+      </div>
+      <div class="cert-streep-bottom"></div>
+    </div>
+    <div class="btn-wrap" style="margin-top:1rem;">
+      <button class="btn" onclick="window.print()">&#128424; Afdrukken of opslaan als PDF</button>
+      <button class="btn btn-outline" onclick="goTo('screen-wat-nu')">Verder →</button>
+    </div>
+    <p class="print-hint">Tip: kies "Opslaan als PDF" in het printmenu om een digitale versie te bewaren.</p>
+  </div>
+</div>
+
+<!-- WAT NU -->
+<div id="screen-wat-nu" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 4 van 4</div>
+    <h2>Wat nu?</h2>
+  </div>
+
+  <div class="content-card">
+    <p>Het certificaat is het eindpunt van de cursus — niet van het leren. Claude krijgt regelmatig nieuwe functies. Experimenteer actief met nieuwe mogelijkheden zodra ze beschikbaar komen, en pas het op je eigen werk toe.</p>
+  </div>
+
+  <div class="wat-nu-grid">
+    <div class="wat-nu-kaart">
+      <div class="wat-nu-icoon">&#128172;</div>
+      <h4>Blijf oefenen</h4>
+      <p>Gebruik Claude.ai dagelijks voor één taak. Na twee weken merk je dat je niet meer zonder kunt.</p>
+    </div>
+    <div class="wat-nu-kaart">
+      <div class="wat-nu-icoon">&#128242;</div>
+      <h4>Blijf leren</h4>
+      <p>Volg Umely op LinkedIn voor wekelijkse updates over AI in de praktijk.</p>
+      <a href="https://linkedin.com/company/umely" target="_blank">Volg Umely →</a>
+    </div>
+    <div class="wat-nu-kaart">
+      <div class="wat-nu-icoon">&#128640;</div>
+      <h4>Wil je meer?</h4>
+      <p>Bekijk umely.ai voor trainingen, tools en maatwerktrajecten voor jouw organisatie.</p>
+      <a href="https://umely.ai" target="_blank">Bezoek umely.ai →</a>
+    </div>
+  </div>
+
+  <div class="afsluiting-tekst">
+    Bedankt dat je deze cursus hebt gevolgd.<br>Veel succes — en veel plezier met Claude.
+  </div>
+  <div class="afsluiting-copyright">© Umely AI Academy — umely.ai</div>
+</div>
+
+<script>
+function startI2() {
+  var naam = localStorage.getItem('umely_naam') || '';
+  if (!naam) {
+    var inp = document.getElementById('i2-naam-input');
+    if (inp) naam = inp.value.trim();
+  }
+  if (!naam) {
+    document.getElementById('i2-naam-error').style.display = 'block';
+    document.getElementById('i2-naam-input').focus();
+    return;
+  }
+  document.getElementById('i2-naam-error').style.display = 'none';
+  localStorage.setItem('umely_naam', naam);
+  document.querySelectorAll('.i2-welkom-naam, .i2-deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  goTo('screen-terugblik');
+}
+
+function checkTerugblikVelden() {
+  var v1 = document.getElementById('tb-1').value.trim();
+  var v2 = document.getElementById('tb-2').value.trim();
+  var v3 = document.getElementById('tb-3').value.trim();
+  var btn = document.getElementById('btn-tb-toon');
+  if (btn) btn.disabled = !(v1.length >= 10 && v2.length >= 10 && v3.length >= 10);
+}
+
+function toonTerugblikKaart() {
+  var v1 = document.getElementById('tb-1').value.trim();
+  var v2 = document.getElementById('tb-2').value.trim();
+  var v3 = document.getElementById('tb-3').value.trim();
+  if (v1.length < 10 || v2.length < 10 || v3.length < 10) {
+    document.getElementById('tb-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('tb-error').style.display = 'none';
+  document.getElementById('tb-formulier').style.display = 'none';
+  var naam = localStorage.getItem('umely_naam') || 'jou';
+  document.getElementById('tb-kaart-naam').textContent = naam;
+  document.getElementById('tb-antwoord-1').textContent = v1;
+  document.getElementById('tb-antwoord-2').textContent = v2;
+  document.getElementById('tb-antwoord-3').textContent = v3;
+  var kaart = document.getElementById('tb-kaart');
+  kaart.style.display = 'block';
+  var verder = document.getElementById('tb-verder-wrap');
+  if (verder) verder.style.display = 'flex';
+  kaart.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function selecteerAmbas(rij) {
+  var radio = rij.querySelector('input[type="radio"]');
+  if (radio) radio.checked = true;
+  document.querySelectorAll('.ambas-optie').forEach(function(el) {
+    el.style.borderColor = el === rij ? '#FF8514' : '';
+    el.style.background = el === rij ? 'rgba(255,133,20,0.05)' : '';
+  });
+  var btn = document.getElementById('btn-ambas-door');
+  if (btn) btn.disabled = false;
+}
+
+function genereerCertificaat() {
+  var naam = document.getElementById('cert-naam-input').value.trim();
+  if (!naam) {
+    document.getElementById('cert-naam-error').style.display = 'block';
+    document.getElementById('cert-naam-input').focus();
+    return;
+  }
+  document.getElementById('cert-naam-error').style.display = 'none';
+  localStorage.setItem('umely_naam', naam);
+  var datum = new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+  document.getElementById('cert-naam-display').textContent = naam;
+  document.getElementById('cert-datum-display').textContent = datum;
+  var wrap = document.getElementById('cert-wrap');
+  wrap.style.display = 'block';
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var naam = localStorage.getItem('umely_naam') || '';
+  var welkomSpans = document.querySelectorAll('.i2-welkom-naam');
+  if (naam) {
+    welkomSpans.forEach(function(el) { el.textContent = naam; });
+    var certInp = document.getElementById('cert-naam-input');
+    if (certInp) certInp.value = naam;
+  } else {
+    welkomSpans.forEach(function(el) { el.textContent = ''; });
+    var fallback = document.getElementById('i2-naam-fallback');
+    if (fallback) fallback.style.display = 'block';
+  }
+});
+</script>
