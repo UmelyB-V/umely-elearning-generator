@@ -1,13 +1,13 @@
-<!-- TITLE: E8 - Leeropdracht: Connector, Project en je eigen Skill -->
+<!-- TITLE: E8 - Leeropdracht: Breid je werkplek uit -->
 <!-- SCHERMEN: 'screen-welcome','screen-fase-1','screen-fase-2','screen-fase-3','screen-fase-4','screen-afsluiting','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Sluit een Connector aan','screen-fase-2':'Fase 2 — Maak een Project met Custom Instructions','screen-fase-3':'Fase 3 — Schrijf een Skill','screen-fase-4':'Fase 4 — Test en verfijn de Skill','screen-afsluiting':'Leeropdracht voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Sluit een Connector aan','screen-fase-2':'Fase 2 — Verfijn je Project','screen-fase-3':'Fase 3 — Schrijf een Skill','screen-fase-4':'Fase 4 — Test je complete workflow','screen-afsluiting':'Leeropdracht voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 <!-- QUIZ_START -->
 [
-  {"vraag":"Waarvoor gebruik je een Connector in Claude?","opties":["Om Claude sneller te laten reageren","Om Claude toegang te geven tot externe services zoals Google Drive of Gmail","Om een back-up te maken van je gesprekken","Om de interface van Claude.ai aan te passen"],"correct":1,"uitleg":"Connectors geven Claude toegang tot externe services. Zo kan Claude bestanden uit Google Drive lezen, e-mails ophalen of samenwerken met andere tools die je dagelijks gebruikt."},
-  {"vraag":"Wat is het doel van Custom Instructions in een Project?","opties":["Het opslaan van je wachtwoord","Vaste context meegeven die geldt voor elk gesprek in dat Project","Het instellen van een donkere modus","Het exporteren van gesprekken als PDF"],"correct":1,"uitleg":"Custom Instructions beschrijven wie je bent, hoe Claude je moet assisteren en welke regels altijd gelden. Elke keer dat je een gesprek start in het Project, gebruikt Claude deze context automatisch."},
-  {"vraag":"Wanneer roep je een Skill aan?","opties":["Alleen bij foutmeldingen","Wanneer je een terugkerende taak hebt die altijd dezelfde stappen volgt","Alleen als je admin-rechten hebt","Bij elke eerste zin in een gesprek"],"correct":1,"uitleg":"Een Skill is bedoeld voor taken die je regelmatig doet en altijd dezelfde aanpak vereisen. Je roept hem aan met /naam en Claude voert de instructies uit het SKILL.md-bestand uit."},
-  {"vraag":"Waarom test je een Skill op een echt voorbeeld in plaats van een bedacht testgeval?","opties":["Omdat Claude geen verzonnen teksten begrijpt","Omdat een echt voorbeeld onthult of de instructies ook werken in de praktijk","Omdat verzonnen teksten auteursrecht schenden","Omdat Claude dan sneller antwoordt"],"correct":1,"uitleg":"Een Skill die werkt op een bedacht testgeval geeft geen zekerheid voor de praktijk. Testen met een echt voorbeeld uit je werk laat zien of de instructies robuust zijn en daadwerkelijk het gewenste resultaat opleveren."},
-  {"vraag":"Je hebt een Skill getest en de output was te uitgebreid. Wat is de juiste aanpak?","opties":["De Skill verwijderen en opnieuw beginnen","De instructies aanpassen: voeg een regel toe over de gewenste lengte of het outputformaat","Een nieuwe Connector toevoegen","Het resultaat handmatig inkorten in elk gesprek"],"correct":1,"uitleg":"Verfijnen hoort bij het proces. Als de output niet klopt, pas je de instructies in het SKILL.md aan — bijvoorbeeld door een outputformaat te beschrijven of een maximaal aantal punten op te geven."}
+  {"vraag":"Wat doet een Connector in Claude?","opties":["Hij versnelt de reactiesnelheid van Claude","Hij geeft Claude toegang tot externe data zoals Google Drive of Gmail","Hij slaat je gesprekken op in de cloud","Hij configureert de taalinstellingen van Claude"],"correct":1,"uitleg":"Een Connector koppelt Claude aan een externe service. Zo kan Claude bestanden lezen, e-mails ophalen of andere data gebruiken uit tools die je dagelijks inzet — zonder dat je documenten hoeft te kopiëren."},
+  {"vraag":"Waarom verfijn je de Custom Instructions van je Project nadat je een Connector hebt aangesloten?","opties":["Omdat Claude anders de Connector negeert","Omdat je sindsdien meer weet over wat werkt voor jouw use case","Omdat Custom Instructions verlopen na een week","Omdat Connectors de taal van Claude veranderen"],"correct":1,"uitleg":"Custom Instructions zijn een levend document. Elke leeropdracht leert je iets nieuws over hoe Claude jou het beste kan assisteren. Door ze bij te werken met wat je ondertussen hebt geleerd, sluit het Project steeds beter aan op je echte werk."},
+  {"vraag":"Wat is het verschil tussen een Skill en een losse prompt?","opties":["Een Skill is altijd langer dan een losse prompt","Een Skill is eenmalig geschreven en telkens opnieuw aanroepbaar met /naam","Een Skill werkt alleen in Projecten met een Connector","Een Skill slaat de output automatisch op in Google Drive"],"correct":1,"uitleg":"Een losse prompt schrijf je elke keer opnieuw. Een Skill sla je eenmalig op in een SKILL.md-bestand en roep je aan met /naam. Claude voert dan altijd dezelfde stappen uit — consistent en zonder opnieuw te typen."},
+  {"vraag":"Je roept een Skill aan en Claude combineert die met je Custom Instructions. Wat betekent dit?","opties":["Er treedt een conflict op en Claude kiest één van de twee","Claude past zowel de Skill-instructies als de Project-context toe in het antwoord","Claude negeert de Custom Instructions zodra een Skill actief is","Dit is alleen mogelijk als je een Connector hebt aangesloten"],"correct":1,"uitleg":"Dat is precies het punt. Claude combineert de Skill-instructies voor de specifieke taak met de brede context uit je Custom Instructions. Je hoeft die context niet steeds opnieuw te herhalen — het Project doet dat automatisch."},
+  {"vraag":"Wat is het meest zinvolle moment om een Skill te schrijven?","opties":["Zodra je voor het eerst Claude gebruikt","Als je een taak hebt die regelmatig terugkomt en altijd dezelfde stappen volgt","Alleen als je een Connector hebt op die service","Als je output altijd te lang is"],"correct":1,"uitleg":"Skills zijn er voor terugkerende taken. Als je een taak maar één keer doet, is een losse prompt sneller. Maar zodra iets regelmatig terugkomt en je steeds hetzelfde van Claude wilt, is een Skill de juiste keuze."}
 ]
 <!-- QUIZ_END -->
 
@@ -31,6 +31,7 @@
 .fase-input{width:100%;border:2px solid rgba(39,41,45,0.15);border-radius:12px;padding:0.75rem 1rem;font-family:var(--font-b);font-size:0.95rem;color:#27292D;background:#fff;outline:none;transition:border-color 0.2s;resize:vertical}
 .fase-input:focus{border-color:#FF8514}
 .fase-input-hint{font-size:0.8rem;color:rgba(39,41,45,0.5);margin-top:0.35rem}
+.fase-input-teller{font-size:0.8rem;margin-top:0.35rem;font-weight:600;transition:color 0.2s}
 .fase-btn{display:inline-block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;font-family:var(--font-b);font-weight:700;font-size:0.95rem;padding:0.8rem 2rem;border-radius:50px;border:none;cursor:pointer;transition:opacity 0.2s,transform 0.1s;margin-top:1rem}
 .fase-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important}
 .fase-btn:not(:disabled):hover{opacity:0.9;transform:translateY(-1px)}
@@ -44,6 +45,9 @@
 .claude-float a{display:block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;text-decoration:none;padding:10px 18px;border-radius:50px;font-size:0.8rem;font-weight:700;font-family:var(--font-b);box-shadow:0 4px 15px rgba(255,133,20,0.4);transition:all 0.2s;white-space:nowrap}
 .claude-float a:hover{opacity:0.9;transform:translateY(-2px)}
 .prompt-label{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#FF8514;margin-bottom:0.5rem;display:block}
+.usecase-balk{background:rgba(255,133,20,0.1);border-left:3px solid #FF8514;padding:0.6rem 1rem;border-radius:0 8px 8px 0;margin-bottom:1.25rem;font-size:0.9rem;color:#27292D}
+.usecase-label{font-weight:700;color:#FF8514}
+.usecase-display{font-weight:700}
 #nav-screen-fase-1 .btn,
 #nav-screen-fase-2 .btn,
 #nav-screen-fase-3 .btn,
@@ -55,32 +59,36 @@
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
     <div class="welcome-badge">Umely E-learning</div>
-    <h1>Leeropdracht E — Connector, Project en je eigen Skill</h1>
-    <p>Je bouwt de drie meest waardevolle configuraties uit sectie E: een Connector, een Project met Custom Instructions en een eigen Skill. Aan het einde heb je iets wat je direct kunt inzetten.</p>
+    <h1>Leeropdracht E — Breid je werkplek uit</h1>
+    <p>Je hebt een prompttemplate, een geconfigureerde Claude-werkplek en optioneel Claude Code. Vandaag bouw je de laatste laag: een Connector, een verfijnd Project en je eerste Skill.</p>
   </div>
 
   <div class="naam-input-blok">
     <label class="fase-input-label" for="naam-input">Wat is je naam?</label>
     <input type="text" id="naam-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Vul je naam in" autocomplete="name">
     <div id="naam-error" class="naam-error">Vul je naam in om verder te gaan.</div>
+
+    <label class="fase-input-label" for="usecase-input" style="margin-top:1rem;">Jouw use case uit A4</label>
+    <input type="text" id="usecase-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: weekelijkse statusrapporten schrijven...">
+    <div id="usecase-error" class="naam-error">Vul je use case in om verder te gaan.</div>
   </div>
 
   <div class="instructie-balk">
-    <h3>Hoe deze leeropdracht werkt</h3>
-    <div class="i-rij"><div class="i-nr">1</div><div>Open Claude.ai in een nieuw tabblad en zet het naast dit scherm.</div></div>
-    <div class="i-rij"><div class="i-nr">2</div><div>Elke fase heeft concrete stappen die je in Claude.ai uitvoert.</div></div>
-    <div class="i-rij"><div class="i-nr">3</div><div>Kom terug, vul je verificatieveld in en ga door.</div></div>
+    <h3>Pak je notities erbij</h3>
+    <div class="i-rij"><div class="i-nr">1</div><div>Zoek je notities uit alle vorige leeropdrachten op — vooral je Project uit C8.</div></div>
+    <div class="i-rij"><div class="i-nr">2</div><div>Open Claude.ai in een nieuw tabblad en zet het naast dit scherm.</div></div>
+    <div class="i-rij"><div class="i-nr">3</div><div>Je bouwt vandaag de laatste laag van je Claude-werkplek.</div></div>
   </div>
 
-  <div class="tijdsbadge">Geschatte tijd: 30-45 minuten</div>
+  <div class="tijdsbadge">Geschatte tijd: 35-50 minuten</div>
 
   <div class="leerdoelen">
     <h3>Na deze leeropdracht heb je:</h3>
     <ul>
-      <li>Een Connector aangesloten op een externe service die je gebruikt</li>
-      <li>Een Project aangemaakt met Custom Instructions voor een specifiek werkgebied</li>
-      <li>Een eigen Skill geschreven voor een terugkerende taak</li>
-      <li>De Skill getest op een echt voorbeeld en verfijnd</li>
+      <li>Een Connector aangesloten die past bij jouw use case</li>
+      <li>Je Project uit C8 verfijnd met betere Custom Instructions</li>
+      <li>Een Skill geschreven voor een terugkerende stap in je use case</li>
+      <li>De volledige workflow getest en het verschil met vroeger benoemd</li>
     </ul>
   </div>
 
@@ -93,7 +101,7 @@
 <div id="screen-fase-1" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 1 van 4</div>
-    <h2>Sluit een Connector aan</h2>
+    <h2>Sluit een relevante Connector aan</h2>
   </div>
 
   <div class="fase-indicator">
@@ -103,67 +111,67 @@
     <div class="fase-dot">4</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
   <div class="visual-block">
-    <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
-      <!-- Achtergrond -->
-      <rect width="580" height="200" fill="#27292D" rx="10"/>
-      <!-- Claude chat venster links -->
-      <rect x="20" y="24" width="180" height="152" rx="8" fill="rgba(39,41,45,0.85)"/>
-      <rect x="20" y="24" width="180" height="32" rx="8" fill="#FF8514"/>
-      <rect x="20" y="48" width="180" height="8" rx="0" fill="#FF8514"/>
-      <text x="110" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#FFF8F2">Claude.ai</text>
-      <!-- Chat bubbels -->
-      <rect x="32" y="68" width="100" height="14" rx="7" fill="rgba(255,248,242,0.12)"/>
-      <rect x="32" y="88" width="140" height="14" rx="7" fill="rgba(255,248,242,0.12)"/>
-      <rect x="60" y="112" width="120" height="14" rx="7" fill="#FF8514" opacity="0.7"/>
-      <rect x="60" y="132" width="80" height="14" rx="7" fill="#FF8514" opacity="0.5"/>
+    <svg viewBox="0 0 580 210" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <rect width="580" height="210" fill="#27292D" rx="10"/>
+      <!-- Claude venster links -->
+      <rect x="20" y="28" width="175" height="154" rx="8" fill="rgba(255,248,242,0.06)"/>
+      <rect x="20" y="28" width="175" height="34" rx="8" fill="#FF8514"/>
+      <rect x="20" y="54" width="175" height="8" rx="0" fill="#FF8514"/>
+      <text x="107" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#FFF8F2">Claude.ai</text>
+      <rect x="32" y="74" width="110" height="10" rx="5" fill="rgba(255,248,242,0.12)"/>
+      <rect x="32" y="90" width="140" height="10" rx="5" fill="rgba(255,248,242,0.12)"/>
+      <rect x="56" y="114" width="120" height="10" rx="5" fill="#FF8514" opacity="0.7"/>
+      <rect x="56" y="130" width="90" height="10" rx="5" fill="#FF8514" opacity="0.5"/>
       <!-- Verbindingslijnen -->
-      <line x1="200" y1="68" x2="300" y2="68" stroke="#FF8514" stroke-width="2" stroke-dasharray="5,4"/>
-      <line x1="200" y1="108" x2="300" y2="108" stroke="#EAE6E0" stroke-width="2" stroke-dasharray="5,4"/>
-      <line x1="200" y1="148" x2="300" y2="148" stroke="#EAE6E0" stroke-width="2" stroke-dasharray="5,4"/>
-      <!-- Oranje actief-stip op eerste verbindingslijn -->
-      <circle cx="250" cy="68" r="5" fill="#FF8514"/>
-      <!-- Service blok 1: Google Drive -->
-      <rect x="300" y="48" width="120" height="38" rx="7" fill="#FFF8F2"/>
-      <rect x="310" y="57" width="18" height="18" rx="3" fill="#FFD964"/>
-      <text x="335" y="71" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#27292D">Google Drive</text>
-      <!-- Service blok 2: Gmail -->
-      <rect x="300" y="92" width="120" height="38" rx="7" fill="#EAE6E0"/>
-      <rect x="310" y="101" width="18" height="18" rx="3" fill="#FF4D00"/>
-      <text x="335" y="115" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#27292D">Gmail</text>
-      <!-- Service blok 3: GitHub -->
-      <rect x="300" y="136" width="120" height="38" rx="7" fill="#EAE6E0"/>
-      <rect x="310" y="145" width="18" height="18" rx="3" fill="rgba(255,248,242,0.12)"/>
-      <text x="335" y="159" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#27292D">GitHub</text>
-      <!-- Label onderaan -->
-      <text x="290" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.55)">Connectors geven Claude toegang tot jouw tools</text>
+      <line x1="195" y1="74" x2="295" y2="74" stroke="#FF8514" stroke-width="2" stroke-dasharray="5,4"/>
+      <circle cx="245" cy="74" r="5" fill="#FF8514"/>
+      <line x1="195" y1="114" x2="295" y2="114" stroke="#EAE6E0" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <line x1="195" y1="154" x2="295" y2="154" stroke="#EAE6E0" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <!-- Service 1: Google Drive (actief) -->
+      <rect x="295" y="54" width="130" height="38" rx="7" fill="#FFF8F2"/>
+      <rect x="306" y="64" width="16" height="16" rx="3" fill="#FFD964"/>
+      <text x="330" y="77" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#27292D">Google Drive</text>
+      <!-- Service 2: Gmail -->
+      <rect x="295" y="96" width="130" height="38" rx="7" fill="rgba(255,248,242,0.08)"/>
+      <rect x="306" y="106" width="16" height="16" rx="3" fill="#FF4D00" opacity="0.7"/>
+      <text x="330" y="119" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="rgba(255,248,242,0.7)">Gmail</text>
+      <!-- Service 3: Calendar -->
+      <rect x="295" y="138" width="130" height="38" rx="7" fill="rgba(255,248,242,0.08)"/>
+      <rect x="306" y="148" width="16" height="16" rx="3" fill="rgba(255,248,242,0.15)"/>
+      <text x="330" y="161" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="rgba(255,248,242,0.7)">Kalender</text>
+      <!-- Label -->
+      <text x="360" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.45)">Connectors geven Claude toegang tot jouw data</text>
     </svg>
   </div>
 
   <div class="content-card">
-    <p>In E2 heb je geleerd wat Connectors zijn: koppelingen die Claude toegang geven tot externe services. Je kunt Claude dan bestanden laten lezen uit Google Drive, e-mails laten ophalen of samenwerken met andere tools die je dagelijks gebruikt.</p>
+    <p>Een Connector geeft Claude directe toegang tot een externe service. Zonder Connector moet je steeds documenten kopiëren of plakken. Met een Connector kan Claude jouw bestanden, e-mails of agenda lezen zonder dat jij daarvoor iets hoeft aan te leveren.</p>
+    <p>Kies een Connector die aansluit op jouw use case. Werk je veel met documenten? Kies Google Drive. Verwerk je regelmatig e-mails? Kies Gmail. Plan je taken via je agenda? Kies Google Calendar.</p>
   </div>
 
   <div class="content-card">
-    <h3>Een Connector instellen</h3>
+    <h3>Connector instellen</h3>
     <div class="stappen-lijst">
-      <div class="stap-item"><div class="stap-nr">1</div><div>Ga naar claude.ai en klik op het Settings-tandwiel of je initialen.</div></div>
+      <div class="stap-item"><div class="stap-nr">1</div><div>Ga naar claude.ai en klik op je initialen of het tandwiel-icoon rechtsbovenin.</div></div>
       <div class="stap-item"><div class="stap-nr">2</div><div>Zoek naar 'Integrations' of 'Connectors' in het menu.</div></div>
-      <div class="stap-item"><div class="stap-nr">3</div><div>Kies een service die je gebruikt — Google Drive, Gmail of een andere beschikbare optie.</div></div>
-      <div class="stap-item"><div class="stap-nr">4</div><div>Volg de koppelstappen en geef de gevraagde toestemming.</div></div>
-      <div class="stap-item"><div class="stap-nr">5</div><div>Test de koppeling door Claude te vragen iets op te halen uit de verbonden service.</div></div>
+      <div class="stap-item"><div class="stap-nr">3</div><div>Kies de Connector die het beste past bij jouw use case.</div></div>
+      <div class="stap-item"><div class="stap-nr">4</div><div>Volg de autorisatiestappen en geef de gevraagde toestemming.</div></div>
+      <div class="stap-item"><div class="stap-nr">5</div><div>Start een nieuw gesprek en vraag Claude iets op te halen uit de verbonden service.</div></div>
     </div>
 
     <div class="tip-box">
       <div class="tip-box-label tip">Tip</div>
-      <p>Beschikbare Connectors verschillen per Claude-versie en regio. Als de Connector nog niet beschikbaar is in jouw account, sla deze fase dan over en ga naar fase 2.</p>
+      <p>Beschikbare Connectors variëren per account en regio. Staat jouw gewenste Connector er nog niet bij? Noteer welke je zou kiezen en waarom — die context gebruik je in fase 2.</p>
     </div>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase1-verificatie">Welke Connector heb je aangesloten en hoe reageerde Claude?</label>
-    <textarea id="fase1-verificatie" class="fase-input" rows="3" placeholder="Bijv: 'Google Drive gekoppeld — Claude kon mijn bestanden zien en opnoemen.'" oninput="checkFase1Input()"></textarea>
-    <div class="fase-input-hint">Minimaal 20 tekens. Heb je de Connector nog niet beschikbaar? Beschrijf welke je zou kiezen en waarom.</div>
+    <label class="fase-input-label" for="fase1-verificatie">Welke Connector heb je aangesloten? Typ de naam (minimaal 5 tekens).</label>
+    <input type="text" id="fase1-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: Google Drive" oninput="checkFase1Input()">
+    <div class="fase-input-hint">Minimaal 5 tekens. Nog niet beschikbaar? Typ de naam van de Connector die je zou kiezen.</div>
   </div>
 
   <div class="btn-wrap">
@@ -175,7 +183,7 @@
 <div id="screen-fase-2" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 2 van 4</div>
-    <h2>Maak een Project met Custom Instructions</h2>
+    <h2>Verfijn je Project uit C8</h2>
   </div>
 
   <div class="fase-indicator">
@@ -185,70 +193,47 @@
     <div class="fase-dot">4</div>
   </div>
 
-  <div class="visual-block">
-    <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
-      <!-- Achtergrond -->
-      <rect width="580" height="200" fill="#27292D" rx="10"/>
-      <!-- Project kaart links -->
-      <rect x="20" y="20" width="280" height="160" rx="10" fill="rgba(39,41,45,0.85)"/>
-      <!-- Kaart header met map-icoon -->
-      <rect x="20" y="20" width="280" height="36" rx="10" fill="rgba(255,248,242,0.12)"/>
-      <rect x="20" y="44" width="280" height="12" rx="0" fill="rgba(255,248,242,0.12)"/>
-      <!-- Map-icoon -->
-      <rect x="32" y="28" width="20" height="16" rx="3" fill="#FFD964"/>
-      <polygon points="32,28 42,22 52,28" fill="#FFD964"/>
-      <text x="60" y="42" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#FFF8F2">Mijn werkproject</text>
-      <!-- Custom Instructions blok -->
-      <rect x="30" y="64" width="260" height="80" rx="8" fill="#27292D" stroke="#FF8514" stroke-width="2"/>
-      <text x="40" y="80" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FF8514" text-decoration="none">Custom Instructions</text>
-      <rect x="40" y="88" width="200" height="8" rx="4" fill="rgba(255,248,242,0.12)"/>
-      <rect x="40" y="102" width="170" height="8" rx="4" fill="rgba(255,248,242,0.12)"/>
-      <rect x="40" y="116" width="130" height="8" rx="4" fill="rgba(255,248,242,0.12)"/>
-      <!-- Pijl naar chat venster rechts -->
-      <polygon points="318,100 334,92 334,108" fill="#FF8514"/>
-      <line x1="300" y1="100" x2="318" y2="100" stroke="#FF8514" stroke-width="2"/>
-      <!-- Chat venster rechts -->
-      <rect x="334" y="40" width="220" height="120" rx="8" fill="rgba(39,41,45,0.85)"/>
-      <rect x="334" y="40" width="220" height="28" rx="8" fill="#FF8514"/>
-      <rect x="334" y="60" width="220" height="8" rx="0" fill="#FF8514"/>
-      <text x="444" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#FFF8F2">elk gesprek</text>
-      <rect x="346" y="80" width="130" height="10" rx="5" fill="rgba(255,248,242,0.12)"/>
-      <rect x="346" y="96" width="100" height="10" rx="5" fill="rgba(255,248,242,0.12)"/>
-      <rect x="370" y="116" width="160" height="10" rx="5" fill="#FF8514" opacity="0.6"/>
-      <!-- Label "gebruikt deze context" -->
-      <text x="444" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.55)">elk gesprek gebruikt deze context</text>
-    </svg>
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
+  <div class="content-card">
+    <p>In C8 heb je een Project aangemaakt met Custom Instructions. Sindsdien heb je Claude intensief gebruikt en weet je beter wat werkt. Nu verfijn je die instructies: specifieker, concreter, beter afgestemd op je use case.</p>
+    <p>Open het Project dat je in C8 hebt aangemaakt en verbeter de Custom Instructions op basis van wat je sindsdien hebt geleerd.</p>
   </div>
 
   <div class="content-card">
-    <p>In E3 heb je geleerd hoe Projects en Custom Instructions werken. Nu maak je een Project aan voor een specifiek werkgebied van jou — klantencontact, rapportages, interne communicatie of iets anders dat regelmatig terugkomt.</p>
-  </div>
-
-  <div class="content-card">
-    <h3>Project aanmaken</h3>
+    <h3>Wat maakt betere Custom Instructions?</h3>
     <div class="stappen-lijst">
-      <div class="stap-item"><div class="stap-nr">1</div><div>Ga naar claude.ai &gt; Projects &gt; New Project.</div></div>
-      <div class="stap-item"><div class="stap-nr">2</div><div>Geef het Project een naam die past bij het werkgebied.</div></div>
-      <div class="stap-item"><div class="stap-nr">3</div><div>Klik op 'Add instructions' of 'Custom Instructions'.</div></div>
-      <div class="stap-item"><div class="stap-nr">4</div><div>Vul de template hieronder in.</div></div>
+      <div class="stap-item"><div class="stap-nr">1</div><div>Open je Project via claude.ai &gt; Projects en klik op je Project uit C8.</div></div>
+      <div class="stap-item"><div class="stap-nr">2</div><div>Klik op 'Edit instructions' en bekijk wat je destijds hebt geschreven.</div></div>
+      <div class="stap-item"><div class="stap-nr">3</div><div>Gebruik de verbeterde template hieronder als basis voor je nieuwe versie.</div></div>
+      <div class="stap-item"><div class="stap-nr">4</div><div>Voeg de Connector toe aan het Project als dat mogelijk is in jouw account.</div></div>
+      <div class="stap-item"><div class="stap-nr">5</div><div>Sla op en test met een vraag uit je use case.</div></div>
     </div>
 
-    <span class="prompt-label">Template voor Custom Instructions</span>
-    <div class="prompt-box" id="fase2-instructions">Je assisteert [naam] die [functie] is bij [bedrijf of type organisatie].
-[Beschrijf het werkgebied van dit Project in 1-2 zinnen]
-Schrijf altijd [toon] Nederlands.
-[Voeg 1-2 vaste regels toe die specifiek zijn voor dit werkgebied]</div>
-    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-instructions').innerText,this)">Kopieer template</button>
+    <span class="prompt-label">Verbeterde template voor Custom Instructions</span>
+    <div class="prompt-box" id="fase2-instructions">Je assisteert [naam] bij [use case — zo specifiek mogelijk].
 
-    <p style="margin-top:1rem;">Stuur daarna dit in het nieuwe Project:</p>
-    <span class="prompt-label">Verificatieprompt</span>
-    <div class="prompt-box" id="fase2-verificatie-prompt">Beschrijf in één zin wat je over mij weet en hoe je mij assisteert binnen dit Project.</div>
-    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-verificatie-prompt').innerText,this)">Kopieer verificatieprompt</button>
+Mijn functie: [functietitel] bij [type organisatie]
+Mijn werkgebied in dit Project: [beschrijf het specifieke deelgebied]
+
+Schrijf altijd [toon] Nederlands.
+Gebruik [documentformaat — bijv. koppen, bulletpunten, alinea's] tenzij ik anders vraag.
+[Voeg 1-2 vaste regels toe die specifiek zijn voor jouw werkgebied]
+
+Wanneer ik een document aanlevert: samenvatten tenzij ik anders vraag.</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-instructions').innerText,this)">Kopieer template</button>
+  </div>
+
+  <div class="content-card">
+    <p>Test de verfijnde instructies door dit in je Project te sturen:</p>
+    <span class="prompt-label">Testprompt</span>
+    <div class="prompt-box" id="fase2-testprompt">Beschrijf in twee zinnen hoe jij mij assisteert binnen dit Project en wat mijn use case is.</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-testprompt').innerText,this)">Kopieer testprompt</button>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase2-verificatie">Kopieer Claude's antwoord vanuit het Project:</label>
-    <input type="text" id="fase2-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Claude's beschrijving vanuit het Project..." oninput="checkFase2Input()">
+    <label class="fase-input-label" for="fase2-verificatie">Plak de eerste zin van Claude's antwoord vanuit het verfijnde Project:</label>
+    <input type="text" id="fase2-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Eerste zin van Claude's antwoord..." oninput="checkFase2Input()">
     <div class="fase-input-hint">Minimaal 20 tekens.</div>
   </div>
 
@@ -261,7 +246,7 @@ Schrijf altijd [toon] Nederlands.
 <div id="screen-fase-3" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 3 van 4</div>
-    <h2>Schrijf een Skill</h2>
+    <h2>Schrijf een Skill voor je use case</h2>
   </div>
 
   <div class="fase-indicator">
@@ -271,81 +256,83 @@ Schrijf altijd [toon] Nederlands.
     <div class="fase-dot">4</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
   <div class="visual-block">
-    <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
-      <!-- Achtergrond -->
-      <rect width="580" height="220" fill="#27292D" rx="10"/>
-      <!-- SKILL.md bestand links -->
-      <rect x="20" y="16" width="290" height="188" rx="10" fill="rgba(39,41,45,0.85)"/>
-      <!-- Header SKILL.md -->
-      <rect x="20" y="16" width="290" height="34" rx="10" fill="rgba(255,248,242,0.12)"/>
-      <rect x="20" y="40" width="290" height="10" rx="0" fill="rgba(255,248,242,0.12)"/>
-      <text x="165" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#FFF8F2">SKILL.md</text>
-      <!-- Sectie name -->
-      <rect x="30" y="60" width="270" height="34" rx="6" fill="#27292D"/>
-      <text x="40" y="74" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FF8514">name:</text>
-      <text x="40" y="88" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.8)">notitie-samenvatten</text>
-      <!-- Sectie description -->
-      <rect x="30" y="100" width="270" height="38" rx="6" fill="#27292D"/>
+    <svg viewBox="0 0 580 230" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <rect width="580" height="230" fill="#27292D" rx="10"/>
+      <!-- SKILL.md document links -->
+      <rect x="20" y="18" width="285" height="194" rx="10" fill="rgba(255,248,242,0.06)"/>
+      <rect x="20" y="18" width="285" height="36" rx="10" fill="rgba(255,248,242,0.1)"/>
+      <rect x="20" y="46" width="285" height="8" rx="0" fill="rgba(255,248,242,0.1)"/>
+      <text x="162" y="41" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#FFD964">SKILL.md</text>
+      <!-- name sectie -->
+      <rect x="30" y="62" width="265" height="32" rx="6" fill="rgba(39,41,45,0.5)"/>
+      <text x="40" y="76" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FF8514">name:</text>
+      <text x="40" y="88" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.75)">rapport-samenvatten</text>
+      <!-- description sectie -->
+      <rect x="30" y="100" width="265" height="32" rx="6" fill="rgba(39,41,45,0.5)"/>
       <text x="40" y="114" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FF8514">description:</text>
-      <text x="40" y="128" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.8)">Gebruik wanneer je vergadernotities wilt samenvatten</text>
-      <!-- Sectie instructies -->
-      <rect x="30" y="144" width="270" height="52" rx="6" fill="#27292D"/>
-      <text x="40" y="158" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF8F2"># Instructies</text>
-      <text x="40" y="172" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.65)">1. Lees de notitie en markeer de besluiten</text>
-      <text x="40" y="185" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.65)">2. Schrijf een samenvatting in maximaal 5 punten</text>
-      <!-- Pijl naar Claude chat rechts -->
-      <polygon points="336,110 352,102 352,118" fill="#FF8514"/>
-      <line x1="310" y1="110" x2="336" y2="110" stroke="#FF8514" stroke-width="2"/>
-      <!-- Chat venster rechts -->
-      <rect x="352" y="30" width="208" height="130" rx="8" fill="rgba(39,41,45,0.85)"/>
-      <rect x="352" y="30" width="208" height="28" rx="8" fill="#FF8514"/>
-      <rect x="352" y="50" width="208" height="8" rx="0" fill="#FF8514"/>
-      <text x="456" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#FFF8F2">Claude.ai</text>
-      <rect x="364" y="72" width="120" height="10" rx="5" fill="rgba(255,248,242,0.12)"/>
-      <rect x="364" y="88" width="90" height="10" rx="5" fill="rgba(255,248,242,0.12)"/>
-      <rect x="386" y="108" width="150" height="10" rx="5" fill="#FF8514" opacity="0.6"/>
-      <rect x="386" y="124" width="110" height="10" rx="5" fill="#FF8514" opacity="0.4"/>
+      <text x="40" y="126" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.75)">Gebruik wanneer je een rapport wilt samenvatten</text>
+      <!-- Taak sectie -->
+      <rect x="30" y="138" width="265" height="26" rx="6" fill="rgba(39,41,45,0.5)"/>
+      <text x="40" y="152" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF8F2"># Taak</text>
+      <text x="40" y="164" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.6)">Maak een samenvatting van maximaal 5 punten</text>
+      <!-- Formaat sectie -->
+      <rect x="30" y="170" width="265" height="26" rx="6" fill="rgba(39,41,45,0.5)"/>
+      <text x="40" y="184" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF8F2"># Formaat</text>
+      <text x="40" y="196" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.6)">Bulletpunten, maximaal 5, elke punt 1 zin</text>
+      <!-- Pijl -->
+      <polygon points="332,116 348,108 348,124" fill="#FF8514"/>
+      <line x1="305" y1="116" x2="332" y2="116" stroke="#FF8514" stroke-width="2"/>
+      <!-- Claude venster rechts -->
+      <rect x="348" y="32" width="212" height="136" rx="8" fill="rgba(255,248,242,0.06)"/>
+      <rect x="348" y="32" width="212" height="30" rx="8" fill="#FF8514"/>
+      <rect x="348" y="54" width="212" height="8" rx="0" fill="#FF8514"/>
+      <text x="454" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#FFF8F2">Claude.ai</text>
+      <rect x="360" y="75" width="130" height="10" rx="5" fill="rgba(255,248,242,0.12)"/>
+      <rect x="360" y="91" width="100" height="10" rx="5" fill="rgba(255,248,242,0.12)"/>
+      <rect x="376" y="111" width="160" height="10" rx="5" fill="#FF8514" opacity="0.6"/>
+      <rect x="376" y="127" width="120" height="10" rx="5" fill="#FF8514" opacity="0.4"/>
       <!-- Label aanroepen -->
-      <text x="456" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.55)">aanroepen met /naam</text>
-      <!-- Label onderaan heel -->
-      <text x="290" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.4)">Schrijf eenmalig — gebruik telkens opnieuw</text>
+      <text x="454" y="186" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.5)">/rapport-samenvatten</text>
+      <!-- Onderste label -->
+      <text x="290" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.35)">Schrijf eenmalig — roep telkens opnieuw aan met /naam</text>
     </svg>
   </div>
 
   <div class="content-card">
-    <p>In E4 en E5 heb je geleerd hoe Skills werken: een SKILL.md is een instructiebestand dat Claude gebruikt wanneer jij de Skill aanroept. Het bevat een naam, een trigger-beschrijving en stap-voor-stap instructies. Je schrijft hem eenmalig — en gebruikt hem telkens opnieuw.</p>
+    <p>Een Skill is een herbruikbare instructieset. Je schrijft hem eenmalig in een SKILL.md-bestand, slaat hem op in je Project en roept hem aan met /naam. Claude voert dan altijd dezelfde stappen uit — je hoeft ze niet meer opnieuw te typen.</p>
+    <p>Kies een stap uit jouw use case die regelmatig terugkomt en altijd dezelfde aanpak vereist. Denk aan: samenvatten, herschrijven, analyseren, structureren.</p>
   </div>
 
   <div class="content-card">
-    <p>Kies een taak die je regelmatig doet en altijd dezelfde stappen volgt. Denk aan: vergadernotities samenvatten, e-mails herschrijven, rapporten analyseren.</p>
-    <span class="prompt-label">Template voor jouw SKILL.md</span>
+    <span class="prompt-label">Template voor jouw Skill</span>
     <div class="prompt-box" id="fase3-template">---
-name: [korte naam van de skill — bijv. notitie-samenvatten]
-description: Gebruik wanneer [beschrijf de trigger — wanneer roep je hem aan]
+name: [naam-van-je-skill]
+description: [Wat doet deze Skill? Wanneer roep je hem aan?]
 ---
 
-# Instructies
+# Taak
+[Wat Claude moet doen als je deze Skill aanroept]
 
-Volg deze stappen:
-1. [stap 1 — wat doet Claude als eerste]
-2. [stap 2]
-3. [stap 3]
+## Context
+[Wat Claude moet weten om de taak goed uit te voeren]
 
-## Outputformaat
-[Beschrijf hoe het resultaat eruit moet zien — bijv. bulletpunten, alinea's, tabel]</div>
+## Formaat
+[Hoe de output eruit moet zien]</div>
     <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase3-template').innerText,this)">Kopieer template</button>
 
     <div class="stappen-lijst">
-      <div class="stap-item"><div class="stap-nr">1</div><div>Kopieer de template.</div></div>
-      <div class="stap-item"><div class="stap-nr">2</div><div>Vul hem in voor de taak die je hebt gekozen.</div></div>
-      <div class="stap-item"><div class="stap-nr">3</div><div>Sla het bestand op als skills/[naam].md in je projectmap of bewaar de inhoud in een notitie.</div></div>
+      <div class="stap-item"><div class="stap-nr">1</div><div>Kopieer de template en vul hem in voor jouw use case.</div></div>
+      <div class="stap-item"><div class="stap-nr">2</div><div>Ga naar je Project in Claude.ai en klik op 'Add content' of 'Files'.</div></div>
+      <div class="stap-item"><div class="stap-nr">3</div><div>Maak een nieuw bestand aan met de naam [naam-van-je-skill].md en plak de ingevulde template.</div></div>
     </div>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase3-verificatie">Kopieer de 'name:' en 'description:' regel van jouw Skill:</label>
-    <input type="text" id="fase3-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="name: ... description: ..." oninput="checkFase3Input()">
+    <label class="fase-input-label" for="fase3-verificatie">Kopieer de <code>name:</code> en <code>description:</code> regel van jouw Skill:</label>
+    <input type="text" id="fase3-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="name: ... / description: ..." oninput="checkFase3Input()">
     <div class="fase-input-hint">Minimaal 20 tekens.</div>
   </div>
 
@@ -358,7 +345,7 @@ Volg deze stappen:
 <div id="screen-fase-4" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 4 van 4</div>
-    <h2>Test en verfijn de Skill</h2>
+    <h2>Test je complete workflow</h2>
   </div>
 
   <div class="fase-indicator">
@@ -368,36 +355,46 @@ Volg deze stappen:
     <div class="fase-dot actief">4</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
   <div class="content-card">
-    <p>Een Skill die je niet hebt getest is een Skill die je niet vertrouwt. In E5 heb je geleerd dat testen onthult wat er onduidelijk is in je instructies. Gebruik een echt voorbeeld uit je werk — geen bedacht testgeval.</p>
+    <p>Je hebt een Connector, verfijnde Custom Instructions en een eigen Skill. Nu test je of ze samenwerken. Roep de Skill aan in je Project — Claude combineert de Skill-instructies met de context uit je Custom Instructions.</p>
   </div>
 
   <div class="content-card">
-    <span class="prompt-label">Test je Skill met dit prompt</span>
-    <div class="prompt-box" id="fase4-test">Gebruik de skill [naam van je skill] voor het volgende voorbeeld:
-[plak een echt voorbeeld uit je werk — een notitie, e-mail of document]</div>
-    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase4-test').innerText,this)">Kopieer testprompt</button>
-
+    <h3>Roep je Skill aan in het Project</h3>
     <div class="stappen-lijst">
-      <div class="stap-item"><div class="stap-nr">1</div><div>Kopieer de testprompt.</div></div>
-      <div class="stap-item"><div class="stap-nr">2</div><div>Vervang [naam van je skill] door de naam uit fase 3.</div></div>
-      <div class="stap-item"><div class="stap-nr">3</div><div>Plak een echt voorbeeld van de taak waarvoor je de Skill hebt geschreven.</div></div>
-      <div class="stap-item"><div class="stap-nr">4</div><div>Stuur op en beoordeel het resultaat.</div></div>
+      <div class="stap-item"><div class="stap-nr">1</div><div>Open je Project in Claude.ai.</div></div>
+      <div class="stap-item"><div class="stap-nr">2</div><div>Typ /[naam-van-je-skill] en geef een taak uit je use case mee.</div></div>
+      <div class="stap-item"><div class="stap-nr">3</div><div>Beoordeel het resultaat: past de output bij de Skill-instructies én bij je Custom Instructions?</div></div>
+      <div class="stap-item"><div class="stap-nr">4</div><div>Vergelijk het resultaat met een vage prompt zoals je die gebruikte vóór deze cursus.</div></div>
     </div>
+
+    <span class="prompt-label">Kopieerbare aanroep</span>
+    <div class="prompt-box" id="fase4-aanroep">/[naam-van-je-skill]
+
+[Plak hier een echt voorbeeld uit je use case]</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase4-aanroep').innerText,this)">Kopieer aanroep</button>
   </div>
 
   <div class="content-card">
-    <h3>Verfijnen</h3>
-    <p>Werkte de Skill niet helemaal zoals je verwachtte? Dat is normaal — en nuttig. Pas de instructies aan.</p>
+    <h3>Werkte het niet helemaal?</h3>
+    <p>Dat is normaal. Pas de instructies in je Skill-bestand aan. Voeg een regel toe over het gewenste formaat, de gewenste lengte of de toon. Sla op en roep opnieuw aan.</p>
     <span class="prompt-label">Verfijnprompt</span>
     <div class="prompt-box" id="fase4-verfijn">Dit werkte niet zoals ik verwachtte: [beschrijf het probleem]
-Pas de instructies aan zodat dit beter gaat.</div>
+Pas de instructies in mijn Skill aan zodat dit beter gaat.</div>
     <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase4-verfijn').innerText,this)">Kopieer verfijnprompt</button>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase4-verificatie">Wat heb je concreet aangepast in de Skill na de test? (Of: wat werkte goed?)</label>
-    <textarea id="fase4-verificatie" class="fase-input" rows="3" placeholder="Bijv: 'De output was te lang — ik heb het outputformaat beperkt tot 5 bulletpunten.'" oninput="checkFase4Input()"></textarea>
+    <label class="fase-input-label" for="fase4-verificatie">Plak de eerste zin van het resultaat van de Skill-aanroep:</label>
+    <textarea id="fase4-verificatie" class="fase-input" rows="3" placeholder="Eerste zin van Claude's output na de Skill-aanroep..." oninput="checkFase4Input()"></textarea>
+    <div class="fase-input-hint">Minimaal 20 tekens.</div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase4-reflectie">Wat is het grootste verschil met hoe je Claude gebruikte vóór deze cursus?</label>
+    <textarea id="fase4-reflectie" class="fase-input" rows="3" placeholder="Bijv: Ik typte elke keer opnieuw dezelfde instructies, nu hoef ik alleen /naam in te typen..." oninput="checkFase4Input()"></textarea>
     <div class="fase-input-hint">Minimaal 20 tekens.</div>
   </div>
 
@@ -411,19 +408,21 @@ Pas de instructies aan zodat dit beter gaat.</div>
   <div class="afsluiting-hero">
     <div class="welcome-badge" style="margin-bottom:1rem;">Leeropdracht voltooid</div>
     <h2>Goed gedaan, <span class="deelnemer-naam">...</span>.</h2>
-    <p>Je hebt een Connector aangesloten, een Project ingericht en een werkende Skill gebouwd. Dit zijn de bouwstenen die Claude echt bruikbaar maken in je dagelijkse werk.</p>
+    <p>Je Claude-werkplek is compleet. Je hebt een Connector aangesloten, je Project verfijnd, een Skill geschreven en alles samen getest. Dit is de werkplek die je elke dag kunt gebruiken.</p>
   </div>
 
   <div class="content-card">
-    <ul>
-      <li><strong>Fase 1:</strong> Je hebt een Connector aangesloten op een externe service.</li>
-      <li><strong>Fase 2:</strong> Je hebt een Project aangemaakt met Custom Instructions voor jouw werkgebied.</li>
-      <li><strong>Fase 3:</strong> Je hebt een eigen Skill geschreven met naam, trigger en stap-voor-stap instructies.</li>
-      <li><strong>Fase 4:</strong> Je hebt de Skill getest op een echt voorbeeld en verfijnd op basis van het resultaat.</li>
+    <ul style="list-style:none;padding:0;margin:0;">
+      <li style="padding:0.6rem 0 0.6rem 1.75rem;position:relative;border-bottom:1px solid #F7E6C2;font-size:0.95rem;"><span style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:12px;height:12px;background:linear-gradient(135deg,#FF8514,#FF4D00);border-radius:50%;display:inline-block;"></span><strong>Fase 1:</strong> Connector aangesloten die past bij jouw use case.</li>
+      <li style="padding:0.6rem 0 0.6rem 1.75rem;position:relative;border-bottom:1px solid #F7E6C2;font-size:0.95rem;"><span style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:12px;height:12px;background:linear-gradient(135deg,#FF8514,#FF4D00);border-radius:50%;display:inline-block;"></span><strong>Fase 2:</strong> Custom Instructions verfijnd op basis van wat je hebt geleerd.</li>
+      <li style="padding:0.6rem 0 0.6rem 1.75rem;position:relative;border-bottom:1px solid #F7E6C2;font-size:0.95rem;"><span style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:12px;height:12px;background:linear-gradient(135deg,#FF8514,#FF4D00);border-radius:50%;display:inline-block;"></span><strong>Fase 3:</strong> Skill geschreven met naam, beschrijving, taak en formaat.</li>
+      <li style="padding:0.6rem 0 0.6rem 1.75rem;position:relative;font-size:0.95rem;"><span style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:12px;height:12px;background:linear-gradient(135deg,#FF8514,#FF4D00);border-radius:50%;display:inline-block;"></span><strong>Fase 4:</strong> Complete workflow getest en het verschil benoemd.</li>
     </ul>
   </div>
 
-  <p>Je hebt nu de volledige cursus doorlopen. Alles wat je hebt geleerd en ingesteld staat klaar om te gebruiken.</p>
+  <div class="content-card">
+    <p>De eindopdracht laat je alle stukken samenvoegen tot één demonstratie van wat je hebt gebouwd. Neem je prompttemplate uit A4, je Project uit C8 en de Skill die je zojuist hebt geschreven mee.</p>
+  </div>
 
   <div class="btn-wrap">
     <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz →</button>
@@ -438,14 +437,25 @@ Pas de instructies aan zodat dit beter gaat.</div>
 <script>
 function startLeeropdracht() {
   var naam = document.getElementById('naam-input').value.trim();
+  var usecase = document.getElementById('usecase-input').value.trim();
   if (!naam) {
     document.getElementById('naam-error').style.display = 'block';
     document.getElementById('naam-input').focus();
     return;
   }
   document.getElementById('naam-error').style.display = 'none';
+  if (!usecase) {
+    document.getElementById('usecase-error').style.display = 'block';
+    document.getElementById('usecase-input').focus();
+    return;
+  }
+  document.getElementById('usecase-error').style.display = 'none';
+  window._deelnemerNaam = naam;
+  window._deelnemerUseCase = usecase;
   localStorage.setItem('umely_naam', naam);
-  document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  localStorage.setItem('umely_usecase', usecase);
+  document.querySelectorAll('.deelnemer-naam').forEach(function(el){ el.textContent = naam; });
+  document.querySelectorAll('.usecase-display').forEach(function(el){ el.textContent = usecase; });
   goTo('screen-fase-1');
 }
 
@@ -475,7 +485,7 @@ function fbKopieer(tekst, cb) {
 function checkFase1Input() {
   var val = document.getElementById('fase1-verificatie').value.trim();
   var btn = document.getElementById('btn-fase1-door');
-  if (btn) btn.disabled = val.length < 20;
+  if (btn) btn.disabled = val.length < 5;
 }
 
 function checkFase2Input() {
@@ -491,22 +501,31 @@ function checkFase3Input() {
 }
 
 function checkFase4Input() {
-  var val = document.getElementById('fase4-verificatie').value.trim();
+  var v1 = document.getElementById('fase4-verificatie').value.trim();
+  var v2 = document.getElementById('fase4-reflectie').value.trim();
   var btn = document.getElementById('btn-fase4-door');
-  if (btn) btn.disabled = val.length < 20;
+  if (btn) btn.disabled = (v1.length < 20 || v2.length < 20);
 }
 
 function voltooiFase4() {
-  if (document.getElementById('fase4-verificatie').value.trim().length < 20) return;
+  var v1 = document.getElementById('fase4-verificatie').value.trim();
+  var v2 = document.getElementById('fase4-reflectie').value.trim();
+  if (v1.length < 20 || v2.length < 20) return;
   goTo('screen-afsluiting');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   var naam = localStorage.getItem('umely_naam');
+  var usecase = localStorage.getItem('umely_usecase');
   if (naam) {
     var inp = document.getElementById('naam-input');
     if (inp) inp.value = naam;
-    document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+    document.querySelectorAll('.deelnemer-naam').forEach(function(el){ el.textContent = naam; });
+  }
+  if (usecase) {
+    var ucInp = document.getElementById('usecase-input');
+    if (ucInp) ucInp.value = usecase;
+    document.querySelectorAll('.usecase-display').forEach(function(el){ el.textContent = usecase; });
   }
 });
 </script>

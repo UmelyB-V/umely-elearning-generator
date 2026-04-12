@@ -1,12 +1,13 @@
-<!-- TITLE: A4 - Leeropdracht: je eerste werkende prompt -->
+<!-- TITLE: A4 - Leeropdracht A: kies je use case en bouw je eerste prompttemplate -->
 <!-- SCHERMEN: 'screen-welcome','screen-fase-1','screen-fase-2','screen-fase-3','screen-afsluiting','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Stuur een vage prompt','screen-fase-2':'Fase 2 — Verbeter de prompt','screen-fase-3':'Fase 3 — Maak een herbruikbare template','screen-afsluiting':'Leeropdracht voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Stuur een vage prompt','screen-fase-2':'Fase 2 — Verbeter de prompt met context','screen-fase-3':'Fase 3 — Bouw een herbruikbare template','screen-afsluiting':'Leeropdracht voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 <!-- QUIZ_START -->
 [
-  {"vraag":"Waarom leverde je vage prompt een minder bruikbaar antwoord op?","opties":["Claude begreep de taal niet","Claude had geen context over wie je bent, wat je precies wilde en welk formaat je verwachtte","Claude werkt beter met kortere prompts","Er was een technische fout"],"correct":1,"uitleg":"Zonder context weet Claude niet voor wie hij schrijft, wat het doel is of hoe het resultaat eruit moet zien. Een vage prompt geeft Claude te weinig om op te sturen."},
-  {"vraag":"Welk onderdeel van een goede prompt is het meest waardevol als je er maar één kunt meegeven?","opties":["Formaat — hoe het eruit moet zien","Opdracht — wat Claude moet doen","Context — wie je bent en voor wie je schrijft","De lengte van de prompt"],"correct":2,"uitleg":"Context geeft Claude het meeste houvast. Zonder context weet hij niet voor welke situatie, doelgroep of organisatie hij schrijft."},
-  {"vraag":"Wat is het voordeel van een herbruikbare template?","opties":["Je hoeft Claude nooit meer een prompt te sturen","Je schrijft de prompt eenmalig goed en past daarna alleen de invulvelden aan","Claude onthoudt de template automatisch","Je kunt de template exporteren naar Word"],"correct":1,"uitleg":"Een herbruikbare template heeft vaste invulvelden op de plekken die per situatie veranderen. Je hoeft nooit meer bij nul te beginnen."},
-  {"vraag":"Hoe weet je of je verbeterde prompt daadwerkelijk beter werkte?","opties":["Claude geeft altijd een beoordeling van je prompt","Door het resultaat te vergelijken met het antwoord op je vage prompt uit fase 1","Door de lengte van het antwoord te meten","Dat kun je niet objectief vaststellen"],"correct":1,"uitleg":"De enige manier om het verschil te zien is door de twee antwoorden naast elkaar te leggen. Fase 1 was bewust vaag — dat contrast laat je precies zien wat context doet."}
+  {"vraag":"Wat is het doel van een use case in deze cursus?","opties":["Een algemeen onderwerp kiezen om te oefenen","Een terugkerende werktaak kiezen die je door alle leeropdrachten heen uitbouwt","Een taak kiezen die je nog nooit hebt gedaan","Een taak kiezen die zo moeilijk mogelijk is"],"correct":1,"uitleg":"Je use case is de rode draad door de hele cursus. Je kiest een echte, terugkerende werktaak en werkt die door in A4, B4, C8, D5 en E8. De eindopdracht laat zien dat alles samenkomt."},
+  {"vraag":"Waarom leverde je vage prompt in fase 1 een minder bruikbaar antwoord op?","opties":["Claude begreep de taal niet","Claude had geen context over wie je bent, wat je precies wilde en welk formaat je verwachtte","Claude werkt beter met kortere prompts","Je prompt was te lang"],"correct":1,"uitleg":"Zonder context weet Claude niet voor wie hij schrijft, wat het doel is of hoe het resultaat eruit moet zien. Een vage prompt geeft Claude te weinig om op te sturen."},
+  {"vraag":"Welke drie onderdelen maakten je verbeterde prompt in fase 2 beter?","opties":["Lengte, stijl en onderwerp","Context, opdracht en formaat","Taal, toon en sjabloon","Naam, functie en bedrijf"],"correct":1,"uitleg":"Context vertelt Claude wie je bent en voor wie je schrijft. Opdracht omschrijft wat hij precies moet doen. Formaat bepaalt hoe het resultaat eruit moet zien. Die drie samen geven Claude genoeg houvast."},
+  {"vraag":"Wat is het voordeel van een prompttemplate met {{variabelen}}?","opties":["Je hoeft Claude nooit meer een prompt te sturen","Je schrijft de structuur eenmalig goed en vult daarna alleen de variabelen in","Claude onthoudt de template automatisch","Je kunt de template exporteren naar Word"],"correct":1,"uitleg":"Een herbruikbare template heeft vaste invulvelden op de plekken die per situatie veranderen. De structuur staat vast, alleen de inhoud wisselt. Zo begin je nooit meer bij nul."},
+  {"vraag":"Waarom is het belangrijk om je use case op te schrijven en te bewaren?","opties":["Omdat Claude hem anders vergeet","Omdat je hem gebruikt in alle volgende leeropdrachten van de cursus","Omdat de eindopdracht vraagt om drie use cases","Zodat je hem kunt delen met collega's"],"correct":1,"uitleg":"In B4, C8, D5 en E8 pak je dezelfde use case erbij. De eindopdracht laat zien dat alles samenkomt. Wie zijn use case kwijtraakt, moet het werk opnieuw doen."}
 ]
 <!-- QUIZ_END -->
 
@@ -43,6 +44,9 @@
 .claude-float a{display:block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;text-decoration:none;padding:10px 18px;border-radius:50px;font-size:0.8rem;font-weight:700;font-family:var(--font-b);box-shadow:0 4px 15px rgba(255,133,20,0.4);transition:all 0.2s;white-space:nowrap}
 .claude-float a:hover{opacity:0.9;transform:translateY(-2px)}
 .prompt-label{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#FF8514;margin-bottom:0.5rem;display:block}
+.usecase-balk{background:rgba(255,133,20,0.1);border-left:3px solid #FF8514;padding:0.6rem 1rem;border-radius:0 8px 8px 0;margin-bottom:1.25rem;font-size:0.9rem;color:#27292D}
+.usecase-label{font-weight:700;color:#FF8514}
+.usecase-display{font-weight:700}
 #nav-screen-fase-1 .btn,
 #nav-screen-fase-2 .btn,
 #nav-screen-fase-3 .btn,
@@ -53,21 +57,29 @@
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
     <div class="welcome-badge">Umely E-learning</div>
-    <h1>Leeropdracht A — je eerste werkende prompt</h1>
-    <p>Je past toe wat je hebt geleerd in A1, A2 en A3. Aan het einde heb je een prompttemplate die je morgen kunt gebruiken.</p>
+    <h1>Leeropdracht A — kies je use case en bouw je eerste prompttemplate</h1>
+    <p>Dit is de eerste leeropdracht van de cursus. Je kiest hier een echte werktaak als use case. Die taak bouw je door alle volgende leeropdrachten heen uit.</p>
   </div>
 
   <div class="naam-input-blok">
-    <label class="fase-input-label" for="naam-input">Wat is je naam?</label>
+    <label for="naam-input" class="fase-input-label">Jouw naam</label>
     <input type="text" id="naam-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Vul je naam in" autocomplete="name">
     <div id="naam-error" class="naam-error">Vul je naam in om verder te gaan.</div>
+    <label for="usecase-input" style="display:block;font-family:var(--font-h);font-size:0.85rem;font-weight:700;color:#27292D;margin:1rem 0 0.4rem;">Jouw use case (schrijf dit op — je hebt het nodig in elke volgende leeropdracht)</label>
+    <input type="text" id="usecase-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: weekelijkse statusrapporten schrijven, klantmails opstellen, notulen samenvatten...">
+    <div id="usecase-error" class="naam-error">Beschrijf je use case om verder te gaan.</div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-box-label tip">Wat is een goede use case?</div>
+    <p>Je use case is een terugkerende werktaak die je wekelijks of dagelijks doet. Kies iets concreets — geen grote vage ambitie, maar een specifieke klus. Die use case bouw je door de hele cursus heen uit.</p>
   </div>
 
   <div class="instructie-balk">
     <h3>Hoe deze leeropdracht werkt</h3>
     <div class="i-rij"><div class="i-nr">1</div><div>Open Claude.ai in een nieuw tabblad en zet het naast dit scherm.</div></div>
     <div class="i-rij"><div class="i-nr">2</div><div>Elke fase geeft je een kopieerbare prompt die je invult en verstuurt.</div></div>
-    <div class="i-rij"><div class="i-nr">3</div><div>Kom terug, vul je verificatieveld in en ga naar de volgende fase.</div></div>
+    <div class="i-rij"><div class="i-nr">3</div><div>Kom terug, vul je verificatieveld in en ga door naar de volgende fase.</div></div>
   </div>
 
   <div class="tijdsbadge">Geschatte tijd: 20-30 minuten</div>
@@ -75,9 +87,10 @@
   <div class="leerdoelen">
     <h3>Na deze leeropdracht heb je:</h3>
     <ul>
-      <li>Gezien wat er gebeurt als Claude geen context heeft</li>
+      <li>Een concrete use case gekozen die je door de hele cursus heen gebruikt</li>
+      <li>Gezien wat er gebeurt als Claude geen context krijgt</li>
       <li>Je prompt verbeterd met context, opdracht en formaat</li>
-      <li>Een herbruikbare template gemaakt voor een taak uit je eigen werk</li>
+      <li>Een herbruikbare prompttemplate gebouwd voor je eigen werktaak</li>
     </ul>
   </div>
 
@@ -99,70 +112,72 @@
     <div class="fase-dot">3</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
   <div class="visual-block">
-    <svg viewBox="0 0 580 180" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+    <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
       <!-- Achtergrond -->
-      <rect width="580" height="180" fill="#FFF8F2"/>
-      <!-- Linkerkolom achtergrond -->
-      <rect x="0" y="0" width="280" height="180" fill="#EAE6E0"/>
-      <!-- Verticale scheidingslijn -->
-      <line x1="280" y1="10" x2="280" y2="170" stroke="#27292D" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.25"/>
-      <!-- Label links -->
-      <text x="140" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#27292D" opacity="0.55" text-transform="uppercase">VAGE PROMPT</text>
-      <!-- Chat bubble: prompt tekst -->
-      <rect x="24" y="36" width="168" height="32" rx="10" fill="#FF8514" opacity="0.85"/>
-      <text x="108" y="56" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">Schrijf iets voor mijn werk.</text>
-      <!-- Kleine pijl naar onder -->
-      <polygon points="90,68 108,68 99,80" fill="#FF8514" opacity="0.7"/>
-      <!-- Antwoord bubble: vaag/onduidelijk -->
-      <rect x="24" y="84" width="232" height="52" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
-      <!-- Schuine strepen als visueel voor onduidelijk antwoord -->
-      <line x1="44" y1="100" x2="80" y2="126" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="66" y1="100" x2="102" y2="126" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="88" y1="100" x2="124" y2="126" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="110" y1="100" x2="146" y2="126" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="132" y1="100" x2="168" y2="126" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="154" y1="100" x2="190" y2="126" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="176" y1="100" x2="212" y2="126" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
-      <!-- Vraagteken -->
-      <text x="236" y="116" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#EAE6E0">?</text>
-      <!-- Label rechterkolom -->
-      <text x="430" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#27292D" opacity="0.35">FASE 2 →</text>
-      <!-- Placeholder rechts: leeg/grijs -->
-      <rect x="300" y="36" width="260" height="100" rx="10" fill="#EAE6E0" opacity="0.4"/>
-      <text x="430" y="92" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27292D" opacity="0.3">Context</text>
-      <text x="430" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27292D" opacity="0.3">Opdracht</text>
-      <text x="430" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27292D" opacity="0.3">Formaat</text>
-      <!-- Labels onderaan -->
-      <text x="140" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.4">Onduidelijk resultaat</text>
-      <text x="430" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.3">Volgt in fase 2</text>
+      <rect width="580" height="200" fill="#FFF8F2"/>
+      <!-- Linkerhelft -->
+      <rect x="0" y="0" width="285" height="200" fill="#EAE6E0"/>
+      <!-- Scheidingslijn -->
+      <line x1="285" y1="15" x2="285" y2="185" stroke="#27292D" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.2"/>
+      <!-- Linkerkant: vage prompt -->
+      <text x="142" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#27292D" opacity="0.5">VAGE PROMPT</text>
+      <rect x="28" y="40" width="180" height="34" rx="10" fill="#FF8514" opacity="0.8"/>
+      <text x="118" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">Schrijf iets voor mijn werk.</text>
+      <polygon points="100,74 118,74 109,86" fill="#FF8514" opacity="0.65"/>
+      <rect x="28" y="90" width="232" height="56" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
+      <line x1="48" y1="106" x2="88" y2="132" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="72" y1="106" x2="112" y2="132" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="96" y1="106" x2="136" y2="132" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="120" y1="106" x2="160" y2="132" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="144" y1="106" x2="184" y2="132" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="168" y1="106" x2="208" y2="132" stroke="#EAE6E0" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="248" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#EAE6E0">?</text>
+      <text x="142" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.4">Generiek, niet bruikbaar</text>
+      <!-- Rechterkant: goede prompt -->
+      <text x="432" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#27292D" opacity="0.35">FASE 2 VOLGT</text>
+      <rect x="308" y="42" width="130" height="34" rx="8" fill="#EAE6E0" opacity="0.5"/>
+      <text x="373" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" opacity="0.4">Context</text>
+      <rect x="308" y="84" width="130" height="34" rx="8" fill="#EAE6E0" opacity="0.5"/>
+      <text x="373" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" opacity="0.4">Opdracht</text>
+      <rect x="308" y="126" width="130" height="34" rx="8" fill="#EAE6E0" opacity="0.5"/>
+      <text x="373" y="149" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" opacity="0.4">Formaat</text>
+      <text x="432" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.25">Volgt in fase 2</text>
     </svg>
   </div>
 
   <div class="content-card">
-    <p>Dit is je nulmeting. Claude werkt het beste als hij weet wie je bent, wat je wil en hoe het resultaat eruit moet zien. Je doet het nu bewust vaag — zodat je straks precies ziet wat context doet.</p>
+    <p>Dit is je nulmeting. Je stuurt bewust een vage, onduidelijke prompt voor je use case — zonder uitleg over wie je bent, wat je precies wilt of hoe het resultaat eruit moet zien.</p>
+    <p>Claude zal iets terugsturen, maar het antwoord zal waarschijnlijk generiek zijn. Dat is het punt: je ziet straks precies wat context doet.</p>
   </div>
 
   <div class="content-card">
-    <span class="prompt-label">Kopieer deze prompt naar Claude.ai</span>
+    <span class="prompt-label">Kopieer en pas aan voor jouw use case</span>
     <div class="prompt-box" id="fase1-prompt">Schrijf iets voor mijn werk.</div>
     <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase1-prompt').innerText,this)">Kopieer prompt</button>
 
     <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de prompt hierboven.</div></div>
     <div class="instructie-stap"><div class="instructie-nr">2</div><div>Ga naar Claude.ai (tabblad naast dit scherm).</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Vervang 'iets' door een taak die je echt voor je werk wil — mail, samenvatting, analyse — maar geef geen verdere uitleg.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Vervang "iets" door jouw use case, maar geef geen verdere uitleg. Geen context, geen formaat, geen doel.</div></div>
     <div class="instructie-stap"><div class="instructie-nr">4</div><div>Stuur op en lees wat Claude teruggeeft.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">5</div><div>Kom terug en plak de eerste zin van Claude's antwoord hieronder.</div></div>
   </div>
 
   <div class="tip-box">
     <div class="tip-box-label tip">Tip</div>
-    <p>Weersta de neiging om meer uitleg te geven. Een bewust vage prompt is de bedoeling — zo zie je straks exact wat context toevoegt.</p>
+    <p>Weersta de neiging om meer uitleg te geven. Een bewust vage prompt is de bedoeling. Hoe vaag je het houdt, hoe duidelijker het contrast wordt in fase 2.</p>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase1-verificatie">Kopieer de eerste zin van Claude's antwoord:</label>
+    <label class="fase-input-label" for="fase1-verificatie">Plak de eerste zin van Claude's antwoord:</label>
     <input type="text" id="fase1-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Eerste zin van Claude's antwoord..." oninput="checkFase1Input()">
-    <div class="fase-input-hint">Minimaal 20 tekens.</div>
+    <div class="fase-input-hint">Minimaal 20 tekens. Dit bewijst dat je de prompt daadwerkelijk hebt gestuurd.</div>
+  </div>
+
+  <div class="content-card" style="background:rgba(255,133,20,0.06);border-left:3px solid #FF8514;border-radius:0 12px 12px 0;">
+    <p><strong>Leermoment:</strong> Het antwoord was waarschijnlijk generiek of niet precies bruikbaar. Claude wist niet wie je bent, wat het doel was of hoe het resultaat er uit moest zien. In fase 2 los je dat op.</p>
   </div>
 
   <div class="btn-wrap">
@@ -174,7 +189,7 @@
 <div id="screen-fase-2" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 2 van 3</div>
-    <h2>Verbeter de prompt</h2>
+    <h2>Verbeter de prompt met context</h2>
   </div>
 
   <div class="fase-indicator">
@@ -183,66 +198,70 @@
     <div class="fase-dot">3</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
   <div class="visual-block">
     <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
       <!-- Achtergrond -->
       <rect width="580" height="200" fill="#FFF8F2"/>
-      <!-- Linkerkolom: vage prompt doorgestreept -->
-      <rect x="16" y="20" width="130" height="72" rx="8" fill="#EAE6E0"/>
-      <text x="81" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#27292D" opacity="0.5">VAGE PROMPT</text>
-      <text x="81" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" opacity="0.5">Schrijf iets voor</text>
-      <text x="81" y="74" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" opacity="0.5">mijn werk.</text>
-      <!-- Doorstreeplijn -->
-      <line x1="20" y1="56" x2="142" y2="56" stroke="#FF4D00" stroke-width="2.5" opacity="0.6" stroke-linecap="round"/>
-      <!-- Pijl naar rechts -->
-      <line x1="158" y1="90" x2="192" y2="90" stroke="#FF8514" stroke-width="2" stroke-linecap="round"/>
-      <polygon points="188,85 200,90 188,95" fill="#FF8514"/>
-      <!-- Rechterkolom: drie blokken met oranje labels -->
-      <!-- Context blok -->
-      <rect x="208" y="16" width="154" height="44" rx="8" fill="#fff" stroke="#FF8514" stroke-width="1.5"/>
-      <text x="216" y="32" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">CONTEXT</text>
-      <text x="216" y="48" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.7">Wie je bent, bij welk bedrijf</text>
-      <!-- Opdracht blok -->
-      <rect x="208" y="68" width="154" height="44" rx="8" fill="#fff" stroke="#FF8514" stroke-width="1.5"/>
+      <!-- Vage prompt doorgestreept links -->
+      <rect x="16" y="22" width="130" height="70" rx="8" fill="#EAE6E0"/>
+      <text x="81" y="41" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#27292D" opacity="0.5">VAGE PROMPT</text>
+      <text x="81" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" opacity="0.5">Schrijf iets voor</text>
+      <text x="81" y="73" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" opacity="0.5">mijn werk.</text>
+      <line x1="20" y1="57" x2="142" y2="57" stroke="#FF4D00" stroke-width="2.5" opacity="0.65" stroke-linecap="round"/>
+      <!-- Pijl naar midden -->
+      <line x1="158" y1="88" x2="192" y2="88" stroke="#FF8514" stroke-width="2" stroke-linecap="round"/>
+      <polygon points="188,83 200,88 188,93" fill="#FF8514"/>
+      <!-- Drie blokken context/opdracht/formaat -->
+      <rect x="208" y="18" width="148" height="42" rx="8" fill="#fff" stroke="#FF8514" stroke-width="1.5"/>
+      <text x="216" y="34" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">CONTEXT</text>
+      <text x="216" y="50" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.75">Wie je bent, voor wie je schrijft</text>
+      <rect x="208" y="68" width="148" height="42" rx="8" fill="#fff" stroke="#FF8514" stroke-width="1.5"/>
       <text x="216" y="84" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">OPDRACHT</text>
-      <text x="216" y="100" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.7">Wat Claude precies moet doen</text>
-      <!-- Formaat blok -->
-      <rect x="208" y="120" width="154" height="44" rx="8" fill="#fff" stroke="#FF8514" stroke-width="1.5"/>
-      <text x="216" y="136" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">FORMAAT</text>
-      <text x="216" y="152" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.7">Lengte, toon, taal</text>
-      <!-- Pijl naar Claude-icoon -->
-      <line x1="368" y1="90" x2="402" y2="90" stroke="#FF8514" stroke-width="2" stroke-linecap="round"/>
-      <polygon points="398,85 410,90 398,95" fill="#FF8514"/>
-      <!-- Claude icoon (chat-bubble stijl) -->
-      <rect x="414" y="60" width="82" height="60" rx="10" fill="#27292D"/>
-      <text x="455" y="87" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#FFF8F2" font-weight="700">Claude</text>
-      <text x="455" y="104" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.7)">Antwoord</text>
+      <text x="216" y="100" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.75">Wat Claude precies moet doen</text>
+      <rect x="208" y="118" width="148" height="42" rx="8" fill="#fff" stroke="#FF8514" stroke-width="1.5"/>
+      <text x="216" y="134" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">FORMAAT</text>
+      <text x="216" y="150" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.75">Lengte, toon, taal</text>
+      <!-- Pijl naar resultaat -->
+      <line x1="362" y1="88" x2="396" y2="88" stroke="#FF8514" stroke-width="2" stroke-linecap="round"/>
+      <polygon points="392,83 404,88 392,93" fill="#FF8514"/>
+      <!-- Claude resultaat -->
+      <rect x="408" y="58" width="84" height="60" rx="10" fill="#27292D"/>
+      <text x="450" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#FFF8F2" font-weight="700">Claude</text>
+      <text x="450" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.7)">Gericht antwoord</text>
       <!-- Label onderaan -->
-      <text x="290" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.4">Drie onderdelen geven Claude houvast</text>
+      <text x="300" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.4">Drie onderdelen geven Claude houvast</text>
     </svg>
   </div>
 
   <div class="content-card">
-    <p>In A3 heb je de drie onderdelen van een goede prompt geleerd: context (wie je bent en voor wie je schrijft), opdracht (wat Claude precies moet doen) en formaat (hoe het resultaat eruit moet zien). Stuur nu dezelfde taak opnieuw — maar volledig ingevuld.</p>
+    <p>In A3 heb je de drie onderdelen van een goede prompt geleerd: context (wie je bent en voor wie je schrijft), opdracht (wat Claude precies moet doen) en formaat (hoe het resultaat eruit moet zien).</p>
+    <p>Stuur nu dezelfde taak opnieuw voor je use case, maar volledig ingevuld. Vergelijk daarna het resultaat met wat je in fase 1 terugkreeg.</p>
   </div>
 
   <div class="content-card">
-    <span class="prompt-label">Kopieer en vul deze template in</span>
-    <div class="prompt-box" id="fase2-template">Context: [wie ben je, bij welk bedrijf, voor wie schrijf je]
-Opdracht: [wat moet Claude precies doen — gebruik een werkwoord]
-Formaat: [lengte, toon, taal — bijv. "3 alinea's, formele toon, Nederlands"]</div>
+    <span class="prompt-label">Kopieer en vul in voor jouw use case</span>
+    <div class="prompt-box" id="fase2-template">Context: [wie ben je, bij welk bedrijf of team, voor wie schrijf je]
+Opdracht: [wat moet Claude precies doen voor je use case — gebruik een werkwoord]
+Formaat: [lengte, toon, taal — bijv. "3 alinea's, zakelijk-vriendelijk, Nederlands"]</div>
     <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-template').innerText,this)">Kopieer template</button>
 
-    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de template.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Ga naar Claude.ai.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Vul de drie onderdelen in voor dezelfde taak als in fase 1 — nu met jouw echte situatie.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Stuur op en vergelijk het resultaat met fase 1.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de template hierboven.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Ga naar Claude.ai en start een nieuw gesprek.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Vul de drie onderdelen in voor jouw use case. Gebruik je echte situatie.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Stuur op en vergelijk het resultaat met fase 1. Zie je het verschil?</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">5</div><div>Kom terug en plak de eerste zin van het verbeterde antwoord hieronder.</div></div>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase2-verificatie">Kopieer de eerste zin van het verbeterde antwoord:</label>
+    <label class="fase-input-label" for="fase2-verificatie">Plak de eerste zin van het verbeterde antwoord:</label>
     <input type="text" id="fase2-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Eerste zin van het verbeterde antwoord..." oninput="checkFase2Input()">
-    <div class="fase-input-hint">Minimaal 20 tekens. Merk je het verschil met fase 1?</div>
+    <div class="fase-input-hint">Minimaal 20 tekens. Het verschil met fase 1 is de waarde van goede prompts.</div>
+  </div>
+
+  <div class="content-card" style="background:rgba(255,133,20,0.06);border-left:3px solid #FF8514;border-radius:0 12px 12px 0;">
+    <p><strong>Leermoment:</strong> Het verschil tussen het antwoord uit fase 1 en dit antwoord is geen toeval. Dat verschil is precies wat context, opdracht en formaat doen. Hoe concreter je die drie invult, hoe bruikbaarder het resultaat.</p>
   </div>
 
   <div class="btn-wrap">
@@ -254,7 +273,7 @@ Formaat: [lengte, toon, taal — bijv. "3 alinea's, formele toon, Nederlands"]</
 <div id="screen-fase-3" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 3 van 3</div>
-    <h2>Maak een herbruikbare template</h2>
+    <h2>Bouw een herbruikbare template</h2>
   </div>
 
   <div class="fase-indicator">
@@ -263,31 +282,84 @@ Formaat: [lengte, toon, taal — bijv. "3 alinea's, formele toon, Nederlands"]</
     <div class="fase-dot actief">3</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
+  <div class="visual-block">
+    <svg viewBox="0 0 580 240" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <!-- Achtergrond -->
+      <rect width="580" height="240" fill="#FFF8F2"/>
+      <!-- Titel -->
+      <text x="290" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#27292D" opacity="0.6">TEMPLATE-STRUCTUUR</text>
+      <!-- Template box -->
+      <rect x="24" y="44" width="532" height="148" rx="12" fill="#fff" stroke="rgba(39,41,45,0.12)" stroke-width="1.5"/>
+      <!-- Rij 1: vaste tekst + variabele -->
+      <rect x="40" y="60" width="90" height="24" rx="6" fill="#EDEBE8"/>
+      <text x="85" y="77" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.6">Jij bent</text>
+      <rect x="140" y="60" width="120" height="24" rx="6" fill="rgba(255,133,20,0.15)" stroke="#FF8514" stroke-width="1"/>
+      <text x="200" y="77" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">{{rol}}</text>
+      <rect x="272" y="60" width="56" height="24" rx="6" fill="#EDEBE8"/>
+      <text x="300" y="77" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.6">voor</text>
+      <rect x="338" y="60" width="130" height="24" rx="6" fill="rgba(255,133,20,0.15)" stroke="#FF8514" stroke-width="1"/>
+      <text x="403" y="77" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">{{doelgroep}}</text>
+      <!-- Rij 2 -->
+      <rect x="40" y="96" width="56" height="24" rx="6" fill="#EDEBE8"/>
+      <text x="68" y="113" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.6">Schrijf</text>
+      <rect x="106" y="96" width="120" height="24" rx="6" fill="rgba(255,133,20,0.15)" stroke="#FF8514" stroke-width="1"/>
+      <text x="166" y="113" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">{{formaat}}</text>
+      <rect x="236" y="96" width="60" height="24" rx="6" fill="#EDEBE8"/>
+      <text x="266" y="113" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.6">over</text>
+      <rect x="306" y="96" width="120" height="24" rx="6" fill="rgba(255,133,20,0.15)" stroke="#FF8514" stroke-width="1"/>
+      <text x="366" y="113" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">{{onderwerp}}</text>
+      <!-- Rij 3 -->
+      <rect x="40" y="132" width="300" height="24" rx="6" fill="#EDEBE8"/>
+      <text x="190" y="149" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.6">Toon: zakelijk-vriendelijk. Maximaal</text>
+      <rect x="350" y="132" width="120" height="24" rx="6" fill="rgba(255,133,20,0.15)" stroke="#FF8514" stroke-width="1"/>
+      <text x="410" y="149" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514">{{lengte}}</text>
+      <!-- Legenda -->
+      <rect x="40" y="170" width="14" height="14" rx="3" fill="#EDEBE8"/>
+      <text x="60" y="181" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.6">Vaste tekst</text>
+      <rect x="140" y="170" width="14" height="14" rx="3" fill="rgba(255,133,20,0.15)" stroke="#FF8514" stroke-width="1"/>
+      <text x="160" y="181" font-family="Arial, sans-serif" font-size="9" fill="#FF8514" font-weight="700">{{variabele}} — vul in per gebruik</text>
+      <!-- Ondertitel -->
+      <text x="290" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27292D" opacity="0.4">Vaste structuur, wisselende invulling — zo werkt een herbruikbare template</text>
+    </svg>
+  </div>
+
   <div class="content-card">
-    <p>Een goede prompt hoef je maar één keer goed te schrijven. Je vraagt Claude nu om van jouw verbeterde prompt een template te maken met invulvelden — zodat je hem volgende keer aanpast in plaats van herschrijft.</p>
+    <p>Een goede prompt hoef je maar één keer goed te schrijven. In deze fase zet je de verbeterde prompt uit fase 2 om naar een template met {{variabelen}}. Die variabelen zijn de plekken die per situatie veranderen.</p>
+    <p>Volgende keer hoef je de structuur niet te herschrijven — je vult alleen de variabelen in.</p>
   </div>
 
   <div class="content-card">
     <span class="prompt-label">Kopieer deze prompt naar Claude.ai</span>
-    <div class="prompt-box" id="fase3-prompt">Maak van mijn verbeterde prompt een herbruikbare template met [invulvelden] tussen blokhaken, zodat ik hem volgende keer direct kan aanpassen voor een vergelijkbare situatie.</div>
+    <div class="prompt-box" id="fase3-prompt">Maak van mijn verbeterde prompt een herbruikbare template. Zet de onderdelen die per situatie veranderen tussen dubbele accolades als {{variabele}}. De vaste structuur en toon blijven staan.
+
+Voorbeeld van het format:
+Jij bent {{rol}} voor {{doelgroep}}. Schrijf {{formaat}} over {{onderwerp}}. Toon: {{toon}}.
+
+Geef de volledige template terug, zodat ik hem direct kan kopiëren en bewaren.</div>
     <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase3-prompt').innerText,this)">Kopieer prompt</button>
 
-    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de prompt.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de prompt hierboven.</div></div>
     <div class="instructie-stap"><div class="instructie-nr">2</div><div>Ga naar Claude.ai — het gesprek met je verbeterde prompt staat er nog.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Stuur de prompt op.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Lees de template die Claude teruggeeft.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Stuur op en lees de template die Claude teruggeeft.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Test hem direct: gebruik de template opnieuw met andere invulling voor dezelfde use case.</div></div>
     <div class="instructie-stap"><div class="instructie-nr">5</div><div>Kopieer de volledige template en plak hem hieronder.</div></div>
   </div>
 
   <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>Bewaar de template ergens — in een document, notitie of aparte Claude-projectmap. Zo heb je hem altijd bij de hand.</p>
+    <div class="tip-box-label tip">Sla je template op</div>
+    <p>Bewaar de template in een document, notitie of Claude-project. Je hebt hem nodig in de volgende leeropdrachten. Wie de template kwijtraakt, moet het werk opnieuw doen.</p>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase3-verificatie">Plak de herbruikbare template die Claude maakte:</label>
-    <textarea id="fase3-verificatie" class="fase-input" rows="5" placeholder="Plak hier de volledige template van Claude..." oninput="checkFase3Input()"></textarea>
+    <label class="fase-input-label" for="fase3-verificatie">Plak de eerste regel van je template (moet een {{variabele}} bevatten of een duidelijke structuur tonen):</label>
+    <textarea id="fase3-verificatie" class="fase-input" rows="4" placeholder="Plak hier de eerste regel of de volledige template van Claude..." oninput="checkFase3Input()"></textarea>
     <div class="fase-input-hint">Minimaal 40 tekens.</div>
+  </div>
+
+  <div class="content-card" style="background:rgba(255,133,20,0.06);border-left:3px solid #FF8514;border-radius:0 12px 12px 0;">
+    <p><strong>Wat volgt:</strong> In leeropdracht B4 maak je deze prompt privacyveilig. Je leert welke informatie je nooit naar Claude.ai stuurt en hoe je je template aanpast zonder de kwaliteit te verliezen.</p>
   </div>
 
   <div class="btn-wrap">
@@ -300,17 +372,23 @@ Formaat: [lengte, toon, taal — bijv. "3 alinea's, formele toon, Nederlands"]</
   <div class="afsluiting-hero">
     <div class="welcome-badge" style="margin-bottom:1rem;">Leeropdracht voltooid</div>
     <h2>Goed gedaan, <span class="deelnemer-naam">...</span>.</h2>
-    <p>Je hebt je eerste werkende prompttemplate gebouwd. Niet als oefening — dit gebruik je morgen.</p>
-    <p style="color:rgba(255,248,242,0.6);font-size:0.9rem;">Bewaar de template die Claude voor je maakte.</p>
+    <p>Je hebt een herbruikbare prompttemplate voor je use case gebouwd. Dit is het fundament dat je door de rest van de cursus gebruikt.</p>
+    <p style="color:rgba(255,248,242,0.6);font-size:0.9rem;margin-top:0.75rem;">Noteer je use case en je template — je pakt ze erbij in elke volgende leeropdracht.</p>
   </div>
+
   <div class="content-card">
+    <p><strong>Wat je hebt gedaan:</strong></p>
     <p>Fase 1: je stuurde een vage prompt en zag wat er zonder context uitkomt.</p>
     <p>Fase 2: je verbeterde de prompt met context, opdracht en formaat.</p>
-    <p>Fase 3: je maakte er een herbruikbare template van.</p>
+    <p>Fase 3: je maakte er een herbruikbare template van met {{variabelen}}.</p>
   </div>
+
+  <div class="usecase-balk" style="margin-bottom:1.5rem;"><span class="usecase-label">Jouw use case voor de volgende leeropdrachten: </span><span class="usecase-display"></span></div>
+
   <div class="content-card">
-    <p>In sectie B leer je hoe je Claude veilig inzet voor echte werktaken — inclusief wat je nooit naar Claude.ai stuurt.</p>
+    <p>In leeropdracht B4 maak je je prompt privacyveilig. Je leert wat je nooit naar Claude.ai stuurt en hoe je een template schrijft die werkt zonder gevoelige bedrijfsinformatie te delen.</p>
   </div>
+
   <div class="btn-wrap">
     <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz →</button>
   </div>
@@ -324,14 +402,17 @@ Formaat: [lengte, toon, taal — bijv. "3 alinea's, formele toon, Nederlands"]</
 <script>
 function startLeeropdracht() {
   var naam = document.getElementById('naam-input').value.trim();
-  if (!naam) {
-    document.getElementById('naam-error').style.display = 'block';
-    document.getElementById('naam-input').focus();
-    return;
-  }
-  document.getElementById('naam-error').style.display = 'none';
+  var usecase = document.getElementById('usecase-input').value.trim();
+  if (!naam) { document.getElementById('naam-error').style.display='block'; document.getElementById('naam-input').focus(); return; }
+  document.getElementById('naam-error').style.display='none';
+  if (!usecase) { document.getElementById('usecase-error').style.display='block'; document.getElementById('usecase-input').focus(); return; }
+  document.getElementById('usecase-error').style.display='none';
+  window._deelnemerNaam = naam;
+  window._deelnemerUseCase = usecase;
   localStorage.setItem('umely_naam', naam);
-  document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  localStorage.setItem('umely_usecase_a4', usecase);
+  document.querySelectorAll('.deelnemer-naam').forEach(function(el){ el.textContent = naam; });
+  document.querySelectorAll('.usecase-display').forEach(function(el){ el.textContent = usecase; });
   goTo('screen-fase-1');
 }
 
@@ -383,10 +464,16 @@ function voltooiFase3() {
 
 document.addEventListener('DOMContentLoaded', function() {
   var naam = localStorage.getItem('umely_naam');
+  var usecase = localStorage.getItem('umely_usecase_a4');
   if (naam) {
     var inp = document.getElementById('naam-input');
     if (inp) inp.value = naam;
-    document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+    document.querySelectorAll('.deelnemer-naam').forEach(function(el){ el.textContent = naam; });
+  }
+  if (usecase) {
+    var uc = document.getElementById('usecase-input');
+    if (uc) uc.value = usecase;
+    document.querySelectorAll('.usecase-display').forEach(function(el){ el.textContent = usecase; });
   }
 });
 </script>

@@ -1,12 +1,13 @@
-<!-- TITLE: B4 - Leeropdracht: Claude veilig en effectief inzetten -->
+<!-- TITLE: B4 - Leeropdracht: jouw use case privacyveilig en professioneel inzetten -->
 <!-- SCHERMEN: 'screen-welcome','screen-fase-1','screen-fase-2','screen-fase-3','screen-afsluiting','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Anonimiseer een echte tekst','screen-fase-2':'Fase 2 — Geef een echte werkopdracht','screen-fase-3':'Fase 3 — Corrigeer een fout','screen-afsluiting':'Leeropdracht voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Maak je use case privacyveilig','screen-fase-2':'Fase 2 — Schrijf een complete werkopdracht','screen-fase-3':'Fase 3 — Herken en corrigeer een fout','screen-afsluiting':'Leeropdracht voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 <!-- QUIZ_START -->
 [
   {"vraag":"Waarom vervang je persoonsgegevens door placeholders voordat je een tekst naar Claude stuurt?","opties":["Zodat de tekst korter wordt","Claude werkt beter zonder namen","Claude.ai verwerkt gegevens op servers buiten de EU en persoonsgegevens horen daar niet in te staan","Claude kan geen namen lezen"],"correct":2,"uitleg":"Claude.ai verwerkt gesprekken op servers in de VS. Persoonsgegevens als namen, adressen en e-mails stuur je niet mee — vervang ze door neutrale placeholders zoals [naam klant] of [adres]."},
+  {"vraag":"Welke vier onderdelen heeft een complete werkopdracht?","opties":["Datum, onderwerp, bijlage en conclusie","Context, taak, materiaal en formaat","Aanhef, kern, bijlage en ondertekening","Functie, afdeling, doel en deadline"],"correct":1,"uitleg":"Een goede werkopdracht voor Claude bestaat altijd uit vier blokken: context (wie ben jij), taak (wat moet Claude doen), materiaal (de anonieme tekst of gegevens) en formaat (hoe moet het resultaat eruitzien)."},
   {"vraag":"Wat doe je als Claude iets beweert wat feitelijk onjuist is?","opties":["Je negeert het en gebruikt het antwoord toch","Je sluit het gesprek en begint opnieuw","Je corrigeert Claude expliciet: beschrijf wat er niet klopt en geef de juiste informatie","Je meldt het bij Anthropic"],"correct":2,"uitleg":"Claude maakt fouten. De juiste aanpak is: beschrijf concreet wat er niet klopt en geef de correcte informatie. Claude past zijn antwoord dan aan op basis van jouw correctie."},
-  {"vraag":"Welke drie onderdelen gebruik je ook bij deze opdracht in je prompts?","opties":["Datum, versienummer en bestandsnaam","Context, opdracht en formaat","Onderwerp, bijlage en ontvanger","Titel, samenvatting en conclusie"],"correct":1,"uitleg":"Context, opdracht en formaat zijn de drie bouwstenen van een goede prompt — ook in B4 gebruik je ze bij elke werkopdracht die je aan Claude geeft."},
-  {"vraag":"Je collega wil een klantenbrief door Claude laten verbeteren. Wat adviseer je als eerste stap?","opties":["De brief direct kopiëren en plakken in Claude.ai","De klantnaam, het adres en andere persoonsgegevens vervangen door placeholders","Eerst vragen of Claude het bestand kan lezen","De brief exporteren naar PDF"],"correct":1,"uitleg":"Voordat je een document naar Claude stuurt, verwijder je alle persoonsgegevens. Vervang ze door neutrale aanduidingen als [naam klant] of [adres]. Dan pas stuur je de geanonimiseerde versie op."}
+  {"vraag":"Je collega wil een klantenbrief door Claude laten verbeteren. Wat adviseer je als eerste stap?","opties":["De brief direct kopiëren en plakken in Claude.ai","De klantnaam, het adres en andere persoonsgegevens vervangen door placeholders","Eerst vragen of Claude het bestand kan lezen","De brief exporteren naar PDF"],"correct":1,"uitleg":"Voordat je een document naar Claude stuurt, verwijder je alle persoonsgegevens. Vervang ze door neutrale aanduidingen als [naam klant] of [adres]. Dan pas stuur je de geanonimiseerde versie op."},
+  {"vraag":"Wanneer moet je Claude corrigeren in plaats van een nieuw gesprek beginnen?","opties":["Altijd — elk fout antwoord rechtvaardigt een nieuw gesprek","Nooit — Claude corrigeert zichzelf vanzelf","Als Claude een fout maakt terwijl de rest van het gesprek nog bruikbaar is","Alleen als Claude een vraag niet begrijpt"],"correct":2,"uitleg":"Als Claude één ding fout heeft maar de rest van het gesprek nog klopt, corrigeer je hem in hetzelfde gesprek. Zo behoud je de context die je al hebt opgebouwd en hoef je niet opnieuw te beginnen."}
 ]
 <!-- QUIZ_END -->
 
@@ -30,7 +31,6 @@
 .fase-input{width:100%;border:2px solid rgba(39,41,45,0.15);border-radius:12px;padding:0.75rem 1rem;font-family:var(--font-b);font-size:0.95rem;color:#27292D;background:#fff;outline:none;transition:border-color 0.2s;resize:vertical}
 .fase-input:focus{border-color:#FF8514}
 .fase-input-hint{font-size:0.8rem;color:rgba(39,41,45,0.5);margin-top:0.35rem}
-.fase-input-teller{font-size:0.8rem;margin-top:0.35rem;font-weight:600;transition:color 0.2s}
 .fase-btn{display:inline-block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;font-family:var(--font-b);font-weight:700;font-size:0.95rem;padding:0.8rem 2rem;border-radius:50px;border:none;cursor:pointer;transition:opacity 0.2s,transform 0.1s;margin-top:1rem}
 .fase-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important}
 .fase-btn:not(:disabled):hover{opacity:0.9;transform:translateY(-1px)}
@@ -44,6 +44,9 @@
 .claude-float a{display:block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;text-decoration:none;padding:10px 18px;border-radius:50px;font-size:0.8rem;font-weight:700;font-family:var(--font-b);box-shadow:0 4px 15px rgba(255,133,20,0.4);transition:all 0.2s;white-space:nowrap}
 .claude-float a:hover{opacity:0.9;transform:translateY(-2px)}
 .prompt-label{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#FF8514;margin-bottom:0.5rem;display:block}
+.usecase-balk{background:rgba(255,133,20,0.1);border-left:3px solid #FF8514;padding:0.6rem 1rem;border-radius:0 8px 8px 0;margin-bottom:1.25rem;font-size:0.9rem;color:#27292D}
+.usecase-label{font-weight:700;color:#FF8514}
+.usecase-display{font-weight:700}
 #nav-screen-fase-1 .btn,
 #nav-screen-fase-2 .btn,
 #nav-screen-fase-3 .btn,
@@ -54,31 +57,40 @@
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
     <div class="welcome-badge">Umely E-learning</div>
-    <h1>Leeropdracht B — Claude veilig en effectief inzetten</h1>
-    <p>Je combineert B1, B2 en B3. Je werkt met een echte tekst — geanonimiseerd, verwerkt en gecorrigeerd.</p>
+    <h1>Leeropdracht B — jouw use case privacyveilig inzetten</h1>
+    <p>In Leeropdracht A heb je een use case gekozen en een prompttemplate gemaakt. Nu maak je die use case privacyveilig en leer je hoe je Claude correct inzet voor je echte werksituatie.</p>
   </div>
 
   <div class="naam-input-blok">
     <label class="fase-input-label" for="naam-input">Wat is je naam?</label>
     <input type="text" id="naam-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Vul je naam in" autocomplete="name">
     <div id="naam-error" class="naam-error">Vul je naam in om verder te gaan.</div>
+
+    <label class="fase-input-label" for="usecase-input" style="margin-top:1rem;">Jouw use case uit Leeropdracht A</label>
+    <input type="text" id="usecase-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: weekelijkse statusrapporten schrijven...">
+    <div id="usecase-error" class="naam-error">Vul je use case in om verder te gaan.</div>
   </div>
 
   <div class="instructie-balk">
     <h3>Hoe deze leeropdracht werkt</h3>
-    <div class="i-rij"><div class="i-nr">1</div><div>Open Claude.ai in een nieuw tabblad en zet het naast dit scherm.</div></div>
-    <div class="i-rij"><div class="i-nr">2</div><div>Elke fase geeft je een kopieerbare prompt. Vul hem in en verstuur.</div></div>
-    <div class="i-rij"><div class="i-nr">3</div><div>Kom terug, vul je verificatieveld in en ga verder.</div></div>
+    <div class="i-rij"><div class="i-nr">1</div><div>Pak je notities uit Leeropdracht A erbij. Je werkt in deze opdracht met dezelfde use case.</div></div>
+    <div class="i-rij"><div class="i-nr">2</div><div>Open Claude.ai in een nieuw tabblad en zet het naast dit scherm.</div></div>
+    <div class="i-rij"><div class="i-nr">3</div><div>Elke fase geeft je een kopieerbare prompt. Vul hem in, verstuur en kom terug.</div></div>
   </div>
 
-  <div class="tijdsbadge">Geschatte tijd: 20-30 minuten</div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Heb je Leeropdracht A nog niet gedaan? Kies dan nu een use case: een echte terugkerende werktaak waarbij je Claude wilt gebruiken.</p>
+  </div>
+
+  <div class="tijdsbadge">Geschatte tijd: 25-35 minuten</div>
 
   <div class="leerdoelen">
     <h3>Na deze leeropdracht heb je:</h3>
     <ul>
-      <li>Een echte tekst geanonimiseerd voordat je hem naar Claude stuurde</li>
-      <li>Claude ingezet voor een concrete werktaak</li>
-      <li>Een fout in Claude's antwoord gecorrigeerd en gezien hoe hij reageert</li>
+      <li>Gevoelige gegevens uit je use case geïdentificeerd en geanonimiseerd</li>
+      <li>Een complete, privacyveilige werkopdracht voor Claude geschreven en uitgevoerd</li>
+      <li>Een fout in Claude's antwoord herkend en gecorrigeerd zonder opnieuw te beginnen</li>
     </ul>
   </div>
 
@@ -91,7 +103,7 @@
 <div id="screen-fase-1" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 1 van 3</div>
-    <h2>Anonimiseer een echte tekst</h2>
+    <h2>Maak je use case privacyveilig</h2>
   </div>
 
   <div class="fase-indicator">
@@ -100,77 +112,88 @@
     <div class="fase-dot">3</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
   <div class="visual-block">
-    <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
-      <!-- Achtergrond -->
-      <rect width="580" height="200" fill="#FFF8F2"/>
+    <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <rect width="580" height="220" fill="#FFF8F2"/>
+
+      <!-- Label boven links -->
+      <text x="104" y="22" font-family="Arial, sans-serif" font-size="10" fill="rgba(39,41,45,0.5)" text-anchor="middle" font-weight="700">VOOR</text>
 
       <!-- Origineel document links -->
-      <rect x="24" y="24" width="160" height="130" rx="8" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
-      <rect x="36" y="38" width="100" height="8" rx="3" fill="#EAE6E0"/>
-      <!-- Gemarkeerde persoonsgegevens (flame kleur = verwijderen) -->
-      <rect x="36" y="56" width="120" height="9" rx="3" fill="rgba(255,77,0,0.18)"/>
-      <text x="40" y="64" font-family="Arial, sans-serif" font-size="7.5" fill="#FF4D00">Jan Jansen</text>
-      <rect x="36" y="72" width="136" height="9" rx="3" fill="rgba(255,77,0,0.18)"/>
-      <text x="40" y="80" font-family="Arial, sans-serif" font-size="7.5" fill="#FF4D00">jan@bedrijf.nl</text>
-      <rect x="36" y="88" width="128" height="9" rx="3" fill="rgba(255,77,0,0.18)"/>
-      <text x="40" y="96" font-family="Arial, sans-serif" font-size="7.5" fill="#FF4D00">Keizersgracht 12</text>
-      <rect x="36" y="104" width="110" height="7" rx="3" fill="#EAE6E0"/>
-      <rect x="36" y="118" width="130" height="7" rx="3" fill="#EAE6E0"/>
-      <text x="104" y="175" font-family="Arial, sans-serif" font-size="10" fill="rgba(39,41,45,0.5)" text-anchor="middle">Origineel</text>
+      <rect x="24" y="32" width="160" height="140" rx="8" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
+      <rect x="36" y="46" width="100" height="8" rx="3" fill="#EAE6E0"/>
+      <!-- Gemarkeerde persoonsgegevens rood -->
+      <rect x="36" y="64" width="130" height="10" rx="3" fill="rgba(255,77,0,0.18)"/>
+      <text x="40" y="73" font-family="Arial, sans-serif" font-size="8" fill="#FF4D00">Jan de Vries — Klantgesprek</text>
+      <rect x="36" y="81" width="136" height="10" rx="3" fill="rgba(255,77,0,0.18)"/>
+      <text x="40" y="90" font-family="Arial, sans-serif" font-size="8" fill="#FF4D00">jan@devriesadvies.nl</text>
+      <rect x="36" y="98" width="128" height="10" rx="3" fill="rgba(255,77,0,0.18)"/>
+      <text x="40" y="107" font-family="Arial, sans-serif" font-size="8" fill="#FF4D00">Offertebedrag: € 14.750</text>
+      <rect x="36" y="115" width="110" height="7" rx="3" fill="#EAE6E0"/>
+      <rect x="36" y="128" width="130" height="7" rx="3" fill="#EAE6E0"/>
+      <rect x="36" y="141" width="90" height="7" rx="3" fill="#EAE6E0"/>
 
       <!-- Pijl middenpaneel -->
-      <rect x="208" y="80" width="56" height="40" rx="8" fill="#27292D"/>
+      <rect x="206" y="86" width="60" height="48" rx="8" fill="#27292D"/>
       <!-- Potlood icoon -->
-      <rect x="226" y="90" width="7" height="18" rx="2" fill="#FFD964" transform="rotate(-30 229.5 99)"/>
-      <polygon points="224,107 228,101 232,107" fill="#FF8514"/>
+      <rect x="224" y="96" width="7" height="20" rx="2" fill="#FFD964" transform="rotate(-25 227.5 106)"/>
+      <polygon points="221,114 226,107 231,114" fill="#FF8514"/>
       <!-- Pijlpunt rechts -->
-      <polygon points="264,100 254,94 254,106" fill="#FF8514"/>
-      <line x1="240" y1="100" x2="254" y2="100" stroke="#FF8514" stroke-width="2.5" stroke-linecap="round"/>
+      <polygon points="266,110 256,104 256,116" fill="#FF8514"/>
+      <line x1="240" y1="110" x2="256" y2="110" stroke="#FF8514" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Label boven rechts -->
+      <text x="376" y="22" font-family="Arial, sans-serif" font-size="10" fill="rgba(39,41,45,0.5)" text-anchor="middle" font-weight="700">NA</text>
 
       <!-- Geanonimiseerd document rechts -->
-      <rect x="296" y="24" width="160" height="130" rx="8" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
-      <rect x="308" y="38" width="100" height="8" rx="3" fill="#EAE6E0"/>
+      <rect x="296" y="32" width="160" height="140" rx="8" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
+      <rect x="308" y="46" width="100" height="8" rx="3" fill="#EAE6E0"/>
       <!-- Oranje placeholder regels -->
-      <rect x="308" y="56" width="120" height="9" rx="3" fill="rgba(255,133,20,0.15)"/>
-      <text x="312" y="64" font-family="Arial, sans-serif" font-size="7.5" fill="#FF8514">[naam klant]</text>
-      <rect x="308" y="72" width="136" height="9" rx="3" fill="rgba(255,133,20,0.15)"/>
-      <text x="312" y="80" font-family="Arial, sans-serif" font-size="7.5" fill="#FF8514">[e-mail]</text>
-      <rect x="308" y="88" width="128" height="9" rx="3" fill="rgba(255,133,20,0.15)"/>
-      <text x="312" y="96" font-family="Arial, sans-serif" font-size="7.5" fill="#FF8514">[adres]</text>
-      <rect x="308" y="104" width="110" height="7" rx="3" fill="#EAE6E0"/>
-      <rect x="308" y="118" width="130" height="7" rx="3" fill="#EAE6E0"/>
-      <text x="376" y="175" font-family="Arial, sans-serif" font-size="10" fill="rgba(39,41,45,0.5)" text-anchor="middle">Geanonimiseerd</text>
+      <rect x="308" y="64" width="130" height="10" rx="3" fill="rgba(255,133,20,0.15)"/>
+      <text x="312" y="73" font-family="Arial, sans-serif" font-size="8" fill="#FF8514">[Naam A] — Klantgesprek</text>
+      <rect x="308" y="81" width="136" height="10" rx="3" fill="rgba(255,133,20,0.15)"/>
+      <text x="312" y="90" font-family="Arial, sans-serif" font-size="8" fill="#FF8514">[e-mail opdrachtgever]</text>
+      <rect x="308" y="98" width="128" height="10" rx="3" fill="rgba(255,133,20,0.15)"/>
+      <text x="312" y="107" font-family="Arial, sans-serif" font-size="8" fill="#FF8514">Offertebedrag: [Bedrag X]</text>
+      <rect x="308" y="115" width="110" height="7" rx="3" fill="#EAE6E0"/>
+      <rect x="308" y="128" width="130" height="7" rx="3" fill="#EAE6E0"/>
+      <rect x="308" y="141" width="90" height="7" rx="3" fill="#EAE6E0"/>
+
+      <!-- Onderschrift -->
+      <text x="104" y="196" font-family="Arial, sans-serif" font-size="9.5" fill="rgba(255,77,0,0.75)" text-anchor="middle">Echte gegevens</text>
+      <text x="376" y="196" font-family="Arial, sans-serif" font-size="9.5" fill="#FF8514" text-anchor="middle">Placeholders — klaar voor Claude</text>
     </svg>
   </div>
 
   <div class="content-card">
-    <p>Wat je naar Claude.ai stuurt, wordt verwerkt op servers buiten de EU. Persoonsgegevens — namen, adressen, e-mailadressen, telefoonnummers, klantnummers — stuur je nooit mee. Vervang ze door neutrale placeholders als [naam klant] of [adres] voordat je begint.</p>
+    <p>Wat je naar Claude.ai stuurt wordt verwerkt op servers buiten de EU. Persoonsgegevens — namen, adressen, e-mailadressen, telefoonnummers, klantnummers, financiële bedragen — stuur je nooit onbewerkt mee. Vervang ze door neutrale placeholders: <strong>[Naam A]</strong>, <strong>[Opdrachtgever]</strong>, <strong>[Bedrag X]</strong>.</p>
+    <p>Dit geldt voor je hele use case. Pak een echt voorbeeld uit je werk — een e-mail, notitie of statusupdate — en anonimiseer het handmatig. Daarna vraag je Claude om te controleren of je niets hebt gemist.</p>
   </div>
 
   <div class="content-card">
-    <p>Pak een echte tekst uit je werk. Dat kan een e-mail, vergadernotitie of rapport zijn. Verwijder alle persoonsgegevens handmatig.</p>
-    <span class="prompt-label">Vraag Claude daarna om te controleren</span>
-    <div class="prompt-box" id="fase1-prompt">Controleer of ik deze tekst goed heb geanonimiseerd. Zie je nog informatie die gevoelig zou kunnen zijn?
+    <span class="prompt-label">Vraag Claude om je anonimisering te controleren</span>
+    <div class="prompt-box" id="fase1-prompt">Controleer of ik de volgende tekst goed heb geanonimiseerd. Welke informatie is nog gevoelig of herleidbaar naar een persoon of organisatie?
 
-[plak je geanonimiseerde tekst hier]</div>
+[plak hier je geanonimiseerde tekst]</div>
     <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase1-prompt').innerText,this)">Kopieer prompt</button>
 
-    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Pak een echte tekst uit je werk (e-mail, notitie, rapport).</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Vervang handmatig alle namen, adressen, e-mails en andere persoonsgegevens door placeholders.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Pak een echte tekst uit je use case (e-mail, notitie, vergaderverslag).</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Vervang handmatig alle namen, adressen, e-mails, bedragen en klantnummers door placeholders.</div></div>
     <div class="instructie-stap"><div class="instructie-nr">3</div><div>Kopieer de prompt hierboven, plak je geanonimiseerde tekst op de aangegeven plek.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Verstuur naar Claude.ai en lees zijn reactie.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Stuur op naar Claude.ai en lees of hij nog iets gevoeligs ziet.</div></div>
   </div>
 
   <div class="tip-box waarschuwing">
     <div class="tip-box-label waarschuwing">Let op</div>
-    <p>Twijfel je of iets gevoelig is? Vervang het. Liever een placeholder te veel dan een gegeven te weinig.</p>
+    <p>Twijfel je of iets gevoelig is? Vervang het. Liever een placeholder te veel dan een persoonsgegeven te weinig. Claude kan je daarna altijd vertellen of je te ver bent gegaan.</p>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase1-verificatie">Wat zei Claude over je anonimisering?</label>
-    <input type="text" id="fase1-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Vat Claude's reactie kort samen..." oninput="checkFase1Input()">
-    <div class="fase-input-hint">Minimaal 20 tekens.</div>
+    <label class="fase-input-label" for="fase1-verificatie">Beschrijf in één zin wat je hebt geanonimiseerd</label>
+    <input type="text" id="fase1-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: klantnamen, projectbedragen en e-mailadressen..." oninput="checkFase1Input()">
+    <div class="fase-input-hint">Minimaal 20 tekens. Wat heb je concreet vervangen door placeholders?</div>
   </div>
 
   <div class="btn-wrap">
@@ -182,7 +205,7 @@
 <div id="screen-fase-2" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 2 van 3</div>
-    <h2>Geef een echte werkopdracht</h2>
+    <h2>Schrijf een complete werkopdracht</h2>
   </div>
 
   <div class="fase-indicator">
@@ -191,79 +214,90 @@
     <div class="fase-dot">3</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
   <div class="visual-block">
-    <svg viewBox="0 0 580 180" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
-      <!-- Achtergrond -->
-      <rect width="580" height="180" fill="#FFF8F2"/>
+    <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <rect width="580" height="200" fill="#FFF8F2"/>
 
-      <!-- Blok 1: Samenvatten -->
-      <rect x="36" y="20" width="130" height="80" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
-      <!-- Document icoon -->
-      <rect x="88" y="30" width="26" height="32" rx="3" fill="#FF8514" opacity="0.15"/>
-      <rect x="91" y="33" width="20" height="3" rx="1.5" fill="#FF8514"/>
-      <rect x="91" y="39" width="20" height="3" rx="1.5" fill="#FF8514"/>
-      <rect x="91" y="45" width="14" height="3" rx="1.5" fill="#FF8514"/>
-      <rect x="88" y="30" width="26" height="32" rx="3" fill="none" stroke="#FF8514" stroke-width="1.5"/>
-      <text x="101" y="76" font-family="Arial, sans-serif" font-size="10" fill="#27292D" text-anchor="middle" font-weight="700">Samenvatten</text>
-      <!-- Pijl omlaag -->
-      <line x1="101" y1="102" x2="101" y2="126" stroke="#FF8514" stroke-width="2" stroke-dasharray="4,3"/>
-      <polygon points="101,130 97,122 105,122" fill="#FF8514"/>
+      <!-- Blok 1: Context -->
+      <rect x="24" y="24" width="118" height="90" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
+      <rect x="36" y="38" width="60" height="7" rx="3" fill="#FF8514" opacity="0.35"/>
+      <text x="83" y="56" font-family="Arial, sans-serif" font-size="11" fill="#27292D" text-anchor="middle" font-weight="700">Context</text>
+      <text x="83" y="70" font-family="Arial, sans-serif" font-size="8.5" fill="rgba(39,41,45,0.55)" text-anchor="middle">Wie ben jij?</text>
+      <text x="83" y="82" font-family="Arial, sans-serif" font-size="8.5" fill="rgba(39,41,45,0.55)" text-anchor="middle">Wat doe je?</text>
 
-      <!-- Blok 2: Verbeteren -->
-      <rect x="225" y="20" width="130" height="80" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
-      <!-- Tekst icoon met pijl -->
-      <rect x="274" y="30" width="26" height="32" rx="3" fill="#FF8514" opacity="0.15"/>
-      <rect x="277" y="35" width="20" height="3" rx="1.5" fill="#FF8514"/>
-      <rect x="277" y="41" width="16" height="3" rx="1.5" fill="#FF8514"/>
-      <rect x="277" y="47" width="20" height="3" rx="1.5" fill="#FF8514"/>
-      <rect x="277" y="53" width="12" height="3" rx="1.5" fill="#FF8514"/>
-      <rect x="274" y="30" width="26" height="32" rx="3" fill="none" stroke="#FF8514" stroke-width="1.5"/>
-      <text x="290" y="76" font-family="Arial, sans-serif" font-size="10" fill="#27292D" text-anchor="middle" font-weight="700">Verbeteren</text>
-      <line x1="290" y1="102" x2="290" y2="126" stroke="#FF8514" stroke-width="2" stroke-dasharray="4,3"/>
-      <polygon points="290,130 286,122 294,122" fill="#FF8514"/>
+      <!-- Pijl 1→2 -->
+      <polygon points="157,69 149,64 149,74" fill="#FF8514"/>
+      <line x1="143" y1="69" x2="149" y2="69" stroke="#FF8514" stroke-width="2" stroke-linecap="round"/>
 
-      <!-- Blok 3: Analyseren -->
-      <rect x="414" y="20" width="130" height="80" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
-      <!-- Lijst icoon -->
-      <circle cx="428" cy="37" r="3.5" fill="#FF8514"/>
-      <rect x="436" y="34" width="90" height="6" rx="2" fill="#FF8514" opacity="0.3"/>
-      <circle cx="428" cy="49" r="3.5" fill="#FF8514"/>
-      <rect x="436" y="46" width="80" height="6" rx="2" fill="#FF8514" opacity="0.3"/>
-      <circle cx="428" cy="61" r="3.5" fill="#FF8514"/>
-      <rect x="436" y="58" width="85" height="6" rx="2" fill="#FF8514" opacity="0.3"/>
-      <text x="479" y="76" font-family="Arial, sans-serif" font-size="10" fill="#27292D" text-anchor="middle" font-weight="700">Analyseren</text>
-      <line x1="479" y1="102" x2="479" y2="126" stroke="#FF8514" stroke-width="2" stroke-dasharray="4,3"/>
-      <polygon points="479,130 475,122 483,122" fill="#FF8514"/>
+      <!-- Blok 2: Taak -->
+      <rect x="158" y="24" width="118" height="90" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
+      <rect x="170" y="38" width="60" height="7" rx="3" fill="#FF8514" opacity="0.35"/>
+      <text x="217" y="56" font-family="Arial, sans-serif" font-size="11" fill="#27292D" text-anchor="middle" font-weight="700">Taak</text>
+      <text x="217" y="70" font-family="Arial, sans-serif" font-size="8.5" fill="rgba(39,41,45,0.55)" text-anchor="middle">Wat moet Claude</text>
+      <text x="217" y="82" font-family="Arial, sans-serif" font-size="8.5" fill="rgba(39,41,45,0.55)" text-anchor="middle">doen?</text>
 
-      <!-- Claude chat balk onderaan -->
-      <rect x="80" y="132" width="420" height="34" rx="10" fill="#27292D"/>
-      <text x="290" y="153" font-family="Arial, sans-serif" font-size="11" fill="#FFF8F2" text-anchor="middle" font-weight="700">Claude.ai</text>
+      <!-- Pijl 2→3 -->
+      <polygon points="291,69 283,64 283,74" fill="#FF8514"/>
+      <line x1="277" y1="69" x2="283" y2="69" stroke="#FF8514" stroke-width="2" stroke-linecap="round"/>
+
+      <!-- Blok 3: Materiaal -->
+      <rect x="292" y="24" width="118" height="90" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
+      <rect x="304" y="38" width="60" height="7" rx="3" fill="#FF8514" opacity="0.35"/>
+      <text x="351" y="56" font-family="Arial, sans-serif" font-size="11" fill="#27292D" text-anchor="middle" font-weight="700">Materiaal</text>
+      <text x="351" y="70" font-family="Arial, sans-serif" font-size="8.5" fill="rgba(39,41,45,0.55)" text-anchor="middle">Jouw anonieme</text>
+      <text x="351" y="82" font-family="Arial, sans-serif" font-size="8.5" fill="rgba(39,41,45,0.55)" text-anchor="middle">tekst</text>
+
+      <!-- Pijl 3→4 -->
+      <polygon points="425,69 417,64 417,74" fill="#FF8514"/>
+      <line x1="411" y1="69" x2="417" y2="69" stroke="#FF8514" stroke-width="2" stroke-linecap="round"/>
+
+      <!-- Blok 4: Formaat -->
+      <rect x="426" y="24" width="118" height="90" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
+      <rect x="438" y="38" width="60" height="7" rx="3" fill="#FF8514" opacity="0.35"/>
+      <text x="485" y="56" font-family="Arial, sans-serif" font-size="11" fill="#27292D" text-anchor="middle" font-weight="700">Formaat</text>
+      <text x="485" y="70" font-family="Arial, sans-serif" font-size="8.5" fill="rgba(39,41,45,0.55)" text-anchor="middle">Hoe moet het</text>
+      <text x="485" y="82" font-family="Arial, sans-serif" font-size="8.5" fill="rgba(39,41,45,0.55)" text-anchor="middle">eruitzien?</text>
+
+      <!-- Onderschrift -->
+      <rect x="80" y="140" width="420" height="40" rx="10" fill="#27292D"/>
+      <text x="290" y="164" font-family="Arial, sans-serif" font-size="11" fill="#FFF8F2" text-anchor="middle" font-weight="700">Complete werkopdracht voor Claude</text>
     </svg>
   </div>
 
   <div class="content-card">
-    <p>Nu zet je Claude in voor een echte taak — met de geanonimiseerde tekst uit fase 1. Je gebruikt de drie onderdelen die je kent: context (wie je bent), opdracht (wat Claude moet doen) en formaat (hoe het resultaat eruitziet).</p>
+    <p>Nu combineer je de anonieme tekst uit fase 1 met de prompttemplate die je in Leeropdracht A hebt gemaakt. Een complete werkopdracht heeft altijd vier onderdelen: <strong>context</strong> (wie ben jij), <strong>taak</strong> (wat moet Claude doen), <strong>materiaal</strong> (de anonieme tekst) en <strong>formaat</strong> (hoe moet het resultaat eruitzien).</p>
+    <p>Dit is de professionele manier om Claude in te zetten voor echt werk. Niet een losse vraag, maar een volledige instructie die Claude alles geeft wat hij nodig heeft.</p>
   </div>
 
   <div class="content-card">
-    <span class="prompt-label">Kopieer en vul deze template in</span>
-    <div class="prompt-box" id="fase2-template">Ik ben [functie].
-[plak je geanonimiseerde tekst uit fase 1]
+    <span class="prompt-label">Voorbeeld — pas aan voor jouw use case</span>
+    <div class="prompt-box" id="fase2-prompt">Context: ik ben [jouw functie] bij [type organisatie]. Ik gebruik Claude voor [jouw use case].
 
-Opdracht: [samenvatten / verbeteren / analyseren — kies één]
-Formaat: [hoe wil je het resultaat — bijv. "bulletpunten", "herschreven versie", "3 aandachtspunten"]</div>
-    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-template').innerText,this)">Kopieer template</button>
+Taak: [beschrijf concreet wat Claude moet doen met de tekst hieronder]
 
-    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de template.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Vul je functie in, plak de geanonimiseerde tekst en kies een opdracht.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Ga naar Claude.ai en stuur de ingevulde template op.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Lees het antwoord — is dit bruikbaar voor jouw werk?</div></div>
+Materiaal:
+[plak hier je geanonimiseerde tekst uit fase 1]
+
+Formaat: [beschrijf hoe je het resultaat wilt — bijv. "bulletpunten per actiepunt", "herschreven versie in drie alinea's", "samenvatting in maximaal 100 woorden"]</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-prompt').innerText,this)">Kopieer template</button>
+
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de template en vul alle vier de onderdelen in met jouw gegevens.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Plak de geanonimiseerde tekst uit fase 1 op de plek van "Materiaal".</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Stuur de complete werkopdracht naar Claude.ai en lees het antwoord.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Beoordeel: is dit bruikbaar voor je werk? Wat mist er nog?</div></div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-box-label tip">Leermoment</div>
+    <p>Hoe specifieker je het formaat omschrijft, hoe bruikbaarder Claude's antwoord. "Schrijf een samenvatting" werkt slechter dan "schrijf een samenvatting van maximaal 5 regels, geschikt om door te sturen naar een collega."</p>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase2-verificatie">Kopieer de eerste alinea van Claude's antwoord:</label>
-    <textarea id="fase2-verificatie" class="fase-input" rows="3" placeholder="Eerste alinea van Claude's antwoord..." oninput="checkFase2Input()"></textarea>
-    <div class="fase-input-hint">Minimaal 30 tekens.</div>
+    <label class="fase-input-label" for="fase2-verificatie">Plak de eerste zin van Claude's antwoord</label>
+    <textarea id="fase2-verificatie" class="fase-input" rows="3" placeholder="Eerste zin van Claude's antwoord..." oninput="checkFase2Input()"></textarea>
+    <div class="fase-input-hint">Minimaal 30 tekens. Dit bewijst dat je de opdracht daadwerkelijk hebt uitgevoerd.</div>
   </div>
 
   <div class="btn-wrap">
@@ -275,7 +309,7 @@ Formaat: [hoe wil je het resultaat — bijv. "bulletpunten", "herschreven versie
 <div id="screen-fase-3" class="screen">
   <div class="module-header">
     <div class="module-num">Fase 3 van 3</div>
-    <h2>Corrigeer een fout</h2>
+    <h2>Herken en corrigeer een fout</h2>
   </div>
 
   <div class="fase-indicator">
@@ -284,32 +318,35 @@ Formaat: [hoe wil je het resultaat — bijv. "bulletpunten", "herschreven versie
     <div class="fase-dot actief">3</div>
   </div>
 
+  <div class="usecase-balk"><span class="usecase-label">Jouw use case: </span><span class="usecase-display"></span></div>
+
   <div class="content-card">
-    <p>Claude maakt fouten. Hij hallucineert soms, overdrijft, of laat iets weg. In B3 heb je geleerd hoe je dit aanpakt: niet herstarten, maar corrigeren. Je wijst Claude op het probleem, geeft de juiste informatie en vraagt hem zijn antwoord aan te passen.</p>
+    <p>Claude weet alleen wat jij hem vertelt. Hij heeft geen toegang tot jouw interne systemen, eerdere gesprekken of specifieke bedrijfsdata. Als je hem vraagt om iets te bevestigen wat hij niet kan weten — een intern getal, een specifieke naam, een eigen beslissing — doet hij een aanname. Soms is die aanname overtuigend. Maar hij verzint het.</p>
+    <p>In deze fase test je dat bewust: je vraagt Claude om iets te bevestigen wat hij niet kan weten. Dan zie je hoe hij reageert, en leer je hem op de juiste manier te corrigeren.</p>
   </div>
 
   <div class="content-card">
-    <p>Kijk terug naar Claude's antwoord in fase 2. Kies iets wat hij verkeerd heeft, overdreven heeft of weggelaten heeft — ook een kleine onnauwkeurigheid is goed genoeg.</p>
-    <span class="prompt-label">Kopieer en vul deze correctietemplate in</span>
-    <div class="prompt-box" id="fase3-template">In je antwoord klopt dit niet: [beschrijf wat er fout of onnauwkeurig is]
-De juiste informatie is: [geef de correcte versie]
-Pas je antwoord hierop aan.</div>
-    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase3-template').innerText,this)">Kopieer template</button>
+    <p>Ga terug naar het gesprek in Claude.ai. Vraag Claude een specifiek intern feit te bevestigen over je use case — iets wat alleen jij kunt weten.</p>
+    <span class="prompt-label">Voorbeeldvraag om Claude te testen</span>
+    <div class="prompt-box" id="fase3-testvraag">Wat was het exacte [interne getal / specifieke naam / eigen beslissing] in dit geval?
 
-    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Bekijk Claude's antwoord uit fase 2.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Kies één punt dat niet helemaal klopt, overdreven is of ontbreekt.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Kopieer de template, vul hem in en stuur op.</div></div>
-    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Lees hoe Claude reageert op je correctie.</div></div>
+[beschrijf iets concreets dat Claude niet kan weten uit de tekst die je hem stuurde]</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase3-testvraag').innerText,this)">Kopieer voorbeeldvraag</button>
+
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Ga terug naar Claude.ai, naar het gesprek uit fase 2.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Vraag Claude iets te bevestigen wat hij niet kan weten — een intern getal, een specifieke naam, een eigen beslissing.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Lees hoe Claude reageert: geeft hij toe dat hij het niet weet, of doet hij een aanname?</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Corrigeer hem: stuur "Dat klopt niet — de juiste informatie is: [vul in]. Pas je antwoord hierop aan."</div></div>
   </div>
 
   <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>Je hoeft geen grote fout te vinden. Een iets te formele toon, een ontbrekend punt of een onnauwkeurige samenvatting is meer dan genoeg om dit te oefenen.</p>
+    <div class="tip-box-label tip">Leermoment</div>
+    <p>Goede Claude-gebruikers verifiëren altijd wat hij zegt over specifieke feiten. Gebruik Claude voor structuur, taal en redeneren — gebruik je eigen kennis voor de feiten die alleen jij kunt weten.</p>
   </div>
 
   <div class="fase-input-wrap">
-    <label class="fase-input-label" for="fase3-verificatie">Hoe reageerde Claude op je correctie?</label>
-    <input type="text" id="fase3-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Beschrijf kort hoe Claude reageerde..." oninput="checkFase3Input()">
+    <label class="fase-input-label" for="fase3-verificatie">Beschrijf kort: wat deed Claude fout en hoe heb je hem gecorrigeerd?</label>
+    <input type="text" id="fase3-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: Claude verzon een bedrag, ik heb hem gecorrigeerd met het juiste getal..." oninput="checkFase3Input()">
     <div class="fase-input-hint">Minimaal 20 tekens.</div>
   </div>
 
@@ -323,16 +360,16 @@ Pas je antwoord hierop aan.</div>
   <div class="afsluiting-hero">
     <div class="welcome-badge" style="margin-bottom:1rem;">Leeropdracht voltooid</div>
     <h2>Goed gedaan, <span class="deelnemer-naam">...</span>.</h2>
-    <p>Je hebt Claude ingezet zoals het hoort: veilig, doelgericht en met correctie waar nodig.</p>
+    <p>Je hebt geleerd hoe je je use case veilig en professioneel inzet met Claude. Je werkopdracht is klaar voor gebruik — en je weet nu wanneer je Claude moet corrigeren.</p>
   </div>
 
   <div class="content-card">
     <ul style="padding-left:1.25rem;margin:0;line-height:2">
-      <li>Fase 1: je anonimiseerde een echte tekst en liet Claude controleren.</li>
-      <li>Fase 2: je gaf een concrete werkopdracht met context, opdracht en formaat.</li>
-      <li>Fase 3: je corrigeerde een fout en zag hoe Claude zich aanpast.</li>
+      <li>Fase 1: je identificeerde gevoelige gegevens in je use case en anonimiseerde ze met placeholders.</li>
+      <li>Fase 2: je schreef een complete werkopdracht met context, taak, materiaal en formaat — en voerde hem uit.</li>
+      <li>Fase 3: je testte bewust een grens van Claude en leerde hem op de juiste manier te corrigeren.</li>
     </ul>
-    <p style="margin-top:1rem;">In sectie C ontdek je alle tools waarmee je Claude kunt gebruiken — van de web-app tot Chrome en Excel.</p>
+    <p style="margin-top:1rem;">In Leeropdracht C stel je Claude volledig in op jouw use case — van aangepaste instructies tot een persoonlijke werkplek.</p>
   </div>
 
   <div class="btn-wrap">
@@ -348,14 +385,16 @@ Pas je antwoord hierop aan.</div>
 <script>
 function startLeeropdracht() {
   var naam = document.getElementById('naam-input').value.trim();
-  if (!naam) {
-    document.getElementById('naam-error').style.display = 'block';
-    document.getElementById('naam-input').focus();
-    return;
-  }
+  var usecase = document.getElementById('usecase-input').value.trim();
+  if (!naam) { document.getElementById('naam-error').style.display = 'block'; document.getElementById('naam-input').focus(); return; }
   document.getElementById('naam-error').style.display = 'none';
+  if (!usecase) { document.getElementById('usecase-error').style.display = 'block'; document.getElementById('usecase-input').focus(); return; }
+  document.getElementById('usecase-error').style.display = 'none';
+  window._deelnemerNaam = naam;
+  window._deelnemerUseCase = usecase;
   localStorage.setItem('umely_naam', naam);
   document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  document.querySelectorAll('.usecase-display').forEach(function(el) { el.textContent = usecase; });
   goTo('screen-fase-1');
 }
 

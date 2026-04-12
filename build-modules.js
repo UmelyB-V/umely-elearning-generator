@@ -46,6 +46,7 @@ const MODULE_ORDER = [
   'elearning-e6-agentic-workflows',
   'elearning-e7-portfolio-website',
   'elearning-e8-leeropdracht-e',
+  'elearning-i0-eindopdracht',
   'elearning-i1-praktijktoets',
   'elearning-i2-certificaat'
 ];

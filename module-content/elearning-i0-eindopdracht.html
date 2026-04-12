@@ -1,0 +1,493 @@
+<!-- TITLE: I0 - Eindopdracht: jouw Claude-werkplek -->
+<!-- SCHERMEN: 'screen-welcome','screen-fase-1','screen-fase-2','screen-fase-3','screen-afsluiting','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Jouw werkplek in kaart','screen-fase-2':'Fase 2 — Voer je use case end-to-end uit','screen-fase-3':'Fase 3 — Reflectie op wat je hebt gebouwd','screen-afsluiting':'Eindopdracht voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- QUIZ_START -->
+[
+  {"vraag":"Waarom zijn Custom Instructions in een Project waardevoller dan een losse prompt?","opties":["Omdat ze automatisch worden vertaald naar andere talen","Omdat ze actief blijven voor elk gesprek in dat Project — je hoeft je context niet steeds opnieuw uit te leggen","Omdat ze de antwoorden van Claude sneller maken","Omdat ze voorkomen dat Claude fouten maakt"],"correct":1,"uitleg":"Custom Instructions zijn persistent: ze gelden voor elk nieuw gesprek binnen het Project. Daarmee bouw je een werkplek die jouw context onthoudt, in plaats van een chatvenster waar je elke keer opnieuw moet uitleggen wie je bent."},
+  {"vraag":"Wat doet een Skill in Claude?","opties":["Een vaste set instructies die je aanroept met /[naam] om een specifieke taak te starten","Een plug-in die Claude verbindt met het internet","Een manier om Claude te laten tekenen","Een manier om Claude in Excel te gebruiken"],"correct":0,"uitleg":"Een Skill is een herbruikbare instructie die je aanroept met /[naam]. Je definieert hem eenmalig in een SKILL.md en roept hem aan wanneer je hem nodig hebt. Dat maakt complexe of terugkerende taken schaalbaar."},
+  {"vraag":"Wat is het kernverschil tussen een vage prompt en een goede prompt?","opties":["Een goede prompt is altijd langer","Een goede prompt geeft Claude context, rol, doel en gewenste uitvoer — een vage prompt doet dat niet","Een goede prompt gebruikt meer technische termen","Een goede prompt vraagt altijd om een lijst"],"correct":1,"uitleg":"Een vage prompt laat Claude raden wat je wilt. Een goede prompt geeft context (wie ben jij?), rol (wat moet Claude doen?), doel (wat moet het resultaat zijn?) en uitvoer (in welke vorm?). Die vier elementen bepalen de kwaliteit van het antwoord."},
+  {"vraag":"Wanneer anonimiseer je data voordat je het aan Claude geeft?","opties":["Nooit — Claude slaat niets op","Alleen als de data financieel van aard is","Als de data persoonsgegevens, vertrouwelijke bedrijfsinformatie of andere gevoelige informatie bevat","Alleen als je een betaald abonnement hebt"],"correct":2,"uitleg":"Je anonimiseert altijd als de data herleidbaar is naar personen of vertrouwelijke bedrijfsinformatie bevat. Dat geldt ongeacht het abonnement of de context. Privacyveilig werken is een gewoonte, geen uitzondering."},
+  {"vraag":"Wat is de kern van wat je in deze cursus hebt gebouwd?","opties":["Een chatbot voor je website","Een volledig geconfigureerde Claude-werkplek die aansluit op jouw specifieke use case","Een automatisch e-mailsysteem","Een nieuwe Claude-account met extra mogelijkheden"],"correct":1,"uitleg":"Je hebt niet alleen leren werken met Claude — je hebt een werkplek ingericht. Een prompttemplate, een privacyveilige aanpak, een Project met Custom Instructions, en optioneel Claude Code en een Skill. Dat is het verschil tussen Claude kennen en Claude gebruiken."}
+]
+<!-- QUIZ_END -->
+
+<style>
+.usecase-balk{background:rgba(255,133,20,0.1);border-left:3px solid #FF8514;padding:0.6rem 1rem;border-radius:0 8px 8px 0;margin-bottom:1.25rem;font-size:0.9rem;color:#27292D}
+.usecase-label{font-weight:700;color:#FF8514}
+.usecase-display{font-weight:700}
+.fase-indicator{display:flex;align-items:center;margin-bottom:1.5rem;justify-content:center}
+.fase-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:0.8rem;font-weight:700;background:#EDEBE8;color:rgba(39,41,45,0.4);flex-shrink:0}
+.fase-dot.actief{background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2}
+.fase-dot.voltooid{background:rgba(34,197,94,0.18);color:#16a34a;border:2px solid rgba(34,197,94,0.45)}
+.fase-lijn{flex:1;max-width:48px;height:2px;background:#EDEBE8}
+.prompt-box{background:#fff;border:1.5px solid rgba(39,41,45,0.12);border-radius:12px;padding:1.25rem 1.5rem;font-family:var(--font-b);font-size:0.9rem;line-height:1.8;white-space:pre-wrap;color:#27292D;margin-bottom:0.75rem;word-break:break-word}
+.kopieer-btn{display:inline-flex;align-items:center;gap:0.4rem;background:#27292D;color:#FFF8F2;font-family:var(--font-b);font-size:0.85rem;font-weight:700;padding:0.55rem 1.25rem;border-radius:50px;border:none;cursor:pointer;transition:background 0.2s;margin-bottom:1.25rem}
+.kopieer-btn:hover{background:#3a3f4a}
+.instructie-stap{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:0.55rem;font-size:0.9rem}
+.instructie-nr{flex-shrink:0;width:24px;height:24px;background:linear-gradient(135deg,#FF8514,#FF4D00);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;color:#FFF8F2;font-size:0.75rem}
+.instructie-balk{background:#27292D;color:#FFF8F2;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.instructie-balk h3{font-family:var(--font-h);color:#FFD964;margin-bottom:1rem;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em}
+.instructie-balk .i-rij{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:0.6rem;font-size:0.9rem;color:rgba(255,248,242,0.85)}
+.instructie-balk .i-nr{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:#FF8514;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;color:#fff;font-size:0.75rem}
+.fase-input-wrap{margin:1.25rem 0}
+.fase-input-label{font-family:var(--font-h);font-size:0.85rem;font-weight:700;color:#27292D;margin-bottom:0.4rem;display:block}
+.fase-input{width:100%;border:2px solid rgba(39,41,45,0.15);border-radius:12px;padding:0.75rem 1rem;font-family:var(--font-b);font-size:0.95rem;color:#27292D;background:#fff;outline:none;transition:border-color 0.2s;resize:vertical}
+.fase-input:focus{border-color:#FF8514}
+.fase-input-hint{font-size:0.8rem;color:rgba(39,41,45,0.5);margin-top:0.35rem}
+.fase-btn{display:inline-block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;font-family:var(--font-b);font-weight:700;font-size:0.95rem;padding:0.8rem 2rem;border-radius:50px;border:none;cursor:pointer;transition:opacity 0.2s,transform 0.1s;margin-top:1rem}
+.fase-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important}
+.fase-btn:not(:disabled):hover{opacity:0.9;transform:translateY(-1px)}
+.naam-input-blok{background:#fff;border:2px solid rgba(39,41,45,0.12);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem}
+.naam-error{color:#dc2626;font-size:0.85rem;margin-top:0.4rem;display:none}
+.afsluiting-hero{background:#27292D;color:#FFF8F2;border-radius:12px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.afsluiting-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,133,20,0.3) 0%,transparent 70%);border-radius:50%}
+.afsluiting-hero h2{font-family:var(--font-h);font-size:1.8rem;margin-bottom:0.75rem;position:relative}
+.afsluiting-hero p{color:rgba(255,248,242,0.85);position:relative;margin-bottom:0.5rem}
+.claude-float{position:fixed;bottom:4.5rem;right:1.5rem;z-index:9990}
+.claude-float a{display:block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;text-decoration:none;padding:10px 18px;border-radius:50px;font-size:0.8rem;font-weight:700;font-family:var(--font-b);box-shadow:0 4px 15px rgba(255,133,20,0.4);transition:all 0.2s;white-space:nowrap}
+.claude-float a:hover{opacity:0.9;transform:translateY(-2px)}
+.prompt-label{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#FF8514;margin-bottom:0.5rem;display:block}
+.checklist-kaart{background:#fff;border:1.5px solid rgba(39,41,45,0.1);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:0.75rem;display:flex;gap:1rem;align-items:flex-start}
+.checklist-badge{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#FF8514,#FF4D00);display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;color:#FFF8F2;font-size:0.8rem}
+.checklist-badge.optioneel{background:#EDEBE8;color:rgba(39,41,45,0.5)}
+.checklist-content h4{font-family:var(--font-h);font-size:0.95rem;margin:0 0 0.2rem;color:#27292D}
+.checklist-content p{margin:0;font-size:0.875rem;color:rgba(39,41,45,0.7)}
+.checklist-optioneel-tag{display:inline-block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:rgba(39,41,45,0.45);background:#EDEBE8;border-radius:50px;padding:0.1rem 0.6rem;margin-left:0.4rem;vertical-align:middle}
+.gebouwd-lijst{list-style:none;padding:0;margin:0}
+.gebouwd-lijst li{padding:0.55rem 0 0.55rem 1.75rem;position:relative;border-bottom:1px solid rgba(39,41,45,0.08);font-size:0.95rem}
+.gebouwd-lijst li:last-child{border-bottom:none}
+.gebouwd-lijst li::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:12px;height:12px;background:linear-gradient(135deg,#FF8514,#FF4D00);border-radius:50%}
+.gebouwd-lijst li.optioneel::before{background:#EDEBE8;border:2px solid rgba(39,41,45,0.2)}
+.reflectie-teller{font-size:0.8rem;margin-top:0.35rem;font-weight:600;transition:color 0.2s}
+#nav-screen-fase-1 .btn,
+#nav-screen-fase-2 .btn,
+#nav-screen-fase-3 .btn,
+#nav-screen-afsluiting{display:none!important}
+</style>
+
+<!-- WELKOMSTSCHERM -->
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>Eindopdracht: jouw Claude-werkplek</h1>
+    <p>Dit is de eindopdracht. Je hebt door de hele cursus één use case uitgebouwd. Nu voer je hem end-to-end uit en laat je zien wat je hebt gebouwd.</p>
+  </div>
+
+  <div class="naam-input-blok">
+    <label class="fase-input-label" for="naam-input">Wat is je naam?</label>
+    <input type="text" id="naam-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Vul je naam in" autocomplete="name">
+    <div id="naam-error" class="naam-error">Vul je naam in om verder te gaan.</div>
+    <label class="fase-input-label" for="usecase-input" style="margin-top:1rem;">Wat is jouw use case?</label>
+    <input type="text" id="usecase-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: vergaderverslagen schrijven voor mijn team" autocomplete="off">
+    <div id="usecase-error" class="naam-error">Beschrijf je use case om verder te gaan.</div>
+  </div>
+
+  <div class="instructie-balk">
+    <h3>Wat je nodig hebt</h3>
+    <div class="i-rij"><div class="i-nr">1</div><div>Je prompttemplate uit leeropdracht A4</div></div>
+    <div class="i-rij"><div class="i-nr">2</div><div>Je veilige werkopdracht (geanonimiseerde data) uit leeropdracht B4</div></div>
+    <div class="i-rij"><div class="i-nr">3</div><div>De naam van je Project uit leeropdracht C8</div></div>
+    <div class="i-rij"><div class="i-nr">4</div><div>Optioneel: je CLAUDE.md uit leeropdracht D5 en je Skill-naam uit leeropdracht E8</div></div>
+  </div>
+
+  <div class="tijdsbadge">Geschatte tijd: 20-30 minuten</div>
+
+  <div class="leerdoelen">
+    <h3>Na deze opdracht heb je:</h3>
+    <ul>
+      <li>Je use case end-to-end uitgevoerd met je geconfigureerde Claude-werkplek</li>
+      <li>Beschreven wat je in elke leeropdracht hebt gebouwd</li>
+      <li>Laten zien dat je Claude begrijpt als gereedschap, niet als zoekmachine</li>
+    </ul>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="btn" onclick="startEindopdracht()">Start de eindopdracht →</button>
+  </div>
+</div>
+
+<!-- FASE 1: JOUW WERKPLEK IN KAART -->
+<div id="screen-fase-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 1 van 3</div>
+    <h2>Jouw werkplek in kaart</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot actief">1</div><div class="fase-lijn"></div>
+    <div class="fase-dot">2</div><div class="fase-lijn"></div>
+    <div class="fase-dot">3</div>
+  </div>
+
+  <div id="usecase-balk-fase1" class="usecase-balk" style="display:none;">
+    <span class="usecase-label">Jouw use case: </span><span class="usecase-display deelnemer-usecase"></span>
+  </div>
+
+  <div class="content-card">
+    <p>Voordat je je use case uitvoert, breng je in kaart wat je hebt gebouwd. Elke leeropdracht heeft een bouwsteen opgeleverd. Controleer welke bouwstenen je hebt.</p>
+  </div>
+
+  <div class="checklist-kaart">
+    <div class="checklist-badge">A4</div>
+    <div class="checklist-content">
+      <h4>Prompttemplate</h4>
+      <p>Een herbruikbare prompt die is afgestemd op jouw use case, toon en werkcontext.</p>
+    </div>
+  </div>
+  <div class="checklist-kaart">
+    <div class="checklist-badge">B4</div>
+    <div class="checklist-content">
+      <h4>Veilige werkopdracht</h4>
+      <p>Een geanonimiseerde versie van jouw data waarmee je veilig kunt werken zonder privacyrisico.</p>
+    </div>
+  </div>
+  <div class="checklist-kaart">
+    <div class="checklist-badge">C8</div>
+    <div class="checklist-content">
+      <h4>Geconfigureerde Claude</h4>
+      <p>Een Project in claude.ai met Custom Instructions die jouw context, rol en toon vastleggen.</p>
+    </div>
+  </div>
+  <div class="checklist-kaart">
+    <div class="checklist-badge optioneel">D5</div>
+    <div class="checklist-content">
+      <h4>Claude Code <span class="checklist-optioneel-tag">Optioneel</span></h4>
+      <p>Een CLAUDE.md met projectgeheugen voor technische taken via Claude Code.</p>
+    </div>
+  </div>
+  <div class="checklist-kaart">
+    <div class="checklist-badge optioneel">E8</div>
+    <div class="checklist-content">
+      <h4>Connector + Skill <span class="checklist-optioneel-tag">Optioneel</span></h4>
+      <p>Een aangesloten databron via een Connector, en een Skill die je aanroept met /[naam].</p>
+    </div>
+  </div>
+
+  <div class="visual-block">
+    <svg viewBox="0 0 580 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <rect width="580" height="110" fill="#27292D" rx="10"/>
+      <!-- labels boven -->
+      <text x="42" y="22" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFD964" text-anchor="middle">A4</text>
+      <text x="132" y="22" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFD964" text-anchor="middle">B4</text>
+      <text x="222" y="22" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFD964" text-anchor="middle">C8</text>
+      <text x="312" y="22" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="rgba(255,248,242,0.35)" text-anchor="middle">D5</text>
+      <text x="402" y="22" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="rgba(255,248,242,0.35)" text-anchor="middle">E8</text>
+      <text x="510" y="22" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FF8514" text-anchor="middle">I0</text>
+      <!-- cirkels -->
+      <circle cx="42" cy="55" r="18" fill="#FF8514"/>
+      <text x="42" y="59" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFF8F2" text-anchor="middle">Prompt</text>
+      <line x1="60" y1="55" x2="114" y2="55" stroke="rgba(255,248,242,0.25)" stroke-width="2" stroke-dasharray="4,3"/>
+      <circle cx="132" cy="55" r="18" fill="#FF8514"/>
+      <text x="132" y="59" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFF8F2" text-anchor="middle">Privacy</text>
+      <line x1="150" y1="55" x2="204" y2="55" stroke="rgba(255,248,242,0.25)" stroke-width="2" stroke-dasharray="4,3"/>
+      <circle cx="222" cy="55" r="18" fill="#FF8514"/>
+      <text x="222" y="59" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFF8F2" text-anchor="middle">Project</text>
+      <line x1="240" y1="55" x2="294" y2="55" stroke="rgba(255,248,242,0.2)" stroke-width="2" stroke-dasharray="4,3"/>
+      <circle cx="312" cy="55" r="18" fill="rgba(255,248,242,0.12)"/>
+      <text x="312" y="59" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="rgba(255,248,242,0.4)" text-anchor="middle">Code</text>
+      <line x1="330" y1="55" x2="384" y2="55" stroke="rgba(255,248,242,0.2)" stroke-width="2" stroke-dasharray="4,3"/>
+      <circle cx="402" cy="55" r="18" fill="rgba(255,248,242,0.12)"/>
+      <text x="402" y="59" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="rgba(255,248,242,0.4)" text-anchor="middle">Skill</text>
+      <line x1="420" y1="55" x2="474" y2="55" stroke="rgba(255,248,242,0.2)" stroke-width="2" stroke-dasharray="4,3"/>
+      <circle cx="510" cy="55" r="24" fill="#FF4D00"/>
+      <text x="510" y="52" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFF8F2" text-anchor="middle">Eind-</text>
+      <text x="510" y="63" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFF8F2" text-anchor="middle">opdracht</text>
+      <!-- labels onder -->
+      <text x="42" y="85" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,248,242,0.5)" text-anchor="middle">Template</text>
+      <text x="132" y="85" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,248,242,0.5)" text-anchor="middle">Anonimiseren</text>
+      <text x="222" y="85" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,248,242,0.5)" text-anchor="middle">Configuratie</text>
+      <text x="312" y="85" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,248,242,0.3)" text-anchor="middle">CLAUDE.md</text>
+      <text x="402" y="85" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,248,242,0.3)" text-anchor="middle">Connector</text>
+      <text x="510" y="95" font-family="Arial, sans-serif" font-size="8" fill="#FFD964" text-anchor="middle">Alles samen</text>
+    </svg>
+  </div>
+
+  <div class="content-card">
+    <span class="prompt-label">Verifieer je instellingen — kopieer naar Claude.ai</span>
+    <div class="prompt-box" id="fase1-verificatie-prompt">Wat zijn je huidige Custom Instructions? En welke Connectors zijn aangesloten op dit Project?</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase1-verificatie-prompt').innerText, this)">Kopieer prompt</button>
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Open je Project uit C8 in claude.ai.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Kopieer de prompt hierboven en stuur hem op.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Controleer of Claude de juiste instructies teruggeeft.</div></div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase1-input">Beschrijf in één zin je use case en wat je hebt ingesteld.</label>
+    <input type="text" id="fase1-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: Ik maak statusrapporten — ik heb een Project met instructions over mijn rol en toon, plus Google Drive." oninput="checkFase1Input()">
+    <div class="fase-input-hint">Minimaal 30 tekens. Noem je use case en minimaal één instelling die je hebt geconfigureerd.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase1-door" onclick="goTo('screen-fase-2')" disabled>Fase 1 voltooid — verder naar fase 2 →</button>
+  </div>
+</div>
+
+<!-- FASE 2: VOER JE USE CASE END-TO-END UIT -->
+<div id="screen-fase-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 2 van 3</div>
+    <h2>Voer je use case end-to-end uit</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">2</div><div class="fase-lijn"></div>
+    <div class="fase-dot">3</div>
+  </div>
+
+  <div id="usecase-balk-fase2" class="usecase-balk" style="display:none;">
+    <span class="usecase-label">Jouw use case: </span><span class="usecase-display deelnemer-usecase"></span>
+  </div>
+
+  <div class="content-card">
+    <p>Nu gebruik je alles wat je hebt gebouwd. Geen oefening — je voert je echte use case uit met je complete werkplek. Volg de stappen hieronder in volgorde.</p>
+  </div>
+
+  <div class="stappen-lijst">
+    <div class="stap-item">
+      <div class="stap-nummer">1</div>
+      <div class="stap-content">
+        <h4>Open je Project in claude.ai</h4>
+        <p>Ga naar claude.ai en open het Project dat je in C8 hebt aangemaakt. Je Custom Instructions zijn actief zodra je een nieuw gesprek start vanuit dat Project.</p>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">2</div>
+      <div class="stap-content">
+        <h4>Gebruik je prompttemplate uit A4</h4>
+        <p>Pak je prompttemplate erbij. Vul hem in met je geanonimiseerde data uit B4. Stuur de opdracht op.</p>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">3</div>
+      <div class="stap-content">
+        <h4>Roep je Skill aan (als je E8 hebt gedaan)</h4>
+        <p>Heb je een Skill geschreven? Roep hem aan met /[naam]. Claude voert de Skill uit op jouw input.</p>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">4</div>
+      <div class="stap-content">
+        <h4>Beoordeel het resultaat</h4>
+        <p>Is het resultaat bruikbaar voor je echte werk? Sluit de toon aan op wat je hebt ingesteld? Als iets niet klopt, pas dan je template of Custom Instructions aan en probeer opnieuw.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-block">
+    <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <rect width="580" height="200" fill="#27292D" rx="10"/>
+      <text x="290" y="26" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#FFD964" text-anchor="middle" letter-spacing="1">JOUW CLAUDE-WERKPLEK</text>
+      <!-- laag 1: Project -->
+      <rect x="30" y="38" width="520" height="40" rx="8" fill="rgba(255,133,20,0.18)" stroke="#FF8514" stroke-width="1.5"/>
+      <text x="50" y="62" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FF8514">PROJECT</text>
+      <text x="130" y="62" font-family="Arial, sans-serif" font-size="9.5" fill="rgba(255,248,242,0.7)">Naam + Custom Instructions (rol, toon, context)</text>
+      <!-- laag 2: Connector + Skill -->
+      <rect x="30" y="90" width="248" height="40" rx="8" fill="rgba(255,248,242,0.06)" stroke="rgba(255,248,242,0.2)" stroke-width="1.5"/>
+      <text x="50" y="114" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="rgba(255,248,242,0.5)">CONNECTOR</text>
+      <text x="135" y="114" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.35)">Databron (optioneel)</text>
+      <rect x="302" y="90" width="248" height="40" rx="8" fill="rgba(255,248,242,0.06)" stroke="rgba(255,248,242,0.2)" stroke-width="1.5"/>
+      <text x="322" y="114" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="rgba(255,248,242,0.5)">SKILL</text>
+      <text x="368" y="114" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.35)">/naam — herbruikbare instructie (optioneel)</text>
+      <!-- laag 3: Input -->
+      <rect x="30" y="142" width="248" height="40" rx="8" fill="rgba(255,77,0,0.15)" stroke="#FF4D00" stroke-width="1.5"/>
+      <text x="50" y="166" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FF8514">PROMPTTEMPLATE</text>
+      <text x="168" y="166" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.6)">(A4)</text>
+      <rect x="302" y="142" width="248" height="40" rx="8" fill="rgba(255,77,0,0.15)" stroke="#FF4D00" stroke-width="1.5"/>
+      <text x="322" y="166" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FF8514">VEILIGE DATA</text>
+      <text x="420" y="166" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.6)">(B4)</text>
+    </svg>
+  </div>
+
+  <div class="content-card">
+    <span class="prompt-label">Je prompttemplate als vertrekpunt</span>
+    <div class="prompt-box" id="fase2-template-prompt">[Jouw prompttemplate uit A4 — pas aan voor deze uitvoering]</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-template-prompt').innerText, this)">Kopieer template</button>
+    <p style="font-size:0.82rem;color:rgba(39,41,45,0.5);margin-top:-0.5rem;margin-bottom:0;">Vervang de placeholder door je eigen prompttemplate uit A4 voordat je hem verzendt.</p>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase2-input">Plak de eerste alinea van Claude's output hieronder.</label>
+    <textarea id="fase2-input" class="fase-input" rows="4" placeholder="Plak hier de eerste alinea van Claude's antwoord..." oninput="checkFase2Input()"></textarea>
+    <div class="fase-input-hint">Minimaal 50 tekens. Dit bevestigt dat je de opdracht daadwerkelijk hebt uitgevoerd.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase2-door" onclick="goTo('screen-fase-3')" disabled>Fase 2 voltooid — verder naar fase 3 →</button>
+  </div>
+</div>
+
+<!-- FASE 3: REFLECTIE -->
+<div id="screen-fase-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 3 van 3</div>
+    <h2>Reflectie</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">3</div>
+  </div>
+
+  <div id="usecase-balk-fase3" class="usecase-balk" style="display:none;">
+    <span class="usecase-label">Jouw use case: </span><span class="usecase-display deelnemer-usecase"></span>
+  </div>
+
+  <div class="content-card">
+    <p>Je hebt je werkplek gebouwd en je use case uitgevoerd. Nu leg je vast wat je hebt geleerd. Niet voor een ander — maar als referentiepunt voor jezelf.</p>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="reflectie-1">Wat is het grootste verschil tussen hoe je Claude nu gebruikt en hoe je begon?</label>
+    <textarea id="reflectie-1" class="fase-input" rows="3" placeholder="Schrijf hier je antwoord..." oninput="checkFase3Input()"></textarea>
+    <div class="fase-input-hint">Denk aan het verschil tussen je eerste vage prompt (A4) en je huidige gebruik met Project en Custom Instructions.</div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="reflectie-2">Welk onderdeel van je werkplek is het meest waardevol voor jouw dagelijkse werk?</label>
+    <textarea id="reflectie-2" class="fase-input" rows="3" placeholder="Schrijf hier je antwoord..." oninput="checkFase3Input()"></textarea>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="reflectie-3">Wat zou je nog willen toevoegen of verbeteren?</label>
+    <textarea id="reflectie-3" class="fase-input" rows="3" placeholder="Schrijf hier je antwoord..." oninput="checkFase3Input()"></textarea>
+  </div>
+
+  <div id="reflectie-teller" class="reflectie-teller" style="color:#dc2626;">0 / 80 tekens totaal</div>
+
+  <div class="tip-box" style="margin-top:1.25rem;">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Je kunt deze antwoorden bewaren als referentiepunt — ze laten zien hoe ver je bent gekomen.</p>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase3-door" onclick="voltooiFase3()" disabled>Eindopdracht afronden →</button>
+  </div>
+</div>
+
+<!-- AFSLUITING -->
+<div id="screen-afsluiting" class="screen">
+  <div class="afsluiting-hero">
+    <div class="welcome-badge" style="margin-bottom:1rem;">Eindopdracht voltooid</div>
+    <h2>Gefeliciteerd, <span class="deelnemer-naam">...</span>.</h2>
+    <p>Je eindopdracht is voltooid. Je hebt niet alleen geleerd hoe Claude werkt — je hebt hem ingericht als een echte werkomgeving voor jouw situatie. Dat is het verschil tussen Claude kennen en Claude gebruiken.</p>
+  </div>
+
+  <div class="leerdoelen" style="margin-bottom:1.5rem;">
+    <h3>Wat je hebt gebouwd</h3>
+    <ul class="gebouwd-lijst">
+      <li>Een herbruikbare prompttemplate afgestemd op jouw use case</li>
+      <li>Een privacyveilige aanpak voor het werken met gevoelige data</li>
+      <li>Een volledig geconfigureerde Claude-werkplek met Project en Custom Instructions</li>
+      <li class="optioneel">Claude Code met CLAUDE.md (optioneel)</li>
+      <li class="optioneel">Een Connector en Skill voor geautomatiseerde taken (optioneel)</li>
+    </ul>
+  </div>
+
+  <div class="content-card">
+    <p>Je hebt niet alleen geleerd hoe Claude werkt — je hebt hem ingericht als een echte werkomgeving voor jouw situatie. Dat is het verschil tussen Claude kennen en Claude gebruiken.</p>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz →</button>
+  </div>
+</div>
+
+<!-- Floating Claude.ai knop -->
+<div class="claude-float">
+  <a href="https://claude.ai" target="_blank">Open Claude.ai →</a>
+</div>
+
+<script>
+function startEindopdracht() {
+  var naam = document.getElementById('naam-input').value.trim();
+  var usecase = document.getElementById('usecase-input').value.trim();
+  var naamErr = document.getElementById('naam-error');
+  var ucErr = document.getElementById('usecase-error');
+  var ok = true;
+  if (!naam) { naamErr.style.display = 'block'; document.getElementById('naam-input').focus(); ok = false; } else { naamErr.style.display = 'none'; }
+  if (!usecase) { ucErr.style.display = 'block'; if (ok) document.getElementById('usecase-input').focus(); ok = false; } else { ucErr.style.display = 'none'; }
+  if (!ok) return;
+  localStorage.setItem('umely_naam', naam);
+  localStorage.setItem('umely_usecase', usecase);
+  document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  document.querySelectorAll('.deelnemer-usecase').forEach(function(el) { el.textContent = usecase; });
+  document.querySelectorAll('[id^="usecase-balk-"]').forEach(function(el) { el.style.display = 'block'; });
+  goTo('screen-fase-1');
+}
+
+function kopieerElement(tekst, knop) {
+  var done = function() {
+    var orig = knop.textContent;
+    knop.textContent = '✓ Gekopieerd!';
+    knop.style.background = '#16a34a';
+    setTimeout(function() { knop.textContent = orig; knop.style.background = ''; }, 2000);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(tekst.trim()).then(done).catch(function() { fbKopieer(tekst, done); });
+  } else { fbKopieer(tekst, done); }
+}
+
+function fbKopieer(tekst, cb) {
+  var ta = document.createElement('textarea');
+  ta.value = tekst.trim();
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  if (cb) cb();
+}
+
+function checkFase1Input() {
+  var val = document.getElementById('fase1-input').value.trim();
+  var btn = document.getElementById('btn-fase1-door');
+  if (btn) btn.disabled = val.length < 30;
+}
+
+function checkFase2Input() {
+  var val = document.getElementById('fase2-input').value.trim();
+  var btn = document.getElementById('btn-fase2-door');
+  if (btn) btn.disabled = val.length < 50;
+}
+
+function checkFase3Input() {
+  var r1 = document.getElementById('reflectie-1').value.trim();
+  var r2 = document.getElementById('reflectie-2').value.trim();
+  var r3 = document.getElementById('reflectie-3').value.trim();
+  var totaal = r1.length + r2.length + r3.length;
+  var teller = document.getElementById('reflectie-teller');
+  if (teller) {
+    teller.textContent = totaal + ' / 80 tekens totaal';
+    teller.style.color = totaal >= 80 ? '#16a34a' : '#dc2626';
+  }
+  var btn = document.getElementById('btn-fase3-door');
+  if (btn) btn.disabled = totaal < 80;
+}
+
+function voltooiFase3() {
+  var r1 = document.getElementById('reflectie-1').value.trim();
+  var r2 = document.getElementById('reflectie-2').value.trim();
+  var r3 = document.getElementById('reflectie-3').value.trim();
+  if ((r1.length + r2.length + r3.length) < 80) return;
+  localStorage.setItem('umely_eindopdracht_voltooid', 'true');
+  goTo('screen-afsluiting');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var naam = localStorage.getItem('umely_naam');
+  var usecase = localStorage.getItem('umely_usecase');
+  if (naam) {
+    var inp = document.getElementById('naam-input');
+    if (inp) inp.value = naam;
+    document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  }
+  if (usecase) {
+    var uci = document.getElementById('usecase-input');
+    if (uci) uci.value = usecase;
+    document.querySelectorAll('.deelnemer-usecase').forEach(function(el) { el.textContent = usecase; });
+    document.querySelectorAll('[id^="usecase-balk-"]').forEach(function(el) { el.style.display = 'block'; });
+  }
+});
+</script>
