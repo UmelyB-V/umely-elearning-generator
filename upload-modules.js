@@ -105,7 +105,7 @@ async function verifyModule(slug) {
     headers: {
       'apikey':          SUPABASE_KEY,
       'Authorization':   `Bearer ${SUPABASE_KEY}`,
-      'Content-Profile': 'elearning',
+      'Accept-Profile':  'elearning',
       'Accept':          'application/json',
     },
   });

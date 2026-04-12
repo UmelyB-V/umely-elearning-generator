@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificaat | Umely</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --amber: #FF8514;
+  --flame: #FF4D00;
+  --charcoal: #27292D;
+  --warm-white: #FFF8F2;
+  --border: #EAE6E0;
+  --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--warm-white);
+  color: var(--charcoal);
+  min-height: 100vh;
+}
+
+/* ── TOP BAR (hidden in print) ── */
+.topbar {
+  background: var(--charcoal);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  font-family: 'Arimo', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+}
+.topbar-logo img { height: 56px; filter: brightness(0) invert(1); }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.btn-back {
+  padding: 7px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  background: none;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.btn-back:hover { background: rgba(255,255,255,0.1); color: white; }
+.btn-print {
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  background: var(--gradient);
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.btn-print:hover { opacity: 0.88; }
+
+/* ── LOADING / ERROR STATES ── */
+#loadingState, #errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 56px);
+  gap: 16px;
+  color: #777;
+  font-size: 15px;
+}
+#errorState { display: none; }
+
+/* ── CERTIFICATE WRAPPER ── */
+#certWrap {
+  display: none;
+  padding: 40px 24px 60px;
+  display: none;
+  justify-content: center;
+}
+
+/* ── CERTIFICATE ── */
+.cert {
+  width: 760px;
+  max-width: 100%;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(39,41,45,0.14);
+  position: relative;
+}
+
+/* Orange top band */
+.cert-top-band {
+  height: 8px;
+  background: var(--gradient);
+}
+
+/* Corner decorations */
+.cert-body {
+  padding: 52px 64px 48px;
+  position: relative;
+}
+.cert-body::before,
+.cert-body::after {
+  content: '';
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-color: var(--amber);
+  border-style: solid;
+  opacity: 0.35;
+}
+.cert-body::before {
+  top: 28px;
+  left: 28px;
+  border-width: 2px 0 0 2px;
+}
+.cert-body::after {
+  bottom: 28px;
+  right: 28px;
+  border-width: 0 2px 2px 0;
+}
+
+/* Additional corner pieces via pseudo-elements on inner div */
+.cert-corners::before,
+.cert-corners::after {
+  content: '';
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-color: var(--amber);
+  border-style: solid;
+  opacity: 0.35;
+}
+.cert-corners::before {
+  top: 28px;
+  right: 28px;
+  border-width: 2px 2px 0 0;
+}
+.cert-corners::after {
+  bottom: 28px;
+  left: 28px;
+  border-width: 0 0 2px 2px;
+}
+
+.cert-issuer {
+  font-family: 'Arimo', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.cert-declares {
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.cert-name {
+  font-family: 'Arimo', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--charcoal);
+  text-align: center;
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+
+.cert-name-fallback {
+  font-family: 'Arimo', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #555;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.cert-subtitle {
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* Badge */
+.cert-badge-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.cert-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--warm-white);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 36px;
+  gap: 6px;
+}
+.cert-badge-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+.cert-badge-title {
+  font-family: 'Arimo', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--charcoal);
+  text-align: center;
+}
+.cert-badge-sub {
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+}
+
+/* Divider */
+.cert-divider {
+  border: none;
+  border-top: 1.5px solid var(--border);
+  margin: 28px 0;
+}
+
+/* Module grid */
+.cert-modules-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #C0B0A4;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.cert-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px 12px;
+  margin-bottom: 28px;
+}
+.cert-module-item {
+  font-size: 11.5px;
+  color: #666;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  line-height: 1.4;
+}
+.cert-module-check {
+  color: var(--amber);
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Footer meta */
+.cert-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1.5px solid var(--border);
+  padding-top: 24px;
+}
+.cert-meta-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cert-meta-row {
+  font-size: 11px;
+  color: #999;
+}
+.cert-meta-row strong {
+  color: #666;
+  font-weight: 600;
+}
+.cert-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.cert-seal-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid var(--amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FFF4E8, #FFE8D0);
+}
+.cert-seal-inner {
+  font-family: 'Arimo', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--flame);
+  text-align: center;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+}
+.cert-seal-label {
+  font-size: 9px;
+  color: #C0B0A4;
+  text-align: center;
+}
+
+/* ── PRINT ── */
+@media print {
+  .topbar, .no-print { display: none !important; }
+  body { background: white; }
+  #certWrap { padding: 0; display: flex !important; }
+  .cert { border-radius: 0; box-shadow: none; width: 100%; max-width: none; }
+  @page { margin: 0; size: A4 landscape; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar no-print">
+  <a class="topbar-logo" href="/modules.html">
+    <img src="/logo-small.png" alt="Umely">
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="/modules.html">&#8592; Terug naar bibliotheek</a>
+    <button class="btn-print" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Opslaan als PDF
+    </button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div id="loadingState">
+  <div style="width:36px;height:36px;border:3px solid #EAE6E0;border-top-color:#FF8514;border-radius:50%;animation:spin 0.7s linear infinite;"></div>
+  <span>Certificaat laden...</span>
+</div>
+
+<!-- Error -->
+<div id="errorState">
+  <div style="font-size:40px;">🔒</div>
+  <div id="errorMsg">Certificaat niet beschikbaar. Rond alle modules af om het certificaat te ontgrendelen.</div>
+  <a href="/modules.html" style="margin-top:8px;color:#FF8514;text-decoration:none;font-weight:600;">&#8592; Naar de bibliotheek</a>
+</div>
+
+<!-- Certificate -->
+<div id="certWrap">
+  <div class="cert">
+    <div class="cert-top-band"></div>
+    <div class="cert-body">
+      <div class="cert-corners"></div>
+
+      <div class="cert-issuer">Umely</div>
+
+      <div class="cert-declares">Hiermee wordt verklaard dat</div>
+      <div id="certName" class="cert-name"></div>
+      <div class="cert-subtitle" id="certEmail"></div>
+
+      <div class="cert-badge-wrap">
+        <div class="cert-badge">
+          <div class="cert-badge-icon">🎓</div>
+          <div class="cert-badge-title">Umely Claude Bekwaamheidscertificaat</div>
+          <div class="cert-badge-sub">alle modules met succes heeft afgerond</div>
+        </div>
+      </div>
+
+      <hr class="cert-divider">
+
+      <div class="cert-modules-label">Afgeronde modules</div>
+      <div class="cert-modules-grid" id="certModulesGrid"></div>
+
+      <div class="cert-meta">
+        <div class="cert-meta-left">
+          <div class="cert-meta-row"><strong>Datum van voltooiing:</strong> <span id="certDate">-</span></div>
+          <div class="cert-meta-row"><strong>Certificaatnummer:</strong> <span id="certNumber">-</span></div>
+          <div class="cert-meta-row" style="margin-top:8px;font-size:10px;color:#C0B0A4;">umely.nl / e-learning</div>
+        </div>
+        <div class="cert-seal">
+          <div class="cert-seal-ring">
+            <div class="cert-seal-inner">UMELY<br>CERTIFIED</div>
+          </div>
+          <div class="cert-seal-label">Claude Bekwaam</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+(async () => {
+  let supabaseClient = null;
+
+  // Initialize Supabase
+  try {
+    const cfgRes = await fetch('/api/config');
+    const cfg = await cfgRes.json();
+    supabaseClient = supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+  } catch(e) {
+    showError('Kon verbinding niet maken. Probeer opnieuw.');
+    return;
+  }
+
+  // Check session
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = '/modules.html';
+    return;
+  }
+
+  // Fetch certificate data
+  let data;
+  try {
+    const res = await fetch('/api/certificate', {
+      headers: { 'Authorization': 'Bearer ' + session.access_token }
+    });
+    if (!res.ok) throw new Error('server');
+    data = await res.json();
+  } catch(e) {
+    showError('Kon certificaatgegevens niet ophalen.');
+    return;
+  }
+
+  if (!data.allCompleted) {
+    const remaining = data.totalModules - data.completedCount;
+    showError(`Je hebt nog ${remaining} module${remaining === 1 ? '' : 's'} te gaan. Rond alle ${data.totalModules} modules af om het certificaat te ontgrendelen.`);
+    return;
+  }
+
+  // Populate certificate
+  const nameEl = document.getElementById('certName');
+  if (data.name) {
+    nameEl.textContent = data.name;
+    nameEl.className = 'cert-name';
+  } else {
+    nameEl.textContent = data.email;
+    nameEl.className = 'cert-name-fallback';
+  }
+
+  document.getElementById('certEmail').textContent = data.name ? data.email : '';
+
+  // Date
+  const dateEl = document.getElementById('certDate');
+  if (data.completedAt) {
+    const d = new Date(data.completedAt);
+    dateEl.textContent = d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+  } else {
+    dateEl.textContent = new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  // Certificate number: UME-{user hash}-{year}
+  const hash = Array.from(data.email).reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  document.getElementById('certNumber').textContent = 'UME-' + String(hash).padStart(6, '0') + '-' + new Date().getFullYear();
+
+  // Modules grid
+  const grid = document.getElementById('certModulesGrid');
+  (data.modules || []).forEach(m => {
+    const item = document.createElement('div');
+    item.className = 'cert-module-item';
+    item.innerHTML = '<span class="cert-module-check">&#10003;</span><span>' + escapeHtml(m.title) + '</span>';
+    grid.appendChild(item);
+  });
+
+  // Show certificate
+  document.getElementById('loadingState').style.display = 'none';
+  const certWrap = document.getElementById('certWrap');
+  certWrap.style.display = 'flex';
+
+  function escapeHtml(str) {
+    return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function showError(msg) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorMsg').textContent = msg;
+    document.getElementById('errorState').style.display = 'flex';
+  }
+})();
+
+function showError(msg) {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('errorMsg').textContent = msg;
+  document.getElementById('errorState').style.display = 'flex';
+}
+</script>
+</body>
+</html>

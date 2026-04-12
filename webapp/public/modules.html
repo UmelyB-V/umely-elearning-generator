@@ -83,6 +83,19 @@ header { background: var(--charcoal); height: 64px; padding: 0 24px; display: fl
 .btn-continue { background: var(--gradient); color: white; border: none; border-radius: 50px; padding: 11px 22px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-flex; align-items: center; transition: opacity 0.15s; }
 .btn-continue:hover { opacity: 0.88; }
 
+/* ── CERT BANNER ── */
+#certificaatSection { display: none; margin-bottom: 28px; }
+.cert-banner { background: var(--charcoal); border-radius: 20px; padding: 22px 28px; display: flex; align-items: center; gap: 20px; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(39,41,45,0.2); }
+.cert-banner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 160px; height: 160px; background: rgba(255,133,20,0.1); border-radius: 50%; pointer-events: none; }
+.cert-banner::after { content: ''; position: absolute; bottom: -30px; right: 80px; width: 100px; height: 100px; background: rgba(255,77,0,0.07); border-radius: 50%; pointer-events: none; }
+.cert-banner-icon { width: 52px; height: 52px; background: var(--gradient); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.cert-banner-info { flex: 1; min-width: 0; }
+.cert-banner-tag { font-size: 10px; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+.cert-banner-title { font-size: 17px; font-weight: 800; color: white; margin-bottom: 5px; }
+.cert-banner-sub { font-size: 12.5px; color: rgba(255,255,255,0.55); }
+.btn-cert { background: var(--gradient); color: white; border: none; border-radius: 50px; padding: 12px 24px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; transition: opacity 0.15s; }
+.btn-cert:hover { opacity: 0.88; }
+
 /* ── STATS ── */
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
 .stat-card { background: white; border-radius: 16px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: none; }
@@ -327,6 +340,22 @@ footer a { color: white; font-weight: 700; text-decoration: none; }
       </div>
     </div>
 
+    <!-- Certificaat banner -->
+    <div id="certificaatSection">
+      <div class="cert-banner">
+        <div class="cert-banner-icon">🎓</div>
+        <div class="cert-banner-info">
+          <div class="cert-banner-tag">Gefeliciteerd</div>
+          <div class="cert-banner-title">Je hebt alle modules afgerond!</div>
+          <div class="cert-banner-sub">Download je Umely Claude Bekwaamheidscertificaat</div>
+        </div>
+        <a class="btn-cert" href="/certificate.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Certificaat downloaden
+        </a>
+      </div>
+    </div>
+
     <!-- Stats -->
     <div class="stats-row" id="statsRow" style="display:none;">
       <div class="stat-card">
@@ -414,18 +443,23 @@ const CATEGORIES = {
   c: { title: 'C — Claude gebruiken', icon: '💻' },
   d: { title: 'D — Claude Code', icon: '⌨️' },
   e: { title: 'E — MCP & Skills', icon: '🔌' },
-  i: { title: 'I — Afsluiting', icon: '🏆' }
+  i: { title: 'I — Uitrol & Afsluiting', icon: '🏆' }
 };
 const CAT_ICONS = { a:'🎓', b:'🔒', c:'💻', d:'⌨️', e:'🔌', i:'🏆' };
+
+// Uitzonderingen: slugs die in een andere categorie vallen dan hun letter doet vermoeden
+const CAT_OVERRIDE = {
+  'elearning-c7-organisatie': 'i'
+};
 
 // Gewenste volgorde per categorie. Modules niet in deze lijst verschijnen achteraan.
 const MODULE_ORDER = {
   a: ['elearning-a1-wat-is-claude','elearning-a2-ecosysteem','elearning-a3-prompts'],
   b: ['elearning-b1-veiligheid','elearning-b2-niet-developers','elearning-b3-fouten'],
-  c: ['elearning-c1-webapp','elearning-c6-settings','elearning-c2-desktop','elearning-c3-chrome','elearning-c4-cowork','elearning-c5-excel-powerpoint','elearning-c7-organisatie'],
-  d: ['elearning-d1-claude-code','elearning-d2-claude-md','elearning-d3-plan-mode'],
+  c: ['elearning-c1-webapp','elearning-c6-settings','elearning-c2-desktop','elearning-c3-chrome','elearning-c4-cowork','elearning-c5-excel-powerpoint'],
+  d: ['elearning-d0-wanneer-meer','elearning-d1-claude-code','elearning-d2-claude-md','elearning-d3-plan-mode'],
   e: ['elearning-e3-plugins','elearning-e1-mcp','elearning-e2-connectors','elearning-e4-skills','elearning-e5-eerste-skill','elearning-e6-agentic-workflows','elearning-e7-portfolio-website'],
-  i: ['elearning-i1-praktijktoets','elearning-i2-certificaat']
+  i: ['elearning-c7-organisatie','elearning-i1-praktijktoets','elearning-i2-certificaat']
 };
 
 function sortModules(modules, cat) {
@@ -469,7 +503,9 @@ function saveLast(module) {
 function getLast() { try { return JSON.parse(localStorage.getItem(LAST_KEY)); } catch { return null; } }
 
 function getCat(slug) {
-  const m = slug.match(/^elearning-([a-z])\d/);
+  const norm = normalizeSlug(slug);
+  if (CAT_OVERRIDE[norm]) return CAT_OVERRIDE[norm];
+  const m = norm.match(/^elearning-([a-z])\d/);
   return m ? m[1] : null;
 }
 
@@ -721,6 +757,13 @@ function updateStats() {
   document.getElementById('statTotal').textContent = allModules.length;
   document.getElementById('statOpened').textContent = completedCount;
   document.getElementById('statCats').textContent = activeCats;
+
+  // Certificaat banner tonen als alle modules afgerond zijn
+  if (allModules.length > 0 && completedCount === allModules.length) {
+    document.getElementById('certificaatSection').style.display = 'block';
+  } else {
+    document.getElementById('certificaatSection').style.display = 'none';
+  }
 }
 
 // ── CONTINUE CARD ──

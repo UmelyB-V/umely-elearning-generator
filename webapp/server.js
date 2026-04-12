@@ -444,6 +444,38 @@ app.get('/api/user/progress', requireAuth, async (req, res) => {
   res.json({ progress: data || [] });
 });
 
+// ── Certificaat data ophalen ──
+app.get('/api/certificate', requireAuth, async (req, res) => {
+  const [progressRes, profileRes, modulesRes] = await Promise.all([
+    supabase.from('user_progress').select('module_slug, score_pct, completed, completed_at').eq('user_id', req.user.id).eq('completed', true),
+    supabase.from('profiles').select('email').eq('id', req.user.id).single(),
+    supabase.from('modules').select('slug, title')
+  ]);
+
+  const normalizeSlug = s => (s || '').replace(/-\d{8}$/, '');
+  const completedSlugs = new Set((progressRes.data || []).map(p => normalizeSlug(p.module_slug)));
+  const allSlugs = (modulesRes.data || []).map(m => normalizeSlug(m.slug));
+  const allCompleted = allSlugs.length > 0 && allSlugs.every(s => completedSlugs.has(s));
+
+  const lastCompleted = (progressRes.data || [])
+    .filter(p => p.completed_at)
+    .sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at))[0];
+
+  res.json({
+    email: profileRes.data?.email || req.user.email,
+    name: req.user.user_metadata?.firstName || req.user.user_metadata?.full_name || null,
+    allCompleted,
+    totalModules: allSlugs.length,
+    completedCount: completedSlugs.size,
+    completedAt: lastCompleted?.completed_at || null,
+    modules: (modulesRes.data || []).map(m => ({
+      slug: normalizeSlug(m.slug),
+      title: m.title,
+      completed: completedSlugs.has(normalizeSlug(m.slug))
+    }))
+  });
+});
+
 // ── Hernoem een module (admin) ──
 app.patch('/api/modules/:slug', requireAuth, requireAdmin, async (req, res) => {
   if (!/^[a-z0-9-]{1,80}$/.test(req.params.slug)) {
