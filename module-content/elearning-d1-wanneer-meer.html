@@ -131,6 +131,17 @@
     </svg>
   </div>
 
+  <div class="kennischeck" id="kc-3">
+    <p class="kc-vraag">Een HR-manager gebruikt Claude dagelijks om vacatureteksten te schrijven en cv-feedback te geven via de web-app. Welk pad past hier?</p>
+    <div class="kc-opties">
+      <div class="kc-optie" onclick="checkKC(3, this, false, null, 'Nee. Pad B is voor wie systemen wil koppelen of processen automatiseren — niet voor dagelijks tekstwerk via de interface.')">Pad B — Claude koppelen aan het HR-systeem</div>
+      <div class="kc-optie" onclick="checkKC(3, this, true, null, 'Precies. Schrijven, analyseren en vragen stellen via de browser is klassiek Pad A-gebruik. De setup die Pad B vraagt, is hier niet nodig.')">Pad A — de browser en desktop zijn genoeg</div>
+      <div class="kc-optie" onclick="checkKC(3, this, false, null, 'Niet van toepassing. Claude Code voegt niets toe aan schrijf- en beoordelingstaken — die lopen prima via de web-app.')">Claude Code installeren voor snellere verwerking</div>
+      <div class="kc-optie" onclick="checkKC(3, this, false, null, 'De informatie is er al: dagelijks tekstwerk via de interface past bij Pad A. Meer context is hier niet nodig.')">Er is meer informatie nodig om dit te bepalen</div>
+    </div>
+    <div class="kc-feedback" id="kc-feedback-3"></div>
+  </div>
+
   <div class="content-card">
     <h3>Stel jezelf deze drie vragen</h3>
     <p><strong>1. Is er een taak die je minstens wekelijks doet, die meerdere stappen heeft, en waarbij je informatie uit verschillende systemen bij elkaar brengt?</strong><br>Als ja: Pad B loont. Herhalend, meerstaps werk dat systemen combineert is precies wat automatisering oplost.</p>
@@ -166,10 +177,32 @@
     <p>Je gebruikt Claude zoals je nu al doet. Je kunt het gebruik verdiepen door betere prompts te schrijven, Projects aan te maken per klant of onderwerp, en Cowork te gebruiken voor bestandstaken. De modules D en E zijn dan informatief — goed om te weten wat er bestaat, maar je hoeft het niet zelf in te richten.</p>
   </div>
 
+  <div class="kennischeck" id="kc-4">
+    <p class="kc-vraag">Hoe verdiep je Pad A-gebruik zonder extra technische setup?</p>
+    <div class="kc-opties">
+      <div class="kc-optie" onclick="checkKC(4, this, false, null, 'Claude Code vereist juist wél een setup — dat is Pad B. Pad A verdiep je binnen de interface zelf.')">Claude Code installeren voor snellere verwerking</div>
+      <div class="kc-optie" onclick="checkKC(4, this, false, null, 'MCP-koppelingen horen bij Pad B — die vereisen een setup buiten de browser.')">MCP-koppelingen toevoegen aan je browser</div>
+      <div class="kc-optie" onclick="checkKC(4, this, true, null, 'Precies. Betere prompts, Projects per klant of onderwerp, en Cowork voor bestandstaken — dat zijn de Pad A-verdiepingen die je zonder extra setup direct kunt toepassen.')">Betere prompts schrijven en Projects aanmaken per klant of onderwerp</div>
+      <div class="kc-optie" onclick="checkKC(4, this, false, null, 'Een ander abonnement is geen vereiste voor verdieping. Betere prompts en Projects werken op elk abonnementsniveau.')">Een Enterprise-abonnement nemen</div>
+    </div>
+    <div class="kc-feedback" id="kc-feedback-4"></div>
+  </div>
+
   <div class="content-card">
     <p><strong>Pad B: Claude koppelen aan je systemen</strong></p>
     <p>Je gaat verder met <strong>Claude Code</strong> (modules D2-D4) en <strong>MCP, Connectors en Skills</strong> (module E). Claude Code draait via de terminal en voert meerdere stappen achter elkaar uit. MCP en Connectors koppelen Claude aan externe systemen zoals Gmail, je agenda of een CRM.</p>
     <p>Geen programmeerkennis vereist — maar wel drempelbereidheid. Eenmalig investeren, structureel terugverdienen.</p>
+  </div>
+
+  <div class="kennischeck" id="kc-5">
+    <p class="kc-vraag">Wat onderscheidt Pad B van Pad A?</p>
+    <div class="kc-opties">
+      <div class="kc-optie" onclick="checkKC(5, this, false, null, 'Pad B vereist geen duurder abonnement — het gaat om het gebruik van Claude Code en MCP, niet om een prijsniveau.')">Pad B heeft een duurder abonnement nodig</div>
+      <div class="kc-optie" onclick="checkKC(5, this, false, null, 'Geen programmeerkennis vereist — alleen drempelbereidheid om een terminal te openen en stappen te volgen.')">Pad B is alleen voor IT-professionals met programmeerkennis</div>
+      <div class="kc-optie" onclick="checkKC(5, this, false, null, 'Niet juist. Drempelbereidheid is vereist, maar dat is heel wat anders dan actief kunnen programmeren.')">Pad B vereist dat je zelf kunt programmeren</div>
+      <div class="kc-optie" onclick="checkKC(5, this, true, null, 'Precies. Pad B koppelt Claude via Claude Code en MCP aan externe systemen en laat meerdere stappen automatisch uitvoeren — dat kan Pad A niet.')">Pad B koppelt Claude aan externe systemen en voert meerdere stappen automatisch uit</div>
+    </div>
+    <div class="kc-feedback" id="kc-feedback-5"></div>
   </div>
 
   <div class="visual-block">
@@ -230,6 +263,17 @@
   <div class="content-card">
     <p><strong>D2-D4 — Claude Code</strong></p>
     <p>Installatie, je eerste opdracht, CLAUDE.md als projectgeheugen en Plan Mode voor complexe taken. Je leert Claude Code gebruiken zonder dat je kunt programmeren.</p>
+  </div>
+
+  <div class="kennischeck" id="kc-6">
+    <p class="kc-vraag">Wat kan Claude Code dat de reguliere web-app niet kan?</p>
+    <div class="kc-opties">
+      <div class="kc-optie" onclick="checkKC(6, this, false, null, 'De kwaliteit van antwoorden verschilt niet per interface — Claude Code voegt geen intelligentie toe, maar wel de mogelijkheid om acties uit te voeren.')">Betere antwoorden geven op tekstuele vragen</div>
+      <div class="kc-optie" onclick="checkKC(6, this, true, null, 'Precies. Claude Code draait via de terminal en kan zelfstandig bestanden lezen, bewerken en opdrachten uitvoeren — stap voor stap, zonder dat je elke actie handmatig triggert.')">Meerdere stappen automatisch uitvoeren en bestanden op je computer bewerken</div>
+      <div class="kc-optie" onclick="checkKC(6, this, false, null, 'Claude Code werkt juist via de terminal met internetverbinding — het vervangt de browser, maar heeft geen offline-modus.')">Modules genereren zonder internetverbinding</div>
+      <div class="kc-optie" onclick="checkKC(6, this, false, null, 'Claude Code is geen sleutel tot extra Pro-functies — het is een aparte manier om Claude te gebruiken, naast je bestaande abonnement.')">Claude Pro-functies activeren via de terminal</div>
+    </div>
+    <div class="kc-feedback" id="kc-feedback-6"></div>
   </div>
 
   <div class="content-card">
