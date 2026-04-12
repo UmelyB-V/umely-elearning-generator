@@ -5,7 +5,7 @@
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
     <div class="welcome-badge">Umely E-learning</div>
-    <h1>D1 - Claude Code: wat is het en hoe start je?</h1>
+    <h1>D2 - Claude Code: wat is het en hoe start je?</h1>
     <p>Leer wat Claude Code is, hoe je het installeert en hoe je je eerste opdracht geeft. Geen programmeerkennis vereist.</p>
   </div>
   <div class="leerdoelen">
@@ -117,6 +117,14 @@
     <h2>De terminal</h2>
   </div>
   <div class="content-card">
+    <h3>Aanbevolen route: de VS Code-extensie</h3>
+    <p>De VS Code-extensie is de toegankelijkste manier om Claude Code te installeren. Je hebt geen terminal nodig en werkt in een vertrouwde omgeving. Installeer VS Code (gratis via code.visualstudio.com), zoek op "Claude Code" in de Extensions Marketplace en installeer de extensie. Log daarna in met je Anthropic-account.</p>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">De terminal als alternatief</div>
+    <p>Voor wie dat wil, blijft de terminal-route beschikbaar. De stappen daarvoor staan in module 3.</p>
+  </div>
+  <div class="content-card">
     <p>Een terminal is een programma op je computer waar je tekst-opdrachten intypt. Op Windows heet het "Command Prompt" of "PowerShell". Op Mac heet het "Terminal". Je kunt het openen via de zoekfunctie van je computer.</p>
     <p>Het ziet er kaal uit. Geen knoppen, geen menu's. Maar dat is precies wat het krachtig maakt. Je typt een opdracht in gewone taal, Claude voert het uit.</p>
   </div>
@@ -154,7 +162,34 @@
     <h2>Installatie</h2>
   </div>
   <div class="content-card">
-    <h3>Claude Code installeren</h3>
+    <h3>Route 1: VS Code-extensie (aanbevolen)</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item">
+        <div class="stap-nummer">1</div>
+        <div class="stap-content">
+          <h4>Installeer VS Code</h4>
+          <p>Download VS Code gratis via code.visualstudio.com. Installeer het zoals elk ander programma.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">2</div>
+        <div class="stap-content">
+          <h4>Installeer de Claude Code-extensie</h4>
+          <p>Open VS Code, ga naar de Extensions Marketplace (het icoontje met vier blokjes links in de zijbalk), zoek op "Claude Code" en klik op Installeren.</p>
+        </div>
+      </div>
+      <div class="stap-item">
+        <div class="stap-nummer">3</div>
+        <div class="stap-content">
+          <h4>Log in met je Anthropic-account</h4>
+          <p>Na installatie verschijnt een inlogvenster. Log in met je Anthropic-account. Klaar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-card">
+    <h3>Alternatief: installeren via terminal</h3>
+    <p>Gebruik deze route als je liever via de terminal werkt of als de extensie niet beschikbaar is voor jouw setup.</p>
     <div class="stappen-lijst">
       <div class="stap-item">
         <div class="stap-nummer">1</div>
@@ -183,9 +218,9 @@
     <h3>Kennischeck</h3>
     <p class="kc-vraag">Wat heb je nodig om Claude Code te installeren?</p>
     <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Python is niet nodig voor Claude Code. Je hebt Node.js nodig.')">Python en een code-editor</button>
-      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Je hebt Node.js nodig (gratis te downloaden) en een Anthropic-account om in te loggen.')">Node.js en een Anthropic-account</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Je hoeft geen speciale computer te hebben. Node.js werkt op elke Windows- of Mac-computer.')">Een speciale ontwikkelcomputer</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Python is niet nodig voor Claude Code. Je kunt de VS Code-extensie gebruiken of Node.js via de terminal.')">Python en een code-editor</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Beide routes zijn geldig: de VS Code-extensie is aanbevolen voor niet-developers en vereist geen terminal. De terminal-route vereist Node.js. In beide gevallen heb je een Anthropic-account nodig.')">VS Code met de Claude Code-extensie, of Node.js via de terminal — plus een Anthropic-account</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Je hoeft geen speciale computer te hebben. Zowel de VS Code-extensie als Node.js werken op elke Windows- of Mac-computer.')">Een speciale ontwikkelcomputer</button>
     </div>
     <div id="kc-feedback-2" class="kc-feedback"></div>
   </div>
@@ -263,15 +298,15 @@
     <div class="tip-box-label waarschuwing">Let op</div>
     <p>Claude Code vraagt altijd om bevestiging bij ingrijpende acties zoals het verwijderen of overschrijven van bestanden. Maak een back-up van belangrijke bestanden voordat je Claude Code op een grote map loslaat.</p>
   </div>
-  <div class="kennischeck">
-    <h3>Vul het ontbrekende woord in</h3>
-    <div class="invul-wrap">
-      <p class="invul-zin">Om Claude Code te installeren heb je <input class="invul-input" id="invul-1" type="text" placeholder="..."> nodig, een gratis programma dat je downloadt via nodejs.org.</p>
-      <div class="invul-feedback" id="invul-feedback-1"></div>
+  <div id="kc-3" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Wat is de aanbevolen manier om Claude Code te installeren voor niet-developers?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(3, this, false, null, 'Node.js is de terminal-route. Voor niet-developers is de VS Code-extensie de eenvoudigere keuze — geen terminal, geen Node.js installatie nodig.')">Node.js installeren via nodejs.org</button>
+      <button class="kc-optie" onclick="checkKC(3, this, true, null, 'Correct. De VS Code-extensie is de toegankelijkste route. Je installeert VS Code, zoekt op "Claude Code" in de Extensions Marketplace en klikt op Installeren. Geen terminal of Node.js nodig.')">De Claude Code-extensie installeren via de VS Code Extensions Marketplace</button>
+      <button class="kc-optie" onclick="checkKC(3, this, false, null, 'Er is geen aparte installer. Gebruik de VS Code-extensie of de terminal-route via Node.js.')">Een apart installatieprogramma downloaden van claude.ai</button>
     </div>
-    <div class="btn-wrap" style="margin-top:1rem;">
-      <button class="btn" onclick="checkInvul('invul-1','node.js','invul-feedback-1')">Controleer</button>
-    </div>
+    <div id="kc-feedback-3" class="kc-feedback"></div>
   </div>
 </div>
 
@@ -279,7 +314,7 @@
 [
   {"vraag":"Wat is Claude Code?","opties":["Een website zoals Claude.ai","Een command-line tool die via de terminal meerdere stappen achter elkaar uitvoert","Een programmeertaal","Een plugin voor Chrome"],"correct":1,"uitleg":"Claude Code is een command-line tool waarmee je Claude via de terminal gebruikt. Hij kan meerdere stappen achter elkaar uitvoeren: bestanden lezen, mappen aanmaken, documenten verwerken en bestanden hernoemen."},
   {"vraag":"Heb je programmeerkennis nodig voor Claude Code?","opties":["Ja, je moet kunnen programmeren","Nee, je geeft opdrachten in gewone taal","Ja, je moet Python kennen","Alleen voor geavanceerde taken"],"correct":1,"uitleg":"Claude Code begrijpt gewone taal. Je beschrijft wat je wilt en Claude voert het uit. Geen programmeerkennis vereist."},
-  {"vraag":"Wat heb je nodig om Claude Code te installeren?","opties":["Python en Visual Studio","Node.js en een Anthropic-account","Een speciale computer","Alleen een browser"],"correct":1,"uitleg":"Je hebt Node.js nodig (gratis via nodejs.org) en een Anthropic-account om in te loggen."},
+  {"vraag":"Wat heb je nodig om Claude Code te installeren?","opties":["Python en Visual Studio","Een Anthropic-account, plus VS Code met de Claude Code-extensie (of Node.js voor de terminal-route)","Een speciale computer","Alleen een browser"],"correct":1,"uitleg":"Er zijn twee routes: via de VS Code-extensie (aanbevolen voor niet-developers, geen terminal nodig) of via de terminal met Node.js. In beide gevallen heb je een Anthropic-account nodig om in te loggen."},
   {"vraag":"Wat doet Claude Code bij ingrijpende acties?","opties":["Hij voert ze direct uit","Hij vraagt om bevestiging voordat hij ze uitvoert","Hij stuurt een e-mail","Hij maakt automatisch een back-up"],"correct":1,"uitleg":"Claude Code vraagt altijd om bevestiging bij ingrijpende acties zoals het verwijderen of overschrijven van bestanden."},
   {"vraag":"Waarvoor is Claude Code het meest geschikt?","opties":["E-mails versturen","Bestandsverwerking, mapbeheer en herhalende taken","Presentaties opmaken","Grafische programma's bedienen"],"correct":1,"uitleg":"Claude Code is sterk in het verwerken van bestanden, aanmaken van structuren en uitvoeren van herhalende taken op je computer. Web search is beschikbaar als die functie is ingeschakeld."},
   {"vraag":"Wat is de terminal?","opties":["Een browser-extensie van Claude","Een tekstgebaseerd scherm op je computer waar je opdrachten intypt","Een betaalde versie van Claude","Een app in de Microsoft Store"],"correct":1,"uitleg":"De terminal is een programma op je computer (op Windows: PowerShell of Command Prompt, op Mac: Terminal) waar je tekst-opdrachten intypt. Claude Code draait via de terminal."},

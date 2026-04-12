@@ -1,0 +1,478 @@
+<!-- TITLE: D5 - Leeropdracht: Claude Code opzetten via VS Code -->
+<!-- SCHERMEN: 'screen-welcome','screen-fase-1','screen-fase-2','screen-fase-3','screen-fase-4','screen-afsluiting','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Bepaal je eerste Claude Code-taak','screen-fase-2':'Fase 2 — Installeer de extensie en geef je eerste opdracht','screen-fase-3':'Fase 3 — Schrijf een CLAUDE.md','screen-fase-4':'Fase 4 — Gebruik Plan Mode','screen-afsluiting':'Leeropdracht voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wanneer kies je Claude Code boven de web-app?","opties":["Altijd — Claude Code is beter","Als je meerdere bestanden wil verwerken, mappen wil aanmaken of herhalende taken wil automatiseren","Als je een korte vraag hebt","Als de web-app te langzaam is"],"correct":1,"uitleg":"Claude Code is geschikt voor taken waarbij je met bestanden, mappen of meerdere stappen tegelijk werkt. Voor een snelle vraag of samenvatting blijft de web-app de eenvoudigste keuze."},
+  {"vraag":"Wat is het voordeel van de VS Code-extensie boven de terminal voor niet-developers?","opties":["De extensie is gratis, de terminal niet","Je hebt geen Node.js nodig en werkt in een vertrouwde omgeving zonder extra vensters","De extensie werkt sneller","Je kunt alleen via de extensie bestanden uploaden"],"correct":1,"uitleg":"De VS Code-extensie integreert Claude Code direct in je editor. Je hoeft geen terminal te openen of Node.js te installeren — ideaal voor niet-developers."},
+  {"vraag":"Wat doet een CLAUDE.md bestand?","opties":["Het slaat je API-sleutel op","Het is het projectgeheugen van Claude Code — het beschrijft het project, vaste regels en context die elke sessie gebruikt","Het installeert Claude Code automatisch","Het maakt een back-up van je bestanden"],"correct":1,"uitleg":"CLAUDE.md is het geheugen van Claude Code voor jouw project. Elke sessie begint blanco, maar de CLAUDE.md zorgt dat Claude altijd de juiste context en regels heeft."},
+  {"vraag":"Waarom gebruik je Plan Mode voordat Claude een taak uitvoert?","opties":["Plan Mode is sneller dan directe uitvoering","Je ziet eerst wat Claude van plan is en kunt bijsturen voordat er iets verandert","Plan Mode werkt alleen voor kleine taken","Plan Mode is verplicht bij de extensie"],"correct":1,"uitleg":"Plan Mode laat Claude eerst een plan schrijven zonder iets uit te voeren. Jij leest het plan, past aan waar nodig en geeft dan pas goedkeuring. Zo houd je de controle."}
+]
+<!-- QUIZ_END -->
+
+<style>
+.fase-indicator{display:flex;align-items:center;margin-bottom:1.5rem;justify-content:center}
+.fase-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:0.8rem;font-weight:700;background:#EDEBE8;color:rgba(39,41,45,0.4);flex-shrink:0}
+.fase-dot.actief{background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2}
+.fase-dot.voltooid{background:rgba(34,197,94,0.18);color:#16a34a;border:2px solid rgba(34,197,94,0.45)}
+.fase-lijn{flex:1;max-width:48px;height:2px;background:#EDEBE8}
+.prompt-box{background:#fff;border:1.5px solid rgba(39,41,45,0.12);border-radius:12px;padding:1.25rem 1.5rem;font-family:var(--font-b);font-size:0.9rem;line-height:1.8;white-space:pre-wrap;color:#27292D;margin-bottom:0.75rem;word-break:break-word}
+.kopieer-btn{display:inline-flex;align-items:center;gap:0.4rem;background:#27292D;color:#FFF8F2;font-family:var(--font-b);font-size:0.85rem;font-weight:700;padding:0.55rem 1.25rem;border-radius:50px;border:none;cursor:pointer;transition:background 0.2s;margin-bottom:1.25rem}
+.kopieer-btn:hover{background:#3a3f4a}
+.instructie-stap{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:0.55rem;font-size:0.9rem}
+.instructie-nr{flex-shrink:0;width:24px;height:24px;background:linear-gradient(135deg,#FF8514,#FF4D00);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;color:#FFF8F2;font-size:0.75rem}
+.instructie-balk{background:#27292D;color:#FFF8F2;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.instructie-balk h3{font-family:var(--font-h);color:#FFD964;margin-bottom:1rem;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em}
+.instructie-balk .i-rij{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:0.6rem;font-size:0.9rem;color:rgba(255,248,242,0.85)}
+.instructie-balk .i-nr{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:#FF8514;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;color:#fff;font-size:0.75rem}
+.fase-input-wrap{margin:1.25rem 0}
+.fase-input-label{font-family:var(--font-h);font-size:0.85rem;font-weight:700;color:#27292D;margin-bottom:0.4rem;display:block}
+.fase-input{width:100%;border:2px solid rgba(39,41,45,0.15);border-radius:12px;padding:0.75rem 1rem;font-family:var(--font-b);font-size:0.95rem;color:#27292D;background:#fff;outline:none;transition:border-color 0.2s;resize:vertical}
+.fase-input:focus{border-color:#FF8514}
+.fase-input-hint{font-size:0.8rem;color:rgba(39,41,45,0.5);margin-top:0.35rem}
+.fase-btn{display:inline-block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;font-family:var(--font-b);font-weight:700;font-size:0.95rem;padding:0.8rem 2rem;border-radius:50px;border:none;cursor:pointer;transition:opacity 0.2s,transform 0.1s;margin-top:1rem}
+.fase-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important}
+.fase-btn:not(:disabled):hover{opacity:0.9;transform:translateY(-1px)}
+.naam-input-blok{background:#fff;border:2px solid rgba(39,41,45,0.12);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem}
+.naam-error{color:#dc2626;font-size:0.85rem;margin-top:0.4rem;display:none}
+.afsluiting-hero{background:#27292D;color:#FFF8F2;border-radius:12px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.afsluiting-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,133,20,0.3) 0%,transparent 70%);border-radius:50%}
+.afsluiting-hero h2{font-family:var(--font-h);font-size:1.8rem;margin-bottom:0.75rem;position:relative}
+.afsluiting-hero p{color:rgba(255,248,242,0.85);position:relative;margin-bottom:0.5rem}
+.vscode-float{position:fixed;bottom:4.5rem;right:1.5rem;z-index:9990}
+.vscode-float a{display:block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;text-decoration:none;padding:10px 18px;border-radius:50px;font-size:0.8rem;font-weight:700;font-family:var(--font-b);box-shadow:0 4px 15px rgba(255,133,20,0.4);transition:all 0.2s;white-space:nowrap}
+.vscode-float a:hover{opacity:0.9;transform:translateY(-2px)}
+.prompt-label{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#FF8514;margin-bottom:0.5rem;display:block}
+#nav-screen-fase-1 .btn,
+#nav-screen-fase-2 .btn,
+#nav-screen-fase-3 .btn,
+#nav-screen-fase-4 .btn,
+#nav-screen-afsluiting{display:none!important}
+</style>
+
+<!-- WELKOMSTSCHERM -->
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-hero">
+    <div class="welcome-badge">Umely E-learning</div>
+    <h1>Leeropdracht D — Claude Code opzetten via VS Code</h1>
+    <p>Je doorloopt alle stappen van D1 tot D4. Aan het einde heb je Claude Code geinstalleerd via de VS Code-extensie, een CLAUDE.md geschreven en Plan Mode gebruikt.</p>
+  </div>
+
+  <div class="naam-input-blok">
+    <label class="fase-input-label" for="naam-input">Wat is je naam?</label>
+    <input type="text" id="naam-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Vul je naam in" autocomplete="name">
+    <div id="naam-error" class="naam-error">Vul je naam in om verder te gaan.</div>
+  </div>
+
+  <div class="instructie-balk">
+    <h3>Hoe deze leeropdracht werkt</h3>
+    <div class="i-rij"><div class="i-nr">1</div><div>Open VS Code naast dit scherm — je werkt vandaag met de Claude Code-extensie.</div></div>
+    <div class="i-rij"><div class="i-nr">2</div><div>Elke fase heeft concrete stappen die je in VS Code uitvoert.</div></div>
+    <div class="i-rij"><div class="i-nr">3</div><div>Kom terug, vul je verificatieveld in en ga door.</div></div>
+  </div>
+
+  <div class="btn-wrap" style="margin-bottom:0.5rem;">
+    <a href="vscode://" class="btn">Open VS Code →</a>
+  </div>
+
+  <div class="tijdsbadge">Geschatte tijd: 30-45 minuten</div>
+
+  <div class="leerdoelen">
+    <h3>Na deze leeropdracht heb je:</h3>
+    <ul>
+      <li>Bepaald voor welke taak Claude Code het meest waardevol is in jouw werk</li>
+      <li>De Claude Code-extensie geinstalleerd in VS Code</li>
+      <li>Je eerste opdracht gegeven en een CLAUDE.md geschreven</li>
+      <li>Plan Mode gebruikt om een taak te plannen voordat Claude hem uitvoert</li>
+    </ul>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="btn" onclick="startLeeropdracht()">Start de leeropdracht →</button>
+  </div>
+</div>
+
+<!-- FASE 1 -->
+<div id="screen-fase-1" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 1 van 4</div>
+    <h2>Bepaal je eerste Claude Code-taak</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot actief">1</div><div class="fase-lijn"></div>
+    <div class="fase-dot">2</div><div class="fase-lijn"></div>
+    <div class="fase-dot">3</div><div class="fase-lijn"></div>
+    <div class="fase-dot">4</div>
+  </div>
+
+  <div class="visual-block">
+    <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <!-- achtergrond -->
+      <rect width="580" height="200" fill="#FFF8F2"/>
+      <!-- scheidingslijn midden -->
+      <line x1="290" y1="20" x2="290" y2="180" stroke="#EAE6E0" stroke-width="2" stroke-dasharray="6,4"/>
+      <!-- "vs" label -->
+      <circle cx="290" cy="100" r="18" fill="#EAE6E0"/>
+      <text x="290" y="105" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#27292D" text-anchor="middle">vs</text>
+      <!-- LINKS: web-app kolom -->
+      <rect x="20" y="20" width="245" height="160" rx="10" fill="#EAE6E0"/>
+      <!-- chatballon -->
+      <rect x="60" y="55" width="165" height="48" rx="10" fill="#fff" stroke="#EAE6E0" stroke-width="1.5"/>
+      <polygon points="100,103 115,103 107,116" fill="#fff" stroke="#EAE6E0" stroke-width="1" stroke-linejoin="round"/>
+      <text x="142" y="74" font-family="Arial, sans-serif" font-size="10" fill="#27292D" text-anchor="middle">Eenmalige vraag</text>
+      <text x="142" y="90" font-family="Arial, sans-serif" font-size="9" fill="rgba(39,41,45,0.55)" text-anchor="middle">Snel antwoord nodig</text>
+      <!-- label web-app -->
+      <text x="142" y="140" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="rgba(39,41,45,0.55)" text-anchor="middle">Web-app</text>
+      <text x="142" y="157" font-family="Arial, sans-serif" font-size="9" fill="rgba(39,41,45,0.4)" text-anchor="middle">Gebruik claude.ai</text>
+      <!-- RECHTS: Claude Code kolom -->
+      <rect x="315" y="20" width="245" height="160" rx="10" fill="#FFF8F2"/>
+      <!-- bestandsiconen stapel -->
+      <rect x="365" y="52" width="50" height="36" rx="4" fill="#FF8514" opacity="0.15"/>
+      <rect x="375" y="46" width="50" height="36" rx="4" fill="#FF8514" opacity="0.25"/>
+      <rect x="385" y="40" width="50" height="36" rx="4" fill="#FF8514" opacity="0.5"/>
+      <text x="410" y="63" font-family="Arial, sans-serif" font-size="17" text-anchor="middle">&#128196;</text>
+      <!-- map icoon -->
+      <rect x="445" y="60" width="42" height="28" rx="4" fill="#FFD964" opacity="0.7"/>
+      <rect x="445" y="56" width="18" height="8" rx="2" fill="#FFD964" opacity="0.9"/>
+      <text x="466" y="78" font-family="Arial, sans-serif" font-size="11" fill="#27292D" text-anchor="middle">&#128193;</text>
+      <!-- pijl rechts -->
+      <text x="410" y="108" font-family="Arial, sans-serif" font-size="14" fill="#FF8514" text-anchor="middle">&#8594;</text>
+      <!-- label Claude Code -->
+      <text x="437" y="140" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#FF8514" text-anchor="middle">Claude Code</text>
+      <text x="437" y="157" font-family="Arial, sans-serif" font-size="9" fill="rgba(39,41,45,0.5)" text-anchor="middle">Bestanden, mappen, stappen</text>
+    </svg>
+  </div>
+
+  <div class="content-card">
+    <p>In D1 heb je geleerd wanneer je meer nodig hebt dan de web-app. Claude Code is geschikt als je met bestanden werkt, meerdere stappen achter elkaar wil uitvoeren, of herhalende taken wil automatiseren. In deze fase bepaal je concreet welke taak jij met Claude Code wil doen.</p>
+  </div>
+
+  <div class="content-card">
+    <h3>Voorbeelden van Claude Code-taken</h3>
+    <div class="flashcard-set">
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Documenten hernoemen</div>
+        <div class="fc-uitleg">Hernoem alle Word-bestanden in een map zodat ze beginnen met de datum in het formaat JJJJ-MM-DD.</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Mappen aanmaken</div>
+        <div class="fc-uitleg">Maak een mapstructuur aan op je bureaublad: Klanten &gt; [klantnaam] &gt; Offertes, Facturen, Correspondentie.</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+      <div class="flashcard" onclick="toggleFlashcard(this)">
+        <div class="fc-term">Bestanden doorzoeken</div>
+        <div class="fc-uitleg">Zoek alle Excel-bestanden in een map die de afgelopen 30 dagen niet zijn aangepast.</div>
+        <div class="fc-hint">Klik voor voorbeeld</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase1-verificatie">Beschrijf de taak waarvoor jij Claude Code wil inzetten:</label>
+    <textarea id="fase1-verificatie" class="fase-input" rows="3" placeholder="Bijv: 'Ik wil alle PDF-rapporten in mijn Downloads-map hernoemen naar het formaat datum-onderwerp.'" oninput="checkFase1Input()"></textarea>
+    <div class="fase-input-hint">Minimaal 20 tekens. Wees zo concreet mogelijk — welke bestanden, welke map?</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase1-door" disabled onclick="goTo('screen-fase-2')">Fase 1 voltooid — verder naar fase 2 →</button>
+  </div>
+</div>
+
+<!-- FASE 2 -->
+<div id="screen-fase-2" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 2 van 4</div>
+    <h2>Installeer de extensie en geef je eerste opdracht</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">&#10003;</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">2</div><div class="fase-lijn"></div>
+    <div class="fase-dot">3</div><div class="fase-lijn"></div>
+    <div class="fase-dot">4</div>
+  </div>
+
+  <div class="visual-block">
+    <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" overflow="hidden" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <!-- venster achtergrond -->
+      <rect width="580" height="220" fill="#27292D" rx="10"/>
+      <!-- titelbalk -->
+      <rect x="0" y="0" width="580" height="32" rx="10" fill="#27292D"/>
+      <rect x="0" y="16" width="580" height="16" fill="#27292D"/>
+      <circle cx="16" cy="16" r="6" fill="#FF4D00"/>
+      <circle cx="34" cy="16" r="6" fill="#FFD964"/>
+      <circle cx="52" cy="16" r="6" fill="#EAE6E0"/>
+      <text x="290" y="21" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,248,242,0.5)" text-anchor="middle">Visual Studio Code</text>
+      <!-- linkerzijbalk -->
+      <rect x="0" y="32" width="48" height="188" fill="rgba(255,248,242,0.07)"/>
+      <!-- zijbalk iconen -->
+      <!-- Explorer icoon -->
+      <rect x="10" y="44" width="28" height="28" rx="4" fill="transparent"/>
+      <text x="24" y="63" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,248,242,0.4)" text-anchor="middle">&#9776;</text>
+      <!-- Search icoon -->
+      <rect x="10" y="80" width="28" height="28" rx="4" fill="transparent"/>
+      <text x="24" y="99" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,248,242,0.4)" text-anchor="middle">&#128269;</text>
+      <!-- Extensions icoon — gemarkeerd met oranje rand -->
+      <rect x="8" y="116" width="32" height="32" rx="5" fill="rgba(255,133,20,0.2)" stroke="#FF8514" stroke-width="2"/>
+      <text x="24" y="137" font-family="Arial, sans-serif" font-size="16" fill="#FF8514" text-anchor="middle">&#10697;</text>
+      <!-- extensiepaneel -->
+      <rect x="48" y="32" width="200" height="188" fill="rgba(255,248,242,0.05)"/>
+      <text x="68" y="52" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="rgba(255,248,242,0.7)" letter-spacing="0.08em">EXTENSIONS</text>
+      <!-- zoekbalk -->
+      <rect x="58" y="60" width="180" height="24" rx="4" fill="rgba(255,248,242,0.12)"/>
+      <text x="148" y="76" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,248,242,0.6)" text-anchor="middle">Claude Code</text>
+      <!-- extensielijstitem -->
+      <rect x="58" y="96" width="180" height="52" rx="4" fill="rgba(255,248,242,0.08)"/>
+      <!-- Claude logo placeholder -->
+      <circle cx="78" cy="122" r="14" fill="#FF8514"/>
+      <text x="78" y="127" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#FFF8F2" text-anchor="middle">C</text>
+      <text x="120" y="113" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFF8F2">Claude Code</text>
+      <text x="120" y="126" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,248,242,0.5)">Anthropic</text>
+      <!-- Install knop -->
+      <rect x="170" y="131" width="58" height="18" rx="4" fill="#FF8514"/>
+      <text x="199" y="143" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#FFF8F2" text-anchor="middle">Install</text>
+      <!-- hoofdpaneel placeholder -->
+      <rect x="248" y="32" width="332" height="188" fill="rgba(255,248,242,0.03)"/>
+      <text x="414" y="125" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,248,242,0.25)" text-anchor="middle">Zoek op 'Claude Code'</text>
+      <text x="414" y="142" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,248,242,0.25)" text-anchor="middle">en klik op Install</text>
+    </svg>
+  </div>
+
+  <div class="content-card">
+    <p>De VS Code-extensie is de eenvoudigste manier om met Claude Code te starten — geen terminal, geen Node.js installatie. Je installeert de extensie, logt in met je Anthropic-account en bent klaar.</p>
+  </div>
+
+  <div class="content-card">
+    <h3>Installatiestappen</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item"><div class="stap-nr">1</div><div class="stap-tekst">Open VS Code.</div></div>
+      <div class="stap-item"><div class="stap-nr">2</div><div class="stap-tekst">Klik op het Extensions-icoon in de linkerzijbalk (vier vierkantjes) of gebruik Ctrl+Shift+X.</div></div>
+      <div class="stap-item"><div class="stap-nr">3</div><div class="stap-tekst">Zoek op 'Claude Code'.</div></div>
+      <div class="stap-item"><div class="stap-nr">4</div><div class="stap-tekst">Klik op Install.</div></div>
+      <div class="stap-item"><div class="stap-nr">5</div><div class="stap-tekst">Log in met je Anthropic-account via de instructies die verschijnen.</div></div>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <h3>Je eerste opdracht</h3>
+    <p>Nu Claude Code actief is, geef je hem de taak die je in fase 1 hebt beschreven.</p>
+    <div class="tip-box">
+      <div class="tip-box-label tip">Tip</div>
+      <p>Beschrijf de taak zo concreet mogelijk: welke map, welk patroon, welk resultaat. Claude vraagt om bevestiging bij ingrijpende acties — lees altijd wat hij van plan is.</p>
+    </div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase2-verificatie">Kopieer wat Claude Code terugschreef na je eerste opdracht:</label>
+    <textarea id="fase2-verificatie" class="fase-input" rows="3" placeholder="Claude's reactie of bevestiging..." oninput="checkFase2Input()"></textarea>
+    <div class="fase-input-hint">Minimaal 20 tekens.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase2-door" disabled onclick="goTo('screen-fase-3')">Fase 2 voltooid — verder naar fase 3 →</button>
+  </div>
+</div>
+
+<!-- FASE 3 -->
+<div id="screen-fase-3" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 3 van 4</div>
+    <h2>Schrijf een CLAUDE.md</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">&#10003;</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">&#10003;</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">3</div><div class="fase-lijn"></div>
+    <div class="fase-dot">4</div>
+  </div>
+
+  <div class="content-card">
+    <p>Claude Code begint elke sessie blanco — hij heeft geen geheugen van vorige gesprekken. Een CLAUDE.md is het projectgeheugen: een bestand in de hoofdmap van je project dat beschrijft wat Claude altijd moet weten. Je schrijft het eenmalig en hij gebruikt het automatisch bij elke start.</p>
+  </div>
+
+  <div class="content-card">
+    <span class="prompt-label">Kopieer en vul deze CLAUDE.md-template in</span>
+    <div class="prompt-box" id="fase3-template"># [Naam van je project]
+
+## Doel
+[Beschrijf in één zin wat dit project is of wat je ermee doet]
+
+## Taal
+Schrijf altijd in het Nederlands.
+
+## Vaste regels
+- [Regel 1 — bijv. sla bestanden altijd op in de map /output]
+- [Regel 2 — bijv. vraag om bevestiging voordat je iets verwijdert]</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase3-template').innerText,this)">Kopieer template</button>
+
+    <div class="stappen-lijst">
+      <div class="stap-item"><div class="stap-nr">1</div><div class="stap-tekst">Kopieer de template.</div></div>
+      <div class="stap-item"><div class="stap-nr">2</div><div class="stap-tekst">Open een nieuw bestand in VS Code.</div></div>
+      <div class="stap-item"><div class="stap-nr">3</div><div class="stap-tekst">Vul de template in voor het project of de map waarmee je werkt.</div></div>
+      <div class="stap-item"><div class="stap-nr">4</div><div class="stap-tekst">Sla het op als CLAUDE.md in de hoofdmap van je project.</div></div>
+    </div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase3-verificatie">Kopieer de eerste drie regels van jouw CLAUDE.md:</label>
+    <input type="text" id="fase3-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="# [Naam project] ..." oninput="checkFase3Input()">
+    <div class="fase-input-hint">Minimaal 20 tekens.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase3-door" disabled onclick="goTo('screen-fase-4')">Fase 3 voltooid — verder naar fase 4 →</button>
+  </div>
+</div>
+
+<!-- FASE 4 -->
+<div id="screen-fase-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 4 van 4</div>
+    <h2>Gebruik Plan Mode</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">&#10003;</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">&#10003;</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">&#10003;</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">4</div>
+  </div>
+
+  <div class="content-card">
+    <p>Plan Mode laat Claude eerst nadenken voor hij iets uitvoert. Je geeft de opdracht, Claude schrijft een stap-voor-stap plan en wacht op jouw goedkeuring. Zo houd je de controle — zeker bij taken die meerdere bestanden aanraken.</p>
+  </div>
+
+  <div class="content-card">
+    <span class="prompt-label">Geef deze opdracht in Claude Code (met /plan vooraf)</span>
+    <div class="prompt-box" id="fase4-prompt">/plan Maak een overzicht van alle bestanden in de huidige map met per bestand een korte beschrijving van wat het bevat of waarvoor het gebruikt wordt.</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase4-prompt').innerText,this)">Kopieer opdracht</button>
+
+    <div class="stappen-lijst">
+      <div class="stap-item"><div class="stap-nr">1</div><div class="stap-tekst">Kopieer de opdracht.</div></div>
+      <div class="stap-item"><div class="stap-nr">2</div><div class="stap-tekst">Plak hem in Claude Code in VS Code.</div></div>
+      <div class="stap-item"><div class="stap-nr">3</div><div class="stap-tekst">Lees het plan dat Claude schrijft.</div></div>
+      <div class="stap-item"><div class="stap-nr">4</div><div class="stap-tekst">Pas één stap aan als je het niet eens bent, of keur het goed.</div></div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip</div>
+    <p>Gebruik /plan altijd bij taken die bestanden aanpassen, verplaatsen of verwijderen. Bij leestaken (overzicht maken, samenvatten) is Plan Mode optioneel.</p>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase4-verificatie">Kopieer stap 1 van het plan dat Claude schreef:</label>
+    <input type="text" id="fase4-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Stap 1 van Claude's plan..." oninput="checkFase4Input()">
+    <div class="fase-input-hint">Minimaal 20 tekens.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase4-door" disabled onclick="voltooiFase4()">Leeropdracht afronden →</button>
+  </div>
+</div>
+
+<!-- AFSLUITING -->
+<div id="screen-afsluiting" class="screen">
+  <div class="afsluiting-hero">
+    <div class="welcome-badge" style="margin-bottom:1rem;">Leeropdracht voltooid</div>
+    <h2>Goed gedaan, <span class="deelnemer-naam">...</span>.</h2>
+    <p>Je hebt Claude Code geinstalleerd, je eerste opdracht gegeven, een CLAUDE.md geschreven en Plan Mode gebruikt.</p>
+  </div>
+
+  <div class="content-card">
+    <h3>Wat je per fase hebt gedaan:</h3>
+    <div class="stappen-lijst">
+      <div class="stap-item"><div class="stap-nr">1</div><div class="stap-tekst">Je hebt een concrete taak bepaald waarvoor Claude Code de juiste keuze is.</div></div>
+      <div class="stap-item"><div class="stap-nr">2</div><div class="stap-tekst">Je hebt de Claude Code-extensie geinstalleerd in VS Code en je eerste opdracht gegeven.</div></div>
+      <div class="stap-item"><div class="stap-nr">3</div><div class="stap-tekst">Je hebt een CLAUDE.md geschreven als projectgeheugen voor toekomstige sessies.</div></div>
+      <div class="stap-item"><div class="stap-nr">4</div><div class="stap-tekst">Je hebt Plan Mode gebruikt en een plan gelezen voordat Claude iets uitvoerde.</div></div>
+    </div>
+    <p style="margin-top:1rem;">In sectie E ga je verder met MCP, Connectors, Projects en Skills — de volgende stap in wat Claude voor jou kan doen.</p>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz →</button>
+  </div>
+</div>
+
+<!-- Floating VS Code knop -->
+<div class="vscode-float"><a href="vscode://" target="_blank">Open VS Code →</a></div>
+
+<script>
+function startLeeropdracht() {
+  var naam = document.getElementById('naam-input').value.trim();
+  if (!naam) {
+    document.getElementById('naam-error').style.display = 'block';
+    document.getElementById('naam-input').focus();
+    return;
+  }
+  document.getElementById('naam-error').style.display = 'none';
+  localStorage.setItem('umely_naam', naam);
+  document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  goTo('screen-fase-1');
+}
+
+function kopieerElement(tekst, knop) {
+  var done = function() {
+    var orig = knop.textContent;
+    knop.textContent = '&#10003; Gekopieerd!';
+    knop.style.background = '#16a34a';
+    setTimeout(function() { knop.textContent = orig; knop.style.background = ''; }, 2000);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(tekst.trim()).then(done).catch(function() { fbKopieer(tekst, done); });
+  } else { fbKopieer(tekst, done); }
+}
+
+function fbKopieer(tekst, cb) {
+  var ta = document.createElement('textarea');
+  ta.value = tekst.trim();
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  if (cb) cb();
+}
+
+function checkFase1Input() {
+  var val = document.getElementById('fase1-verificatie').value.trim();
+  var btn = document.getElementById('btn-fase1-door');
+  if (btn) btn.disabled = val.length < 20;
+}
+
+function checkFase2Input() {
+  var val = document.getElementById('fase2-verificatie').value.trim();
+  var btn = document.getElementById('btn-fase2-door');
+  if (btn) btn.disabled = val.length < 20;
+}
+
+function checkFase3Input() {
+  var val = document.getElementById('fase3-verificatie').value.trim();
+  var btn = document.getElementById('btn-fase3-door');
+  if (btn) btn.disabled = val.length < 20;
+}
+
+function checkFase4Input() {
+  var val = document.getElementById('fase4-verificatie').value.trim();
+  var btn = document.getElementById('btn-fase4-door');
+  if (btn) btn.disabled = val.length < 20;
+}
+
+function voltooiFase4() {
+  if (document.getElementById('fase4-verificatie').value.trim().length < 20) return;
+  goTo('screen-afsluiting');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var naam = localStorage.getItem('umely_naam');
+  if (naam) {
+    var inp = document.getElementById('naam-input');
+    if (inp) inp.value = naam;
+    document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  }
+});
+</script>

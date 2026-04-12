@@ -1,49 +1,67 @@
-# 🧠 Umely — E-learning Generator
+# Umely — E-learning Generator
 
-Automatisch interactieve e-learning modules genereren vanuit transcripties of samenvattingen.
+Gereedschapskist voor het bouwen en publiceren van interactieve e-learning modules voor het Umely platform.
 
 ## Projectstructuur
 
 ```
 umely-elearning-generator/
-├── CLAUDE.md                                    ← Projectgeheugen & Umely huisstijl
-├── README.md                                    ← Dit bestand
-├── transcriptie-voorbeeld.md                   ← Testinput
-├── output/                                      ← Gegenereerde e-learnings
-└── .claude/
-    └── skills/
-        └── elearning-generator/
-            └── SKILL.md                         ← De generator skill + HTML template
+├── CLAUDE.md                  ← Projectgeheugen & bouwregels
+├── README.md                  ← Dit bestand
+├── module-content/            ← 25 HTML content-bestanden + _shared-css/js
+├── output/                    ← Lokaal gebouwde HTML (gitignored)
+├── build-modules.js           ← Combineert shared CSS/JS + content → output/
+├── upload-modules.js          ← Uploadt output/ naar Supabase
+└── webapp/
+    ├── server.js              ← Express backend
+    └── public/
+        ├── index.html
+        ├── modules.html
+        ├── account.html
+        └── community.html
 ```
 
-## Gebruik in Claude Code
+## Modules bouwen
 
-### 1. Open het project
+Modules worden handmatig geschreven in `module-content/elearning-*.html`, volgens de structuurregels in `CLAUDE.md`.
+
+### 1. Schrijf/bewerk een module
+
+Bewerk `module-content/elearning-[slug].html` direct in Claude.
+
+### 2. Bouw de output
+
 ```bash
-cd umely-elearning-generator
-claude
+node build-modules.js
 ```
 
-### 2. Genereer een e-learning
-```
-Genereer een e-learning op basis van transcriptie-voorbeeld.md
+Genereert `output/elearning-[slug]-[datum].html` met gedeelde CSS en JS.
+
+### 3. Upload naar Supabase
+
+```bash
+node upload-modules.js
 ```
 
-Claude leest automatisch CLAUDE.md en SKILL.md en genereert een complete HTML e-learning in /output.
+Upsert op slug — maakt nooit duplicaten.
 
-### 3. Gebruik met eigen transcripties
-Maak een nieuw .md bestand met je transcriptie en typ:
-```
-Genereer een e-learning op basis van mijn-transcriptie.md
-```
+### 4. Open en test
 
-### 4. Open de output
-Open het gegenereerde HTML-bestand in je browser. Werkt volledig offline.
+Open het gegenereerde HTML-bestand in je browser, of bekijk het via de webapp op `http://localhost:3000`.
+
+## Webapp lokaal draaien
+
+```bash
+cd webapp && npm install && node server.js
+# Open http://localhost:3000
+```
 
 ## Huisstijl
-- Primaire kleur: **#FF5A1F** (Umely oranje)
-- Font: Inter
-- Knoppen: pill-shape, oranje, vetgedrukt wit
+
+- Primaire kleur: **#FF8514** (amber) / **#FF4D00** (flame)
+- Fonts: **Arimo** (headings) + **Montserrat** (body)
+- Achtergrond: **#FFF8F2** (warm wit)
 
 ## Contact
-📧 info@umely.ai | 🌐 umely.ai
+
+info@umely.ai | umely.ai
