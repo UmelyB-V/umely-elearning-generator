@@ -393,6 +393,7 @@ function startLeeropdracht() {
   window._deelnemerNaam = naam;
   window._deelnemerUseCase = usecase;
   localStorage.setItem('umely_naam', naam);
+  localStorage.setItem('umely_usecase_b4', usecase);
   document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
   document.querySelectorAll('.usecase-display').forEach(function(el) { el.textContent = usecase; });
   goTo('screen-fase-1');
@@ -450,6 +451,13 @@ document.addEventListener('DOMContentLoaded', function() {
     var inp = document.getElementById('naam-input');
     if (inp) inp.value = naam;
     document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  }
+  var usecase = localStorage.getItem('umely_usecase_b4');
+  if (usecase) {
+    var ucInp = document.getElementById('usecase-input');
+    if (ucInp) ucInp.value = usecase;
+    window._deelnemerUseCase = usecase;
+    document.querySelectorAll('.usecase-display').forEach(function(el) { el.textContent = usecase; });
   }
 });
 </script>

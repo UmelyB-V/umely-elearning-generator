@@ -409,6 +409,8 @@ function startEindopdracht() {
   if (!naam) { naamErr.style.display = 'block'; document.getElementById('naam-input').focus(); ok = false; } else { naamErr.style.display = 'none'; }
   if (!usecase) { ucErr.style.display = 'block'; if (ok) document.getElementById('usecase-input').focus(); ok = false; } else { ucErr.style.display = 'none'; }
   if (!ok) return;
+  window._deelnemerNaam = naam;
+  window._deelnemerUseCase = usecase;
   localStorage.setItem('umely_naam', naam);
   localStorage.setItem('umely_usecase', usecase);
   document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
