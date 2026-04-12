@@ -1,209 +1,495 @@
-<!-- TITLE: I1 - Praktijktoets: bouw een volledig project -->
-<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-2','screen-module-3','screen-module-4','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Module 1','screen-module-2':'Module 2','screen-module-3':'Module 3','screen-module-4':'Module 4','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- TITLE: I1 - Praktijktoets: bouw je eigen werkassistent -->
+<!-- SCHERMEN: 'screen-welcome','screen-fase-1','screen-fase-2','screen-fase-3','screen-fase-4','screen-fase-5','screen-afsluiting','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-fase-1':'Fase 1 — Schrijf je werkcontext','screen-fase-2':'Fase 2 — Analyseer je werk','screen-fase-3':'Fase 3 — Benoem het patroon','screen-fase-4':'Fase 4 — Bouw de template','screen-fase-5':'Fase 5 — Valideer en reflecteer','screen-afsluiting':'Toets voltooid','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- QUIZ_START -->
+[
+  {"vraag":"Wat is het doel van een systeemprompt?","opties":["Claude vertellen wie je bent en hoe je werkt, zodat elke reactie aansluit op jouw context","Je browserinstellingen doorgeven aan Claude","De lengte van je gesprek beperken","Een nieuwe Claude-account aanmaken"],"correct":0,"uitleg":"Een systeemprompt vertelt Claude wie je bent, wat je doet en welke toon past bij je organisatie. Je schrijft hem eenmalig en gebruikt hem als startpunt voor elk nieuw gesprek."},
+  {"vraag":"Waarom analyseer je in fase 2 een document uit je eigen werk?","opties":["Om de spelling te controleren","Om Claude te testen of hij het kan lezen","Om herhalende patronen in je schrijfwerk te ontdekken","Om een back-up van je bestanden te maken"],"correct":2,"uitleg":"De analyse helpt je een concreet, terugkerend patroon te identificeren in hoe je schrijft. Dat patroon is de basis voor de prompttemplate die je in fase 4 bouwt."},
+  {"vraag":"Waarom is de prompttemplate uit fase 4 persoonlijker dan een standaardprompt?","opties":["Omdat hij automatisch door Claude is gegenereerd","Omdat hij is afgestemd op jouw schrijfpatroon en werkcontext","Omdat hij is gebaseerd op een openbare template","Omdat hij langer is dan andere prompts"],"correct":1,"uitleg":"De template combineert jouw werkcontext uit fase 1 met een gerichte aanpak voor jouw specifieke zwakke punt uit fase 3. Daardoor werkt hij beter dan een generieke prompt."},
+  {"vraag":"Waarom test je de template in fase 5 op een tweede document?","opties":["Omdat het eerste document niet geldig is","Om te controleren of de template ook werkt buiten het eerste testdocument","Om Claude opnieuw te trainen","Omdat fase 4 altijd een fout bevat"],"correct":1,"uitleg":"Een template die maar op één document werkt is een toevalstreffer. Door hem te testen op een tweede document controleer je of de instructies robuust zijn en breed inzetbaar."},
+  {"vraag":"Wat heb je aan het einde van deze toets gebouwd?","opties":["Een persoonlijke website","Een koppeling met de Anthropic API","Een herbruikbare prompttemplate die dagelijks bruikbaar is","Een automatische e-mailfilter"],"correct":2,"uitleg":"Je hebt een herbruikbare prompttemplate gebouwd die inspeelt op jouw schrijfpatroon en aansluit op jouw werkcontext. Die gebruik je voortaan als startpunt voor vergelijkbare documenten."}
+]
+<!-- QUIZ_END -->
 
+<style>
+.fase-indicator{display:flex;align-items:center;margin-bottom:1.5rem;justify-content:center}
+.fase-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:0.8rem;font-weight:700;background:#EDEBE8;color:rgba(39,41,45,0.4);flex-shrink:0}
+.fase-dot.actief{background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2}
+.fase-dot.voltooid{background:rgba(34,197,94,0.18);color:#16a34a;border:2px solid rgba(34,197,94,0.45)}
+.fase-lijn{flex:1;max-width:48px;height:2px;background:#EDEBE8}
+.prompt-box{background:#fff;border:1.5px solid rgba(39,41,45,0.12);border-radius:12px;padding:1.25rem 1.5rem;font-family:var(--font-b);font-size:0.9rem;line-height:1.8;white-space:pre-wrap;color:#27292D;margin-bottom:0.75rem;word-break:break-word}
+.kopieer-btn{display:inline-flex;align-items:center;gap:0.4rem;background:#27292D;color:#FFF8F2;font-family:var(--font-b);font-size:0.85rem;font-weight:700;padding:0.55rem 1.25rem;border-radius:50px;border:none;cursor:pointer;transition:background 0.2s;margin-bottom:1.25rem}
+.kopieer-btn:hover{background:#3a3f4a}
+.instructie-stap{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:0.55rem;font-size:0.9rem}
+.instructie-nr{flex-shrink:0;width:24px;height:24px;background:linear-gradient(135deg,#FF8514,#FF4D00);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;color:#FFF8F2;font-size:0.75rem}
+.instructie-balk{background:#27292D;color:#FFF8F2;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.instructie-balk h3{font-family:var(--font-h);color:#FFD964;margin-bottom:1rem;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em}
+.instructie-balk .i-rij{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:0.6rem;font-size:0.9rem;color:rgba(255,248,242,0.85)}
+.instructie-balk .i-nr{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:#FF8514;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;color:#fff;font-size:0.75rem}
+.fase-input-wrap{margin:1.25rem 0}
+.fase-input-label{font-family:var(--font-h);font-size:0.85rem;font-weight:700;color:#27292D;margin-bottom:0.4rem;display:block}
+.fase-input{width:100%;border:2px solid rgba(39,41,45,0.15);border-radius:12px;padding:0.75rem 1rem;font-family:var(--font-b);font-size:0.95rem;color:#27292D;background:#fff;outline:none;transition:border-color 0.2s;resize:vertical}
+.fase-input:focus{border-color:#FF8514}
+.fase-input-hint{font-size:0.8rem;color:rgba(39,41,45,0.5);margin-top:0.35rem}
+.fase-input-teller{font-size:0.8rem;margin-top:0.35rem;font-weight:600;transition:color 0.2s}
+.fase-btn{display:inline-block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;font-family:var(--font-b);font-weight:700;font-size:0.95rem;padding:0.8rem 2rem;border-radius:50px;border:none;cursor:pointer;transition:opacity 0.2s,transform 0.1s;margin-top:1rem}
+.fase-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important}
+.fase-btn:not(:disabled):hover{opacity:0.9;transform:translateY(-1px)}
+.naam-input-blok{background:#fff;border:2px solid rgba(39,41,45,0.12);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem}
+.naam-error{color:#dc2626;font-size:0.85rem;margin-top:0.4rem;display:none}
+.afsluiting-hero{background:#27292D;color:#FFF8F2;border-radius:12px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.afsluiting-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,133,20,0.3) 0%,transparent 70%);border-radius:50%}
+.afsluiting-hero h2{font-family:var(--font-h);font-size:1.8rem;margin-bottom:0.75rem;position:relative}
+.afsluiting-hero p{color:rgba(255,248,242,0.85);position:relative;margin-bottom:0.5rem}
+.claude-float{position:fixed;bottom:4.5rem;right:1.5rem;z-index:9990}
+.claude-float a{display:block;background:linear-gradient(135deg,#FF8514,#FF4D00);color:#FFF8F2;text-decoration:none;padding:10px 18px;border-radius:50px;font-size:0.8rem;font-weight:700;font-family:var(--font-b);box-shadow:0 4px 15px rgba(255,133,20,0.4);transition:all 0.2s;white-space:nowrap}
+.claude-float a:hover{opacity:0.9;transform:translateY(-2px)}
+.prompt-label{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#FF8514;margin-bottom:0.5rem;display:block}
+#nav-screen-fase-1 .btn,
+#nav-screen-fase-2 .btn,
+#nav-screen-fase-3 .btn,
+#nav-screen-fase-4 .btn,
+#nav-screen-fase-5 .btn,
+#nav-screen-afsluiting{display:none!important}
+</style>
+
+<!-- WELKOMSTSCHERM -->
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
     <div class="welcome-badge">Umely E-learning</div>
-    <h1>I1 - Praktijktoets: bouw een volledig project</h1>
-    <p>Pas alles toe wat je hebt geleerd in een concreet project. Van prompting tot agentic workflows, van nul tot werkend resultaat.</p>
+    <h1>Praktijktoets — bouw je eigen werkassistent</h1>
+    <p>Je past alles toe wat je hebt geleerd. Aan het einde heb je een werkende prompttemplate die je morgen direct kunt gebruiken.</p>
   </div>
+
+  <div class="naam-input-blok">
+    <label class="fase-input-label" for="naam-input">Wat is je naam?</label>
+    <input type="text" id="naam-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Vul je naam in" autocomplete="name">
+    <div id="naam-error" class="naam-error">Vul je naam in om verder te gaan.</div>
+  </div>
+
+  <div class="instructie-balk">
+    <h3>Hoe deze toets werkt</h3>
+    <div class="i-rij"><div class="i-nr">1</div><div>Klik hieronder op "Open Claude.ai in nieuw tabblad" en zet dat venster naast dit scherm.</div></div>
+    <div class="i-rij"><div class="i-nr">2</div><div>Volg de vijf fasen in deze module. Elke fase geeft je een kopieerbare prompt.</div></div>
+    <div class="i-rij"><div class="i-nr">3</div><div>Plak de prompt in Claude.ai, voer de opdracht uit en kom terug voor de volgende fase.</div></div>
+  </div>
+
+  <div class="btn-wrap" style="margin-bottom:0.5rem;">
+    <a href="https://claude.ai" target="_blank" class="btn">Open Claude.ai in nieuw tabblad →</a>
+  </div>
+  <p style="font-size:0.85rem;color:rgba(39,41,45,0.5);margin-bottom:1.5rem;">Claude.ai is gratis te gebruiken met een account. Heb je er al een? Dan kun je direct beginnen.</p>
+
+  <div class="tijdsbadge">Geschatte tijd: 45 minuten</div>
+
   <div class="leerdoelen">
-    <h3>Na deze module kun je:</h3>
+    <h3>Na deze toets heb je:</h3>
     <ul>
-      <li>Een geschikt werkproces kiezen voor automatisering</li>
-      <li>Zelfstandig een AI-gedreven workflow opzetten met Claude</li>
-      <li>Je werk documenteren en het resultaat demonstreren</li>
-      <li>Eerlijk reflecteren op wat werkt en wat niet</li>
+      <li>Je eigen werkcontext beschreven als herbruikbare systeemprompt</li>
+      <li>Je schrijfwerk geanalyseerd en een terugkerend patroon benoemd</li>
+      <li>Een prompttemplate gebouwd die inspeelt op jouw zwakke punt</li>
     </ul>
   </div>
-  <div class="tijdsbadge">Geschatte tijd: 20 minuten</div>
+
   <div class="btn-wrap">
-    <button class="btn" onclick="goTo('screen-module-1')">Start de module</button>
+    <button class="btn" onclick="startToets()">Start de toets →</button>
   </div>
 </div>
 
-<div id="screen-module-1" class="screen">
+<!-- FASE 1 -->
+<div id="screen-fase-1" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 1 van 4</div>
-    <h2>Wat is de praktijktoets?</h2>
+    <div class="module-num">Fase 1 van 5</div>
+    <h2>Schrijf je werkcontext</h2>
   </div>
-  <div class="content-card">
-    <p>De praktijktoets is geen multiple-choice quiz. Het is een praktijkopdracht waarbij je een compleet project opzet met Claude, van nul tot werkend resultaat. Je kiest een werkproces uit je eigen organisatie en bouwt dat volledig uit.</p>
-    <p>Dit is het moment waarop de theorie uit alle voorgaande modules samenkomt. Niemand vertelt je stap voor stap wat je moet doen. Jij bepaalt de aanpak.</p>
-  </div>
-  <div class="content-card">
-    <h3>Klik op een sector voor een voorbeeldopdracht</h3>
-    <div class="flashcard-set">
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Makelaar</div>
-        <div class="fc-uitleg">Bouw een workflow die bezichtigingsaanvragen verwerkt: van e-mail tot geplande afspraak en bevestigingsmail.</div>
-        <div class="fc-hint">Klik voor voorbeeld</div>
-      </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Advocaat</div>
-        <div class="fc-uitleg">Bouw een systeem dat klantdossiers aanmaakt: map aanmaken, standaarddocumenten invullen, eerste brief opstellen.</div>
-        <div class="fc-hint">Klik voor voorbeeld</div>
-      </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Marketing</div>
-        <div class="fc-uitleg">Bouw een content-workflow die een wekelijkse briefing omzet naar social media posts, nieuwsbrief en blogintro.</div>
-        <div class="fc-hint">Klik voor voorbeeld</div>
-      </div>
-      <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Accountant</div>
-        <div class="fc-uitleg">Bouw een maandelijks rapportageproces dat klantgegevens samenvat, uitschieters signaleert en een rapport genereert.</div>
-        <div class="fc-hint">Klik voor voorbeeld</div>
-      </div>
-    </div>
-  </div>
-  <div id="kc-1" class="kennischeck">
-    <h3>Kennischeck</h3>
-    <p class="kc-vraag">Welk werkproces is het meest geschikt voor de praktijktoets?</p>
-    <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'Eenmalige taken zijn niet geschikt. De toets vraagt om een herhalend werkproces dat je automatiseert.')">Een eenmalige taak die je nooit meer hoeft te doen</button>
-      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2', 'Correct. De toets draait om het automatiseren van een herhalende, tijdrovende taak met meerdere stappen.')">Een herhalende, tijdrovende taak met meerdere stappen</button>
-      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2', 'De toets draait om wat je zelfstandig kunt bouwen, niet om het kiezen van de moeilijkste taak.')">De meest complexe taak die je kunt bedenken</button>
-    </div>
-    <div id="kc-feedback-1" class="kc-feedback"></div>
-  </div>
-</div>
 
-<div id="screen-module-2" class="screen">
-  <div class="module-header">
-    <div class="module-num">Module 2 van 4</div>
-    <h2>Wat lever je op?</h2>
+  <div class="fase-indicator">
+    <div class="fase-dot actief">1</div><div class="fase-lijn"></div>
+    <div class="fase-dot">2</div><div class="fase-lijn"></div>
+    <div class="fase-dot">3</div><div class="fase-lijn"></div>
+    <div class="fase-dot">4</div><div class="fase-lijn"></div>
+    <div class="fase-dot">5</div>
   </div>
+
   <div class="content-card">
-    <h3>De drie onderdelen</h3>
-    <div class="stappen-lijst">
-      <div class="stap-item">
-        <div class="stap-nummer">1</div>
-        <div class="stap-content">
-          <h4>Documentatie</h4>
-          <p>Beschrijf het werkproces, de stappen die Claude automatiseert, de gekoppelde tools en welke beslissingen bij de mens blijven.</p>
-        </div>
-      </div>
-      <div class="stap-item">
-        <div class="stap-nummer">2</div>
-        <div class="stap-content">
-          <h4>Werkend resultaat</h4>
-          <p>Laat zien dat het werkt. Voer de workflow uit met echte of gesimuleerde data en documenteer het resultaat.</p>
-        </div>
-      </div>
-      <div class="stap-item">
-        <div class="stap-nummer">3</div>
-        <div class="stap-content">
-          <h4>Reflectie</h4>
-          <p>Wat werkte goed? Wat niet? Wat zou je anders doen? Wat zijn de beperkingen?</p>
-        </div>
-      </div>
-    </div>
+    <p>Een systeemprompt vertelt Claude wie je bent en hoe je werkt. Je hoeft dit maar één keer te schrijven — daarna gebruik je hem elke keer als je een nieuw gesprek start. Dit is het fundament van jouw persoonlijke werkassistent.</p>
+    <p>Kopieer de prompt hieronder, ga naar Claude.ai, vul de drie onderdelen in met jouw eigen gegevens en stuur hem op.</p>
   </div>
+
+  <div class="content-card">
+    <span class="prompt-label">Kopieer deze prompt naar Claude.ai</span>
+    <div class="prompt-box" id="fase1-prompt">Ik wil dat je mij helpt vanuit de volgende context:
+
+Mijn functie is: [vul in — bijv. "office manager bij een bouwbedrijf van 20 mensen"]
+Mijn drie meest voorkomende taken zijn: [vul in — bijv. "vergaderverslagen schrijven, e-mails opstellen, offertes nakijken"]
+De toon die past bij mijn organisatie is: [kies één — formeel / informeel / zakelijk-vriendelijk]
+
+Reageer voortaan altijd vanuit dit profiel. Bevestig dat je het hebt begrepen door kort samen te vatten wat ik heb ingevuld.</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase1-prompt').innerText,this)">Kopieer prompt</button>
+
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de prompt hierboven.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Ga naar Claude.ai (tabblad naast dit scherm).</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Plak de prompt en vervang de drie onderdelen door jouw eigen gegevens.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Stuur hem op en lees of Claude jouw context goed heeft begrepen.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">5</div><div>Kom terug als Claude geantwoord heeft.</div></div>
+  </div>
+
   <div class="tip-box">
     <div class="tip-box-label tip">Tip</div>
-    <p>Documenteer terwijl je bouwt, niet achteraf. Schrijf op waarom je bepaalde keuzes maakt, zodat je het later kunt uitleggen.</p>
+    <p>Hoe concreter je de drie onderdelen invult, hoe beter Claude aansluit op jouw werk. "Office manager bij een accountantskantoor van 15 personen" werkt beter dan alleen "office manager".</p>
   </div>
-  <div id="scenario-1" class="scenario-blok">
-    <div class="scenario-label">Praktijksituatie</div>
-    <p class="scenario-tekst">Je hebt een workflow gebouwd maar stap 3 werkt niet goed. De samenvatting die Claude maakt is te lang en bevat irrelevante informatie. Wat doe je?</p>
-    <div class="scenario-keuzes">
-      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'De hele workflow weggooien is overdreven. Pas de specifieke stap aan die niet goed werkt.')">De hele workflow weggooien en opnieuw beginnen</button>
-      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Pas de instructies aan voor die specifieke stap en documenteer de aanpassing. Dit is precies het iteratieve proces dat je hebt geleerd.')">De instructies voor stap 3 aanpassen (specifieker maken) en documenteren wat je hebt veranderd</button>
-      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Het probleem negeren is geen optie. De toets beoordeelt ook eerlijkheid over beperkingen.')">Het probleem negeren en hopen dat het vanzelf beter wordt</button>
-    </div>
-    <div id="scenario-feedback-1" class="scenario-feedback"></div>
-    <div class="btn-wrap" style="margin-top:1rem;">
-    </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase1-verificatie">Wat antwoordde Claude als eerste zin nadat je je werkcontext had opgestuurd?</label>
+    <input type="text" id="fase1-verificatie" class="fase-input" style="min-height:unset;resize:none;" placeholder="Schrijf hier de eerste zin van Claude's antwoord..." oninput="checkFase1Input()">
+    <div class="fase-input-hint">Minimaal 20 tekens. Dit bewijst dat je het gesprek daadwerkelijk hebt gevoerd.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase1-door" onclick="goTo('screen-fase-2')" disabled>Fase 1 voltooid — verder naar fase 2 →</button>
   </div>
 </div>
 
-<div id="screen-module-3" class="screen">
+<!-- FASE 2 -->
+<div id="screen-fase-2" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 3 van 4</div>
-    <h2>Beoordelingscriteria</h2>
+    <div class="module-num">Fase 2 van 5</div>
+    <h2>Analyseer je eigen werk</h2>
   </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">2</div><div class="fase-lijn"></div>
+    <div class="fase-dot">3</div><div class="fase-lijn"></div>
+    <div class="fase-dot">4</div><div class="fase-lijn"></div>
+    <div class="fase-dot">5</div>
+  </div>
+
   <div class="content-card">
-    <h3>Waarop wordt beoordeeld?</h3>
-    <table class="vergelijk-tabel">
-      <thead><tr><th>Criterium</th><th>Wat wordt beoordeeld</th></tr></thead>
-      <tbody>
-        <tr><td>Volledigheid</td><td>Zijn alle stappen van het werkproces gedekt?</td></tr>
-        <tr><td>Werkt het?</td><td>Levert de workflow het verwachte resultaat?</td></tr>
-        <tr><td>Veiligheid</td><td>Zijn er grenzen gesteld aan wat Claude automatisch doet?</td></tr>
-        <tr><td>Eerlijkheid</td><td>Zijn de beperkingen eerlijk beschreven?</td></tr>
-        <tr><td>Zelfstandigheid</td><td>Heb je de keuzes zelf gemaakt en verantwoord?</td></tr>
-      </tbody>
-    </table>
+    <p>Claude kan patronen herkennen in hoe jij schrijft. Daarvoor heeft hij een echt document van jou nodig. Gebruik het voorbeelddocument hieronder als je nu geen eigen document bij de hand hebt — dat werkt prima voor deze oefening.</p>
   </div>
-  <div class="tip-box waarschuwing">
-    <div class="tip-box-label waarschuwing">Let op</div>
-    <p>De toets meet zelfstandigheid, volledigheid en eerlijkheid, niet perfectie. Het is beter om eerlijk te beschrijven wat niet werkt dan te doen alsof alles perfect is.</p>
+
+  <div class="content-card">
+    <span class="prompt-label">Stap 1 — Kopieer het voorbeelddocument</span>
+    <div class="prompt-box" id="fase2-doc">Onderwerp: Terugkoppeling bijeenkomst 14 november
+
+Beste collega's,
+
+Hierbij de terugkoppeling van onze bijeenkomst van afgelopen donderdag. Er zijn een aantal zaken besproken. Ten eerste was er de kwestie van de planning voor het komende kwartaal. Hierover is gesproken en er zijn verschillende meningen geuit. Uiteindelijk is besloten dat er een werkgroep wordt opgericht die zich hierover gaat buigen.
+
+Verder is er gesproken over de communicatie richting klanten. Dit punt is aangehaald door meerdere aanwezigen. Er is afgesproken dat hier in een volgende vergadering op terug wordt gekomen.
+
+Tot slot is de begroting kort aangestipt. Hier zijn geen definitieve besluiten over genomen.
+
+De volgende bijeenkomst staat gepland voor december. Datum volgt nog.
+
+Met vriendelijke groet,
+[naam]</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-doc').innerText,this)">Kopieer voorbeelddocument</button>
+    <p style="font-size:0.82rem;color:rgba(39,41,45,0.5);margin-top:-0.5rem;margin-bottom:1.5rem;">Wil je liever je eigen document gebruiken? Dat kan ook — upload of plak het rechtstreeks in Claude.ai.</p>
+
+    <span class="prompt-label">Stap 2 — Kopieer de analyseprompt</span>
+    <div class="prompt-box" id="fase2-prompt">Analyseer het document dat ik hieronder plak op drie punten:
+1. Structuur — is er een duidelijke opbouw?
+2. Helderheid — zijn de zinnen direct en begrijpelijk?
+3. Zwakke plekken — wat komt er steeds terug in dit soort teksten?
+
+Wees eerlijk en concreet. Geef maximaal drie verbeterpunten en geef elk punt een naam van één tot vier woorden.
+
+[plak hier het document]</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase2-prompt').innerText,this)">Kopieer analyseprompt</button>
+
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer het voorbeelddocument (of gebruik je eigen document).</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Kopieer de analyseprompt.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Ga naar Claude.ai — de systeemprompt uit fase 1 is nog actief in dat gesprek.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Plak de analyseprompt en zet het document op de plek van [plak hier het document]. Stuur op.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">5</div><div>Lees de drie verbeterpunten die Claude noemt en kom terug.</div></div>
   </div>
-  <div id="kc-2" class="kennischeck">
-    <h3>Kennischeck</h3>
-    <p class="kc-vraag">Wat is belangrijker bij de beoordeling: perfectie of eerlijkheid?</p>
-    <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Perfectie wordt niet verwacht. Eerlijkheid over beperkingen is juist een van de beoordelingscriteria.')">Perfectie: alles moet foutloos werken</button>
-      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-4', 'Correct. Het is beter om eerlijk te beschrijven wat niet werkt dan te doen alsof alles perfect is. De toets meet zelfstandigheid en eerlijkheid.')">Eerlijkheid: beschrijf ook wat niet werkt en waarom</button>
-      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-4', 'Snelheid is geen beoordelingscriterium. Het gaat om volledigheid, veiligheid en eerlijkheid.')">Snelheid: hoe sneller hoe beter</button>
-    </div>
-    <div id="kc-feedback-2" class="kc-feedback"></div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="fase2-verificatie">Welke drie verbeterpunten noemde Claude? Schrijf ze hieronder op (gebruik nummers 1, 2 en 3).</label>
+    <textarea id="fase2-verificatie" class="fase-input" rows="4" placeholder="1. ...&#10;2. ...&#10;3. ..." oninput="checkFase2Input()"></textarea>
+    <div class="fase-input-hint">Minimaal 30 tekens. Schrijf de exacte benamingen die Claude gebruikte.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase2-door" onclick="goTo('screen-fase-3')" disabled>Fase 2 voltooid — verder naar fase 3 →</button>
   </div>
 </div>
 
-<div id="screen-module-4" class="screen">
+<!-- FASE 3 -->
+<div id="screen-fase-3" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 4 van 4</div>
-    <h2>Tips voor succes</h2>
+    <div class="module-num">Fase 3 van 5</div>
+    <h2>Benoem het patroon</h2>
   </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">3</div><div class="fase-lijn"></div>
+    <div class="fase-dot">4</div><div class="fase-lijn"></div>
+    <div class="fase-dot">5</div>
+  </div>
+
   <div class="content-card">
-    <h3>Praktische tips</h3>
-    <div class="stappen-lijst">
-      <div class="stap-item">
-        <div class="stap-nummer">1</div>
-        <div class="stap-content">
-          <h4>Begin eenvoudig</h4>
-          <p>Het is beter om een stap perfect te laten werken dan vijf stappen half.</p>
-        </div>
-      </div>
-      <div class="stap-item">
-        <div class="stap-nummer">2</div>
-        <div class="stap-content">
-          <h4>Documenteer tijdens het bouwen</h4>
-          <p>Schrijf op waarom je keuzes maakt terwijl je bezig bent, niet achteraf.</p>
-        </div>
-      </div>
-      <div class="stap-item">
-        <div class="stap-nummer">3</div>
-        <div class="stap-content">
-          <h4>Test met echte data</h4>
-          <p>Maar pas op met vertrouwelijke informatie. Gebruik testdata of anonimiseer.</p>
-        </div>
-      </div>
-      <div class="stap-item">
-        <div class="stap-nummer">4</div>
-        <div class="stap-content">
-          <h4>Vraag hulp als je vastloopt</h4>
-          <p>De toets meet of je iets kunt bouwen, niet of je het zonder hulp kunt.</p>
-        </div>
-      </div>
-    </div>
+    <p>Claude noemde meerdere verbeterpunten. Kies er nu één uit — het punt dat het meest herkenbaar voor je is, of dat terugkomt in meer dan één type document dat je schrijft. Dat is het patroon waar je een oplossing voor gaat bouwen.</p>
   </div>
-  <div class="tip-box">
-    <div class="tip-box-label tip">Tip</div>
-    <p>Begin met een eenvoudiger werkproces dan je denkt nodig te hebben. Je kunt altijd uitbreiden als de basis werkt.</p>
+
+  <div class="content-card">
+    <span class="prompt-label">Kopieer deze prompt naar Claude.ai</span>
+    <div class="prompt-box" id="fase3-prompt">Op basis van de analyse die je net hebt gegeven: wat is het meest terugkerende probleem in hoe ik schrijf? Geef het een naam van maximaal vier woorden — bijvoorbeeld "te lange zinnen", "geen duidelijke conclusie" of "passieve formuleringen". Leg in één zin uit waarom dit mijn teksten minder effectief maakt.</div>
+    <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase3-prompt').innerText,this)">Kopieer prompt</button>
+
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de prompt en stuur hem op in Claude.ai.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Lees het antwoord — Claude benoemt jouw patroon in maximaal vier woorden.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Schrijf dat patroon hieronder in het veld. Gebruik de exacte woorden van Claude.</div></div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="patroon-input">Schrijf hier het patroon dat Claude noemt:</label>
+    <input type="text" id="patroon-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: te lange zinnen" oninput="checkPatroonInput()">
+    <div class="fase-input-hint">Gebruik de exacte woorden van Claude. Dit patroon wordt automatisch ingevuld in fase 4.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase3-door" onclick="voltooiFase3()" disabled>Fase 3 voltooid — verder naar fase 4 →</button>
+  </div>
+</div>
+
+<!-- FASE 4 -->
+<div id="screen-fase-4" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 4 van 5</div>
+    <h2>Bouw de template</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">4</div><div class="fase-lijn"></div>
+    <div class="fase-dot">5</div>
+  </div>
+
+  <div class="content-card">
+    <p>Nu bouw je iets wat je morgen direct kunt gebruiken. De template combineert jouw werkcontext met een specifieke instructie die inspeelt op jouw patroon. Elke keer dat je een vergelijkbaar document schrijft of laat nakijken, gebruik je hem als startpunt.</p>
+    <p>Klik op de kopieerknop hieronder — je patroon uit fase 3 wordt automatisch ingevuld op de juiste plek.</p>
+  </div>
+
+  <div class="content-card">
+    <span class="prompt-label">Kopieer deze prompt naar Claude.ai (patroon wordt automatisch ingevuld)</span>
+    <div class="prompt-box" id="fase4-prompt">Maak een prompttemplate die ik voortaan kan gebruiken voor zakelijke e-mails en vergaderverslagen. De template moet specifiek ingaan op mijn probleem: [PATROON].
+
+De template moet:
+- Beginnen met een korte beschrijving van mijn werkcontext
+- Actief ingrijpen op het genoemde probleem
+- Eindigen met een concrete instructie aan jou
+
+Zet de volledige template tussen de tags [START TEMPLATE] en [EINDE TEMPLATE], zodat ik hem makkelijk kan kopiëren.</div>
+    <button class="kopieer-btn" onclick="kopieerFase4(this)">Kopieer prompt (patroon wordt automatisch ingevuld)</button>
+    <p style="font-size:0.8rem;color:rgba(39,41,45,0.45);margin-top:-0.75rem;margin-bottom:1.25rem;">Het patroon dat je in fase 3 hebt ingevuld, vervangt [PATROON] automatisch bij het kopiëren.</p>
+
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de prompt — je patroon wordt automatisch ingevuld.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Ga naar Claude.ai en stuur de prompt op.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Lees de template die Claude geeft — alles tussen [START TEMPLATE] en [EINDE TEMPLATE].</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Kopieer de volledige template en plak hem in het veld hieronder.</div></div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="template-input">Plak hier de template die Claude teruggeeft (alles tussen [START TEMPLATE] en [EINDE TEMPLATE]):</label>
+    <textarea id="template-input" class="fase-input" rows="6" placeholder="Plak hier de volledige template van Claude..." oninput="checkTemplateInput()"></textarea>
+    <div class="fase-input-hint">Minimaal 50 tekens. De template wordt automatisch gebruikt in fase 5.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase4-door" onclick="voltooiFase4()" disabled>Fase 4 voltooid — verder naar fase 5 →</button>
+  </div>
+</div>
+
+<!-- FASE 5 -->
+<div id="screen-fase-5" class="screen">
+  <div class="module-header">
+    <div class="module-num">Fase 5 van 5</div>
+    <h2>Valideer en reflecteer</h2>
+  </div>
+
+  <div class="fase-indicator">
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot voltooid">✓</div><div class="fase-lijn"></div>
+    <div class="fase-dot actief">5</div>
+  </div>
+
+  <div class="content-card">
+    <p>Een tool die je niet hebt getest is een tool die je niet vertrouwt. Test je template nu op een tweede document. Vergelijk daarna de output met wat Claude in fase 2 over je schrijfwerk zei. Zie je verschil? Dan werkt de template.</p>
+  </div>
+
+  <div class="content-card">
+    <span class="prompt-label">Kopieer de testprompt naar Claude.ai (template wordt automatisch toegevoegd)</span>
+    <div class="prompt-box" id="fase5-prompt">Pas de bovenstaande instructies toe op dit document:
+[plak hier een tweede document — een nieuwe e-mail, notitie of verslag dat je zelf hebt geschreven]</div>
+    <button class="kopieer-btn" onclick="kopieerFase5(this)">Kopieer testprompt (template wordt automatisch toegevoegd)</button>
+    <p style="font-size:0.8rem;color:rgba(39,41,45,0.45);margin-top:-0.75rem;margin-bottom:1.25rem;">Je template uit fase 4 wordt automatisch bovenaan geplaatst. Vervang de placeholder door een echt document van jezelf.</p>
+
+    <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de testprompt — je template wordt automatisch bovenaan toegevoegd.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">2</div><div>Vervang de placeholder door een echt document dat je hebt geschreven.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">3</div><div>Stuur op in Claude.ai en vergelijk het resultaat met de analyse uit fase 2.</div></div>
+    <div class="instructie-stap"><div class="instructie-nr">4</div><div>Kom terug en beschrijf hieronder wat je hebt gemaakt en wat je ervan vindt.</div></div>
+  </div>
+
+  <div class="fase-input-wrap">
+    <label class="fase-input-label" for="reflectie-input">Wat heb je gebouwd, wat werkt er goed aan, en wat zou je nog aanpassen?</label>
+    <textarea id="reflectie-input" class="fase-input" rows="5" placeholder="Beschrijf in eigen woorden wat je hebt gemaakt en wat je ervan vindt..." oninput="updateWoordenteller()"></textarea>
+    <div id="woord-teller" class="fase-input-teller" style="color:#dc2626;">0 / 30 woorden</div>
+  </div>
+
+  <div class="fase-input-wrap" style="margin-top:1.5rem;">
+    <label class="fase-input-label" for="fase5-bewijs">Noem het patroon dat je hebt aangepakt en leg in twee zinnen uit hoe je template dat specifiek doet.</label>
+    <textarea id="fase5-bewijs" class="fase-input" rows="4" placeholder="Bijv: Ik heb 'passieve formuleringen' aangepakt. Mijn template instrueert Claude om elke zin actief te herschrijven door het handelende subject voorop te zetten..." oninput="checkFase5Bewijs()"></textarea>
+    <div class="fase-input-hint">Minimaal 30 tekens. Dit bewijst dat je begrijpt wat je hebt gebouwd.</div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="fase-btn" id="btn-fase5-door" onclick="voltooiFase5()" disabled>Toets afronden →</button>
+  </div>
+</div>
+
+<!-- AFSLUITING -->
+<div id="screen-afsluiting" class="screen">
+  <div class="afsluiting-hero">
+    <div class="welcome-badge" style="margin-bottom:1rem;">Toets voltooid</div>
+    <h2>Goed gedaan, <span class="deelnemer-naam">...</span>.</h2>
+    <p>Je hebt een werkende prompttemplate gebouwd die aansluit op jouw manier van werken. Niet als oefening — maar als iets wat je morgen direct kunt gebruiken.</p>
+    <p style="color:rgba(255,248,242,0.6);font-size:0.9rem;margin-top:0.75rem;">Bewaar je template even — je hebt hem straks nodig voor je certificaat.</p>
   </div>
   <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz →</button>
   </div>
 </div>
 
-<!-- QUIZ_START -->
-[
-  {"vraag":"Wat is de praktijktoets?","opties":["Een multiple-choice quiz","Een praktijkopdracht waarbij je een compleet project opzet met Claude","Een mondeling examen","Een schriftelijke samenvatting van alle modules"],"correct":1,"uitleg":"De praktijktoets is een praktijkopdracht waarbij je een werkproces automatiseert met Claude, van nul tot werkend resultaat."},
-  {"vraag":"Uit hoeveel onderdelen bestaat de oplevering?","opties":["Twee: documentatie en resultaat","Drie: documentatie, werkend resultaat en reflectie","Vier: plan, bouw, test en presentatie","Een: alleen het werkend resultaat"],"correct":1,"uitleg":"Je levert drie onderdelen op: documentatie (wat heb je gebouwd), werkend resultaat (laat zien dat het werkt) en reflectie (wat ging goed, wat niet)."},
-  {"vraag":"Wat is het belangrijkste bij het kiezen van een opdracht?","opties":["De meest complexe taak kiezen","Een herhalende, tijdrovende taak met meerdere stappen","Een taak die je nog nooit hebt gedaan","Een taak met grote financiële risico's"],"correct":1,"uitleg":"Kies een taak die regelmatig terugkomt, tijdrovend is en meerdere stappen heeft. Vermijd taken met grote risico's bij fouten."},
-  {"vraag":"Wat meet de toets?","opties":["Perfectie en snelheid","Zelfstandigheid, volledigheid en eerlijkheid","Hoeveel tools je kunt koppelen","Hoe snel je kunt typen"],"correct":1,"uitleg":"De toets beoordeelt of je zelfstandig keuzes kunt maken, of het werkproces volledig is en of je eerlijk bent over beperkingen."},
-  {"vraag":"Wat is een goede aanpak als je vastloopt?","opties":["Opgeven en een ander project kiezen","Hulp vragen aan Claude, documentatie of een collega","Wachten tot het vanzelf beter gaat","De opdracht overslaan"],"correct":1,"uitleg":"Hulp vragen is geen zwakte. De toets meet of je iets kunt bouwen, niet of je het zonder hulp kunt."}
-]
-<!-- QUIZ_END -->
+<!-- Floating Claude.ai knop -->
+<div class="claude-float">
+  <a href="https://claude.ai" target="_blank">Open Claude.ai →</a>
+</div>
+
+<script>
+function startToets() {
+  var naam = document.getElementById('naam-input').value.trim();
+  if (!naam) {
+    document.getElementById('naam-error').style.display = 'block';
+    document.getElementById('naam-input').focus();
+    return;
+  }
+  document.getElementById('naam-error').style.display = 'none';
+  localStorage.setItem('umely_naam', naam);
+  document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  goTo('screen-fase-1');
+}
+
+function kopieerElement(tekst, knop) {
+  var done = function() {
+    var orig = knop.textContent;
+    knop.textContent = '✓ Gekopieerd!';
+    knop.style.background = '#16a34a';
+    setTimeout(function() { knop.textContent = orig; knop.style.background = ''; }, 2000);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(tekst.trim()).then(done).catch(function() { fbKopieer(tekst, done); });
+  } else { fbKopieer(tekst, done); }
+}
+
+function fbKopieer(tekst, cb) {
+  var ta = document.createElement('textarea');
+  ta.value = tekst.trim();
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  if (cb) cb();
+}
+
+function kopieerFase4(knop) {
+  var patroon = (document.getElementById('patroon-input') || {}).value;
+  patroon = patroon ? patroon.trim() : '';
+  if (!patroon) patroon = 'jouw patroon uit fase 3';
+  var tekst = document.getElementById('fase4-prompt').innerText.replace('[PATROON]', patroon);
+  kopieerElement(tekst, knop);
+}
+
+function kopieerFase5(knop) {
+  var template = (document.getElementById('template-input') || {}).value;
+  template = template ? template.trim() : '';
+  if (!template) template = '[jouw template uit fase 4]';
+  var volledig = template + '\n\nPas de bovenstaande instructies toe op dit document:\n[plak hier een tweede document — een nieuwe e-mail, notitie of verslag dat je zelf hebt geschreven]';
+  kopieerElement(volledig, knop);
+}
+
+function checkFase1Input() {
+  var val = document.getElementById('fase1-verificatie').value.trim();
+  var btn = document.getElementById('btn-fase1-door');
+  if (btn) btn.disabled = val.length < 20;
+}
+
+function checkFase2Input() {
+  var val = document.getElementById('fase2-verificatie').value.trim();
+  var btn = document.getElementById('btn-fase2-door');
+  if (btn) btn.disabled = val.length < 30;
+}
+
+function checkFase5Bewijs() {
+  var bewijs = document.getElementById('fase5-bewijs').value.trim();
+  var woorden = (document.getElementById('reflectie-input').value.trim().split(/\s+/).filter(function(w){return w.length>0;})).length;
+  var btn = document.getElementById('btn-fase5-door');
+  if (btn) btn.disabled = bewijs.length < 30 || woorden < 30;
+}
+
+function checkPatroonInput() {
+  var val = document.getElementById('patroon-input').value.trim();
+  var btn = document.getElementById('btn-fase3-door');
+  if (btn) btn.disabled = val.length < 3;
+}
+
+function checkTemplateInput() {
+  var val = document.getElementById('template-input').value.trim();
+  var btn = document.getElementById('btn-fase4-door');
+  if (btn) btn.disabled = val.length < 50;
+}
+
+function updateWoordenteller() {
+  var val = document.getElementById('reflectie-input').value.trim();
+  var n = val ? val.split(/\s+/).filter(function(w) { return w.length > 0; }).length : 0;
+  var tel = document.getElementById('woord-teller');
+  if (tel) { tel.textContent = n + ' / 30 woorden'; tel.style.color = n >= 30 ? '#16a34a' : '#dc2626'; }
+  checkFase5Bewijs();
+}
+
+function voltooiFase3() {
+  if (document.getElementById('patroon-input').value.trim().length < 3) return;
+  goTo('screen-fase-4');
+}
+
+function voltooiFase4() {
+  if (document.getElementById('template-input').value.trim().length < 50) return;
+  goTo('screen-fase-5');
+}
+
+function voltooiFase5() {
+  var val = document.getElementById('reflectie-input').value.trim();
+  var n = val ? val.split(/\s+/).filter(function(w) { return w.length > 0; }).length : 0;
+  var bewijs = document.getElementById('fase5-bewijs').value.trim();
+  if (n < 30 || bewijs.length < 30) return;
+  localStorage.setItem('umely_toets_voltooid', 'true');
+  goTo('screen-afsluiting');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var naam = localStorage.getItem('umely_naam');
+  if (naam) {
+    var inp = document.getElementById('naam-input');
+    if (inp) inp.value = naam;
+    document.querySelectorAll('.deelnemer-naam').forEach(function(el) { el.textContent = naam; });
+  }
+});
+</script>
