@@ -69,6 +69,11 @@ Geen openstaande bevindingen. Alle bekende issues zijn opgelost of gefixed in de
   - `"Claude is geen accountant"` → hernoemd naar `"Claude is geen financieel adviseur"` + `"gebruik hem voor het begrijpen van financiële concepten, maar laat belastingaangiften en beleggingsbeslissingen controleren door een gecertificeerde adviseur"`
 - Volledige scan op alle vier criteria leverde geen nieuwe bevindingen op.
 
+**Kwaliteitsreview 2026-04-13 — drie fixes aangebracht in `screen-module-4-3`:**
+- Fix 1 (grammatica): `"analyseren of redeneren"` → `"analyseren en te redeneren"`
+- Fix 2 (financieel adviseur): `"belastingaangiften en beleggingsbeslissingen controleren door een gecertificeerde adviseur"` → `"financiële beslissingen controleren door je accountant of financieel adviseur"` (twee niet-verwante subdomeinen samengetrokken, specifiekere beroepsvermelding)
+- Fix 3 (consistentie jurist): `"gecertificeerde jurist"` → `"jurist"` (consistent met nieuwe formulering financieel adviseur)
+
 ---
 
 ## MODULE: elearning-b4-leeropdracht-b.html
