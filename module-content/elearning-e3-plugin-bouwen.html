@@ -1,0 +1,406 @@
+<!-- TITLE: E3 - Je eerste plugin bouwen -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1-1','screen-module-1-kc','screen-module-2-1','screen-module-2-2','screen-module-2-kc','screen-module-3-1','screen-module-3-2','screen-module-3-kc','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-module-1-1':'Connector vs. plugin: wat is het verschil?','screen-module-1-kc':'Kennischeck','screen-module-2-1':'Wat gaat jouw plugin weten?','screen-module-2-2':'Claude Code schrijft alles','screen-module-2-kc':'Kennischeck','screen-module-3-1':'De plugin koppelen aan Claude','screen-module-3-2':'Plugin starten en verifiëren','screen-module-3-kc':'Kennischeck' -->
+<!-- QUIZ_START -->
+[
+  {
+    "vraag": "Wat is het kernverschil tussen een Connector en een plugin?",
+    "opties": [
+      "Connectors zijn gratis, plugins kosten extra",
+      "Connectors koppelen Claude aan bestaande diensten van anderen, plugins koppelen Claude aan jouw eigen data",
+      "Plugins zijn sneller dan Connectors",
+      "Er is geen verschil, het zijn synoniemen"
+    ],
+    "correct": 1,
+    "uitleg": "Een Connector is een koppeling die Anthropic heeft gebouwd voor bestaande diensten zoals Gmail of Notion. Een plugin bouw je zelf om Claude toegang te geven tot jouw eigen data die nergens anders staat."
+  },
+  {
+    "vraag": "Wat genereert Claude Code in één opdracht voor je plugin?",
+    "opties": [
+      "Alleen de servercode",
+      "De servercode en een gebruikershandleiding",
+      "De servercode, een startscript en de exacte configuratieregel",
+      "De servercode en een uploadscript voor Railway"
+    ],
+    "correct": 2,
+    "uitleg": "Claude Code genereert drie dingen in één keer: de servercode (plugin.py), een startscript (start-plugin.bat) en de exacte configuratieregel die je in claude_desktop_config.json plakt. Je hoeft zelf niets te schrijven."
+  },
+  {
+    "vraag": "Waarvoor dient claude_desktop_config.json?",
+    "opties": [
+      "Om je Claude-accountgegevens op te slaan",
+      "Om Claude te vertellen welke plugins beschikbaar zijn en waar ze staan",
+      "Om de plugin-code op te slaan",
+      "Om de gesprekgeschiedenis te bewaren"
+    ],
+    "correct": 1,
+    "uitleg": "claude_desktop_config.json is het configuratiebestand dat Claude bij het opstarten leest. Daarin staat welke plugins beschikbaar zijn en waar ze staan op je computer. Zonder die regel weet Claude niet dat je plugin bestaat."
+  },
+  {
+    "vraag": "Waarom moet het terminalvenster open blijven nadat je start-plugin.bat hebt gestart?",
+    "opties": [
+      "Om te zien welke fouten er zijn",
+      "Omdat de plugin actief is zolang dat venster open is",
+      "Om de configuratieregel te kopiëren",
+      "Het venster mag gewoon gesloten worden"
+    ],
+    "correct": 1,
+    "uitleg": "De plugin draait als een actief proces in het terminalvenster. Zodra je dat venster sluit, stopt de plugin. Claude kan dan niet meer bij je data. Laat het venster open staan zolang je de plugin wilt gebruiken."
+  },
+  {
+    "vraag": "Je hebt de plugin gestart en Claude herstart, maar Claude zegt dat hij de informatie niet kent. Wat is de eerste stap?",
+    "opties": [
+      "De plugin opnieuw bouwen met Claude Code",
+      "Controleren of het terminalvenster van de plugin nog open is",
+      "Claude.ai openen in de browser in plaats van de desktop-app",
+      "De plugin verwijderen en opnieuw installeren"
+    ],
+    "correct": 1,
+    "uitleg": "Als Claude de plugin niet herkent, is de meest voorkomende oorzaak dat het terminalvenster per ongeluk is gesloten. Controleer dat eerst. Als het venster open is, controleer dan of Claude na het toevoegen van de configuratieregel opnieuw is gestart."
+  }
+]
+<!-- QUIZ_END -->
+
+<div id="screen-welcome" class="screen start">
+  <div class="welcome-badge">E3 — Je eerste plugin bouwen</div>
+  <h1>Claude weet wat jij weet</h1>
+  <p>Kant-en-klare Connectors koppelen Claude aan systemen van anderen. Een plugin koppelt Claude aan wat jij hebt: je eigen klantenlijst, je interne procedures, je eigen kennis.</p>
+  <p>In deze module bouw je je eerste plugin - zonder code te schrijven.</p>
+  <div class="leerdoelen">
+    <h3>Na deze module kun je:</h3>
+    <ul>
+      <li>Uitleggen wat het verschil is tussen een Connector en een plugin</li>
+      <li>Aan Claude Code beschrijven wat je plugin moet doen</li>
+      <li>De gegenereerde plugin starten via een startscript</li>
+      <li>De plugin koppelen aan Claude via het configuratiebestand</li>
+      <li>Verifiëren of Claude de plugin correct gebruikt</li>
+    </ul>
+  </div>
+  <div class="tijdsbadge">± 20 minuten</div>
+  <div class="nav-buttons" id="nav-screen-welcome"></div>
+</div>
+
+<div id="screen-module-1-1" class="screen">
+  <div class="module-header">
+    <div class="module-naam">Module 1</div>
+    <h2>Connector vs. plugin: wat is het verschil?</h2>
+  </div>
+  <div class="content-card">
+    <p>Je hebt in E2 geleerd hoe je een Connector inschakelt. Een Connector is een koppeling die Anthropic heeft gebouwd: jij schakelt hem in via de Claude-instellingen, en Claude kan daarna Gmail, je agenda of Notion gebruiken.</p>
+    <p>Een plugin werkt anders. Jij bouwt de koppeling zelf - niet Anthropic. Dat klinkt ingewikkelder dan het is, want Claude Code schrijft de code voor je. Het enige wat jij doet: beschrijven wat Claude moet kunnen opzoeken.</p>
+  </div>
+  <table class="vergelijk-tabel">
+    <thead>
+      <tr>
+        <th>Kenmerk</th>
+        <th>Connector</th>
+        <th>Plugin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Wie bouwt het?</strong></td>
+        <td>Anthropic</td>
+        <td>Jij (met hulp van Claude Code)</td>
+      </tr>
+      <tr>
+        <td><strong>Welke data?</strong></td>
+        <td>Bestaande diensten (Gmail, Notion, Slack)</td>
+        <td>Jouw eigen data die nergens anders staat</td>
+      </tr>
+      <tr>
+        <td><strong>Hoe inschakelen?</strong></td>
+        <td>Via Settings - klik op Connect</td>
+        <td>Plugin genereren, starten en koppelen</td>
+      </tr>
+      <tr>
+        <td><strong>Wanneer gebruiken?</strong></td>
+        <td>Als de tool al bestaat als Connector</td>
+        <td>Als je eigen data wilt ontsluiten</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="visual-block">
+    <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <rect width="580" height="220" rx="10" fill="#FFF8F2"/>
+      <!-- Title -->
+      <text x="290" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888" font-weight="bold">Twee paden naar Claude</text>
+      <!-- Left path: Connector -->
+      <rect x="20" y="40" width="130" height="50" rx="8" fill="#EAE6E0"/>
+      <text x="85" y="61" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" font-weight="bold">Andermans systeem</text>
+      <text x="85" y="77" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888">Gmail, Notion, Slack</text>
+      <!-- Arrow left -->
+      <line x1="152" y1="65" x2="196" y2="65" stroke="#FF8514" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,3"/>
+      <polygon points="196,59 208,65 196,71" fill="#FF8514"/>
+      <!-- Connector label -->
+      <rect x="152" y="44" width="46" height="20" rx="4" fill="#FF8514"/>
+      <text x="175" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" fill="white" font-weight="bold">Connector</text>
+      <!-- Right path: Plugin -->
+      <rect x="430" y="40" width="130" height="50" rx="8" fill="#FFF8F2" stroke="#FF8514" stroke-width="2"/>
+      <text x="495" y="61" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27292D" font-weight="bold">Jouw eigen data</text>
+      <text x="495" y="77" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888">Klantenlijst, procedures, tarieven</text>
+      <!-- Arrow right -->
+      <line x1="428" y1="65" x2="384" y2="65" stroke="#FF8514" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,3"/>
+      <polygon points="384,59 372,65 384,71" fill="#FF8514"/>
+      <!-- Plugin label -->
+      <rect x="384" y="44" width="46" height="20" rx="4" fill="#27292D"/>
+      <text x="407" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" fill="white" font-weight="bold">Plugin</text>
+      <!-- Claude box in center -->
+      <rect x="216" y="42" width="148" height="70" rx="10" fill="#27292D"/>
+      <text x="290" y="67" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="bold">Claude</text>
+      <text x="290" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">ontvangt informatie</text>
+      <text x="290" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">uit beide bronnen</text>
+      <!-- Bottom legend -->
+      <rect x="60" y="140" width="14" height="14" rx="3" fill="#EAE6E0"/>
+      <text x="80" y="152" font-family="Arial, sans-serif" font-size="10" fill="#27292D">Connector: door Anthropic gebouwd</text>
+      <rect x="60" y="165" width="14" height="14" rx="3" fill="#FFF8F2" stroke="#FF8514" stroke-width="2"/>
+      <text x="80" y="177" font-family="Arial, sans-serif" font-size="10" fill="#27292D">Plugin: door jou gebouwd (Claude Code schrijft de code)</text>
+      <!-- Divider line -->
+      <line x1="40" y1="130" x2="540" y2="130" stroke="#EAE6E0" stroke-width="1"/>
+      <text x="290" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888" font-style="italic">Kernverschil: Connector koppelt Claude aan andermans systemen, plugin aan die van jou</text>
+    </svg>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip: wanneer kies je welk?</div>
+    <p>Gebruik een Connector als de tool al bestaat als Connector (Gmail, agenda, Notion, Slack). Gebruik een plugin als je eigen data wilt ontsluiten die nergens anders staat: je eigen klantenlijst, je interne FAQ, je bedrijfsprocedures, je tarieven.</p>
+  </div>
+  <div class="nav-buttons" id="nav-screen-module-1-1"></div>
+</div>
+
+<div id="screen-module-1-kc" class="screen">
+  <div class="module-header">
+    <div class="module-naam">Module 1</div>
+    <h2>Kennischeck</h2>
+  </div>
+  <div id="kc-1" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Een advocatenkantoor heeft een eigen dossiersysteem met lopende zaken, partijen en deadlines. Dit systeem bestaat niet als kant-en-klare Connector. Hoe koppelt het kantoor dit aan Claude?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2-1', 'Er bestaat geen Connector voor een intern dossiersysteem - die zijn er alleen voor veelgebruikte diensten zoals Gmail of Notion. Een plugin is de juiste keuze.')">Een bestaande Connector inschakelen voor dossierbeheer</button>
+      <button class="kc-optie" onclick="checkKC(1, this, true, 'screen-module-2-1', 'Correct. De data staat alleen intern, dus er is geen kant-en-klare Connector. Met Claude Code bouw je een plugin die Claude toegang geeft tot het eigen dossiersysteem.')">Een plugin bouwen met Claude Code die Claude toegang geeft tot het dossiersysteem</button>
+      <button class="kc-optie" onclick="checkKC(1, this, false, 'screen-module-2-1', 'Wachten is niet nodig. Anthropic bouwt alleen Connectors voor veelgebruikte diensten. Voor interne systemen bouw je zelf een plugin met Claude Code.')">Wachten totdat Anthropic een Connector voor dossiersystemen uitbrengt</button>
+    </div>
+    <div id="kc-feedback-1" class="kc-feedback"></div>
+  </div>
+  <div class="nav-buttons" id="nav-screen-module-1-kc"></div>
+</div>
+
+<div id="screen-module-2-1" class="screen">
+  <div class="module-header">
+    <div class="module-naam">Module 2</div>
+    <h2>Wat gaat jouw plugin weten?</h2>
+  </div>
+  <div class="content-card">
+    <p>Voordat je Claude Code instrueert, beslis je wat je plugin moet weten. Schrijf dit op in gewone taal. Dat wordt de prompt voor Claude Code. Hieronder zie je voorbeelden per sector - klik op een kaart om te zien wat die plugin zou bevatten.</p>
+  </div>
+  <div class="flashcard-set">
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="fc-term">Makelaarskantoor</div>
+      <div class="fc-uitleg">Lijst van actieve woningen met adres, vraagprijs en status (beschikbaar, onder bod of verkocht). Claude kan dan vragen beantwoorden als "Welke woningen zijn beschikbaar onder 350.000 euro?" of "Wat is de status van het pand aan de Kerkstraat?"</div>
+      <div class="fc-hint">Klik voor een voorbeeld</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="fc-term">Advocatenkantoor</div>
+      <div class="fc-uitleg">Overzicht van lopende zaken met partijen, deadlines en dossiernummer. Claude kan dan vragen beantwoorden als "Welke zaken hebben een deadline deze maand?" of "Wie zijn de partijen in zaak 2024-0142?"</div>
+      <div class="fc-hint">Klik voor een voorbeeld</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="fc-term">Marketingbureau</div>
+      <div class="fc-uitleg">Tone-of-voice per klant, merkwaarden en verboden woorden. Claude kan dan teksten schrijven die exact passen bij de stijl van elke klant, zonder dat je dat elke keer opnieuw hoeft uit te leggen.</div>
+      <div class="fc-hint">Klik voor een voorbeeld</div>
+    </div>
+    <div class="flashcard" onclick="toggleFlashcard(this)">
+      <div class="fc-term">Accountant</div>
+      <div class="fc-uitleg">Vaste tarieven per dienst en servicepakketten. Claude kan dan vragen beantwoorden als "Wat kost een jaarrekening voor een eenmanszaak?" of "Welke diensten zitten in het Basis-pakket?"</div>
+      <div class="fc-hint">Klik voor een voorbeeld</div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Tip: wees specifiek</div>
+    <p>Hoe specifieker je omschrijft wat de plugin moet weten, hoe nuttiger Claude wordt. "Klantenlijst" is te vaag. "Lijst van actieve klanten met naam, contactpersoon, e-mailadres en het pakket dat ze afnemen" geeft Claude iets om mee te werken.</p>
+  </div>
+  <div class="nav-buttons" id="nav-screen-module-2-1"></div>
+</div>
+
+<div id="screen-module-2-2" class="screen">
+  <div class="module-header">
+    <div class="module-naam">Module 2</div>
+    <h2>Claude Code schrijft alles</h2>
+  </div>
+  <div class="content-card">
+    <p>Claude Code genereert een MCP-server - dat is de technische verbinding tussen Claude en jouw data. Je hoeft niet te begrijpen hoe die werkt. Je beschrijft alleen wat Claude moet kunnen opzoeken. Claude Code schrijft vervolgens alle benodigde bestanden.</p>
+  </div>
+  <div class="stappen-lijst">
+    <div class="stap-item">
+      <div class="stap-nummer">1</div>
+      <div class="stap-content">
+        <h4>Open Claude Code</h4>
+        <p>Start Claude Code op je computer. Zorg dat je in een lege werkmap staat, of maak een nieuwe map aan (bijvoorbeeld <code style="background:#EAE6E0;padding:1px 5px;border-radius:4px;">mijn-plugin</code>) en navigeer daarheen.</p>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">2</div>
+      <div class="stap-content">
+        <h4>Vul de prompt in</h4>
+        <p>Kopieer de template hieronder en vul in wat jouw plugin moet weten. Plak de ingevulde prompt in Claude Code.</p>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">3</div>
+      <div class="stap-content">
+        <h4>Sla de bestanden op</h4>
+        <p>Claude Code genereert drie bestanden. Sla ze op in de map die je hebt aangemaakt. Onthoud het volledige pad naar die map - je hebt het nodig in de volgende stap.</p>
+      </div>
+    </div>
+  </div>
+  <div class="content-card" style="background:#F5F0EB;">
+    <p style="font-family:var(--font-h);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);margin-bottom:0.75rem;">Prompttemplate voor Claude Code</p>
+    <pre style="font-family:'Courier New',Courier,monospace;font-size:0.85rem;line-height:1.7;white-space:pre-wrap;color:#27292D;margin:0;">Maak een plugin in Python die Claude toegang geeft tot de volgende informatie:
+
+[hier beschrijf jij wat de plugin moet weten - in gewone taal]
+
+Genereer drie bestanden:
+1. De servercode als plugin.py
+2. Een startscript start-plugin.bat voor Windows
+3. De exacte tekst die ik moet toevoegen aan mijn Claude-configuratiebestand
+   claude_desktop_config.json, inclusief het volledige pad naar plugin.py
+
+Gebruik de officiële MCP Python SDK. Als Python niet beschikbaar is, gebruik dan Node.js.</pre>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op: onthoud het mappad</div>
+    <p>Geef de map een herkenbare naam zoals <code style="background:#EAE6E0;padding:1px 5px;border-radius:4px;">mijn-plugin</code> en zet hem ergens vaste neer, bijvoorbeeld op je bureaublad of in je Documenten-map. Je hebt het volledige pad nodig in de volgende stap. Als je de map later verplaatst, werkt de plugin niet meer.</p>
+    <p style="margin-top:0.5rem;">Als Claude Code aangeeft dat Python noch Node.js beschikbaar is op je computer, vraag dan je IT-beheerder om Python te installeren via python.org.</p>
+  </div>
+  <div class="nav-buttons" id="nav-screen-module-2-2"></div>
+</div>
+
+<div id="screen-module-2-kc" class="screen">
+  <div class="module-header">
+    <div class="module-naam">Module 2</div>
+    <h2>Kennischeck</h2>
+  </div>
+  <div id="kc-2" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Claude Code genereert drie bestanden voor je plugin: plugin.py, start-plugin.bat en de configuratieregel. Waarom drie aparte bestanden?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-3-1', 'Het gaat niet om een technische beperking. Elk bestand heeft een specifieke functie die de andere twee niet kunnen vervangen.')">Omdat Claude Code technisch niet alles in één bestand kan zetten</button>
+      <button class="kc-optie" onclick="checkKC(2, this, true, 'screen-module-3-1', 'Correct. plugin.py bevat de servercode die de data beschikbaar stelt. start-plugin.bat start die server met één dubbelklik. De configuratieregel vertelt Claude waar de plugin staat. Elk bestand heeft een eigen rol.')">Omdat elk bestand een eigen functie heeft: servercode, starten en koppelen aan Claude</button>
+      <button class="kc-optie" onclick="checkKC(2, this, false, 'screen-module-3-1', 'Alle drie de bestanden zijn nodig. Zonder start-plugin.bat kun je de plugin niet starten, en zonder de configuratieregel weet Claude niet dat de plugin bestaat.')">Twee bestanden zijn voldoende - de configuratieregel kun je ook handmatig invoeren</button>
+    </div>
+    <div id="kc-feedback-2" class="kc-feedback"></div>
+  </div>
+  <div class="nav-buttons" id="nav-screen-module-2-kc"></div>
+</div>
+
+<div id="screen-module-3-1" class="screen">
+  <div class="module-header">
+    <div class="module-naam">Module 3</div>
+    <h2>De plugin koppelen aan Claude</h2>
+  </div>
+  <div class="content-card">
+    <p>Je vertelt Claude waar de plugin staat via een configuratiebestand. Claude leest dat bestand bij het opstarten. Dit is de meest kritieke stap: als het configuratiebestand een fout bevat, start Claude niet correct op.</p>
+  </div>
+  <div class="stappen-lijst">
+    <div class="stap-item">
+      <div class="stap-nummer">1</div>
+      <div class="stap-content">
+        <h4>Configuratiebestand openen</h4>
+        <p>Het configuratiebestand staat op:</p>
+        <p style="font-family:'Courier New',Courier,monospace;background:#EAE6E0;padding:0.5rem 0.75rem;border-radius:6px;font-size:0.85rem;margin:0.5rem 0;">C:\Users\[jouwgebruikersnaam]\AppData\Roaming\Claude\claude_desktop_config.json</p>
+        <p><strong>Snelste manier:</strong> druk op Windows + R, typ <code style="background:#EAE6E0;padding:1px 5px;border-radius:4px;">%AppData%\Claude</code> en druk op Enter. Als de map Claude niet bestaat, maak hem dan aan.</p>
+        <p style="margin-top:0.5rem;">Open het bestand in Kladblok, Notepad++ of VS Code. Gebruik geen Word - die kan het bestand beschadigen. Als het bestand niet bestaat, maak het aan en zet er <code style="background:#EAE6E0;padding:1px 5px;border-radius:4px;">{}</code> in.</p>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">2</div>
+      <div class="stap-content">
+        <h4>Configuratieregel toevoegen</h4>
+        <p>Claude Code heeft de exacte tekst al voor je gegenereerd. Kopieer die tekst en vervang de bestaande inhoud van het bestand ermee.</p>
+        <p style="margin-top:0.75rem;font-weight:700;font-size:0.85rem;">Leeg configuratiebestand (voor):</p>
+        <pre style="font-family:'Courier New',Courier,monospace;font-size:0.8rem;background:#EAE6E0;padding:0.6rem 0.75rem;border-radius:6px;margin:0.35rem 0;">{}</pre>
+        <p style="margin-top:0.75rem;font-weight:700;font-size:0.85rem;">Na toevoegen van de plugin (na):</p>
+        <pre style="font-family:'Courier New',Courier,monospace;font-size:0.8rem;background:#27292D;color:#FFF8F2;padding:0.6rem 0.75rem;border-radius:6px;margin:0.35rem 0;white-space:pre-wrap;">{
+  "mcpServers": {
+    "mijn-plugin": {
+      "command": "python",
+      "args": ["C:\\Users\\naam\\mijn-plugin\\plugin.py"]
+    }
+  }
+}</pre>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">3</div>
+      <div class="stap-content">
+        <h4>Opslaan en Claude herstarten</h4>
+        <p>Sla het bestand op. Sluit de Claude desktop-app volledig. Open Claude opnieuw. Claude leest het configuratiebestand alleen bij het opstarten.</p>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">JSON is gevoelig voor fouten</div>
+    <p>Als er een komma of haakje mist, start Claude niet correct op. Als dat gebeurt: open Claude Code en vraag "Mijn configuratiebestand geeft een fout. Dit is de inhoud: [plak de inhoud]. Wat klopt er niet?" Claude Code corrigeert het direct.</p>
+  </div>
+  <div class="nav-buttons" id="nav-screen-module-3-1"></div>
+</div>
+
+<div id="screen-module-3-2" class="screen">
+  <div class="module-header">
+    <div class="module-naam">Module 3</div>
+    <h2>Plugin starten en verifiëren</h2>
+  </div>
+  <div class="stappen-lijst">
+    <div class="stap-item">
+      <div class="stap-nummer">1</div>
+      <div class="stap-content">
+        <h4>Plugin starten</h4>
+        <p>Ga naar de map waar je plugin staat. Dubbelklik op <code style="background:#EAE6E0;padding:1px 5px;border-radius:4px;">start-plugin.bat</code>. Als Windows een beveiligingsmelding toont, klik dan op "Meer info" en vervolgens "Toch uitvoeren". Er opent een terminalvenster - dat venster moet open blijven. De plugin draait zolang dat venster open is.</p>
+      </div>
+    </div>
+    <div class="stap-item">
+      <div class="stap-nummer">2</div>
+      <div class="stap-content">
+        <h4>Testen</h4>
+        <p>Stel Claude een vraag over informatie die alleen in jouw plugin staat. Bijvoorbeeld: "Wat zijn de actieve woningen in ons systeem?" of "Wat zijn onze tarieven voor belastingaangifte?"</p>
+        <p style="margin-top:0.5rem;">Als Claude antwoordt met informatie uit je plugin: de plugin werkt.</p>
+      </div>
+    </div>
+  </div>
+  <div id="scenario-1" class="scenario-blok">
+    <div class="scenario-label">Herstelstap: plugin werkt niet</div>
+    <p class="scenario-tekst">Je hebt de plugin gestart en Claude opnieuw gestart, maar Claude zegt dat hij de informatie niet kent. Wat doe je als eerste?</p>
+    <div class="scenario-keuzes">
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'De plugin opnieuw bouwen is pas nodig als er een fout in de code zit. Controleer eerst de eenvoudigere oorzaken: is het terminalvenster nog open? Is Claude opnieuw gestart na het aanpassen van het configuratiebestand?')">De plugin opnieuw bouwen met Claude Code</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Controleer in volgorde: (1) Is het terminalvenster nog open? Als niet: herstart de plugin. (2) Is Claude herstart na het toevoegen van de configuratieregel? Als niet: herstart Claude. (3) Pas daarna: open Claude Code en vraag hem de configuratieregel te controleren.')">Controleer stap voor stap: terminalvenster open? Claude herstart? Configuratieregel correct?</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'De browser-versie van Claude heeft geen toegang tot plugins op je computer. Plugins werken alleen via de Claude desktop-app.')">Claude.ai openen in de browser om de plugin te testen</button>
+    </div>
+    <div id="scenario-feedback-1" class="scenario-feedback"></div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-box-label tip">Klaar voor de quiz?</div>
+    <p>Je hebt alle stappen doorlopen: van het verschil tussen Connector en plugin tot het starten en verifiëren van je eigen plugin. Test je kennis in de afsluitquiz.</p>
+    <div style="margin-top:1rem;">
+      <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz</button>
+    </div>
+  </div>
+  <div class="nav-buttons" id="nav-screen-module-3-2"></div>
+</div>
+
+<div id="screen-module-3-kc" class="screen">
+  <div class="module-header">
+    <div class="module-naam">Module 3</div>
+    <h2>Kennischeck</h2>
+  </div>
+  <div id="kc-3" class="kennischeck">
+    <h3>Kennischeck</h3>
+    <p class="kc-vraag">Het terminalvenster van de plugin is open, maar Claude herkent de plugin niet. Je hebt Claude al herstart. Wat is de volgende stap?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-3-2', 'De plugin opnieuw bouwen is niet nodig als het terminalvenster open is en Claude al herstart is. Het probleem zit waarschijnlijk in de configuratieregel, niet in de plugin zelf.')">De plugin opnieuw bouwen met Claude Code</button>
+      <button class="kc-optie" onclick="checkKC(3, this, true, 'screen-module-3-2', 'Correct. Als het terminalvenster open is en Claude herstart is, maar de plugin nog steeds niet werkt, zit de fout waarschijnlijk in claude_desktop_config.json. Open Claude Code en vraag hem de configuratieregel te controleren. Hij vindt en corrigeert de fout.')">Claude Code vragen de configuratieregel in claude_desktop_config.json te controleren</button>
+      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-3-2', 'De browser-versie van Claude.ai heeft geen toegang tot plugins op je computer. Plugins werken alleen in de Claude desktop-app.')">De plugin testen via Claude.ai in de browser</button>
+    </div>
+    <div id="kc-feedback-3" class="kc-feedback"></div>
+  </div>
+  <div class="nav-buttons" id="nav-screen-module-3-kc"></div>
+</div>
