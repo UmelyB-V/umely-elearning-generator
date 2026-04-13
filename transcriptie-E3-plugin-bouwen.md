@@ -31,8 +31,10 @@ Schrijf dit op in gewone taal. Dat wordt de prompt voor Claude Code.
 
 Open Claude Code en gebruik deze prompttemplate:
 
+Claude Code genereert een MCP-server — dat is de technische verbinding tussen Claude en jouw data. Je hoeft niet te begrijpen hoe die werkt. Je beschrijft alleen wat Claude moet kunnen opzoeken.
+
 ---
-Maak een MCP-server in Python die Claude toegang geeft tot de volgende informatie:
+Maak een plugin in Python die Claude toegang geeft tot de volgende informatie:
 
 [hier beschrijf jij wat de plugin moet weten — in gewone taal]
 
@@ -43,6 +45,8 @@ Genereer drie bestanden:
 
 Gebruik de officiële MCP Python SDK. Als Python niet beschikbaar is, gebruik dan Node.js.
 ---
+
+Tip: als Claude Code aangeeft dat Python noch Node.js beschikbaar is op je computer, vraag dan je IT-beheerder om Python te installeren via python.org.
 
 Claude Code genereert de drie bestanden. Sla ze op in één map. Geef die map een duidelijke naam, zoals `mijn-plugin`. Je hebt het pad naar die map nodig in de volgende stap.
 
@@ -57,7 +61,9 @@ Het configuratiebestand staat op:
 C:\Users\[jouwgebruikersnaam]\AppData\Roaming\Claude\claude_desktop_config.json
 ```
 
-Open het in een tekstverwerker. Als het bestand niet bestaat, maak het aan en zet er `{}` in.
+Tip: `AppData` is een verborgen map. De snelste manier om er te komen: druk op Windows + R, typ `%AppData%\Claude` en druk op Enter. Als de map Claude niet bestaat, maak hem dan aan.
+
+Open het in Kladblok (Notepad) of een code-editor zoals Notepad++ of VS Code. Gebruik geen Word of een andere tekstverwerker — die kunnen het bestand beschadigen. Als het bestand niet bestaat, maak het aan en zet er `{}` in.
 
 **Stap 2: Configuratieregel toevoegen**
 
@@ -73,7 +79,7 @@ JSON is gevoelig voor fouten: als er een komma of haakje mist, start Claude niet
 
 **Stap 1: Plugin starten**
 
-Ga naar de map waar je plugin staat. Dubbelklik `start-plugin.bat`. Er opent een terminalvenster — dat venster moet open blijven. De plugin draait zolang dat venster open is.
+Ga naar de map waar je plugin staat. Dubbelklik `start-plugin.bat`. Als Windows een beveiligingsmelding toont, klik dan op 'Meer info' en vervolgens 'Toch uitvoeren'. Er opent een terminalvenster — dat venster moet open blijven. De plugin draait zolang dat venster open is.
 
 **Stap 2: Testen**
 
