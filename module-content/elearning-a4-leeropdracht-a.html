@@ -47,8 +47,8 @@
 .usecase-balk{background:rgba(255,133,20,0.1);border-left:3px solid #FF8514;padding:0.6rem 1rem;border-radius:0 8px 8px 0;margin-bottom:1.25rem;font-size:0.9rem;color:#27292D}
 .usecase-label{font-weight:700;color:#FF8514}
 .usecase-display{font-weight:700}
-.usecase-voorbeelden{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:0.75rem}
-.usecase-voorbeeld{background:#FFF8F2;border:1.5px solid #EAE6E0;border-radius:20px;padding:0.3rem 0.8rem;font-size:0.78rem;color:#27292D;cursor:pointer;font-family:var(--font-b);transition:border-color .15s,background .15s;line-height:1.4}
+.usecase-voorbeelden{display:grid;grid-template-columns:1fr 1fr;gap:0.45rem;margin-top:0.75rem}
+.usecase-voorbeeld{background:#FFF8F2;border:1.5px solid #EAE6E0;border-radius:20px;padding:0.45rem 0.8rem;font-size:0.78rem;color:#27292D;cursor:pointer;font-family:var(--font-b);transition:border-color .15s,background .15s;line-height:1.4;text-align:center}
 .usecase-voorbeeld:hover{border-color:#FF8514;background:rgba(255,133,20,0.07);color:#FF4D00}
 #nav-screen-fase-1 .btn,
 #nav-screen-fase-2 .btn,
@@ -71,7 +71,7 @@
     <label for="usecase-input" style="display:block;font-family:var(--font-h);font-size:0.85rem;font-weight:700;color:#27292D;margin:1rem 0 0.4rem;">Jouw use case (schrijf dit op; je hebt het nodig in elke volgende leeropdracht)</label>
     <input type="text" id="usecase-input" class="fase-input" style="min-height:unset;resize:none;" placeholder="Bijv: weekelijkse statusrapporten schrijven, klantmails opstellen, notulen samenvatten...">
     <div class="usecase-voorbeelden">
-      <span style="font-size:0.78rem;color:#999;width:100%;display:block;margin-bottom:0.15rem">Of kies een voorbeeld:</span>
+      <span style="font-size:0.78rem;color:#999;grid-column:1/-1;display:block;margin-bottom:0.15rem">Of kies een voorbeeld:</span>
       <button type="button" class="usecase-voorbeeld" onclick="kiesVoorbeeld(this)">Wekelijkse statusrapportage schrijven voor mijn team</button>
       <button type="button" class="usecase-voorbeeld" onclick="kiesVoorbeeld(this)">Klantmails professioneel opstellen en beantwoorden</button>
       <button type="button" class="usecase-voorbeeld" onclick="kiesVoorbeeld(this)">Vergadernotulen samenvatten en actiepunten opstellen</button>
