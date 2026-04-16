@@ -217,6 +217,28 @@ for (const file of files) {
     fouten.push(`Slechts ${gevonden.length} componenttypen: ${gevonden.join(', ')} — minimaal ${minComponenten} vereist`);
   }
 
+  // ── 20. tip-box als <p> in plaats van <div> ────────────────────────────────
+  const tipAlsP = [...html.matchAll(/<p[^>]+class="tip-box[^"]*"/g)];
+  if (tipAlsP.length > 0) {
+    fouten.push(`tip-box gebruikt als <p>-element (${tipAlsP.length}x) — moet <div class="tip-box"> zijn met aparte <div class="tip-box-label">`);
+  }
+
+  // ── 21. SCHERMEN-IDs bestaan als div-ID in het bestand ─────────────────────
+  for (const schermId of schermen) {
+    if (schermId === 'screen-quiz' || schermId === 'screen-result') continue; // worden door build toegevoegd
+    if (!divIds.has(schermId)) {
+      fouten.push(`SCHERMEN bevat '${schermId}' maar <div id="${schermId}"> ontbreekt`);
+    }
+  }
+
+  // ── 22. Wees-schermen: screen-divs die NIET in SCHERMEN staan ──────────────
+  const alleScreenDivs = [...html.matchAll(/<div[^>]+id="(screen-[^"]+)"[^>]*class="screen/g)].map(m => m[1]);
+  for (const sid of alleScreenDivs) {
+    if (!schermen.includes(sid)) {
+      waarschuwingen.push(`Scherm '${sid}' bestaat maar staat niet in SCHERMEN — onbereikbaar voor studenten`);
+    }
+  }
+
   check(file, fouten, waarschuwingen);
 }
 

@@ -1,6 +1,6 @@
 <!-- TITLE: C6 - Claude Settings instellen -->
 <!-- SCHERMEN: 'screen-welcome','screen-module-1-1','screen-module-1-2','screen-module-1-3','screen-module-1-kc','screen-module-2-1','screen-module-2-2','screen-module-2-3','screen-module-2-kc','screen-module-3-1','screen-module-3-2','screen-module-3-3','screen-module-3-kc','screen-module-4-1','screen-module-4-2','screen-module-4-3','screen-module-4-kc','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1-1':'Jouw profiel en automatische context instellen','screen-module-1-2':'De vijf instellingencategorieën begrijpen','screen-module-1-3':'Profiel in de praktijk: de juiste keuze maken','screen-module-1-kc':'Kennischeck: profielbeschrijving','screen-module-2-1':'Memory inschakelen en beheren','screen-module-2-2':'Wanneer zet je Memory aan of uit?','screen-module-2-3':'Memory in de praktijk: de juiste situatie herkennen','screen-module-2-kc':'Kennischeck: hoe werkt Memory?','screen-module-3-1':'Privacy en modeltraining begrijpen','screen-module-3-2':'Overzicht modeltraining per abonnement','screen-module-3-3':'Privacy in de praktijk: eerste stap bij professioneel gebruik','screen-module-3-kc':'Kennischeck: opt-in voor modeltraining','screen-module-4-1':'Billing, Appearance en taalinstelling','screen-module-4-2':'Handige sneltoetsen in Claude.ai','screen-module-4-3':'Sneltoetsen in de praktijk: Enter vs Shift+Enter','screen-module-4-kc':'Kennischeck: taal en sneltoetsen','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1-1':'Jouw profiel en automatische context instellen','screen-module-1-2':'De vijf instellingencategorieën begrijpen','screen-module-1-3':'Profiel in de praktijk: de juiste keuze maken','screen-module-1-kc':'Kennischeck: profielbeschrijving','screen-module-2-1':'Memory inschakelen en beheren','screen-module-2-2':'Wanneer zet je Memory aan of uit?','screen-module-2-3':'Memory in de praktijk: de juiste situatie herkennen','screen-module-2-kc':'Kennischeck: hoe werkt Memory?','screen-module-3-1':'Privacy en modeltraining begrijpen','screen-module-3-2':'Overzicht modeltraining per abonnement','screen-module-3-3':'Privacy in de praktijk: eerste stap bij professioneel gebruik','screen-module-3-kc':'Kennischeck: modeltraining-instelling','screen-module-4-1':'Billing, Appearance en taalinstelling','screen-module-4-2':'Handige sneltoetsen in Claude.ai','screen-module-4-3':'Sneltoetsen in de praktijk: Enter vs Shift+Enter','screen-module-4-kc':'Kennischeck: taal en sneltoetsen','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
@@ -14,8 +14,8 @@
       <li>De instellingen vinden en de instellingencategorieën benoemen</li>
       <li>Je profiel invullen voor automatische context</li>
       <li>Memory inschakelen en beheren</li>
-      <li>De opt-in instelling voor modeltraining begrijpen en beheren</li>
-      <li>Sneltoetsen gebruiken en de taalinstelling begrijpen</li>
+      <li>De modeltraining-instelling controleren en beheren</li>
+      <li>Sneltoetsen gebruiken en de taalinstelling aanpassen</li>
     </ul>
   </div>
   <div class="tijdsbadge">Geschatte tijd: 10 minuten</div>
@@ -31,7 +31,7 @@
     <h2>Profiel en automatische context</h2>
   </div>
   <div class="content-card">
-    <p>De instellingen vind je door op je profielfoto of initialen rechtsboven te klikken en dan <strong>Settings</strong> te kiezen. Je ziet de instellingencategorieën: Profile, Memory, Privacy, Appearance en Billing. De interface kan bij updates veranderen.</p>
+    <p>De instellingen vind je door op je profielfoto of initialen rechtsboven te klikken en dan <strong>Settings</strong> te kiezen. Je ziet categorieën zoals General, Account, Privacy, Billing, Capabilities en Connectors. De exacte indeling kan bij interface-updates veranderen.</p>
     <p>Bij <strong>Profile</strong> vul je je naam, e-mailadres en een korte beschrijving in. Die beschrijving is het meest waardevolle: vertel wie je bent en wat je doet. Claude gebruikt dit automatisch als achtergrondcontext in elk nieuw gesprek.</p>
   </div>
   <div class="visual-block">
@@ -91,21 +91,21 @@
     <h2>Profiel - Verdieping</h2>
   </div>
   <div class="content-card">
-    <h3>Overzicht van de vijf instellingencategorieën</h3>
+    <h3>Overzicht van de belangrijkste instellingencategorieën</h3>
     <div class="flashcard-set">
       <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Profile</div>
+        <div class="fc-term">Account</div>
         <div class="fc-uitleg">Naam, e-mailadres en persoonlijke beschrijving. Claude gebruikt dit als achtergrond in elk gesprek zodat je je rol nooit hoeft te herhalen.</div>
         <div class="fc-hint">Klik voor uitleg</div>
       </div>
       <div class="flashcard" onclick="toggleFlashcard(this)">
-        <div class="fc-term">Memory</div>
-        <div class="fc-uitleg">Optioneel geheugen dat Claude relevante zaken laat onthouden tussen gesprekken. Staat standaard uit.</div>
+        <div class="fc-term">Capabilities</div>
+        <div class="fc-uitleg">Hier schakel je Memory in: optioneel geheugen dat Claude relevante zaken laat onthouden tussen gesprekken. Te vinden via Settings > Capabilities, sectie Memory. Staat standaard uit.</div>
         <div class="fc-hint">Klik voor uitleg</div>
       </div>
       <div class="flashcard" onclick="toggleFlashcard(this)">
         <div class="fc-term">Privacy</div>
-        <div class="fc-uitleg">Hier kies je of je gesprekken worden gebruikt voor modeltraining. Dit is een opt-in: de instelling staat niet automatisch aan. Jij beslist actief of je meedoet, via claude.ai/settings/data-privacy-controls.</div>
+        <div class="fc-uitleg">Hier kies je of je gesprekken worden gebruikt voor modeltraining. Dit is een opt-out: de instelling staat standaard aan voor consumentenplannen. Zet hem uit als je niet wilt meedoen, via claude.ai/settings/data-privacy-controls.</div>
         <div class="fc-hint">Klik voor uitleg</div>
       </div>
       <div class="flashcard" onclick="toggleFlashcard(this)">
@@ -134,7 +134,7 @@
     <p class="scenario-tekst">Je bent accountant en gebruikt Claude dagelijks voor het opstellen van klantbrieven. Je merkt dat je elke keer opnieuw moet uitleggen dat je een formele toon wilt en dat brieven in het Nederlands moeten. Wat is de slimste oplossing?</p>
     <div class="scenario-keuzes">
       <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Dit werkt, maar het kost je elke keer extra tijd. Een structurele oplossing is handiger.')">Elke keer opnieuw je rol uitleggen aan het begin van een gesprek</button>
-      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Je profielbeschrijving wordt automatisch meegestuurd in elk gesprek. Je hoeft het nooit meer te herhalen.')">Je functie en voorkeuren invullen in Profile bij Settings</button>
+      <button class="scenario-keuze" onclick="checkScenario(1, this, true, 'Correct. Je profielbeschrijving wordt automatisch meegestuurd in elk gesprek. Je hoeft het nooit meer te herhalen.')">Je functie en voorkeuren invullen bij Settings &gt; Account</button>
       <button class="scenario-keuze" onclick="checkScenario(1, this, false, 'Projects helpen ook, maar de profiel-instelling geeft je in elk gesprek automatisch de juiste context.')">Een nieuw Project aanmaken voor elke klant</button>
     </div>
     <div id="scenario-feedback-1" class="scenario-feedback"></div>
@@ -172,7 +172,7 @@
   </div>
   <div class="tip-box waarschuwing">
     <div class="tip-box-label waarschuwing">Let op</div>
-    <p>Claude kan dingen onthouden die je liever niet terugziet of die intussen niet meer kloppen. Controleer af en toe wat er in je geheugen staat via Settings &gt; Memory.</p>
+    <p>Claude kan dingen onthouden die je liever niet terugziet of die intussen niet meer kloppen. Controleer af en toe wat er in je geheugen staat via Settings &gt; Capabilities.</p>
   </div>
   <div class="btn-wrap">
   </div>
@@ -242,7 +242,7 @@
     <h2>Privacy en modeltraining</h2>
   </div>
   <div class="content-card">
-    <p>Bij de Privacy-instelling kies je of je gesprekken worden gebruikt voor het verbeteren van het Claude-model. Voor <strong>Free, Pro en Max</strong> geldt een opt-in: de instelling staat standaard <strong>uit</strong>. Jij beslist actief of je meedoet via <strong>claude.ai/settings/data-privacy-controls</strong>.</p>
+    <p>Bij de Privacy-instelling kies je of je gesprekken worden gebruikt voor het verbeteren van het Claude-model. Voor <strong>Free, Pro en Max</strong> geldt een opt-out: de instelling staat standaard <strong>aan</strong>. Zet hem uit via <strong>claude.ai/settings/data-privacy-controls</strong> als je niet wilt meedoen.</p>
     <p>Bij <strong>Teams, Enterprise en API</strong> traint Anthropic contractueel nooit op gesprekken. Toch is het goed om de instelling te controleren als je Claude voor professioneel werk gebruikt.</p>
   </div>
   <div class="tip-box waarschuwing">
@@ -263,13 +263,13 @@
     <table class="vergelijk-tabel">
       <thead><tr><th>Abonnement</th><th>Modeltraining</th><th>Aanpasbaar?</th></tr></thead>
       <tbody>
-        <tr><td>Free / Pro / Max</td><td>Opt-in (staat standaard UIT)</td><td>Ja, via instellingen</td></tr>
+        <tr><td>Free / Pro / Max</td><td>Opt-out (staat standaard AAN)</td><td>Ja, uitzetten via instellingen</td></tr>
         <tr><td>Teams / Enterprise / API</td><td>Nooit (contractueel)</td><td>N.v.t.</td></tr>
       </tbody>
     </table>
   </div>
   <div class="content-card">
-    <p>Je beheert de opt-in via <strong>claude.ai/settings/data-privacy-controls</strong>. De instelling staat niet automatisch aan: jij kiest zelf of je gesprekken gebruikt mogen worden voor modelverbetering. Je kunt de keuze op elk moment wijzigen.</p>
+    <p>Je beheert de opt-out via <strong>claude.ai/settings/data-privacy-controls</strong>. De instelling staat standaard aan: zet hem uit als je niet wilt dat gesprekken worden gebruikt voor modelverbetering. Je kunt de keuze op elk moment wijzigen.</p>
   </div>
   <div class="btn-wrap">
   </div>
@@ -286,7 +286,7 @@
     <div class="scenario-keuzes">
       <button class="scenario-keuze" onclick="checkScenario(3, this, false, 'Het thema aanpassen is puur cosmetisch. De privacy-instelling is veel dringender bij professioneel gebruik.')">Het donkere thema instellen zodat het er professioneel uitziet</button>
       <button class="scenario-keuze" onclick="checkScenario(3, this, false, 'Memory heeft geen invloed op de privacy-instelling voor modeltraining. Dat zijn twee aparte instellingen.')">Memory inschakelen zodat Claude meer context heeft</button>
-      <button class="scenario-keuze" onclick="checkScenario(3, this, true, 'Correct. Controleer de privacy-instelling via claude.ai/settings/data-privacy-controls. Modeltraining is opt-in: de instelling staat standaard uit, maar bij professioneel gebruik is het verstandig dit te controleren én te overwegen over te stappen op een zakelijk abonnement met DPA.')">De privacy-instellingen controleren via Settings &gt; Privacy</button>
+      <button class="scenario-keuze" onclick="checkScenario(3, this, true, 'Correct. Controleer de privacy-instelling via claude.ai/settings/data-privacy-controls. Modeltraining staat standaard aan voor consumentenplannen — zet het uit. En overweeg over te stappen op een zakelijk abonnement met DPA voor vertrouwelijke klantdata.')">De privacy-instellingen controleren via Settings &gt; Privacy</button>
     </div>
     <div id="scenario-feedback-3" class="scenario-feedback"></div>
     <div class="btn-wrap" style="margin-top:1rem;">
@@ -303,8 +303,8 @@
     <h3>Controleer je kennis</h3>
     <p class="kc-vraag">Hoe werkt de modeltraining-instelling voor Free, Pro en Max accounts?</p>
     <div class="kc-opties">
-      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-4-1', 'Onjuist. Modeltraining staat niet automatisch aan: jij kiest actief of je meedoet.')">Training staat standaard aan, je moet het zelf uitschakelen</button>
-      <button class="kc-optie" onclick="checkKC(3, this, true, 'screen-module-4-1', 'Correct. Modeltraining is een opt-in keuze voor alle consumentenplannen. Je gesprekken worden alleen voor training gebruikt als jij dit actief aanzet via claude.ai/settings/data-privacy-controls.')">Training is opt-in: je zet het zelf aan als je wilt meedoen</button>
+      <button class="kc-optie" onclick="checkKC(3, this, true, 'screen-module-4-1', 'Correct. Modeltraining staat standaard aan voor consumentenplannen (Free, Pro, Max). Ga naar Data Privacy Controls in je instellingen om dit uit te zetten.')">Training staat standaard aan, je moet het zelf uitschakelen</button>
+      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-4-1', 'Niet correct. Het is andersom: training staat standaard AAN voor consumentenplannen. Je moet het actief uitzetten via de privacy-instellingen.')">Training is opt-in: je zet het zelf aan als je wilt meedoen</button>
       <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-module-4-1', 'Onjuist. Je kunt de instelling zelf beheren via de privacy-instellingen.')">Je kunt de instelling niet zelf beheren</button>
     </div>
     <div id="kc-feedback-3" class="kc-feedback"></div>
@@ -392,7 +392,7 @@
   {"vraag":"Wat is het voordeel van een ingevulde profielbeschrijving?","opties":["Claude past je sneltoetsen automatisch aan","Claude heeft in elk gesprek automatisch context over wie je bent","Je krijgt meer berichten per dag","Je abonnement wordt goedkoper"],"correct":1,"uitleg":"De profielbeschrijving wordt in elk gesprek meegestuurd als achtergrondcontext. Zo hoef je nooit meer uit te leggen wie je bent of wat je doet."},
   {"vraag":"Hoe open je de Settings in Claude.ai?","opties":["Via het menu linksboven","Via het invoerveld onderaan","Klik op je profielfoto of initialen rechtsboven","Via de helpknop in het midden"],"correct":2,"uitleg":"De Settings vind je door op je profielfoto of initialen rechtsboven te klikken. Je ziet dan een menu met daarin de optie Settings."},
   {"vraag":"Hoe werkt het Memory-systeem van Claude?","opties":["Claude onthoudt alles wat je typt","Jij schrijft handmatig op wat Claude moet onthouden","Claude staat standaard uit en kiest zelf wat relevant is als je het inschakelt","Memory werkt alleen bij het Teams-abonnement"],"correct":2,"uitleg":"Memory staat standaard uit. Als je het inschakelt, kiest Claude zelf welke informatie uit gesprekken relevant genoeg is om te onthouden. Je kunt ook handmatig dingen toevoegen of verwijderen."},
-  {"vraag":"Je wilt controleren of jouw gesprekken worden gebruikt voor modeltraining. Waar vind je die instelling?","opties":["Bij Memory — daar staan alle privacyopties","Bij Data Privacy Controls in de Settings","Die instelling bestaat niet — je kunt dit niet beïnvloeden","Bij Billing, als onderdeel van je abonnement"],"correct":1,"uitleg":"Via Settings > Data Privacy Controls kun je instellen of Anthropic jouw gesprekken mag gebruiken voor modeltraining. Voor consumentenplannen (Free, Pro, Max) staat dit standaard uitgeschakeld. Controleer dit zodat je weet wat de huidige status is."},
+  {"vraag":"Je wilt controleren of jouw gesprekken worden gebruikt voor modeltraining. Waar vind je die instelling?","opties":["Bij Memory — daar staan alle privacyopties","Bij Data Privacy Controls in de Settings","Die instelling bestaat niet — je kunt dit niet beïnvloeden","Bij Billing, als onderdeel van je abonnement"],"correct":1,"uitleg":"Via Settings > Data Privacy Controls kun je instellen of Anthropic jouw gesprekken mag gebruiken voor modeltraining. Voor consumentenplannen (Free, Pro, Max) staat dit standaard ingeschakeld. Zet het uit als je niet wilt meedoen."},
   {"vraag":"Wat doet de sneltoets Shift + Enter in Claude.ai?","opties":["Het verstuurt je bericht","Het start een nieuw gesprek","Het opent de instellingen","Het maakt een nieuwe regel zonder te versturen"],"correct":3,"uitleg":"Shift + Enter maakt een nieuwe regel in je prompt zonder het bericht te versturen. Handig als je een langere prompt schrijft met meerdere alinea's."},
   {"vraag":"In welke taal antwoordt Claude als je Nederlands schrijft?","opties":["Altijd in het Engels","In het Nederlands, want Claude volgt de taal die jij gebruikt","Afhankelijk van je profielinstelling","Afhankelijk van je abonnement"],"correct":1,"uitleg":"Claude reageert in de taal die jij gebruikt. De interface is in het Engels, maar Claude zelf past zich aan op jouw taal. Geen instelling nodig."},
   {"vraag":"Waar vind je je factuurgeschiedenis en abonnementsopties?","opties":["Bij Memory","Bij Privacy","Bij Appearance","Bij Billing"],"correct":3,"uitleg":"Bij Billing vind je je huidig abonnement, je factuurgeschiedenis en de opties om te upgraden of op te zeggen."}
