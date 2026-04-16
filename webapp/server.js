@@ -368,7 +368,7 @@ app.get('/api/users', requireAuth, requireAdmin, async (req, res) => {
   const { data: users, error } = await supabase
     .from('profiles')
     .select('*')
-    .order('slug', { ascending: true });
+    .order('email', { ascending: true });
   if (error) return res.status(500).json({ error: error.message });
 
   // Voortgang per gebruiker ophalen
