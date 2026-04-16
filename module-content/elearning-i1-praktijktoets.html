@@ -147,9 +147,9 @@
     <span class="prompt-label">Kopieer deze prompt naar Claude.ai</span>
     <div class="prompt-box" id="fase1-prompt">Ik wil dat je mij helpt vanuit de volgende context:
 
-Mijn functie is: [vul in — bijv. "office manager bij een bouwbedrijf van 20 mensen"]
-Mijn drie meest voorkomende taken zijn: [vul in — bijv. "vergaderverslagen schrijven, e-mails opstellen, offertes nakijken"]
-De toon die past bij mijn organisatie is: [kies één — formeel / informeel / zakelijk-vriendelijk]
+Mijn functie is: [vul in, bijv. "office manager bij een bouwbedrijf van 20 mensen"]
+Mijn drie meest voorkomende taken zijn: [vul in, bijv. "vergaderverslagen schrijven, e-mails opstellen, offertes nakijken"]
+De toon die past bij mijn organisatie is: [kies één: formeel / informeel / zakelijk-vriendelijk]
 
 Reageer voortaan altijd vanuit dit profiel. Bevestig dat je het hebt begrepen door kort samen te vatten wat ik heb ingevuld.</div>
     <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase1-prompt').innerText,this)">Kopieer prompt</button>
@@ -217,9 +217,9 @@ Met vriendelijke groet,
 
     <span class="prompt-label">Stap 2: Kopieer de analyseprompt</span>
     <div class="prompt-box" id="fase2-prompt">Analyseer het document dat ik hieronder plak op drie punten:
-1. Structuur — is er een duidelijke opbouw?
-2. Helderheid — zijn de zinnen direct en begrijpelijk?
-3. Zwakke plekken — wat komt er steeds terug in dit soort teksten?
+1. Structuur: is er een duidelijke opbouw?
+2. Helderheid: zijn de zinnen direct en begrijpelijk?
+3. Zwakke plekken: wat komt er steeds terug in dit soort teksten?
 
 Wees eerlijk en concreet. Geef maximaal drie verbeterpunten en geef elk punt een naam van één tot vier woorden.
 
@@ -265,7 +265,7 @@ Wees eerlijk en concreet. Geef maximaal drie verbeterpunten en geef elk punt een
 
   <div class="content-card">
     <span class="prompt-label">Kopieer deze prompt naar Claude.ai</span>
-    <div class="prompt-box" id="fase3-prompt">Op basis van de analyse die je net hebt gegeven: wat is het meest terugkerende probleem in hoe ik schrijf? Geef het een naam van maximaal vier woorden — bijvoorbeeld "te lange zinnen", "geen duidelijke conclusie" of "passieve formuleringen". Leg in één zin uit waarom dit mijn teksten minder effectief maakt.</div>
+    <div class="prompt-box" id="fase3-prompt">Op basis van de analyse die je net hebt gegeven: wat is het meest terugkerende probleem in hoe ik schrijf? Geef het een naam van maximaal vier woorden, bijvoorbeeld "te lange zinnen", "geen duidelijke conclusie" of "passieve formuleringen". Leg in één zin uit waarom dit mijn teksten minder effectief maakt.</div>
     <button class="kopieer-btn" onclick="kopieerElement(document.getElementById('fase3-prompt').innerText,this)">Kopieer prompt</button>
 
     <div class="instructie-stap"><div class="instructie-nr">1</div><div>Kopieer de prompt en stuur hem op in Claude.ai.</div></div>
@@ -356,7 +356,7 @@ Zet de volledige template tussen de tags [START TEMPLATE] en [EINDE TEMPLATE], z
   <div class="content-card">
     <span class="prompt-label">Kopieer de testprompt naar Claude.ai (template wordt automatisch toegevoegd)</span>
     <div class="prompt-box" id="fase5-prompt">Pas de bovenstaande instructies toe op dit document:
-[plak hier een tweede document — een nieuwe e-mail, notitie of verslag dat je zelf hebt geschreven]</div>
+[plak hier een tweede document: een nieuwe e-mail, notitie of verslag dat je zelf hebt geschreven]</div>
     <button class="kopieer-btn" onclick="kopieerFase5(this)">Kopieer testprompt (template wordt automatisch toegevoegd)</button>
     <p style="font-size:0.8rem;color:rgba(39,41,45,0.45);margin-top:-0.75rem;margin-bottom:1.25rem;">Je template uit fase 4 wordt automatisch bovenaan geplaatst. Vervang de placeholder door een echt document van jezelf.</p>
 
@@ -450,7 +450,7 @@ function kopieerFase5(knop) {
   var template = (document.getElementById('template-input') || {}).value;
   template = template ? template.trim() : '';
   if (!template) template = '[jouw template uit fase 4]';
-  var volledig = template + '\n\nPas de bovenstaande instructies toe op dit document:\n[plak hier een tweede document — een nieuwe e-mail, notitie of verslag dat je zelf hebt geschreven]';
+  var volledig = template + '\n\nPas de bovenstaande instructies toe op dit document:\n[plak hier een tweede document: een nieuwe e-mail, notitie of verslag dat je zelf hebt geschreven]';
   kopieerElement(volledig, knop);
 }
 

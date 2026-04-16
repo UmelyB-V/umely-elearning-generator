@@ -1,6 +1,6 @@
 <!-- TITLE: E3 - Projects, Custom Instructions en Plugins -->
-<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-1-kc','screen-module-2','screen-module-3','screen-module-3-kc','screen-module-4','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Wat zijn Projects?','screen-module-1-kc':'Probleem dat Projects oplossen','screen-module-2':'Custom Instructions schrijven','screen-module-3':'Kennisbestanden in Projects','screen-module-3-kc':'Kennisbestanden uploaden','screen-module-4':'In de praktijk — van Project naar Plugin','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- SCHERMEN: 'screen-welcome','screen-module-1','screen-module-1-kc','screen-module-2','screen-module-3','screen-module-3-kc','screen-module-4','screen-module-5','screen-module-5-kc','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-module-1':'Wat zijn Projects?','screen-module-1-kc':'Kennischeck: probleem dat Projects oplossen','screen-module-2':'Custom Instructions schrijven','screen-module-3':'Kennisbestanden in Projects','screen-module-3-kc':'Kennischeck: kennisbestanden uploaden','screen-module-4':'In de praktijk: van Project naar Plugin','screen-module-5':'Je eigen plugin bouwen met Claude Code','screen-module-5-kc':'Kennischeck: plugin vs. Connector','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 
 <div id="screen-welcome" class="screen start">
   <div class="welcome-hero">
@@ -26,7 +26,7 @@
 
 <div id="screen-module-1" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 1 van 4</div>
+    <div class="module-num">Module 1 van 5</div>
     <h2>Wat zijn Projects?</h2>
   </div>
   <div class="content-card">
@@ -57,7 +57,7 @@
 
 <div id="screen-module-1-kc" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 1 van 4</div>
+    <div class="module-num">Module 1 van 5</div>
     <h2>Kennischeck</h2>
   </div>
   <div id="kc-1" class="kennischeck">
@@ -74,7 +74,7 @@
 
 <div id="screen-module-2" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 2 van 4</div>
+    <div class="module-num">Module 2 van 5</div>
     <h2>Custom Instructions schrijven</h2>
   </div>
   <div class="content-card">
@@ -114,7 +114,7 @@
 
 <div id="screen-module-3" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 3 van 4</div>
+    <div class="module-num">Module 3 van 5</div>
     <h2>Kennisbestanden in Projects</h2>
   </div>
   <div class="content-card">
@@ -151,7 +151,7 @@
 
 <div id="screen-module-3-kc" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 3 van 4</div>
+    <div class="module-num">Module 3 van 5</div>
     <h2>Kennischeck</h2>
   </div>
   <div id="kc-2" class="kennischeck">
@@ -168,7 +168,7 @@
 
 <div id="screen-module-4" class="screen">
   <div class="module-header">
-    <div class="module-num">Module 4 van 4</div>
+    <div class="module-num">Module 4 van 5</div>
     <h2>In de praktijk</h2>
   </div>
   <div class="content-card">
@@ -225,7 +225,80 @@
     </table>
   </div>
   <div class="btn-wrap">
-    <button class="btn" onclick="goTo('screen-quiz')">Naar de afsluitquiz &rarr;</button>
+    <button class="btn" onclick="goTo('screen-module-5')">Volgende: je eigen plugin bouwen &rarr;</button>
+  </div>
+</div>
+
+<div id="screen-module-5" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 5 van 5</div>
+    <h2>Je eigen plugin bouwen</h2>
+  </div>
+  <div class="content-card">
+    <p>Connectors koppelen Claude aan bestaande diensten als Gmail of Notion. Maar wat als je eigen data wilt ontsluiten die nergens als Connector beschikbaar is? Dan bouw je zelf een plugin: een MCP-server die Claude Code voor je genereert.</p>
+    <p>Je hoeft geen code te schrijven. Je beschrijft in gewone taal wat Claude moet kunnen opzoeken, en Claude Code genereert alle benodigde bestanden.</p>
+  </div>
+  <div class="content-card">
+    <h3>Wanneer een eigen plugin bouwen?</h3>
+    <table class="vergelijk-tabel">
+      <thead><tr><th>Gebruik een Connector</th><th>Bouw een eigen plugin</th></tr></thead>
+      <tbody>
+        <tr><td>De dienst bestaat als Connector (Gmail, Notion, Slack)</td><td>Je eigen data die nergens als Connector beschikbaar is</td></tr>
+        <tr><td>Ingeschakeld via Settings in twee klikken</td><td>Eenmalig genereren met Claude Code, daarna altijd beschikbaar</td></tr>
+        <tr><td>Anthropic beheert de koppeling</td><td>Jij beheert de data en de servercode</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="content-card">
+    <h3>Hoe het werkt</h3>
+    <div class="processtroom">
+      <div class="proces-blok"><h4>1. Beschrijf</h4><p>Leg in gewone taal uit wat Claude moet kennen</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>2. Genereer</h4><p>Claude Code schrijft plugin.py en startscript</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>3. Koppel</h4><p>Voeg de configuratieregel toe aan claude_desktop_config.json</p></div>
+      <div class="proces-pijl">&#9658;</div>
+      <div class="proces-blok"><h4>4. Start</h4><p>Dubbelklik start-plugin.bat en herstart Claude</p></div>
+    </div>
+  </div>
+  <div class="content-card" style="background:#F5F0EB;">
+    <p style="font-family:var(--font-h);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);margin-bottom:0.75rem;">Prompttemplate voor Claude Code</p>
+    <pre style="font-family:'Courier New',Courier,monospace;font-size:0.85rem;line-height:1.7;white-space:pre-wrap;color:#27292D;margin:0;">Maak een plugin in Python die Claude toegang geeft tot de
+volgende informatie:
+
+[beschrijf hier in gewone taal wat de plugin moet weten]
+
+Genereer drie bestanden:
+1. De servercode als plugin.py
+2. Een startscript start-plugin.bat voor Windows
+3. De exacte tekst voor claude_desktop_config.json,
+   inclusief het volledige pad naar plugin.py
+
+Gebruik de officiële MCP Python SDK.</pre>
+  </div>
+  <div class="tip-box waarschuwing">
+    <div class="tip-box-label waarschuwing">Let op</div>
+    <p>Plugins werken alleen via de Claude desktop-app, niet via claude.ai in de browser. Het configuratiebestand staat op <code style="background:#EAE6E0;padding:1px 5px;border-radius:4px;">%AppData%\Claude\claude_desktop_config.json</code>. Als Claude na het koppelen de plugin niet herkent: controleer of het terminalvenster open is en herstart Claude.</p>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn" onclick="goTo('screen-module-5-kc')">Kennischeck &rarr;</button>
+  </div>
+</div>
+
+<div id="screen-module-5-kc" class="screen">
+  <div class="module-header">
+    <div class="module-num">Module 5 van 5</div>
+    <h2>Kennischeck</h2>
+  </div>
+  <div id="kc-3" class="kennischeck">
+    <h3>Controleer je kennis</h3>
+    <p class="kc-vraag">Een advocatenkantoor heeft een intern dossiersysteem dat niet als Connector beschikbaar is. Hoe koppelen ze dit aan Claude?</p>
+    <div class="kc-opties">
+      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-quiz', 'Er bestaat geen Connector voor een intern dossiersysteem. Connectors zijn alleen beschikbaar voor veelgebruikte diensten als Gmail of Notion.')">Een bestaande Connector inschakelen via Settings</button>
+      <button class="kc-optie" onclick="checkKC(3, this, true, 'screen-quiz', 'Correct. Omdat het dossiersysteem niet als Connector bestaat, bouw je een eigen plugin. Claude Code genereert de servercode, het startscript en de configuratieregel. Eenmalig instellen, daarna beschikbaar in alle chats.')">Een eigen plugin bouwen met Claude Code die Claude toegang geeft tot het dossiersysteem</button>
+      <button class="kc-optie" onclick="checkKC(3, this, false, 'screen-quiz', 'Kennisbestanden in een Project zijn statische uploads. Voor live toegang tot een intern systeem heb je een plugin nodig, geen kennisbestand.')">De dossiersgegevens als kennisbestand uploaden in een Project</button>
+    </div>
+    <div id="kc-feedback-3" class="kc-feedback"></div>
   </div>
 </div>
 
@@ -235,6 +308,7 @@
   {"vraag":"Wat maakt Custom Instructions effectief?","opties":["Ze moeten zo kort mogelijk zijn","Ze moeten concreet en specifiek zijn, zoals een instructie aan een nieuwe collega","Ze moeten in het Engels geschreven zijn","Ze hoeven alleen een onderwerp te benoemen"],"correct":1,"uitleg":"Goede Custom Instructions zijn concreet: specifieke stijlregels, formats en richtlijnen die Claude kan volgen. Vaag formuleren geeft vage resultaten."},
   {"vraag":"Wat is een goede reden om een kennisbestand aan een Project toe te voegen?","opties":["Het bestand is heel groot en past nergens anders","Je wilt dat Claude er in elke chat binnen dat Project automatisch naar verwijst","Het is verplicht om een Project te laten werken","Je wilt het bestand bewerken via Claude"],"correct":1,"uitleg":"Kennisbestanden zijn nuttig als referentiemateriaal dat Claude automatisch meeneemt in alle gesprekken binnen het Project."},
   {"vraag":"Welke beperking geldt voor Custom Instructions?","opties":["Ze werken alleen in het Engels","Een gebruiker kan in de chat vragen om ze te negeren","Ze verdwijnen na 24 uur","Ze kosten extra per gebruik"],"correct":1,"uitleg":"Custom Instructions zijn richtlijnen, geen harde blokkering. Een gebruiker kan Claude vragen om ervan af te wijken. Ze zijn sturend, niet afdwingend."},
-  {"vraag":"Voor welk scenario is een Project het meest geschikt?","opties":["Een eenmalige vraag aan Claude","Een terugkerende taak met vaste stijl, regels en referentiedocumenten","Het opslaan van persoonlijke notities","Het automatiseren van e-mail"],"correct":1,"uitleg":"Projects zijn het meest waardevol bij terugkerende taken waar je steeds dezelfde context, stijl en documenten nodig hebt. Voor eenmalige vragen is een gewone chat voldoende."}
+  {"vraag":"Voor welk scenario is een Project het meest geschikt?","opties":["Een eenmalige vraag aan Claude","Een terugkerende taak met vaste stijl, regels en referentiedocumenten","Het opslaan van persoonlijke notities","Het automatiseren van e-mail"],"correct":1,"uitleg":"Projects zijn het meest waardevol bij terugkerende taken waar je steeds dezelfde context, stijl en documenten nodig hebt. Voor eenmalige vragen is een gewone chat voldoende."},
+  {"vraag":"Wanneer bouw je een eigen plugin in plaats van een Connector te gebruiken?","opties":["Als je Claude sneller wilt laten reageren","Als je eigen interne data wilt ontsluiten die niet als Connector beschikbaar is","Als je een Project wilt koppelen aan Notion","Als je Custom Instructions wilt exporteren"],"correct":1,"uitleg":"Een eigen plugin gebruik je voor data die alleen intern staat en niet via een bestaande Connector bereikbaar is. Claude Code genereert de servercode en configuratie, zodat jij geen code hoeft te schrijven."}
 ]
 <!-- QUIZ_END -->

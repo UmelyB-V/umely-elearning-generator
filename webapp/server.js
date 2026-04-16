@@ -174,7 +174,7 @@ app.get('/api/modules', requireAuth, requireSubscription, async (req, res) => {
   let { data, error } = await supabase
     .from('modules')
     .select('filename, slug, title, created_at, created_date')
-    .order('created_at', { ascending: true });
+    .order('slug', { ascending: true });
 
   // Fallback: probeer zonder slug kolom als die niet bestaat
   if (error) {
@@ -182,7 +182,7 @@ app.get('/api/modules', requireAuth, requireSubscription, async (req, res) => {
     ({ data, error } = await supabase
       .from('modules')
       .select('filename, title, created_at, created_date')
-      .order('created_at', { ascending: true }));
+      .order('slug', { ascending: true }));
   }
   if (error) return res.status(500).json({ error: error.message });
 
@@ -368,7 +368,7 @@ app.get('/api/users', requireAuth, requireAdmin, async (req, res) => {
   const { data: users, error } = await supabase
     .from('profiles')
     .select('*')
-    .order('created_at', { ascending: true });
+    .order('slug', { ascending: true });
   if (error) return res.status(500).json({ error: error.message });
 
   // Voortgang per gebruiker ophalen

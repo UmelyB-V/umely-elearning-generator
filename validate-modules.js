@@ -249,6 +249,31 @@ for (const file of files) {
     fouten.push(`Leerdoel bevat 'begrijpen' — gebruik een meetbaar werkwoord (uitleggen, beschrijven, toepassen, kiezen)`);
   }
 
+  // ── 24. M-dashes in zichtbare HTML-tekst ────────────────────────────────────
+  // Strip comments en script/style blokken, zoek dan naar —
+  const htmlZonderComments = html
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '');
+  // Zoek — alleen tussen HTML-tags (in tekst-content)
+  const mDashMatches = [...htmlZonderComments.matchAll(/>([^<]*—[^<]*)</g)];
+  if (mDashMatches.length > 0) {
+    fouten.push(`M-dash (—) gevonden in zichtbare tekst (${mDashMatches.length}x) — gebruik : . , of ( ... )`);
+  }
+
+  // ── 25. Tijdsgebonden taal ───────────────────────────────────────────────────
+  const tijdsPatronen = [/op dit moment/i, /momenteel/i, /\bin 202[4-9]\b/, /nieuwste versie/i, /recentste/i];
+  for (const patroon of tijdsPatronen) {
+    if (patroon.test(htmlZonderComments)) {
+      fouten.push(`Tijdsgebonden taal gevonden ('${patroon.source}') — verwijder of vervang door tijdloze formulering`);
+    }
+  }
+
+  // ── 26. Kapotte sluit-tags met backslash ─────────────────────────────────────
+  if (/<\\[a-z]/.test(html)) {
+    fouten.push(`Kapotte sluit-tag gevonden (<\\tag>) — gebruik </tag>`);
+  }
+
   check(file, fouten, waarschuwingen);
 }
 
