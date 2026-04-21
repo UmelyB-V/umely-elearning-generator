@@ -178,3 +178,26 @@ footer a{color:var(--peach)}
   .stap-item{flex-direction:column}.annotatie-figuur{min-height:150px}
   .nav-buttons{flex-direction:row}.btn-vorige,.btn{font-size:0.85rem;padding:0.7rem 1.2rem}
 }
+/* ── iOS INPUT ZOOM FIX (global) ── */
+input,textarea,select{font-size:16px}
+/* ── MOBILE (modulepagina's) ── */
+@media(max-width:600px){
+  /* C0 — Header safe area */
+  header{padding-top:env(safe-area-inset-top)}
+
+  /* C1 — Terugknop tap target */
+  .header-back{min-height:44px;display:flex;align-items:center;padding:0 8px 0 0}
+
+  /* C3 — Tap targets 44×44px */
+  .btn,.kc-optie,.quiz-optie,.scenario-keuze,.flashcard,.sorteer-item{min-height:44px}
+  .btn-vorige{min-height:44px;display:flex;align-items:center;justify-content:center}
+
+  /* C4 — Tabel scroll-isolatie */
+  .vergelijk-tabel{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+
+  /* C5 — Milestone toast boven home indicator */
+  .milestone-toast{bottom:calc(env(safe-area-inset-bottom) + 12px);right:16px;left:16px;max-width:none}
+
+  /* C6 — Navigatieknoppen full-width */
+  .btn-vorige,.btn{flex:1;text-align:center;justify-content:center}
+}
