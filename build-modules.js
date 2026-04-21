@@ -115,7 +115,7 @@ ${sharedCSS}
     <span class="header-title" id="header-module-title"></span>
     <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
       <span id="progressLabel" style="font-size:0.8rem;color:rgba(255,248,242,0.8);font-weight:700;white-space:nowrap;">0% voltooid</span>
-      <a href="/modules.html" style="color:rgba(255,248,242,0.7);font-size:0.8rem;text-decoration:none;font-weight:600;padding:6px 14px;border:1.5px solid rgba(255,248,242,0.25);border-radius:50px;white-space:nowrap;transition:all 0.15s;">&#8592; Overzicht</a>
+      <a href="/modules.html" class="header-back" style="color:rgba(255,248,242,0.7);font-size:0.8rem;text-decoration:none;font-weight:600;padding:6px 14px;border:1.5px solid rgba(255,248,242,0.25);border-radius:50px;white-space:nowrap;transition:all 0.15s;">&#8592; Overzicht</a>
     </div>
   </div>
   <div style="background:rgba(255,248,242,0.12);height:8px;overflow:hidden;margin-top:0.5rem;">
