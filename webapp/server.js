@@ -16,6 +16,7 @@ const Stripe = require('stripe');
 const stripe = process.env.STRIPE_SECRET_KEY ? Stripe(process.env.STRIPE_SECRET_KEY) : null;
 
 const app = express();
+app.set('trust proxy', 1);
 
 // ── Stripe webhook moet raw body ontvangen — VOOR express.json() ──
 app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
