@@ -306,11 +306,8 @@ let _supabase, _token, _userLevel = 0, _isAdmin = false, _userName = '', _curren
 let _activeRoom = null, _pollInterval = null, _lastMessageCount = 0;
 
 async function init() {
-  const config = await fetch('/api/config').then(r => r.json());
-  _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
-
-  const { data: { session } } = await _supabase.auth.getSession();
-  if (!session) { window.location.href = '/?redirect=/community.html'; return; }
+  window.location.href = '/modules.html';
+  return;
   _token = session.access_token;
 
   const meta = session.user.user_metadata || {};
