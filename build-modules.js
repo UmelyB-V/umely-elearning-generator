@@ -90,7 +90,7 @@ for (const file of contentFiles) {
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>${title} | Umely E-learning</title>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -110,7 +110,7 @@ ${sharedCSS}
 <header>
   <div class="header-inner">
     <a href="/modules.html" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;">
-      <img src="/logo.png" alt="Umely" style="height:90px;filter:brightness(0) invert(1);display:block;">
+      <img src="/logo.png" alt="Umely" style="height:clamp(36px,8vw,72px);filter:brightness(0) invert(1);display:block;">
     </a>
     <span class="header-title" id="header-module-title"></span>
     <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
@@ -197,8 +197,8 @@ ${content
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:0.75rem;align-items:center;">
-      <a href="/pricing" style="display:block;width:100%;max-width:400px;background:var(--gradient);color:white;text-decoration:none;padding:16px 32px;border-radius:50px;font-weight:800;font-size:1.05rem;text-align:center;box-shadow:0 4px 20px rgba(255,133,20,0.35);">Bekijk de volledige e-learning &#8594;</a>
-      <a href="https://umely.ai" target="_blank" rel="noopener" style="display:block;width:100%;max-width:400px;background:transparent;color:#FF8514;text-decoration:none;padding:14px 32px;border-radius:50px;font-weight:700;font-size:0.95rem;text-align:center;border:1.5px solid #FF8514;">Plan een gratis gesprek</a>
+      <a href="/pricing" style="display:block;width:100%;max-width:400px;box-sizing:border-box;background:var(--gradient);color:white;text-decoration:none;padding:16px 32px;border-radius:50px;font-weight:800;font-size:1.05rem;text-align:center;box-shadow:0 4px 20px rgba(255,133,20,0.35);">Bekijk de volledige e-learning &#8594;</a>
+      <a href="https://umely.ai" target="_blank" rel="noopener" style="display:block;width:100%;max-width:400px;box-sizing:border-box;background:transparent;color:#FF8514;text-decoration:none;padding:14px 32px;border-radius:50px;font-weight:700;font-size:0.95rem;text-align:center;border:1.5px solid #FF8514;">Plan een gratis gesprek</a>
     </div>
   </div>
   ` : ''}
