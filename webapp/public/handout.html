@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>AI-tools in de praktijk | Umely Handout</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --amber: #FF8514;
+  --flame: #FF4D00;
+  --dark: #27292D;
+  --bg: #FFF8F2;
+  --cream: #F2EAE0;
+  --text: #2A221A;
+  --muted: rgba(42,34,26,0.55);
+  --grad: linear-gradient(90deg,#FF8514,#FF4D00);
+  --sidebar-w: 230px;
+  --radius: 12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LAYOUT SHELL ─── */
+.page-wrap {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--dark);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,133,20,0.3) transparent;
+}
+.sidebar-brand {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,248,242,0.07);
+  flex-shrink: 0;
+}
+.sidebar-brand .logo-text {
+  font-family: 'Arimo', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFF8F2;
+  display: block;
+}
+.sidebar-brand .logo-sub {
+  font-size: 0.65rem;
+  color: rgba(255,248,242,0.35);
+  display: block;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.sidebar-nav {
+  padding: 14px 0 16px;
+  flex: 1;
+}
+.sidebar-section-label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,248,242,0.3);
+  padding: 0 20px;
+  margin-bottom: 6px;
+  margin-top: 14px;
+}
+.sidebar-section-label:first-child { margin-top: 0; }
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255,248,242,0.5);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  cursor: pointer;
+  line-height: 1.3;
+}
+.sidebar-link:hover {
+  color: rgba(255,248,242,0.85);
+  background: rgba(255,248,242,0.04);
+}
+.sidebar-link.active {
+  color: var(--amber);
+  border-left-color: var(--amber);
+  background: rgba(255,133,20,0.08);
+  font-weight: 700;
+}
+.sidebar-link .n {
+  font-size: 0.62rem;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+.sidebar-divider {
+  height: 1px;
+  background: rgba(255,248,242,0.07);
+  margin: 10px 20px;
+}
+.sidebar-footer {
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgba(255,248,242,0.06);
+  flex-shrink: 0;
+}
+.sidebar-footer p {
+  font-size: 0.62rem;
+  color: rgba(255,248,242,0.22);
+  line-height: 1.6;
+}
+.sidebar-footer a { color: rgba(255,133,20,0.5); text-decoration: none; }
+
+/* ─── MOBILE HEADER ─── */
+.mobile-header {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--dark);
+  padding: 12px 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+.mobile-header .logo-text {
+  font-family: 'Arimo', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FFF8F2;
+}
+.hamburger {
+  background: none;
+  border: none;
+  color: var(--amber);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.mob-dropdown {
+  display: none;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  background: #1c1e22;
+  z-index: 300;
+  max-height: calc(100vh - 50px);
+  overflow-y: auto;
+  border-bottom: 2px solid rgba(255,133,20,0.25);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+}
+.mob-dropdown.open { display: block; }
+.mob-dropdown a {
+  display: block;
+  padding: 11px 24px;
+  font-size: 0.85rem;
+  color: rgba(255,248,242,0.65);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+.mob-dropdown a:hover { background: rgba(255,248,242,0.04); color: rgba(255,248,242,0.9); }
+.mob-dropdown a.active { color: var(--amber); border-left-color: var(--amber); font-weight: 700; }
+.mob-dropdown .mob-divider { height: 1px; background: rgba(255,248,242,0.07); margin: 6px 24px; }
+
+/* ─── MAIN CONTENT ─── */
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.book {
+  flex: 1;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+}
+
+/* ─── WELCOME BLOCK ─── */
+.welcome-block {
+  background: var(--dark);
+  border-radius: 16px;
+  padding: 40px 36px;
+  margin-bottom: 56px;
+  position: relative;
+  overflow: hidden;
+}
+.welcome-block::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(255,133,20,0.28) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.welcome-block::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,77,0,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.welcome-badge {
+  display: inline-block;
+  background: rgba(255,248,242,0.12);
+  color: #FFD964;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border-radius: 50px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.welcome-block h1 {
+  font-family: 'Arimo', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #FFF8F2;
+  margin-bottom: 12px;
+  position: relative;
+  line-height: 1.2;
+}
+.welcome-block > p {
+  color: rgba(255,248,242,0.78);
+  font-size: 0.97rem;
+  line-height: 1.7;
+  position: relative;
+  max-width: 520px;
+}
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin-top: 24px;
+  position: relative;
+}
+.nav-pill {
+  background: rgba(255,248,242,0.07);
+  border: 1.5px solid rgba(255,133,20,0.22);
+  border-radius: 9px;
+  padding: 10px 13px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255,248,242,0.82);
+  text-decoration: none;
+  display: block;
+  transition: all 0.15s;
+  font-family: 'Montserrat', sans-serif;
+}
+.nav-pill:hover {
+  background: rgba(255,133,20,0.14);
+  border-color: var(--amber);
+  color: #FFF8F2;
+}
+
+/* ─── BOOK SECTION ─── */
+.book-section { margin-bottom: 64px; scroll-margin-top: 24px; }
+
+/* ─── SECTION HEADER ─── */
+.section-header {
+  background: var(--dark);
+  border-radius: var(--radius);
+  padding: 20px 26px;
+  margin-bottom: 20px;
+}
+.section-num {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,248,242,0.4);
+  margin-bottom: 4px;
+}
+.section-header h2 {
+  font-family: 'Arimo', sans-serif;
+  font-size: 1.55rem;
+  color: #FFF8F2;
+  line-height: 1.2;
+}
+
+/* ─── CONTENT CARD ─── */
+.card {
+  background: #fff;
+  border: 1px solid rgba(42,34,26,0.08);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 14px;
+}
+.card h3 {
+  font-family: 'Arimo', sans-serif;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.card p { font-size: 0.92rem; line-height: 1.78; color: #3A312A; margin-bottom: 8px; }
+.card p:last-child { margin-bottom: 0; }
+.card ul, .card ol {
+  padding-left: 1.3rem;
+  font-size: 0.92rem;
+  line-height: 2;
+  color: #3A312A;
+}
+
+/* ─── TIP BOX ─── */
+.tip {
+  background: rgba(255,133,20,0.07);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 10px 10px 0;
+  padding: 13px 18px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  color: #3A312A;
+  line-height: 1.65;
+}
+.tip.warn {
+  background: rgba(239,68,68,0.07);
+  border-left-color: #ef4444;
+}
+.tip strong { color: var(--text); }
+
+/* ─── STEPS ─── */
+.steps { margin: 4px 0; }
+.step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 11px 14px;
+  background: rgba(42,34,26,0.03);
+  border-radius: 10px;
+  margin-bottom: 7px;
+}
+.step-num {
+  width: 30px; height: 30px;
+  background: var(--grad);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 700; color: #FFF8F2;
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-body { font-size: 0.88rem; color: #3A312A; line-height: 1.65; }
+.step-body strong { display: block; color: var(--text); font-weight: 700; margin-bottom: 2px; }
+
+/* ─── FLASHCARDS ─── */
+.fc-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+.fc {
+  background: var(--dark);
+  border-radius: 10px;
+  padding: 12px 14px;
+  flex: 1 1 175px;
+  min-width: 175px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.15s;
+  user-select: none;
+}
+.fc:hover { border-color: var(--amber); }
+.fc .fc-term { font-size: 0.82rem; font-weight: 700; color: rgba(255,248,242,0.9); margin-bottom: 5px; }
+.fc .fc-hint { font-size: 0.7rem; color: var(--amber); }
+.fc .fc-uitleg { font-size: 0.8rem; color: rgba(255,248,242,0.8); display: none; line-height: 1.6; margin-top: 6px; }
+.fc.open .fc-uitleg { display: block; }
+.fc.open .fc-hint { display: none; }
+.fc.open { border-color: var(--amber); }
+.fc.open .fc-term { color: var(--amber); }
+
+/* ─── DARK GRID CARDS ─── */
+.dark-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 8px 0;
+}
+.dark-card {
+  background: var(--dark);
+  border-radius: 10px;
+  padding: 14px;
+}
+.dark-card .dc-title {
+  font-weight: 700;
+  color: var(--amber);
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+.dark-card ul {
+  padding-left: 1.1rem;
+  color: rgba(255,248,242,0.82);
+  font-size: 0.82rem;
+  line-height: 1.85;
+}
+.dark-card p { color: rgba(255,248,242,0.82); font-size: 0.82rem; line-height: 1.7; }
+
+/* ─── HIGHLIGHT ROW ─── */
+.highlight {
+  font-weight: 700;
+  color: var(--amber);
+  font-size: 0.9rem;
+  margin-top: 10px;
+  display: block;
+}
+
+/* ─── FLOW DIAGRAM ─── */
+.flow {
+  background: var(--dark);
+  border-radius: 10px;
+  padding: 14px 20px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.flow-node { font-weight: 700; color: var(--amber); font-size: 0.88rem; }
+.flow-arrow { color: rgba(255,248,242,0.5); font-size: 1rem; }
+.flow-end { font-weight: 700; color: #FFF8F2; font-size: 0.88rem; }
+
+/* ─── UPSELL ─── */
+.upsell {
+  background: var(--dark);
+  border-radius: 16px;
+  padding: 32px;
+  margin-top: 48px;
+}
+.upsell-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,248,242,0.35);
+  margin-bottom: 6px;
+}
+.upsell h3 {
+  font-family: 'Arimo', sans-serif;
+  font-size: 1.5rem;
+  color: #FFF8F2;
+  margin-bottom: 16px;
+}
+.upsell-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.upsell-check span:first-child { color: var(--amber); flex-shrink: 0; margin-top: 1px; }
+.upsell-check span:last-child { color: rgba(255,248,242,0.82); font-size: 0.9rem; line-height: 1.6; }
+.upsell-cta {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+.btn-primary {
+  display: inline-block;
+  background: var(--grad);
+  color: #FFF8F2;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 0.97rem;
+  padding: 14px 28px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(255,133,20,0.3);
+  transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-ghost {
+  display: inline-block;
+  color: var(--amber);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 11px 24px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(255,133,20,0.5);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.btn-ghost:hover { border-color: var(--amber); background: rgba(255,133,20,0.08); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark);
+  color: rgba(255,248,242,0.4);
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 18px 24px;
+  line-height: 1.8;
+  flex-shrink: 0;
+}
+footer a { color: rgba(255,133,20,0.6); text-decoration: none; }
+footer strong { color: rgba(255,248,242,0.7); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-header { display: flex; }
+  .book { padding: 24px 18px 56px; }
+  .welcome-block { padding: 28px 22px; }
+  .welcome-block h1 { font-size: 1.65rem; }
+  .nav-grid { grid-template-columns: 1fr 1fr; gap: 7px; }
+  .dark-grid { grid-template-columns: 1fr; }
+  .fc { min-width: 140px; }
+  .section-header { padding: 16px 20px; }
+  .card { padding: 18px 18px; }
+  .upsell { padding: 24px 20px; }
+  .upsell-cta { align-items: stretch; }
+  .btn-primary, .btn-ghost { text-align: center; }
+}
+@media (max-width: 380px) {
+  .nav-grid { grid-template-columns: 1fr; }
+  .fc-set { flex-direction: column; }
+  .fc { min-width: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE HEADER -->
+<header class="mobile-header">
+  <span class="logo-text">Umely</span>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">&#9776;</button>
+</header>
+
+<!-- MOBILE DROPDOWN -->
+<nav class="mob-dropdown" id="mob-menu">
+  <a href="#welkom" onclick="closeMenu()">Welkom & overzicht</a>
+  <div class="mob-divider"></div>
+  <a href="#prompt" onclick="closeMenu()"><span style="opacity:0.5;margin-right:4px">1 ·</span> Prompt Engineering</a>
+  <a href="#typeless" onclick="closeMenu()"><span style="opacity:0.5;margin-right:4px">2 ·</span> Typeless</a>
+  <a href="#gemini" onclick="closeMenu()"><span style="opacity:0.5;margin-right:4px">3 ·</span> Gemini</a>
+  <a href="#perplexity" onclick="closeMenu()"><span style="opacity:0.5;margin-right:4px">4 ·</span> Perplexity & Comet</a>
+  <a href="#gamma" onclick="closeMenu()"><span style="opacity:0.5;margin-right:4px">5 ·</span> Gamma.app</a>
+  <a href="#notebooklm" onclick="closeMenu()"><span style="opacity:0.5;margin-right:4px">6 ·</span> NotebookLM</a>
+  <a href="#automatisering" onclick="closeMenu()"><span style="opacity:0.5;margin-right:4px">7 ·</span> Automatisering</a>
+  <a href="#claude" onclick="closeMenu()"><span style="opacity:0.5;margin-right:4px">8 ·</span> Claude</a>
+  <div class="mob-divider"></div>
+  <a href="#upsell" onclick="closeMenu()" style="color:rgba(255,133,20,0.75);">&#8594; Volledige e-learning</a>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-text">Umely</span>
+      <span class="logo-sub">AI-tools in de praktijk<br>Digitale handout</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Inhoud</div>
+      <a class="sidebar-link active" href="#welkom">Welkom & overzicht</a>
+      <div class="sidebar-divider"></div>
+      <a class="sidebar-link" href="#prompt"><span class="n">1 ·</span> Prompt Engineering</a>
+      <a class="sidebar-link" href="#typeless"><span class="n">2 ·</span> Typeless</a>
+      <a class="sidebar-link" href="#gemini"><span class="n">3 ·</span> Gemini</a>
+      <a class="sidebar-link" href="#perplexity"><span class="n">4 ·</span> Perplexity & Comet</a>
+      <a class="sidebar-link" href="#gamma"><span class="n">5 ·</span> Gamma.app</a>
+      <a class="sidebar-link" href="#notebooklm"><span class="n">6 ·</span> NotebookLM</a>
+      <a class="sidebar-link" href="#automatisering"><span class="n">7 ·</span> Automatisering</a>
+      <a class="sidebar-link" href="#claude"><span class="n">8 ·</span> Claude</a>
+      <div class="sidebar-divider"></div>
+      <a class="sidebar-link" href="#upsell" style="color:rgba(255,133,20,0.6);">&#8594; Volledige e-learning</a>
+    </nav>
+    <div class="sidebar-footer">
+      <p><strong style="color:rgba(255,248,242,0.5)">Umely</strong><br>
+      <a href="mailto:info@umely.ai">info@umely.ai</a> &nbsp;·&nbsp; <a href="https://umely.ai" target="_blank">umely.ai</a></p>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="book">
+
+      <!-- ═══════════════════════════════════════════════════════ WELKOM -->
+      <section id="welkom" class="book-section">
+        <div class="welcome-block">
+          <div class="welcome-badge">Umely E-learning &nbsp;·&nbsp; Gratis handout</div>
+          <h1>AI-tools in de praktijk</h1>
+          <p>Jouw digitale naslagwerk na de lezing. Alle tools, tips en technieken, overzichtelijk op één plek. Spring direct naar een onderdeel of lees alles van voren af aan.</p>
+          <div class="nav-grid">
+            <a class="nav-pill" href="#prompt">&#9998; Prompt Engineering</a>
+            <a class="nav-pill" href="#typeless">&#127908; Typeless</a>
+            <a class="nav-pill" href="#gemini">&#127755; Gemini</a>
+            <a class="nav-pill" href="#perplexity">&#128269; Perplexity</a>
+            <a class="nav-pill" href="#gamma">&#128202; Gamma.app</a>
+            <a class="nav-pill" href="#notebooklm">&#128218; NotebookLM</a>
+            <a class="nav-pill" href="#automatisering">&#9881; Automatisering</a>
+            <a class="nav-pill" href="#claude">&#129302; Claude</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ 1. PROMPT -->
+      <section id="prompt" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 1</div>
+          <h2>Prompt Engineering</h2>
+        </div>
+
+        <div class="card">
+          <h3>De 80/20-regel: de basis van alles</h3>
+          <p>AI kan verrassend veel voor je doen, maar alleen als jij het goed aanstuurt. Denk eraan als een nieuwe, razend slimme collega die alles wil helpen, maar geen context heeft. Geef je weinig, dan krijg je weinig terug.</p>
+          <p><strong>AI levert 80% van het werk.</strong> Jij investeert de laatste 20%: nakijken, bijsturen, controleren op fouten. Die 20% is niet optioneel. AI kan dingen verzinnen die plausibel klinken maar niet kloppen. Jij bent eindverantwoordelijk voor wat je uitstuurt.</p>
+        </div>
+
+        <div class="tip warn">
+          <strong>Voorbeeld:</strong> Vraag je AI om een contract op te stellen? Lees het altijd zelf na. AI kan juridische termen correct gebruiken maar toch een clausule missen die jij als vakman direct zou zien. Die laatste controle is altijd jouw verantwoordelijkheid.
+        </div>
+
+        <div class="card">
+          <h3>Het prompt-model: 6 bouwstenen</h3>
+          <p>Een prompt is de opdracht die je aan AI geeft. Hoe specifieker, hoe beter het resultaat. Je hoeft niet alle zes altijd te gebruiken, maar hoe meer je meegeeft, hoe voorspelbaarder en waardevoller de output wordt. Klik een kaartje om het te leren.</p>
+          <div class="fc-set">
+            <div class="fc" onclick="toggleFC(this)">
+              <div class="fc-term">1 · Doel van de tekst</div>
+              <div class="fc-hint">Waarom maak je dit? Klik om te leren.</div>
+              <div class="fc-uitleg">
+                Vertel AI <em>waarom</em> je dit maakt. Dit stuurt toon en inhoud direct aan.<br><br>
+                <strong>Voorbeelden:</strong><br>
+                "Doel: klant overtuigen om een gesprek te plannen."<br>
+                "Doel: empathisch reageren op een klacht."<br>
+                "Doel: risico's helder presenteren aan directie."
+              </div>
+            </div>
+            <div class="fc" onclick="toggleFC(this)">
+              <div class="fc-term">2 · Lengte &amp; vorm</div>
+              <div class="fc-hint">Hoe lang, welk format? Klik om te leren.</div>
+              <div class="fc-uitleg">
+                Duidelijke kaders voorkomen ruis. Dit onderdeel wordt het vaakst vergeten.<br><br>
+                <strong>Voorbeelden:</strong><br>
+                "Maximaal 150 woorden."<br>
+                "In 3 korte alinea's."<br>
+                "In een tabel: probleem / oplossing."
+              </div>
+            </div>
+            <div class="fc" onclick="toggleFC(this)">
+              <div class="fc-term">3 · Stijl &amp; doelgroep</div>
+              <div class="fc-hint">Voor wie, welke toon? Klik om te leren.</div>
+              <div class="fc-uitleg">
+                Bepaal hoe de tekst moet klinken én voor wie.<br><br>
+                <strong>Voorbeelden:</strong><br>
+                "Voor niet-technische managers, simpel en helder."<br>
+                "Vriendelijke toon, voor klantenservice."<br>
+                "Formeel en bondig, voor juristen."
+              </div>
+            </div>
+            <div class="fc" onclick="toggleFC(this)">
+              <div class="fc-term">4 · Rol van de AI</div>
+              <div class="fc-hint">Welke identiteit geef je AI? Klik om te leren.</div>
+              <div class="fc-uitleg">
+                Geef AI een identiteit. Dit verhoogt de kwaliteit drastisch: AI past zijn manier van schrijven en redeneren aan.<br><br>
+                <strong>Voorbeelden:</strong><br>
+                "Je bent een senior AI-consultant."<br>
+                "Je schrijft als ervaren keynote speaker."<br>
+                "Je denkt als business-analist in de verzekeringsbranche."
+              </div>
+            </div>
+            <div class="fc" onclick="toggleFC(this)">
+              <div class="fc-term">5 · Referentie</div>
+              <div class="fc-hint">Welke informatie moet AI gebruiken? Klik om te leren.</div>
+              <div class="fc-uitleg">
+                Laat AI precies weten waarop hij zich baseert. Dit voorkomt dat AI dingen verzint.<br><br>
+                <strong>Voorbeelden:</strong><br>
+                "Gebruik deze tekst als bron: [plak tekst]."<br>
+                "Baseer je uitsluitend op dit document."<br>
+                "Verwerk alleen de feiten uit het aangeleverde document."
+              </div>
+            </div>
+            <div class="fc" onclick="toggleFC(this)">
+              <div class="fc-term">6 · Output</div>
+              <div class="fc-hint">Wat wil je precies terugkrijgen? Klik om te leren.</div>
+              <div class="fc-uitleg">
+                Formuleer precies wat je wilt ontvangen. Wees zo specifiek mogelijk.<br><br>
+                <strong>Voorbeelden:</strong><br>
+                "Maak een e-mail van maximaal 5 zinnen."<br>
+                "Schrijf een samenvatting van 10 bullets."<br>
+                "Geef 3 varianten, elk in een andere toon."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <strong>Sneltemplate:</strong> "Je bent een [rol]. Maak [output], met als doel [doel]. Schrijf dit in [vorm/lengte] en in een stijl die past bij [doelgroep]. Baseer je op: [referentie]."
+        </div>
+
+        <div class="card">
+          <h3>Typen of inspreken?</h3>
+          <p>De meeste mensen typen hun prompt, maar inspreken via Typeless heeft één groot voordeel: je geeft in dezelfde tijd drie keer zoveel context mee. En meer context geeft betere output.</p>
+          <div class="dark-grid" style="margin-top:12px;">
+            <div class="dark-card">
+              <div class="dc-title">&#9000; Typen</div>
+              <ul>
+                <li>Ideaal voor korte, directe prompts</li>
+                <li>Stoort niemand (handig in meetings)</li>
+                <li>Geschikt voor snelle instructies</li>
+              </ul>
+            </div>
+            <div class="dark-card">
+              <div class="dc-title">&#127908; Inspreken (Sonny's favoriet)</div>
+              <ul>
+                <li>Geeft in één keer veel context mee</li>
+                <li>Rijkere, preciezere output</li>
+                <li>Perfect voor complexe situaties</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ 2. TYPELESS -->
+      <section id="typeless" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 2</div>
+          <h2>Typeless: dicteren als superkracht</h2>
+        </div>
+
+        <div class="card">
+          <p>Typeless is een programma waarmee je je computer bedient met je stem. Je drukt op een knop, spreekt in, en je woorden verschijnen als tekst in elk programma op je computer: ook in Claude, in je e-mail, in Word, overal.</p>
+          <p>Het grote voordeel: als je spreekt, vertel je veel meer dan wanneer je typt. En hoe meer informatie je aan AI geeft, hoe beter het antwoord. Typeless maakt het prompt-model véél eenvoudiger toe te passen.</p>
+        </div>
+
+        <div class="card">
+          <h3>Account aanmaken en installeren</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ga naar typeless.ai</strong>Maak een gratis account aan via je e-mailadres of Google-account.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Download de app</strong>Beschikbaar voor Windows en Mac. Installeer zoals elke andere app.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Stel een sneltoets in</strong>Kies een toets die je makkelijk kunt bereiken. Druk erop om te beginnen met inspreken, druk opnieuw om te stoppen.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Klaar voor gebruik</strong>Klik in een tekstveld (Claude, mail, Word), druk op de knop en spreek. De tekst verschijnt automatisch.</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Typeless gebruiken in Claude</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Open Claude (claude.ai)</strong>Start een nieuw gesprek.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Klik in het tekstvak</strong>Zorg dat je cursor in het invulvak staat.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Druk op je Typeless-knop en spreek in</strong>Vertel alles: wat je wil, voor wie, welke toon, wat de context is. Hoe meer je vertelt, hoe beter Claude helpt.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Druk op Enter</strong>Typeless zet je woorden in het tekstvak. Druk Enter om de prompt naar Claude te sturen.</div></div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <strong>Tip van Sonny:</strong> gebruik Typeless als je situatie veel uitleg vraagt. Wil je dat Claude je helpt met een lastige brief of complexe mail? Spreek alles in: wie het is, wat er speelt, hoe je het wil laten klinken. Je geeft in dezelfde tijd drie keer zoveel mee als bij typen, en Claude helpt je daardoor drie keer zo goed.
+        </div>
+
+        <div class="tip warn">
+          <strong>Let op:</strong> in een drukke, open kantooromgeving kan inspreken onhandig zijn. Gebruik dan de typemodus voor kortere prompts en bewaar Typeless voor momenten waarop je wat meer privacy hebt.
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ 3. GEMINI -->
+      <section id="gemini" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 3</div>
+          <h2>Gemini: beeld en video met AI</h2>
+        </div>
+
+        <div class="card">
+          <p>Gemini is de AI-assistent van Google. Je gebruikt Gemini voor dezelfde soort taken als Claude: teksten schrijven, informatie analyseren, samenvatten en vertalen. Maar waar Gemini écht in uitblinkt (naast de chatfunctie) is beeld en video genereren.</p>
+          <div class="dark-grid" style="margin-top:12px;">
+            <div class="dark-card">
+              <div class="dc-title">&#128444; Afbeeldingen (NanoBanana)</div>
+              <ul>
+                <li>Nieuwe afbeeldingen genereren via een prompt</li>
+                <li>Bestaande foto's aanpassen via tekst</li>
+              </ul>
+            </div>
+            <div class="dark-card">
+              <div class="dc-title">&#127916; Video (Veo)</div>
+              <ul>
+                <li>Korte, realistische AI-video's genereren</li>
+                <li>Productshots, scènes of social snippets</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Account aanmaken</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ga naar gemini.google.com</strong>Log in met je Google-account of maak een nieuw account aan.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Kies een plan</strong>Het gratis plan geeft toegang tot de basisfunctionaliteit. Voor NanoBanana en Veo (beeld en video) heb je <strong>Google AI Pro</strong> of <strong>AI Plus</strong> nodig.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Accepteer de voorwaarden</strong>Volg de vervolgstappen en je bent klaar om te beginnen.</div></div>
+          </div>
+          <div class="tip" style="margin-top:10px;margin-bottom:0">
+            <strong>Tip van Sonny:</strong> activeer de gratis proefperiode van Google AI Pro en annuleer direct daarna. Je behoudt de volledige maand toegang en betaalt niets als je vergeet op te zeggen.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Afbeeldingen maken</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Open een chat en activeer "Afbeeldingen maken"</strong>Druk op "Tools" en controleer of Afbeeldingen maken is ingeschakeld.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Geef een duidelijke prompt</strong>"Maak een fotorealistische afbeelding van een team dat samenwerkt in een modern kantoor" of "Maak een illustratie van een robot die een presentatie geeft."</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Pas aan met vervolgprompts</strong>"Maak de sfeer warmer", "Voeg meer mensen toe" of "Maak het meer cartoonachtig."</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Download en gebruik</strong>In presentaties, social media, documenten of e-books.</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Foto's bewerken met tekst</h3>
+          <p>Upload een bestaande foto en geef tekstopdrachten om hem aan te passen:</p>
+          <ul style="margin-top:8px;">
+            <li>"Verander de achtergrond zodat het lijkt alsof ik bij de Eiffeltoren sta."</li>
+            <li>"Voeg een AI-robot toe aan de groepsfoto."</li>
+            <li>"Maak de sfeer professioneler, alsof het een bedrijfsfoto is."</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ 4. PERPLEXITY -->
+      <section id="perplexity" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 4</div>
+          <h2>Perplexity &amp; Comet: actuele informatie met bronnen</h2>
+        </div>
+
+        <div class="card">
+          <p><strong>Perplexity</strong> is in de basis een AI-zoekmachine: je stelt een vraag en krijgt direct een AI-antwoord plus bronlinks, in plaats van alleen een lijst zoekresultaten. Het voelt als een chat-AI, maar dan met sterke en accurate bronvermelding.</p>
+          <p><strong>Comet</strong> is de browser van Perplexity. Een "AI-first" browser waarmee je tijdens het browsen sneller zoekt, samenvat en research doet. Sonny heeft Google inmiddels volledig vervangen door Comet.</p>
+        </div>
+
+        <div class="card">
+          <h3>Wanneer gebruik je Perplexity?</h3>
+          <ul>
+            <li>Als directe vervanging van Google Search</li>
+            <li>Opties vergelijken (tools, leveranciers, aanpakken)</li>
+            <li>Research met nauwkeurige bronvermelding</li>
+            <li>Actuele marktinformatie, nieuws of prijzen</li>
+            <li>Praktische stappenplannen op basis van wat je zoekt</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Account aanmaken</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ga naar perplexity.ai</strong>Kies je aanmeldmethode: Google (snelste), Apple of e-mail.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Optioneel: download Comet</strong>Ga naar perplexity.ai/download-comet. Log in met je Perplexity-account en stel Comet in als standaardbrowser als je hem dagelijks wil gebruiken.</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Twee manieren van gebruik</h3>
+          <div class="dark-grid">
+            <div class="dark-card">
+              <div class="dc-title">Snel zoeken (Google-stijl)</div>
+              <p>Korte zoekopdrachten zoals "beste elektrische auto 2025" of "verschil bv en eenmanszaak". Direct een bruikbaar antwoord, plus de optie om door te vragen.</p>
+            </div>
+            <div class="dark-card">
+              <div class="dc-title">Opdrachten geven (AI-stijl)</div>
+              <p>Langere opdrachten voor een samenvatting, checklist, stappenplan of vergelijking. Gebruik hier hetzelfde prompt-model als bij Claude.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Deep Research</h3>
+          <p>Deep Research is de "onderzoekmodus" van Perplexity. Je gebruikt dit wanneer je niet alleen een snel antwoord wilt, maar een degelijk onderbouwd onderzoek in één prompt.</p>
+          <p style="margin-top:8px;"><strong>Waarvoor inzetten:</strong></p>
+          <ul style="margin-top:4px;">
+            <li>Producten of leveranciers vergelijken</li>
+            <li>Markt- of brancheonderzoek</li>
+            <li>Beleid, risico's en randvoorwaarden in kaart brengen</li>
+            <li>Compleet achtergrondrapport over een onderwerp</li>
+          </ul>
+          <span class="highlight">Waarom handig: je gaat van "zoeken" naar "compleet onderzoek" in één prompt, met bronnen erbij.</span>
+        </div>
+
+        <div class="card">
+          <h3>Comet Assistant: taken laten uitvoeren</h3>
+          <p>De Comet Assistant gaat een stap verder dan antwoorden geven: hij kan ook acties uitvoeren in de browser. Denk aan klikken, formulieren invullen en informatie verzamelen terwijl jij de regie houdt.</p>
+          <ul style="margin-top:8px;">
+            <li>Producten vergelijken op meerdere websites en een overzicht maken in Google Sheets</li>
+            <li>Restaurants vergelijken op menu, reviews en prijs, en een reservering starten</li>
+            <li>Informatie ordenen in een overzicht (prijs, levertijd, reviews, plus/minpunten)</li>
+          </ul>
+          <div class="tip warn" style="margin-top:12px;margin-bottom:0">
+            <strong>Belangrijk:</strong> zie het als een co-pilot. Jij blijft eindverantwoordelijk. Bij betalingen, accounts en definitieve bevestigingen doe jij altijd de laatste check.
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ 5. GAMMA -->
+      <section id="gamma" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 5</div>
+          <h2>Gamma.app: presentaties in minuten</h2>
+        </div>
+
+        <div class="card">
+          <p>Gamma.app is een AI-tool om presentaties, documenten en webachtige pagina's te maken op basis van een korte tekst of bestaande bestanden. Je hoeft zelf vrijwel geen ontwerp te doen: de AI regelt layout, structuur en basiscontent per slide.</p>
+          <p><strong>Gebruik Gamma voor:</strong></p>
+          <ul style="margin-top:4px;">
+            <li>Salesdecks, investor decks, keynotes</li>
+            <li>Trainingspresentaties en e-learning</li>
+            <li>One-pagers en interne memo's</li>
+            <li>Rapporten en visuals voor klanten</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Account aanmaken</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ga naar gamma.app</strong>Klik op "Get Started" en log in met Google of e-mail.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Verifieer je e-mailadres</strong>Volg de vervolgstappen om je profiel te activeren.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Je ontvangt 400 gratis credits</strong>Goed voor ongeveer 10 presentaties. Daarna credits bijkopen of upgraden.</div></div>
+          </div>
+          <div class="tip" style="margin-top:10px;margin-bottom:0">
+            <strong>Tip van Sonny:</strong> maak eenvoudig een nieuw account aan met een ander e-mailadres voor opnieuw 400 gratis credits. ;)
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Een presentatie maken</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ga naar "Gammas" en klik "Create New"</strong></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Kies een inputmethode</strong><strong>Generate</strong> (via prompt), <strong>Paste in text</strong> (plak bestaande tekst) of <strong>Import file</strong> (upload een bestand).</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Kies format en geef je prompt</strong>Presentation, Document of Webpage. Voorbeeld: "Maak een presentatie over AI-kansen voor mkb-bedrijven, 10 slides, Nederlands."</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Gamma genereert een outline, pas aan en genereer</strong>Bekijk de outline, pas eventueel aan, en laat Gamma de volledige presentatie genereren.</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Delen of exporteren</strong>Via link of exporteer naar PDF, PowerPoint of andere formaten (driepuntjes-menu rechtsboven).</div></div>
+          </div>
+          <div class="tip warn" style="margin-top:10px;margin-bottom:0">
+            <strong>Let op:</strong> Gamma geeft een solide basis, maar voeg altijd je eigen stijl, nuance en expertise toe. De 80/20-regel geldt hier ook.
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ 6. NOTEBOOKLM -->
+      <section id="notebooklm" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 6</div>
+          <h2>NotebookLM: jouw eigen kennisbank</h2>
+        </div>
+
+        <div class="card">
+          <p>NotebookLM is Google's AI-notitie- en onderzoeksplatform waarmee je eigen documenten koppelt aan een AI-assistent. Je uploadt jouw rapporten, beleidsstukken, presentaties of artikelen, en NotebookLM wordt er een slimme gesprekspartner over.</p>
+          <p>Alles is gebaseerd op de bronnen die <em>jij</em> uploadt. Daardoor zijn de antwoorden inhoudelijk betrouwbaar en relevant. NotebookLM verzint niets buiten jouw eigen documenten.</p>
+        </div>
+
+        <div class="card">
+          <h3>Wat kun je ermee?</h3>
+          <div class="dark-grid">
+            <div class="dark-card">
+              <div class="dc-title">&#127911; Audio-overzicht (podcast)</div>
+              <p>Automatisch gegenereerde, natuurlijk gesproken samenvatting van je documenten, ingesproken door twee AI-hosts. Luister onderweg in de auto.</p>
+            </div>
+            <div class="dark-card">
+              <div class="dc-title">&#129504; Mindmaps</div>
+              <p>Visuele overzichtsstructuren van de belangrijkste concepten uit je documenten.</p>
+            </div>
+            <div class="dark-card">
+              <div class="dc-title">&#128220; Flashcards &amp; quizzes</div>
+              <p>Direct te gebruiken voor studie, training en workshops op basis van jouw eigen materiaal.</p>
+            </div>
+            <div class="dark-card">
+              <div class="dc-title">&#128101; Samenwerken</div>
+              <p>Deel een notebook met collega's of klanten zodat zij zelf vragen kunnen stellen aan de bronnen.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Account aanmaken</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ga naar notebooklm.google.com</strong>Klik op "Try NotebookLM" en log in met je Google-account.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Je bent direct klaar</strong>NotebookLM is volledig gratis.</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Aan de slag: notebook aanmaken</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Klik op "Nieuwe maken"</strong>Geef het notebook een naam die aansluit op het project.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Voeg bronnen toe via "Add sources"</strong>PDF's, Google Drive-documenten, websites, YouTube-links of losse tekst. NotebookLM verwerkt alles automatisch tot één kennisbank.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Stel vragen aan je documenten</strong>"Vat alles samen in 10 bullets", "Welke risico's worden genoemd?", "Maak een managementbriefing van één A4."</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Genereer een audio-overzicht of mindmap</strong>Klik op "Audio overview" voor een AI-podcast van je documenten, of op "Mindmap" voor een visueel overzicht.</div></div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <strong>Praktijkvoorbeeld:</strong> upload vijf klantrapportages, stel de vraag "Wat zijn de drie terugkerende knelpunten in alle rapporten?" en laat NotebookLM een managementbriefing schrijven. Genereer daarna een audio-overzicht om onderweg te beluisteren. Dit kost je 10 minuten in plaats van een halve dag lezen.
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ 7. AUTOMATISERING -->
+      <section id="automatisering" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 7</div>
+          <h2>Automatisering op maat</h2>
+        </div>
+
+        <div class="card">
+          <p>Alles wat je tot nu hebt gezien, werkt op het moment dat <em>jij</em> iets vraagt. Maar AI kan ook automatisch dingen voor je doen, zonder dat jij erbij hoeft te zijn. Dit heet maatwerk AI-tooling, en het is een vak apart.</p>
+          <p>Denk aan systemen die automatisch binnenkomende e-mails lezen, categoriseren en de juiste mensen op de hoogte stellen. Of een chatbot op je website die klantvragen dag en nacht beantwoordt. Of vergaderingen die automatisch een samenvatting genereren in je mail.</p>
+        </div>
+
+        <div class="card">
+          <h3>n8n: het brein van je AI-apps</h3>
+          <p>n8n is een open-source workflow automation tool. Hiermee bouw je de logica achter je AI-oplossingen:</p>
+          <ul style="margin-top:8px;">
+            <li>Workflows die stappen uitvoeren (data ophalen, documenten genereren, berichten versturen)</li>
+            <li>AI-agents die beslissingen nemen en meerdere taken combineren</li>
+            <li>Koppelingen met je systemen, databases en apps</li>
+          </ul>
+          <p style="margin-top:8px;">n8n is het brein en de motor die alles aanstuurt.</p>
+        </div>
+
+        <div class="card">
+          <h3>Cursor: de voorkant voor je apps</h3>
+          <p>Cursor is een AI-code editor waarmee je de interface bouwt waar de gebruiker mee werkt: websites, webapps, dashboards en portals. Cursor begrijpt je volledige project en maakt het makkelijk om jouw app te koppelen aan n8n.</p>
+          <p style="margin-top:8px;"><strong>Samen werken ze zo:</strong></p>
+          <div class="flow">
+            <span class="flow-node">Cursor (voorkant)</span>
+            <span class="flow-arrow">&#8594;</span>
+            <span class="flow-node">n8n (brein)</span>
+            <span class="flow-arrow">&#8594;</span>
+            <span class="flow-end">Resultaat voor de gebruiker</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Praktijkvoorbeelden</h3>
+          <ul style="line-height:2.1;">
+            <li>Volledig geautomatiseerde notulen-workflows: elke vergadering krijgt automatisch een samenvatting</li>
+            <li>AI-agents op WhatsApp die klantvragen beantwoorden</li>
+            <li>Documentgeneratie voor repetitieve documenten (contracten, offertes, rapporten)</li>
+            <li>Nieuwe aanmeldingen automatisch verwerken en bevestigen</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Twee routes</h3>
+          <div class="dark-grid">
+            <div class="dark-card" style="background:rgba(255,133,20,0.07);border:1px solid rgba(255,133,20,0.2);">
+              <div class="dc-title" style="color:var(--text);">&#128218; Zelf leren</div>
+              <p style="color:#3A312A;">Stap voor stap via tutorials op YouTube. Goed als je technisch aangelegd bent en de tijd hebt om te investeren.<br><br><em style="font-size:0.78rem;opacity:0.6;">Zoek: "n8n beginners" of "Cursor AI editor"</em></p>
+            </div>
+            <div class="dark-card">
+              <div class="dc-title">&#129302; Samen met Umely</div>
+              <p>Wij bouwen maatwerk AI-apps dagelijks professioneel. Van een eenvoudige workflow tot geavanceerde AI-agents. Binnen 0-2 weken een werkende MVP.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip warn">
+          <strong>Eerlijk gezegd:</strong> dit bouwen is specialistenwerk. Het is geen kant-en-klaar product maar een bouwpakket. Afhankelijk van je technische niveau heb je mogelijk externe expertise nodig. En dat is prima: weten wanneer je hulp vraagt is ook vakmanschap.
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ 8. CLAUDE -->
+      <section id="claude" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 8</div>
+          <h2>Claude: jouw AI-assistent voor dagelijks werk</h2>
+        </div>
+
+        <div class="card">
+          <p>Claude is een AI-assistent gemaakt door Anthropic, een Amerikaans AI-veiligheidsbedrijf. Claude is ontworpen om eerlijk, behulpzaam en veilig te zijn. Je gebruikt Claude via je browser of de app op je telefoon of computer; ga naar claude.ai om te beginnen.</p>
+          <p>Claude is getraind op een enorme hoeveelheid tekst en kan je helpen met vrijwel alles wat te maken heeft met taal: schrijven, analyseren, uitleggen, samenvatten, vertalen en redeneren.</p>
+        </div>
+
+        <div class="card">
+          <h3>Account aanmaken</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ga naar claude.ai</strong>Klik op "Gratis aan de slag" en meld je aan via Google, Apple of e-mail.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Kies een plan</strong>Het gratis plan is meer dan genoeg om te starten. Pro geeft hogere gebruikslimieten en toegang tot de krachtigste modellen. Zie claude.ai voor actuele prijzen.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Direct aan de slag</strong>Typ je eerste prompt. Gebruik het prompt-model uit onderdeel 1 voor de beste resultaten.</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Wat kun je met Claude doen?</h3>
+          <div class="steps" style="margin-top:4px;">
+            <div class="step"><div class="step-num" style="background:rgba(255,133,20,0.15);color:var(--amber);font-size:1rem;">&#9998;</div><div class="step-body"><strong>Schrijven en herschrijven</strong>Plak een e-mail of brief in Claude en zeg wat je wil: "maak dit korter", "schrijf dit vriendelijker" of "herschrijf dit voor LinkedIn." Zeg altijd concreet wat je wil veranderen.</div></div>
+            <div class="step"><div class="step-num" style="background:rgba(255,133,20,0.15);color:var(--amber);font-size:1rem;">&#128196;</div><div class="step-body"><strong>Moeilijke teksten uitleggen</strong>Plak een brief van de gemeente, een contract of ingewikkelde mail en vraag: "Leg dit uit in gewone taal." Zeg erbij voor wie de uitleg is, dan past Claude zijn taal aan.</div></div>
+            <div class="step"><div class="step-num" style="background:rgba(255,133,20,0.15);color:var(--amber);font-size:1rem;">&#128203;</div><div class="step-body"><strong>Lange teksten samenvatten</strong>Upload een PDF of plak een lange tekst. Zeg hoe lang de samenvatting mag zijn en wat je ermee gaat doen.</div></div>
+            <div class="step"><div class="step-num" style="background:rgba(255,133,20,0.15);color:var(--amber);font-size:1rem;">&#127760;</div><div class="step-body"><strong>Vertalen</strong>Claude vertaalt in alle talen, in elke gewenste toon. Zeg in welke stijl je de vertaling wil en voor welke doelgroep.</div></div>
+            <div class="step"><div class="step-num" style="background:rgba(255,133,20,0.15);color:var(--amber);font-size:1rem;">&#128172;</div><div class="step-body"><strong>Vragen stellen en sparren</strong>Behandel Claude als een slimme gesprekspartner. Vraag om advies, een tweede mening of een lijst met opties. Hoe duidelijker je vraag, hoe beter het antwoord.</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Extra: Projects</h3>
+          <p>Met Projects in Claude kun je een vaste context instellen die Claude in elk gesprek onthoudt. Denk aan je functie, je bedrijf, je schrijfstijl of klantinformatie. Zo hoef je niet elke keer opnieuw uit te leggen wie je bent en wat je doet.</p>
+          <p>Je kunt ook documenten toevoegen aan een Project, zodat Claude altijd toegang heeft tot jouw eigen informatie.</p>
+        </div>
+
+        <div class="tip warn">
+          <strong>Belangrijke beperking (hallucinations):</strong> Claude kan soms dingen verzinnen die niet kloppen. Dit noemen we "hallucinations." Het gebeurt vooral bij specifieke feiten, cijfers, namen en recente gebeurtenissen. Controleer altijd of belangrijke informatie klopt. Gebruik Claude als startpunt, niet als de enige bron.
+        </div>
+
+        <div class="tip">
+          <strong>Gebruik Claude niet voor:</strong> actuele nieuwsfeiten, live marktinformatie of recente gebeurtenissen. Voor die situaties is <strong>Perplexity</strong> de betere keuze: die zoekt live op het internet met bronvermelding.
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════ UPSELL -->
+      <div id="upsell" class="upsell">
+        <div class="upsell-label">Wat komt hierna?</div>
+        <h3>De volledige Umely e-learning</h3>
+        <p style="color:rgba(255,248,242,0.75);font-size:0.92rem;line-height:1.7;margin-bottom:20px;">Je hebt nu de basis. Maar er is nog veel meer: 33 interactieve modules over Claude, automatisering, slimme tools en veel meer. Stap voor stap, op jouw tempo.</p>
+        <div class="upsell-check"><span>&#10003;</span><span>Claude instellen als jouw persoonlijke assistent die jouw stijl en context kent</span></div>
+        <div class="upsell-check"><span>&#10003;</span><span>Automatiseringen bouwen die voor je werken terwijl jij iets anders doet</span></div>
+        <div class="upsell-check"><span>&#10003;</span><span>Werkprocessen versnellen: e-mails, verslagen, presentaties in een fractie van de tijd</span></div>
+        <div class="upsell-check"><span>&#10003;</span><span>Praktisch en direct toepasbaar — elke module eindigt met iets wat je die dag nog kunt gebruiken</span></div>
+        <div class="upsell-check"><span>&#10003;</span><span>Certificaat bij afsluiting + toegang tot alle nieuwe modules</span></div>
+        <div class="upsell-cta">
+          <a class="btn-primary" href="/pricing">Bekijk de volledige e-learning &#8594;</a>
+          <a class="btn-ghost" href="https://umely.ai" target="_blank" rel="noopener">Plan een gratis gesprek</a>
+        </div>
+      </div>
+
+    </div><!-- /book -->
+
+    <footer>
+      <strong>Umely</strong> &nbsp;·&nbsp; Jouw vaste AI-partner<br>
+      <a href="mailto:info@umely.ai">info@umely.ai</a> &nbsp;·&nbsp; <a href="https://umely.ai" target="_blank">umely.ai</a>
+    </footer>
+  </main>
+
+</div><!-- /page-wrap -->
+
+<script>
+// Hamburger menu
+function toggleMenu() {
+  document.getElementById('mob-menu').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mob-menu').classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('mob-menu');
+  const btn = document.querySelector('.hamburger');
+  if (menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) {
+    menu.classList.remove('open');
+  }
+});
+
+// Flashcard toggle
+function toggleFC(el) {
+  el.classList.toggle('open');
+}
+
+// Sidebar active state via IntersectionObserver
+const sections = document.querySelectorAll('.book-section, #upsell');
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      sidebarLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
