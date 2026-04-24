@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design preview — AI-tools Handout als Boek</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #f0ece8; color: #2A221A; }
+
+/* ── Layout shell ── */
+.shell { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: #27292D;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-logo {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid rgba(255,248,242,0.08);
+}
+.sidebar-logo img { height: 28px; filter: brightness(0) invert(1); }
+.sidebar-nav { padding: 16px 0; flex: 1; }
+.sidebar-label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,248,242,0.35);
+  padding: 0 20px;
+  margin-bottom: 8px;
+}
+.sidebar-item {
+  display: block;
+  padding: 8px 20px;
+  font-size: 0.8rem;
+  color: rgba(255,248,242,0.55);
+  text-decoration: none;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+}
+.sidebar-item:hover { color: rgba(255,248,242,0.9); background: rgba(255,248,242,0.04); }
+.sidebar-item.active {
+  color: #FF8514;
+  border-left-color: #FF8514;
+  background: rgba(255,133,20,0.08);
+  font-weight: 700;
+}
+.sidebar-item .num { font-size: 0.68rem; opacity: 0.6; margin-right: 4px; }
+
+/* ── Main content ── */
+.main { flex: 1; min-width: 0; }
+
+/* ── Page header (sticky, mobile) ── */
+.page-header {
+  background: #27292D;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.page-header-title { font-size: 0.82rem; font-weight: 700; color: rgba(255,248,242,0.7); }
+.page-header img { height: 22px; filter: brightness(0) invert(1); }
+.hamburger { display: none; background: none; border: none; color: #FF8514; font-size: 1.3rem; cursor: pointer; }
+
+/* ── Book content ── */
+.book-content { max-width: 700px; margin: 0 auto; padding: 40px 40px 80px; }
+
+/* ── Welcome ── */
+.welcome-block {
+  background: #27292D;
+  border-radius: 14px;
+  padding: 36px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.welcome-block::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,133,20,0.3) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.welcome-badge {
+  display: inline-block;
+  background: rgba(255,248,242,0.12);
+  color: #FFD964;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 50px;
+  margin-bottom: 14px;
+  position: relative;
+}
+.welcome-block h1 {
+  font-family: 'Georgia', serif;
+  font-size: 2rem;
+  color: #FFF8F2;
+  margin-bottom: 12px;
+  position: relative;
+}
+.welcome-block p { color: rgba(255,248,242,0.8); font-size: 0.95rem; line-height: 1.7; position: relative; }
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin-top: 20px;
+  position: relative;
+}
+.nav-pill {
+  background: rgba(255,248,242,0.07);
+  border: 1px solid rgba(255,133,20,0.25);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255,248,242,0.85);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+.nav-pill:hover { background: rgba(255,133,20,0.15); border-color: #FF8514; }
+
+/* ── Section ── */
+.book-section { margin-bottom: 56px; }
+.section-header {
+  background: #27292D;
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 24px;
+}
+.section-num {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,248,242,0.45);
+  margin-bottom: 4px;
+}
+.section-header h2 {
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  color: #FFF8F2;
+  font-weight: 700;
+}
+.content-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(42,34,26,0.07);
+}
+.content-card p { font-size: 0.93rem; line-height: 1.75; color: #3A312A; margin-bottom: 10px; }
+.content-card p:last-child { margin-bottom: 0; }
+.content-card h3 {
+  font-family: 'Georgia', serif;
+  font-size: 1.05rem;
+  color: #2A221A;
+  margin-bottom: 10px;
+}
+.tip-box {
+  background: rgba(255,133,20,0.07);
+  border-left: 3px solid #FF8514;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+  color: #3A312A;
+  line-height: 1.65;
+}
+.tip-box.warning { background: rgba(239,68,68,0.07); border-left-color: #ef4444; }
+
+/* ── Flashcard-set ── */
+.flashcard-set { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.flashcard {
+  background: #27292D;
+  border-radius: 10px;
+  padding: 12px 14px;
+  flex: 1 1 180px;
+  min-width: 180px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+.flashcard:hover { border-color: #FF8514; }
+.fc-term { font-size: 0.82rem; font-weight: 700; color: rgba(255,248,242,0.9); margin-bottom: 5px; }
+.fc-hint { font-size: 0.7rem; color: #FF8514; }
+
+/* ── Steps ── */
+.stap-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  background: rgba(42,34,26,0.03);
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.stap-num {
+  width: 30px; height: 30px;
+  background: linear-gradient(90deg, #FF8514, #FF4D00);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 700; color: white;
+  flex-shrink: 0;
+}
+.stap-content { font-size: 0.88rem; line-height: 1.6; color: #3A312A; }
+.stap-content strong { display: block; color: #2A221A; margin-bottom: 2px; }
+
+/* ── Hamburger dropdown ── */
+.mob-menu {
+  display: none;
+  position: fixed;
+  top: 48px; left: 0; right: 0;
+  background: #1a1c1f;
+  z-index: 200;
+  padding: 12px 0;
+  border-bottom: 2px solid rgba(255,133,20,0.3);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.mob-menu.open { display: block; }
+.mob-menu a {
+  display: block;
+  padding: 9px 24px;
+  font-size: 0.85rem;
+  color: rgba(255,248,242,0.7);
+  text-decoration: none;
+}
+.mob-menu a.active { color: #FF8514; font-weight: 700; border-left: 2px solid #FF8514; padding-left: 22px; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .hamburger { display: block; }
+  .page-header { padding: 10px 20px; }
+  .book-content { padding: 24px 18px 60px; }
+  .flashcard { min-width: 140px; }
+  .nav-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- SIDEBAR (desktop only) -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div style="font-size:1.1rem;font-weight:800;color:#FFF8F2;font-family:Georgia,serif;">Umely</div>
+      <div style="font-size:0.65rem;color:rgba(255,248,242,0.4);margin-top:2px;">AI-tools in de praktijk</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-label">Inhoud</div>
+      <a class="sidebar-item active" href="#welkom">Welkom & overzicht</a>
+      <a class="sidebar-item" href="#prompt"><span class="num">1 ·</span> Prompt Engineering</a>
+      <a class="sidebar-item" href="#typeless"><span class="num">2 ·</span> Typeless</a>
+      <a class="sidebar-item" href="#gemini"><span class="num">3 ·</span> Gemini</a>
+      <a class="sidebar-item" href="#perplexity"><span class="num">4 ·</span> Perplexity & Comet</a>
+      <a class="sidebar-item" href="#gamma"><span class="num">5 ·</span> Gamma.app</a>
+      <a class="sidebar-item" href="#notebooklm"><span class="num">6 ·</span> NotebookLM</a>
+      <a class="sidebar-item" href="#automatisering"><span class="num">7 ·</span> Automatisering</a>
+      <a class="sidebar-item" href="#claude"><span class="num">8 ·</span> Claude</a>
+      <div style="height:1px;background:rgba(255,248,242,0.08);margin:12px 20px;"></div>
+      <a class="sidebar-item" href="#quiz" style="color:rgba(255,133,20,0.7);">&#9654; Afsluitquiz</a>
+    </nav>
+    <div style="padding:14px 20px;border-top:1px solid rgba(255,248,242,0.06);">
+      <div style="font-size:0.65rem;color:rgba(255,248,242,0.25);">umely.ai &nbsp;·&nbsp; info@umely.ai</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <div style="font-size:0.9rem;font-weight:800;color:#FFF8F2;font-family:Georgia,serif;">Umely</div>
+      <div class="page-header-title" style="display:none;" id="current-section-label"></div>
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <!-- Mobile dropdown menu -->
+    <div class="mob-menu" id="mob-menu">
+      <a href="#welkom" onclick="closeMenu()">Welkom & overzicht</a>
+      <a href="#prompt" class="active" onclick="closeMenu()">1 · Prompt Engineering</a>
+      <a href="#typeless" onclick="closeMenu()">2 · Typeless</a>
+      <a href="#gemini" onclick="closeMenu()">3 · Gemini</a>
+      <a href="#perplexity" onclick="closeMenu()">4 · Perplexity & Comet</a>
+      <a href="#gamma" onclick="closeMenu()">5 · Gamma.app</a>
+      <a href="#notebooklm" onclick="closeMenu()">6 · NotebookLM</a>
+      <a href="#automatisering" onclick="closeMenu()">7 · Automatisering</a>
+      <a href="#claude" onclick="closeMenu()">8 · Claude</a>
+      <a href="#quiz" onclick="closeMenu()" style="color:rgba(255,133,20,0.8);">▶ Afsluitquiz</a>
+    </div>
+
+    <!-- Book content -->
+    <div class="book-content">
+
+      <!-- WELKOM -->
+      <div id="welkom" class="book-section">
+        <div class="welcome-block">
+          <div class="welcome-badge">Umely E-learning · Gratis handout</div>
+          <h1>AI-tools in de praktijk</h1>
+          <p>Jouw digitale naslagwerk na de lezing. Alle tools, tips en technieken, overzichtelijk op één plek. Spring direct naar een onderdeel of lees alles van voren af aan.</p>
+          <div class="nav-grid">
+            <div class="nav-pill">✏ Prompt Engineering</div>
+            <div class="nav-pill">🎤 Typeless</div>
+            <div class="nav-pill">🌐 Gemini</div>
+            <div class="nav-pill">🔍 Perplexity</div>
+            <div class="nav-pill">📊 Gamma.app</div>
+            <div class="nav-pill">📚 NotebookLM</div>
+            <div class="nav-pill">⚙ Automatisering</div>
+            <div class="nav-pill">🤖 Claude</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ONDERDEEL 1 -->
+      <div id="prompt" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 1</div>
+          <h2>Prompt Engineering</h2>
+        </div>
+
+        <div class="content-card">
+          <h3>De 80/20-regel: de basis van alles</h3>
+          <p>AI kan verrassend veel voor je doen, maar alleen als jij het goed aanstuurt. Denk eraan als een nieuwe, razend slimme collega die alles wil helpen, maar geen context heeft. Geef je weinig, dan krijg je weinig terug.</p>
+          <p><strong>AI levert 80% van het werk.</strong> Jij investeert de laatste 20%: nakijken, bijsturen, controleren op fouten. Die 20% is niet optioneel.</p>
+        </div>
+
+        <div class="tip-box warning">
+          <strong>Voorbeeld:</strong> Vraag je AI om een contract op te stellen? Lees het altijd zelf na. Die laatste controle is altijd jouw verantwoordelijkheid.
+        </div>
+
+        <div class="content-card">
+          <h3>De 6 bouwstenen van een goede prompt</h3>
+          <p>Je hoeft niet alle zes altijd te gebruiken, maar hoe meer je meegeeft, hoe beter het resultaat. Klik een kaartje om het te openen.</p>
+          <div class="flashcard-set">
+            <div class="flashcard"><div class="fc-term">1 · Doel</div><div class="fc-hint">Waarom maak je dit? →</div></div>
+            <div class="flashcard"><div class="fc-term">2 · Lengte & vorm</div><div class="fc-hint">Hoe lang, welk format? →</div></div>
+            <div class="flashcard"><div class="fc-term">3 · Stijl & doelgroep</div><div class="fc-hint">Voor wie, welke toon? →</div></div>
+            <div class="flashcard"><div class="fc-term">4 · Rol van de AI</div><div class="fc-hint">Welke identiteit? →</div></div>
+            <div class="flashcard"><div class="fc-term">5 · Referentie</div><div class="fc-hint">Welke bronnen? →</div></div>
+            <div class="flashcard"><div class="fc-term">6 · Output</div><div class="fc-hint">Wat wil je terug? →</div></div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <strong>Sneltemplate:</strong> "Je bent een [rol]. Maak [output], met als doel [doel]. Schrijf dit in [vorm] voor [doelgroep]. Baseer je op: [referentie]."
+        </div>
+      </div>
+
+      <!-- ONDERDEEL 2 (preview) -->
+      <div id="typeless" class="book-section">
+        <div class="section-header">
+          <div class="section-num">Onderdeel 2</div>
+          <h2>Typeless: dicteren als superkracht</h2>
+        </div>
+        <div class="content-card">
+          <p>Typeless is een programma waarmee je je computer bedient met je stem. Je drukt op een knop, spreekt in, en je woorden verschijnen als tekst in elk programma — ook in Claude, in je e-mail, in Word, overal.</p>
+        </div>
+        <div class="content-card">
+          <h3>Account aanmaken en installeren</h3>
+          <div class="stap-item"><div class="stap-num">1</div><div class="stap-content"><strong>Ga naar typeless.ai</strong>Maak een gratis account aan via je e-mailadres of Google.</div></div>
+          <div class="stap-item"><div class="stap-num">2</div><div class="stap-content"><strong>Download de app</strong>Beschikbaar voor Windows en Mac.</div></div>
+          <div class="stap-item"><div class="stap-num">3</div><div class="stap-content"><strong>Stel een sneltoets in</strong>Druk erop om te beginnen, opnieuw om te stoppen.</div></div>
+          <div class="stap-item"><div class="stap-num">4</div><div class="stap-content"><strong>Klaar voor gebruik</strong>Klik in een tekstveld, druk op de knop en spreek in.</div></div>
+        </div>
+        <div class="tip-box">
+          <strong>Tip van Sonny:</strong> spreek alles in als je situatie veel uitleg vraagt. Je geeft in dezelfde tijd drie keer zoveel mee als bij typen.
+        </div>
+        <div style="text-align:center;color:rgba(42,34,26,0.3);font-size:0.8rem;padding:8px 0;">· · · scrollen voor Gemini, Perplexity, Gamma, NotebookLM, Automatisering, Claude · · ·</div>
+      </div>
+
+    </div><!-- /book-content -->
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+function toggleMenu() {
+  document.getElementById('mob-menu').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mob-menu').classList.remove('open');
+}
+// Sidebar active state on scroll
+const sections = document.querySelectorAll('.book-section');
+const sidebarLinks = document.querySelectorAll('.sidebar-item');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      sidebarLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar-item[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
