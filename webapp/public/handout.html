@@ -196,10 +196,10 @@ body {
 }
 .book {
   flex: 1;
-  max-width: 720px;
+  max-width: 900px;
   width: 100%;
-  margin: 0 auto;
-  padding: 48px 40px 32px;
+  margin: 0;
+  padding: 48px 56px 32px;
 }
 
 /* ─── WELCOME BLOCK ─── */
@@ -285,14 +285,21 @@ body {
 }
 
 /* ─── BOOK SECTION ─── */
-.book-section { margin-bottom: 64px; scroll-margin-top: 24px; }
+.book-section {
+  margin-bottom: 0;
+  padding-bottom: 56px;
+  border-bottom: 1.5px solid rgba(42,34,26,0.09);
+  scroll-margin-top: 24px;
+}
+.book-section:last-of-type { border-bottom: none; padding-bottom: 32px; }
 
 /* ─── SECTION HEADER ─── */
 .section-header {
   background: var(--dark);
-  border-radius: var(--radius);
-  padding: 20px 26px;
-  margin-bottom: 20px;
+  border-left: 4px solid var(--amber);
+  border-radius: 0;
+  padding: 22px 56px;
+  margin: 0 -56px 24px;
 }
 .section-num {
   font-size: 0.62rem;
@@ -530,13 +537,13 @@ footer strong { color: rgba(255,248,242,0.7); }
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .mobile-header { display: flex; }
-  .book { padding: 24px 18px 56px; }
+  .book { padding: 20px 20px 32px; }
   .welcome-block { padding: 28px 22px; }
   .welcome-block h1 { font-size: 1.65rem; }
   .nav-grid { grid-template-columns: 1fr 1fr; gap: 7px; }
   .dark-grid { grid-template-columns: 1fr; }
   .fc { min-width: 140px; }
-  .section-header { padding: 16px 20px; }
+  .section-header { padding: 16px 20px; margin: 0 -20px 20px; }
   .card { padding: 18px 18px; }
   .upsell { padding: 24px 20px; }
   .upsell-cta { align-items: stretch; }
