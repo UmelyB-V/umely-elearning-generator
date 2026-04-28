@@ -323,9 +323,31 @@ footer a { color: white; font-weight: 700; text-decoration: none; }
       <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
     </div>
     <button id="loginBtn" onclick="login()">Inloggen</button>
-    <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--gray-text);">
+    <p style="text-align:center;margin-top:14px;font-size:13px;">
+      <a href="#" onclick="showForgotState(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Wachtwoord vergeten?</a>
+    </p>
+    <p style="text-align:center;margin-top:10px;font-size:13px;color:var(--gray-text);">
       Nog geen account? <a href="#" id="toggleSignup" onclick="toggleAuthMode(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Registreer</a>
     </p>
+
+    <!-- WACHTWOORD VERGETEN -->
+    <div id="forgotState" style="display:none;">
+      <div id="forgotForm">
+        <div class="auth-field" style="margin-top:8px;">
+          <label>E-mailadres</label>
+          <input id="forgotEmail" type="email" placeholder="naam@bedrijf.nl" autocomplete="email" onkeydown="if(event.key==='Enter')sendResetEmail()">
+        </div>
+        <button id="forgotBtn" onclick="sendResetEmail()" style="width:100%;padding:14px;background:var(--gradient);color:white;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;">Verstuur herstelmail</button>
+        <p style="text-align:center;margin-top:14px;font-size:13px;">
+          <a href="#" onclick="hideForgotState(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Terug naar inloggen</a>
+        </p>
+      </div>
+      <div id="forgotSuccess" style="display:none;text-align:center;">
+        <div style="font-size:40px;margin-bottom:12px;">📬</div>
+        <p style="font-size:14px;color:var(--gray-text);margin-bottom:16px;">Check je inbox voor de herstelmail. De link is 1 uur geldig.</p>
+        <a href="#" onclick="hideForgotState(event)" style="color:var(--amber);font-weight:600;font-size:13px;text-decoration:none;">Terug naar inloggen</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -569,6 +591,19 @@ function sortModules(modules, cat) {
 const OPENED_KEY  = 'umely_opened';   // JSON array of slugs (most recent first)
 const LAST_KEY    = 'umely_last';     // JSON {slug, title, url, cat}
 
+const _cookieStorage = {
+  getItem(key) {
+    const m = document.cookie.match('(^|;)\\s*' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*=\\s*([^;]+)');
+    return m ? decodeURIComponent(m.pop()) : null;
+  },
+  setItem(key, value) {
+    document.cookie = key + '=' + encodeURIComponent(value) + ';max-age=31536000;path=/;SameSite=Lax';
+  },
+  removeItem(key) {
+    document.cookie = key + '=;max-age=0;path=/;SameSite=Lax';
+  }
+};
+
 let _supabase = null;
 let _session  = null;
 let allModules = [];
@@ -611,7 +646,9 @@ function getCatLabel(slug) {
 async function initAuth() {
   try {
     const config = await fetch('/api/config').then(r => r.json());
-    _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+    _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, storage: _cookieStorage }
+    });
 
     const { data: { session } } = await _supabase.auth.getSession();
     if (session) { _session = session; showApp(session); loadModules(); checkNewsletterPopup(session); }
@@ -683,6 +720,47 @@ async function login() {
   const { error } = await _supabase.auth.signInWithPassword({ email, password });
   if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Inloggen'; }
   else { btn.disabled = false; btn.textContent = 'Inloggen'; }
+}
+
+function showForgotState(e) {
+  e.preventDefault();
+  document.getElementById('authEmail').closest('.auth-field').style.display = 'none';
+  document.getElementById('authPassword').closest('.auth-field').style.display = 'none';
+  document.getElementById('loginBtn').style.display = 'none';
+  document.querySelectorAll('#authOverlay .auth-card > p').forEach(p => p.style.display = 'none');
+  document.getElementById('authError').style.display = 'none';
+  document.getElementById('forgotState').style.display = 'block';
+}
+
+function hideForgotState(e) {
+  e.preventDefault();
+  document.getElementById('forgotState').style.display = 'none';
+  document.getElementById('forgotForm').style.display = 'block';
+  document.getElementById('forgotSuccess').style.display = 'none';
+  document.getElementById('forgotEmail').value = '';
+  document.getElementById('authEmail').closest('.auth-field').style.display = 'block';
+  document.getElementById('authPassword').closest('.auth-field').style.display = 'block';
+  document.getElementById('loginBtn').style.display = 'block';
+  document.querySelectorAll('#authOverlay .auth-card > p').forEach(p => p.style.display = 'block');
+}
+
+async function sendResetEmail() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const btn = document.getElementById('forgotBtn');
+  if (!email) { document.getElementById('authError').textContent = 'Vul je e-mailadres in.'; document.getElementById('authError').style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = 'Verzenden...';
+  document.getElementById('authError').style.display = 'none';
+  const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset-password.html'
+  });
+  btn.disabled = false; btn.textContent = 'Verstuur herstelmail';
+  if (error) {
+    document.getElementById('authError').textContent = 'Versturen mislukt. Controleer je e-mailadres.';
+    document.getElementById('authError').style.display = 'block';
+  } else {
+    document.getElementById('forgotForm').style.display = 'none';
+    document.getElementById('forgotSuccess').style.display = 'block';
+  }
 }
 
 async function signup() {

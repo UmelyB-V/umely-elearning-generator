@@ -287,11 +287,13 @@
         <div class="auth-field">
           <label for="authPassword">Wachtwoord</label>
           <input id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password">
-          <a href="#" class="forgot-link" onclick="showForgotState(event)">Wachtwoord vergeten?</a>
         </div>
         <button id="loginBtn" type="submit" style="margin-top:6px;">Inloggen</button>
       </form>
-      <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--gray-text);">
+      <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--gray-text);">
+        <a href="#" onclick="showForgotState(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Wachtwoord vergeten?</a>
+      </p>
+      <p style="text-align:center;margin-top:10px;font-size:13px;color:var(--gray-text);">
         Nog geen account? <a href="#" id="toggleSignup" onclick="toggleAuthMode(event)" style="color:var(--amber);font-weight:600;text-decoration:none;">Registreer</a>
       </p>
     </div>
@@ -468,6 +470,20 @@ let generatedHTML = '';
 let previewVisible = false;
 let pollInterval = null;
 
+// ── COOKIE STORAGE (betrouwbaarder dan localStorage voor sessie-persistentie) ──
+const _cookieStorage = {
+  getItem(key) {
+    const m = document.cookie.match('(^|;)\\s*' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*=\\s*([^;]+)');
+    return m ? decodeURIComponent(m.pop()) : null;
+  },
+  setItem(key, value) {
+    document.cookie = key + '=' + encodeURIComponent(value) + ';max-age=31536000;path=/;SameSite=Lax';
+  },
+  removeItem(key) {
+    document.cookie = key + '=;max-age=0;path=/;SameSite=Lax';
+  }
+};
+
 // ── AUTH ──
 let _supabase = null;
 let _session = null;
@@ -480,7 +496,9 @@ async function initAuth() {
     if (!configRes.ok) throw new Error('Config ophalen mislukt (HTTP ' + configRes.status + ')');
     const config = await configRes.json();
     if (!config.supabaseUrl || !config.supabaseAnonKey) throw new Error('Ongeldige config: supabaseUrl of supabaseAnonKey ontbreekt');
-    _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+    _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, storage: _cookieStorage }
+    });
 
     const { data: { session } } = await _supabase.auth.getSession();
     if (session) { _session = session; showApp(session); }

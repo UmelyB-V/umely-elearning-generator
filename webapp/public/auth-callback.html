@@ -144,10 +144,25 @@
 </footer>
 
 <script>
+const _cookieStorage = {
+  getItem(key) {
+    const m = document.cookie.match('(^|;)\\s*' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*=\\s*([^;]+)');
+    return m ? decodeURIComponent(m.pop()) : null;
+  },
+  setItem(key, value) {
+    document.cookie = key + '=' + encodeURIComponent(value) + ';max-age=31536000;path=/;SameSite=Lax';
+  },
+  removeItem(key) {
+    document.cookie = key + '=;max-age=0;path=/;SameSite=Lax';
+  }
+};
+
 async function init() {
   try {
     const config = await fetch('/api/config').then(r => r.json());
-    const _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+    const _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, storage: _cookieStorage }
+    });
 
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
