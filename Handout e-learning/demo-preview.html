@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umely AI-tools — Gratis Quickstart</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#FFF8F2;--fg:#27292D;--amber:#FF8514;--flame:#FF4D00;--gold:#FFD964;
+  --cream:#F0E6D6;--muted:#F7EFE4;
+  --gradient:linear-gradient(135deg,#FF8514,#FF4D00);
+  --font-h:'Arimo',Arial,sans-serif;--font-b:'Montserrat',sans-serif;
+  --radius:10px;--radius-pill:50px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-b);font-size:1rem;line-height:1.6;min-height:100vh}
+
+/* ======== SCHERMEN ======== */
+.page { display:none; min-height:100vh; flex-direction:column; }
+.page.active { display:flex; }
+
+/* ======== LANDING PAGE ======== */
+#page-landing {
+  background: var(--fg);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+.landing-inner { max-width: 460px; width: 100%; }
+.landing-badge {
+  display: inline-block;
+  background: rgba(255,133,20,0.15);
+  color: var(--gold);
+  font-family: var(--font-h);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 1rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1.5rem;
+}
+.landing-logo {
+  font-family: var(--font-h);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #FFF8F2;
+  margin-bottom: 2rem;
+}
+.landing-logo span { color: var(--amber); }
+.landing-h1 {
+  font-family: var(--font-h);
+  font-size: 2.2rem;
+  color: #FFF8F2;
+  margin-bottom: 1rem;
+  line-height: 1.15;
+}
+.landing-h1 em { color: var(--amber); font-style: normal; }
+.landing-sub {
+  color: rgba(255,248,242,0.7);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+.landing-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.tool-pill {
+  background: rgba(255,248,242,0.07);
+  border: 1px solid rgba(255,248,242,0.14);
+  color: rgba(255,248,242,0.75);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-pill);
+}
+.tool-pill.highlight {
+  background: rgba(255,133,20,0.18);
+  border-color: rgba(255,133,20,0.35);
+  color: var(--gold);
+}
+.email-form {
+  background: rgba(255,248,242,0.05);
+  border: 1px solid rgba(255,248,242,0.1);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+.email-form label {
+  display: block;
+  color: rgba(255,248,242,0.55);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+.email-form input[type="email"] {
+  width: 100%;
+  background: rgba(255,248,242,0.07);
+  border: 1px solid rgba(255,248,242,0.18);
+  border-radius: var(--radius);
+  color: #FFF8F2;
+  font-family: var(--font-b);
+  font-size: 1rem;
+  padding: 0.8rem 1.1rem;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.email-form input[type="email"]:focus { border-color: var(--amber); }
+.email-form input[type="email"]::placeholder { color: rgba(255,248,242,0.28); }
+.btn-primary {
+  display: block;
+  width: 100%;
+  background: var(--amber);
+  color: #FFF8F2;
+  font-family: var(--font-b);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.9rem 2rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.landing-small {
+  color: rgba(255,248,242,0.3);
+  font-size: 0.75rem;
+}
+.landing-bottom {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,248,242,0.07);
+}
+.social-proof {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: rgba(255,248,242,0.45);
+  font-size: 0.78rem;
+}
+.stars { color: var(--gold); letter-spacing: 0.05em; }
+
+/* ======== E-LEARNING MODULE ======== */
+#page-module {
+  flex-direction: column;
+  background: var(--bg);
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--fg);
+  padding: 0.75rem 1.5rem 0;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 820px;
+  margin: 0 auto;
+}
+.logo { font-family: var(--font-h); font-weight: 700; font-size: 1.2rem; color: #FFF8F2; text-decoration: none; }
+.logo span { color: var(--amber); }
+.header-title { font-family: var(--font-h); font-size: 0.82rem; font-weight: 700; color: rgba(255,248,242,0.6); text-align: center; }
+.progress-bar-wrap { max-width: 820px; margin: 0 auto; padding: 0.5rem 0 0; }
+.progress-track { height: 3px; background: rgba(255,248,242,0.1); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--amber); border-radius: 2px; transition: width 0.5s ease; }
+
+/* Module screens */
+.module-wrap { flex: 1; padding: 2rem 1.5rem 4rem; max-width: 820px; width: 100%; margin: 0 auto; }
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* Welcome screen */
+.welcome-hero {
+  background: var(--fg);
+  color: var(--bg);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  margin-bottom: 1.75rem;
+}
+.welcome-hero h1 { font-family: var(--font-h); font-size: 1.9rem; margin-bottom: 0.75rem; }
+.welcome-hero p { color: rgba(255,248,242,0.8); font-size: 1rem; line-height: 1.65; }
+.welcome-badge {
+  display: inline-block;
+  background: rgba(255,133,20,0.18);
+  color: var(--gold);
+  font-family: var(--font-h);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.8rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1rem;
+}
+
+/* Leerdoelen */
+.leerdoelen {
+  background: var(--muted);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.leerdoelen h3 {
+  font-family: var(--font-h);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  margin-bottom: 0.9rem;
+}
+.leerdoelen ul { list-style: none; padding: 0; margin: 0; }
+.leerdoelen li {
+  padding: 0.45rem 0 0.45rem 1.6rem;
+  position: relative;
+  border-bottom: 1px solid var(--cream);
+  font-size: 0.93rem;
+  color: #444;
+}
+.leerdoelen li:last-child { border-bottom: none; }
+.leerdoelen li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  color: var(--amber);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.tijdsbadge {
+  display: inline-block;
+  background: var(--cream);
+  color: var(--fg);
+  font-size: 0.83rem;
+  font-weight: 600;
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1.5rem;
+}
+.btn {
+  display: inline-block;
+  background: var(--amber);
+  color: #FFF8F2;
+  font-family: var(--font-b);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.8rem 2rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-wrap { margin-top: 1.75rem; }
+
+/* Sectiekoppen */
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--amber);
+}
+.section-heading .onderdeel-label {
+  font-size: 0.72rem;
+  color: var(--amber);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.section-heading h2 {
+  font-family: var(--font-h);
+  font-size: 1.35rem;
+  color: var(--fg);
+}
+
+/* Content card */
+.content-card {
+  background: #fff;
+  border: 1px solid var(--cream);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.content-card h3 { font-family: var(--font-h); font-size: 1.05rem; margin-bottom: 0.65rem; color: var(--fg); }
+.content-card p { color: #444; font-size: 0.93rem; line-height: 1.7; margin-bottom: 0.65rem; }
+.content-card p:last-child { margin-bottom: 0; }
+.content-card ul { margin-left: 1.25rem; color: #444; font-size: 0.93rem; line-height: 1.8; }
+
+/* Tip box */
+.tip-box {
+  background: rgba(255,133,20,0.07);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--fg);
+}
+.tip-box strong { color: var(--amber); display: block; margin-bottom: 0.25rem; font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.tip-box.waarschuwing { background: rgba(255,77,0,0.06); border-left-color: var(--flame); }
+.tip-box.waarschuwing strong { color: var(--flame); }
+
+/* Flashcards */
+.flashcard-set { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1.25rem; }
+@media(max-width:560px){ .flashcard-set { grid-template-columns: 1fr; } }
+.flashcard {
+  background: #fff;
+  border: 1px solid var(--cream);
+  border-radius: var(--radius);
+  padding: 1.15rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.flashcard:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(39,41,45,0.08); }
+.flashcard .fc-term { font-weight: 700; font-size: 0.93rem; color: var(--amber); margin-bottom: 0.45rem; }
+.flashcard .fc-uitleg { font-size: 0.83rem; color: #555; display: none; line-height: 1.55; }
+.flashcard.open .fc-uitleg { display: block; }
+.flashcard.open { background: var(--fg); border-color: var(--fg); }
+.flashcard.open .fc-term { color: var(--gold); }
+.flashcard.open .fc-uitleg { color: rgba(255,248,242,0.82); }
+.flashcard-hint { text-align: center; color: #aaa; font-size: 0.78rem; margin-bottom: 1rem; }
+
+/* Steps */
+.stappen-lijst { list-style: none; padding: 0; margin-bottom: 1.25rem; }
+.stap-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid var(--cream);
+  border-radius: var(--radius);
+  margin-bottom: 0.65rem;
+}
+.stap-nr {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  background: var(--amber);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.88rem;
+  font-family: var(--font-h);
+}
+.stap-tekst { font-size: 0.92rem; color: #444; line-height: 1.6; }
+.stap-tekst strong { color: var(--fg); display: block; margin-bottom: 0.15rem; font-size: 0.94rem; }
+
+/* Nav buttons */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--cream);
+}
+.btn-nav {
+  background: transparent;
+  border: 1.5px solid rgba(39,41,45,0.25);
+  color: var(--fg);
+  font-family: var(--font-b);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-nav:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn-nav.primary { background: var(--amber); border-color: transparent; color: #FFF8F2; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+/* Kennischeck */
+.kennischeck-blok { background: var(--fg); border-radius: var(--radius); padding: 1.6rem; margin-bottom: 1.25rem; }
+.kennischeck-blok h3 { font-family: var(--font-h); color: #FFF8F2; font-size: 1rem; margin-bottom: 1.15rem; }
+.kc-opties { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+.kc-optie {
+  background: rgba(255,248,242,0.07);
+  border: 1px solid rgba(255,248,242,0.13);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  color: rgba(255,248,242,0.88);
+  font-size: 0.92rem;
+  transition: all 0.15s;
+}
+.kc-optie:hover { background: rgba(255,133,20,0.13); border-color: var(--amber); }
+.kc-optie.correct { background: rgba(255,133,20,0.18); border-color: var(--amber); color: var(--gold); pointer-events: none; }
+.kc-optie.fout { background: rgba(255,248,242,0.04); border-color: rgba(255,248,242,0.08); color: rgba(255,248,242,0.35); pointer-events: none; }
+.kc-feedback { margin-top: 1rem; font-size: 0.87rem; color: rgba(255,248,242,0.7); display: none; line-height: 1.6; }
+.kc-feedback.zichtbaar { display: block; }
+
+/* CTA scherm */
+.cta-screen {
+  background: var(--fg);
+  border-radius: var(--radius);
+  padding: 2.75rem 2.25rem;
+  text-align: center;
+}
+.cta-screen h2 { font-family: var(--font-h); font-size: 1.85rem; color: #FFF8F2; margin-bottom: 0.85rem; }
+.cta-screen h2 em { color: var(--amber); font-style: normal; }
+.cta-screen p { color: rgba(255,248,242,0.7); font-size: 0.97rem; max-width: 420px; margin: 0 auto 2rem; line-height: 1.7; }
+.cta-modules {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 0.65rem;
+  margin-bottom: 2.25rem;
+}
+@media(max-width:560px){ .cta-modules { grid-template-columns: 1fr 1fr; } }
+.cta-module-pill {
+  background: rgba(255,248,242,0.05);
+  border: 1px solid rgba(255,248,242,0.1);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.5rem;
+  font-size: 0.77rem;
+  color: rgba(255,248,242,0.6);
+  text-align: center;
+}
+.cta-module-pill strong {
+  display: block;
+  color: var(--gold);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.2rem;
+}
+.cta-module-pill.locked { opacity: 0.35; }
+.cta-btn-big {
+  display: inline-block;
+  background: var(--amber);
+  color: #FFF8F2;
+  font-family: var(--font-b);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.95rem 2.4rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.1s;
+  margin-bottom: 1rem;
+}
+.cta-btn-big:hover { opacity: 0.88; transform: translateY(-1px); }
+.cta-small { color: rgba(255,248,242,0.3); font-size: 0.77rem; }
+
+/* Demo label */
+.demo-banner {
+  background: rgba(255,217,100,0.12);
+  border-bottom: 1px solid rgba(255,217,100,0.25);
+  text-align: center;
+  padding: 0.45rem;
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Visual block */
+.visual-block { margin-bottom: 1.25rem; }
+
+/* Vergelijk tabel */
+.vergelijk-tabel { width: 100%; border-collapse: collapse; margin-bottom: 1.25rem; font-size: 0.87rem; }
+.vergelijk-tabel th { background: var(--fg); color: #FFF8F2; padding: 0.7rem 1rem; text-align: left; font-family: var(--font-h); font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.vergelijk-tabel td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--cream); background: #fff; vertical-align: top; }
+.vergelijk-tabel tr:last-child td { border-bottom: none; }
+.vergelijk-tabel td:first-child { font-weight: 600; color: var(--fg); }
+
+/* Screen counter */
+.screen-counter { font-size: 0.76rem; color: #bbb; margin-bottom: 1.5rem; }
+</style>
+</head>
+<body>
+
+<!-- DEMO BANNER -->
+<div class="demo-banner" id="demoBanner">
+  DEMO PREVIEW — Zo ziet de gebruiker het na het scannen van de QR-code
+</div>
+
+<!-- ============================================================
+     PAGINA 1: LANDING PAGE (na QR-scan)
+     ============================================================ -->
+<div class="page active" id="page-landing">
+  <div class="landing-inner">
+
+    <div class="landing-badge">Gratis na jouw lezing</div>
+
+    <div class="landing-logo">Umely<span>.</span>ai</div>
+
+    <h1 class="landing-h1">Jouw interactieve<br><em>AI-tools gids</em></h1>
+
+    <p class="landing-sub">
+      Alles wat je tijdens de lezing hebt gezien, nu in een interactieve module.
+      Lees terug, oefen, en ontdek wat je vandaag al kunt toepassen.
+    </p>
+
+    <div class="landing-tools">
+      <span class="tool-pill highlight">Claude</span>
+      <span class="tool-pill highlight">Typeless</span>
+      <span class="tool-pill">Gemini</span>
+      <span class="tool-pill">Perplexity</span>
+      <span class="tool-pill">Gamma.app</span>
+      <span class="tool-pill">NotebookLM</span>
+      <span class="tool-pill">n8n + Cursor</span>
+    </div>
+
+    <div class="email-form">
+      <label for="email">Jouw e-mailadres</label>
+      <input type="email" id="email" placeholder="naam@bedrijf.nl" />
+      <button class="btn-primary" onclick="startModule()">
+        Start de gratis module &rarr;
+      </button>
+    </div>
+
+    <p class="landing-small">Geen spam. Je ontvangt alleen de module en eventueel een follow-up van Umely.</p>
+
+    <div class="landing-bottom">
+      <div class="social-proof">
+        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span>Meer dan 500 professionals namen al deel aan Umely-lezingen</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGINA 2: DE E-LEARNING MODULE
+     ============================================================ -->
+<div class="page" id="page-module">
+
+  <header>
+    <div class="header-inner">
+      <span class="logo">Umely<span>.</span>ai</span>
+      <span class="header-title" id="headerTitle">Quickstart AI-tools</span>
+      <span style="width:80px;text-align:right;font-size:0.75rem;color:rgba(255,248,242,0.38)" id="screenCounter"></span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="module-wrap">
+
+    <!-- ====== WELKOMSTSCHERM ====== -->
+    <div class="screen active" id="s-welcome" data-progress="5">
+
+      <div class="welcome-hero">
+        <div class="welcome-badge">Umely E-learning &mdash; Gratis module</div>
+        <h1>Quickstart AI-tools voor kantoor</h1>
+        <p>Alles wat je nodig hebt om vandaag al slimmer te werken met AI — compact, praktisch en direct toepasbaar.</p>
+      </div>
+
+      <div class="leerdoelen">
+        <h3>Na deze module kun je:</h3>
+        <ul>
+          <li>Claude inzetten als AI-assistent voor schrijven, analyseren en automatiseren</li>
+          <li>Een effectieve prompt schrijven met het Umely promptmodel</li>
+          <li>Typeless gebruiken voor razendsnel dicteren</li>
+          <li>De juiste tool kiezen voor beeld, video, research en presentaties</li>
+          <li>Inschatten wanneer maatwerk-AI-tooling de moeite waard is</li>
+        </ul>
+      </div>
+
+      <div class="tijdsbadge">&#9201; Geschatte tijd: 20 minuten</div>
+
+      <div class="btn-wrap">
+        <button class="btn" onclick="goToScreen('s-1-1')">Start de module</button>
+      </div>
+
+    </div>
+
+    <!-- ====== ONDERDEEL 1: CLAUDE ====== -->
+    <div class="screen" id="s-1-1" data-progress="15">
+
+      <div class="section-heading">
+        <span class="onderdeel-label">Onderdeel 1 van 5</span>
+        <h2>Claude: jouw AI-assistent</h2>
+      </div>
+
+      <div class="content-card">
+        <h3>Wat is Claude?</h3>
+        <p>Claude is de AI-assistent van Anthropic, gebouwd met een sterke focus op veiligheid en betrouwbaarheid. Je gebruikt Claude voor hetzelfde soort taken als andere AI-assistenten, maar met een andere aanpak onder de motorkap.</p>
+        <ul>
+          <li>Teksten schrijven en herschrijven</li>
+          <li>Documenten samenvatten en analyseren</li>
+          <li>Ideeën uitwerken en brainstormen</li>
+          <li>Code schrijven en debuggen</li>
+          <li>Vragen beantwoorden op basis van aangeleverde informatie</li>
+        </ul>
+      </div>
+
+      <div class="visual-block">
+        <svg viewBox="0 0 580 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:10px;box-shadow:0 2px 14px rgba(0,0,0,0.08);">
+          <rect width="580" height="160" fill="#27292D" rx="10"/>
+          <rect x="30" y="45" width="110" height="70" rx="8" fill="rgba(255,133,20,0.12)" stroke="#FF8514" stroke-width="1.5"/>
+          <text x="85" y="75" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#FF8514" text-anchor="middle">JOUW VRAAG</text>
+          <text x="85" y="92" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,248,242,0.55)" text-anchor="middle">tekst, bestand</text>
+          <text x="85" y="107" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,248,242,0.55)" text-anchor="middle">of opdracht</text>
+          <line x1="140" y1="80" x2="175" y2="80" stroke="#FF8514" stroke-width="2" marker-end="url(#arr)"/>
+          <rect x="175" y="30" width="130" height="100" rx="8" fill="#FF8514"/>
+          <text x="240" y="65" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#FFF8F2" text-anchor="middle">Claude</text>
+          <text x="240" y="83" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,248,242,0.8)" text-anchor="middle">Anthropic</text>
+          <text x="240" y="100" font-family="Arial,sans-serif" font-size="9" fill="rgba(255,248,242,0.65)" text-anchor="middle">Veiligheid eerst</text>
+          <text x="240" y="115" font-family="Arial,sans-serif" font-size="9" fill="rgba(255,248,242,0.65)" text-anchor="middle">Eerlijk en direct</text>
+          <line x1="305" y1="80" x2="340" y2="80" stroke="#FF8514" stroke-width="2" marker-end="url(#arr)"/>
+          <rect x="340" y="45" width="110" height="70" rx="8" fill="rgba(255,133,20,0.12)" stroke="#FF8514" stroke-width="1.5"/>
+          <text x="395" y="75" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#FF8514" text-anchor="middle">JOUW OUTPUT</text>
+          <text x="395" y="92" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,248,242,0.55)" text-anchor="middle">tekst, analyse</text>
+          <text x="395" y="107" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,248,242,0.55)" text-anchor="middle">of code</text>
+          <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF8514"/></marker></defs>
+        </svg>
+      </div>
+
+      <div class="tip-box">
+        <strong>Verschil met andere tools</strong>
+        Claude is gemaakt door Anthropic, een bedrijf dat veiligheid centraal stelt in de ontwikkeling van AI. Dat merk je in de manier waarop Claude antwoord geeft: eerlijk over fouten en limieten, zonder de kant van de gebruiker te kiezen als dat niet verantwoord is.
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="goToScreen('s-welcome')">Vorige</button>
+        <button class="btn-nav primary" onclick="goToScreen('s-1-2')">Volgende</button>
+      </div>
+    </div>
+
+    <!-- ====== ONDERDEEL 1 - SCHERM 2: Het promptmodel ====== -->
+    <div class="screen" id="s-1-2" data-progress="25">
+
+      <div class="section-heading">
+        <span class="onderdeel-label">Onderdeel 1 van 5</span>
+        <h2>Het promptmodel: zo schrijf je effectief</h2>
+      </div>
+
+      <div class="content-card">
+        <p>Een sterke prompt bestaat uit vijf onderdelen. Hoe specifieker je elk onderdeel invult, hoe voorspelbaarder en waardevoller de output wordt.</p>
+      </div>
+
+      <p class="flashcard-hint">Klik op een kaartje om de uitleg te zien</p>
+      <div class="flashcard-set">
+        <div class="flashcard" onclick="toggleFC(this)">
+          <div class="fc-term">1. Outputdoel</div>
+          <div class="fc-uitleg">Formuleer precies wat je wilt ontvangen. Bijv: "Schrijf een samenvatting in 5 bullets" of "Maak een e-mail van maximaal 150 woorden."</div>
+        </div>
+        <div class="flashcard" onclick="toggleFC(this)">
+          <div class="fc-term">2. Lengte en vorm</div>
+          <div class="fc-uitleg">Geef duidelijke kaders: "Maximaal 150 woorden", "In een tabel met twee kolommen", "Als puntsgewijze lijst met max. 6 bullets."</div>
+        </div>
+        <div class="flashcard" onclick="toggleFC(this)">
+          <div class="fc-term">3. Stijl en doelgroep</div>
+          <div class="fc-uitleg">Bepaal hoe het moet klinken en voor wie. Bijv: "Voor niet-technische managers, simpel en helder" of "Formeel en bondig, voor juristen."</div>
+        </div>
+        <div class="flashcard" onclick="toggleFC(this)">
+          <div class="fc-term">4. Rol van Claude</div>
+          <div class="fc-uitleg">Geef Claude een identiteit. Bijv: "Je bent een senior HR-adviseur" of "Je schrijft als ervaren projectmanager." Dit verhoogt de kwaliteit sterk.</div>
+        </div>
+        <div class="flashcard" onclick="toggleFC(this)">
+          <div class="fc-term">5. Referentie</div>
+          <div class="fc-uitleg">Laat Claude weten waarop het zich moet baseren. Bijv: "Gebruik deze tekst als bron: [plak tekst]" of "Verwerk alleen de feiten uit dit document."</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <strong>Sneltemplate</strong>
+        "Je bent een [rol]. Maak [output], met als doel [doel]. Schrijf dit in [vorm/lengte] en in een stijl die past bij [doelgroep]. Baseer je op: [referentie]."
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="goToScreen('s-1-1')">Vorige</button>
+        <button class="btn-nav primary" onclick="goToScreen('s-1-3')">Volgende</button>
+      </div>
+    </div>
+
+    <!-- ====== ONDERDEEL 1 - SCHERM 3: Prompt-modi ====== -->
+    <div class="screen" id="s-1-3" data-progress="30">
+
+      <div class="section-heading">
+        <span class="onderdeel-label">Onderdeel 1 van 5</span>
+        <h2>Prompt-modi: hoe je invoert maakt uit</h2>
+      </div>
+
+      <div class="content-card">
+        <p>De meeste mensen typen een prompt, maar dat is niet de enige manier. Hoe je je opdracht invoert bepaalt hoeveel context je meegeeft — en dus hoe goed de output wordt.</p>
+      </div>
+
+      <ul class="stappen-lijst">
+        <li class="stap-item">
+          <div class="stap-nr" style="background:var(--fg);font-size:0.7rem;width:36px;height:36px;">T→T</div>
+          <div class="stap-tekst">
+            <strong>Tekst naar tekst</strong>
+            Ideaal voor korte, directe opdrachten. Stoort niemand — handig op kantoor of in een meeting. Geschikt voor snelle instructies, kleine aanpassingen en fact-checks.
+          </div>
+        </li>
+        <li class="stap-item">
+          <div class="stap-nr" style="background:var(--amber);font-size:0.7rem;width:36px;height:36px;">V→T</div>
+          <div class="stap-tekst">
+            <strong>Voice naar tekst — Sonny's favoriet</strong>
+            Je geeft in één keer veel meer context mee dan je ooit zou typen. Hierdoor wordt de output rijker en preciezer. Perfect voor complexe cases, lange uitleg en procesomschrijvingen. Dit is precies waar Typeless voor dient — het volgende onderdeel.
+          </div>
+        </li>
+        <li class="stap-item">
+          <div class="stap-nr" style="background:var(--fg);font-size:0.7rem;width:36px;height:36px;">V→V</div>
+          <div class="stap-tekst">
+            <strong>Voice naar voice</strong>
+            Volledig natuurlijke dialoog. Goed voor rollenspellen, sparren en het simuleren van klantgesprekken. Minder geschikt op kantoor vanwege het geluid.
+          </div>
+        </li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>Praktische vuistregel</strong>
+        Heb je een minuut om in te spreken? Doe het. Ingesproken prompts zijn gemiddeld 3x langer dan getypte — en meer context levert altijd betere output op.
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="goToScreen('s-1-2')">Vorige</button>
+        <button class="btn-nav primary" onclick="goToScreen('s-1-kc')">Volgende</button>
+      </div>
+    </div>
+
+    <!-- ====== KENNISCHECK 1 ====== -->
+    <div class="screen" id="s-1-kc" data-progress="40">
+
+      <div class="section-heading">
+        <span class="onderdeel-label">Kennischeck</span>
+        <h2>Claude en prompts</h2>
+      </div>
+
+      <div class="kennischeck-blok">
+        <h3>Je wilt Claude vragen een klantvoorstel te schrijven. Welk onderdeel van het promptmodel bepaalt hoe formeel of informeel de tekst klinkt?</h3>
+        <ul class="kc-opties" id="kc1">
+          <li class="kc-optie" onclick="checkKC1(this, false)">Het outputdoel</li>
+          <li class="kc-optie" onclick="checkKC1(this, false)">De lengte en vorm</li>
+          <li class="kc-optie" onclick="checkKC1(this, true)">Stijl en doelgroep</li>
+          <li class="kc-optie" onclick="checkKC1(this, false)">De referentie</li>
+        </ul>
+        <div class="kc-feedback" id="kc1-feedback">
+          Juist. "Stijl en doelgroep" bepaalt de toon en voor wie de tekst bedoeld is. Zonder dit onderdeel kiest Claude zelf een stijl, wat vaak te generiek uitvalt.
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="goToScreen('s-1-3')">Vorige</button>
+        <button class="btn-nav primary" id="kc1next" style="display:none" onclick="goToScreen('s-2-1')">Volgende</button>
+      </div>
+    </div>
+
+    <!-- ====== ONDERDEEL 2: TYPELESS ====== -->
+    <div class="screen" id="s-2-1" data-progress="48">
+
+      <div class="section-heading">
+        <span class="onderdeel-label">Onderdeel 2 van 5</span>
+        <h2>Typeless: sneller dan typen</h2>
+      </div>
+
+      <div class="content-card">
+        <h3>Wat is Typeless?</h3>
+        <p>Typeless is een spraak-naar-tekst tool die je tekst dicteert in elke applicatie op je computer. Je spreekt, Typeless zet het om naar tekst, en dat verschijnt direct in het tekstvak dat je voor je hebt. Of dat nou een e-mail, een Word-document of het chatvenster van Claude is.</p>
+        <p>De reden dat Umely Typeless aanbeveelt boven vergelijkbare tools: de nauwkeurigheid is hoog, de vertraging is minimaal, en het werkt overal zonder in te loggen in een browser.</p>
+      </div>
+
+      <ul class="stappen-lijst">
+        <li class="stap-item">
+          <div class="stap-nr">1</div>
+          <div class="stap-tekst"><strong>Download en installeer Typeless</strong>Ga naar typeless.io en installeer de app. Geen browserextensie — een echte desktopapp.</div>
+        </li>
+        <li class="stap-item">
+          <div class="stap-nr">2</div>
+          <div class="stap-tekst"><strong>Activeer met een sneltoets</strong>Stel een sneltoets in (bijv. dubbelklik rechter Shift). Klik daarna in elk tekstvak en activeer.</div>
+        </li>
+        <li class="stap-item">
+          <div class="stap-nr">3</div>
+          <div class="stap-tekst"><strong>Spreek je prompt in</strong>Praat gewoon alsof je een collega instrueert. Geef context, vertel wat je wilt, geef een voorbeeld. Typeless schrijft mee.</div>
+        </li>
+        <li class="stap-item">
+          <div class="stap-nr">4</div>
+          <div class="stap-tekst"><strong>Voordeel: meer context, betere output</strong>Ingesproken prompts zijn gemiddeld 3x langer dan getypte. Meer context voor Claude betekent rijkere, preciezere antwoorden.</div>
+        </li>
+      </ul>
+
+      <div class="tip-box waarschuwing">
+        <strong>Let op</strong>
+        Dicteer geen vertrouwelijke klantinformatie via tools van derden. Gebruik Typeless voor de structuur van je vraag, niet voor gevoelige persoonsgegevens.
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="goToScreen('s-1-kc')">Vorige</button>
+        <button class="btn-nav primary" onclick="goToScreen('s-cta')">Naar de afsluiting</button>
+      </div>
+    </div>
+
+    <!-- ====== CTA SCHERM ====== -->
+    <div class="screen" id="s-cta" data-progress="100">
+
+      <div class="cta-screen">
+        <h2>Dit was nog maar<br>het <em>begin</em></h2>
+        <p>Je hebt nu de basis van Claude en Typeless gezien. De volledige e-learning dekt 32 modules, van Gemini en NotebookLM tot n8n-automatiseringen en Claude Code.</p>
+
+        <div class="cta-modules">
+          <div class="cta-module-pill">
+            <strong>Reeks A</strong>
+            Claude: basis
+          </div>
+          <div class="cta-module-pill">
+            <strong>Reeks B</strong>
+            Veiligheid
+          </div>
+          <div class="cta-module-pill">
+            <strong>Reeks C</strong>
+            Apps en tools
+          </div>
+          <div class="cta-module-pill locked">
+            <strong>Reeks D</strong>
+            Claude Code
+          </div>
+          <div class="cta-module-pill locked">
+            <strong>Reeks E</strong>
+            Experts
+          </div>
+          <div class="cta-module-pill locked">
+            <strong>Certificaat</strong>
+            Umely
+          </div>
+        </div>
+
+        <a href="https://umely.ai/pricing" class="cta-btn-big">Bekijk de volledige e-learning</a>
+        <br>
+        <span class="cta-small">Maandelijks opzegbaar &bull; Inclusief alle 32 modules &bull; Umely certificaat</span>
+      </div>
+
+      <div class="nav-buttons" style="margin-top:1.5rem">
+        <button class="btn-nav" onclick="goToScreen('s-2-1')">Vorige</button>
+        <button class="btn-nav" onclick="restartDemo()" style="opacity:0.45;font-size:0.78rem">Demo opnieuw starten</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+function startModule() {
+  var email = document.getElementById('email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('email').style.borderColor = '#FF4D00';
+    document.getElementById('email').focus();
+    return;
+  }
+  document.getElementById('page-landing').classList.remove('active');
+  document.getElementById('page-module').classList.add('active');
+  goToScreen('s-welcome');
+}
+
+function restartDemo() {
+  document.getElementById('page-module').classList.remove('active');
+  document.getElementById('page-landing').classList.add('active');
+  document.getElementById('email').value = '';
+}
+
+var screens = ['s-welcome','s-1-1','s-1-2','s-1-3','s-1-kc','s-2-1','s-cta'];
+
+function goToScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  var target = document.getElementById(id);
+  if (target) {
+    target.classList.add('active');
+    var progress = parseInt(target.getAttribute('data-progress') || 0);
+    document.getElementById('progressFill').style.width = progress + '%';
+    var idx = screens.indexOf(id);
+    if (idx >= 0) {
+      document.getElementById('screenCounter').textContent = idx + ' / ' + (screens.length - 1);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function toggleFC(el) {
+  el.classList.toggle('open');
+}
+
+function checkKC1(el, correct) {
+  var opties = document.querySelectorAll('#kc1 .kc-optie');
+  opties.forEach(function(o){ o.onclick = null; o.style.pointerEvents = 'none'; });
+  el.classList.add(correct ? 'correct' : 'fout');
+  if (!correct) {
+    opties.forEach(function(o){
+      if (o.textContent.trim() === 'Stijl en doelgroep') o.classList.add('correct');
+    });
+  }
+  document.getElementById('kc1-feedback').classList.add('zichtbaar');
+  document.getElementById('kc1next').style.display = 'inline-block';
+}
+</script>
+</body>
+</html>
