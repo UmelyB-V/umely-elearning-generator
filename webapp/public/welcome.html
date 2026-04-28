@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account aanmaken | Umely E-learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amber: #FF8514;
+    --flame: #FF4D00;
+    --charcoal: #27292D;
+    --warm-white: #FFF8F2;
+    --white: #FFFFFF;
+    --gray-text: #5A5A5A;
+    --gray-border: #E8D9CC;
+    --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--warm-white);
+    color: var(--charcoal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--charcoal);
+    height: 64px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+  }
+  .logo img { height: 72px; filter: brightness(0) invert(1); }
+
+  /* ── MAIN ── */
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px 80px;
+  }
+
+  /* ── LAYOUT ── */
+  .welcome-wrap {
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    gap: 64px;
+    max-width: 960px;
+    width: 100%;
+    align-items: center;
+  }
+
+  /* ── INTRO ── */
+  .welcome-intro .badge {
+    display: inline-block;
+    background: rgba(255,133,20,0.12);
+    color: var(--amber);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 50px;
+    margin-bottom: 18px;
+  }
+  .welcome-intro h1 {
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--charcoal);
+    margin-bottom: 14px;
+  }
+  .welcome-intro .sub {
+    font-size: 16px;
+    color: var(--gray-text);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .highlights li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--charcoal);
+  }
+  .highlights li .dot {
+    width: 22px;
+    height: 22px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .highlights li .dot svg {
+    width: 11px;
+    height: 11px;
+    stroke: white;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── FORM CARD ── */
+  .form-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 40px 36px;
+    box-shadow: 0 8px 40px rgba(39,41,45,0.1);
+  }
+  .form-card h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .form-card .form-sub {
+    font-size: 13.5px;
+    color: var(--gray-text);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  #errorMsg {
+    display: none;
+    background: #FEF2F2;
+    border: 1px solid #FCA5A5;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #991B1B;
+  }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--gray-border);
+    border-radius: 10px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.15s;
+    background: var(--warm-white);
+  }
+  .field input:focus { border-color: var(--amber); background: var(--white); }
+  .field .hint {
+    display: block;
+    font-size: 11.5px;
+    color: #999;
+    margin-top: 5px;
+  }
+
+  #submitBtn {
+    width: 100%;
+    padding: 15px;
+    background: var(--gradient);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  #submitBtn:hover:not(:disabled) { opacity: 0.88; }
+  #submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .btn-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  .login-link {
+    text-align: center;
+    font-size: 13px;
+    color: var(--gray-text);
+    margin-top: 16px;
+  }
+  .login-link a { color: var(--amber); font-weight: 700; text-decoration: none; }
+  .login-link a:hover { text-decoration: underline; }
+
+  /* ── SUCCESS ── */
+  #successSection {
+    display: none;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+  }
+  .success-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 52px 48px;
+    box-shadow: 0 8px 40px rgba(39,41,45,0.1);
+  }
+  .success-card .icon { font-size: 52px; margin-bottom: 20px; line-height: 1; }
+  .success-card h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+  }
+  .success-card p {
+    font-size: 15px;
+    color: var(--gray-text);
+    line-height: 1.65;
+  }
+  .success-card .tip-note {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #AAA;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 24px 32px;
+    text-align: center;
+    background: var(--charcoal);
+  }
+  footer p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  footer a { color: white; font-weight: 700; text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 760px) {
+    .welcome-wrap {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .welcome-intro h1 { font-size: 26px; }
+    .form-card { padding: 32px 24px; }
+    .field-row { grid-template-columns: 1fr; gap: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">
+    <img src="/logo-small.png" alt="Umely">
+  </a>
+</header>
+
+<main>
+  <div class="welcome-wrap" id="formSection">
+
+    <div class="welcome-intro">
+      <div class="badge">Umely E-learning</div>
+      <h1>Wat leuk dat je meer wilt weten over AI!</h1>
+      <p class="sub">Maak hieronder een account aan en veel leerplezier!</p>
+
+      <ul class="highlights">
+        <li>
+          <span class="dot"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          32 interactieve modules over Claude, Gemini, Perplexity en meer
+        </li>
+        <li>
+          <span class="dot"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Direct toepasbaar in je dagelijkse werk
+        </li>
+        <li>
+          <span class="dot"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Certificaat na het afronden van de e-learning
+        </li>
+        <li>
+          <span class="dot"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+          Nieuwe modules zodra ze beschikbaar zijn
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-card">
+      <h2>Account aanmaken</h2>
+      <p class="form-sub">Na registratie ontvang je een bevestigingsmail. Klik de link daarin en je wordt doorgestuurd naar de betaalpagina.</p>
+
+      <div id="errorMsg"></div>
+
+      <form id="registerForm" onsubmit="register(event)" novalidate>
+        <div class="field-row">
+          <div class="field">
+            <label for="firstName">Voornaam</label>
+            <input type="text" id="firstName" autocomplete="given-name" required>
+          </div>
+          <div class="field">
+            <label for="lastName">Achternaam</label>
+            <input type="text" id="lastName" autocomplete="family-name" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">E-mailadres</label>
+          <input type="email" id="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="password">Wachtwoord</label>
+          <input type="password" id="password" autocomplete="new-password" required>
+          <span class="hint">Minimaal 8 tekens, 1 hoofdletter, 1 cijfer</span>
+        </div>
+
+        <button type="submit" id="submitBtn">Account aanmaken</button>
+
+        <p class="login-link">Al een account? <a href="https://umely-elearning-generator-dev.up.railway.app/pricing.html">Inloggen en abonneren</a></p>
+      </form>
+    </div>
+
+  </div>
+
+  <div id="successSection">
+    <div class="success-card">
+      <div class="icon">&#9993;&#65039;</div>
+      <h2>Check je e-mailbox!</h2>
+      <p>We hebben een bevestigingslink gestuurd naar <strong id="confirmedEmail"></strong>. Klik erop om je account te activeren — daarna word je automatisch doorgestuurd naar de betaalpagina.</p>
+      <p class="tip-note">Geen mail ontvangen? Controleer je spammap.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>
+    <img src="/logo-small.png" alt="Umely" style="height:40px;filter:brightness(0) invert(1);vertical-align:middle;">
+    <span>Umely E-learning &nbsp;&middot;&nbsp; <a href="https://umely.ai" target="_blank">umely.ai</a></span>
+    <span style="color:rgba(255,255,255,0.3);">|</span>
+    <a href="/privacy.html">Privacybeleid</a>
+    <span style="color:rgba(255,255,255,0.3);">&middot;</span>
+    <a href="/voorwaarden.html">Algemene voorwaarden</a>
+  </p>
+</footer>
+
+<script>
+async function register(e) {
+  e.preventDefault();
+
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName  = document.getElementById('lastName').value.trim();
+  const email     = document.getElementById('email').value.trim();
+  const password  = document.getElementById('password').value;
+
+  const errEl = document.getElementById('errorMsg');
+  const btn   = document.getElementById('submitBtn');
+
+  errEl.style.display = 'none';
+  errEl.textContent = '';
+
+  if (!firstName || !lastName || !email || !password) {
+    errEl.textContent = 'Vul alle velden in.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-spinner"></span>Account aanmaken...';
+
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Er is iets misgegaan. Probeer het opnieuw.');
+    }
+
+    document.getElementById('confirmedEmail').textContent = email;
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('successSection').style.display = 'block';
+
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = 'Account aanmaken';
+  }
+}
+</script>
+
+</body>
+</html>
