@@ -416,9 +416,11 @@ async function login() {
 
   const { error } = await _supabase.auth.signInWithPassword({ email, password });
   if (error) {
-    var msg = error.message;
-    if (msg.includes('Invalid login credentials')) msg = 'Onjuist e-mailadres of wachtwoord.';
-    else if (msg.includes('Email not confirmed')) msg = 'Je e-mail is nog niet geverifieerd. Controleer je inbox.';
+    var code = error.code || '';
+    var raw = (error.message || '').toLowerCase();
+    var msg;
+    if (code === 'invalid_credentials' || raw.includes('invalid') || raw.includes('credentials')) msg = 'Onjuist e-mailadres of wachtwoord.';
+    else if (code === 'email_not_confirmed' || raw.includes('not confirmed')) msg = 'Je e-mail is nog niet geverifieerd. Controleer je inbox.';
     else msg = 'Inloggen mislukt. Probeer het opnieuw.';
     errEl.textContent = msg;
     errEl.style.display = 'block';
