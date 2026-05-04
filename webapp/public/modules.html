@@ -776,11 +776,27 @@ async function signup() {
   if (!/[0-9]/.test(password)) { errEl.textContent = 'Wachtwoord moet minimaal 1 cijfer bevatten.'; errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
   btn.disabled = true; btn.textContent = 'Registreren...';
-  const { error } = await _supabase.auth.signUp({ email, password });
-  if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Registreer'; }
-  else {
+  const firstName = email.split('@')[0];
+  const lastName = '';
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email, password })
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      errEl.textContent = json.error || 'Registratie mislukt. Probeer het opnieuw.';
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Registreer';
+      return;
+    }
     errEl.style.cssText += ';display:block;background:#F0FDF4;border-color:#BBF7D0;color:#15803D;';
-    errEl.textContent = 'Account aangemaakt! Check je e-mail om te bevestigen.';
+    errEl.textContent = 'Controleer je e-mail om je account te bevestigen.';
+    btn.disabled = false; btn.textContent = 'Registreer';
+  } catch (e) {
+    errEl.textContent = 'Verbinding mislukt. Controleer je internet en probeer opnieuw.';
+    errEl.style.display = 'block';
     btn.disabled = false; btn.textContent = 'Registreer';
   }
 }

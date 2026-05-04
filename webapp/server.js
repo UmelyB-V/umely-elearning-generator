@@ -497,7 +497,7 @@ app.get('/api/user/progress', requireAuth, async (req, res) => {
 });
 
 // ── Certificaat data ophalen ──
-app.get('/api/certificate', requireAuth, async (req, res) => {
+app.get('/api/certificate', requireAuth, requireSubscription, async (req, res) => {
   const [progressRes, profileRes, modulesRes] = await Promise.all([
     supabase.from('user_progress').select('module_slug, score_pct, completed, completed_at').eq('user_id', req.user.id).eq('completed', true),
     supabase.from('profiles').select('email').eq('id', req.user.id).single(),
@@ -841,7 +841,7 @@ app.post('/api/auth/resend-verification', rateLimit({
   if (!email) return res.status(400).json({ error: 'Email vereist' });
 
   try {
-    const { error } = await supabase.auth.resend({
+    const { error } = await supabaseAuth.auth.resend({
       type: 'signup',
       email: email
     });
@@ -977,8 +977,7 @@ app.post('/api/user/usecase', requireAuth, async (req, res) => {
   if (!use_case || !use_case.trim()) return res.status(400).json({ error: 'use_case is verplicht.' });
   const { error } = await supabase
     .from('profiles')
-    .upsert({ id: req.user.id, email: req.user.email, use_case: use_case.trim() }, { onConflict: 'id' })
-    .eq('id', req.user.id);
+    .upsert({ id: req.user.id, email: req.user.email, use_case: use_case.trim() }, { onConflict: 'id' });
   if (error) return res.status(500).json({ error: error.message });
   res.json({ ok: true });
 });

@@ -236,16 +236,6 @@
 
   .loading { text-align: center; padding: 40px; color: #aaa; font-size: 14px; }
 
-  /* ── COMMUNITY TOGGLE ── */
-  .community-toggle-wrap { display: flex; align-items: center; gap: 12px; }
-  .toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
-  .toggle-switch input { opacity: 0; width: 0; height: 0; }
-  #communityToggle { display: none; }
-  .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #D1D5DB; border-radius: 50px; transition: background 0.2s; }
-  .toggle-slider:before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: transform 0.2s; }
-  #communityToggle:checked + .toggle-slider { background: var(--amber); }
-  #communityToggle:checked + .toggle-slider:before { transform: translateX(20px); }
-
   footer { padding: 28px 32px; text-align: center; background: var(--charcoal); }
   footer p { font-size: 13px; color: rgba(255,255,255,0.7); }
   footer a { color: white; font-weight: 700; text-decoration: none; }
@@ -693,8 +683,19 @@ async function signup() {
   const btn = document.getElementById('loginBtn');
   const errEl = document.getElementById('authError');
 
-  if (password.length < 6) {
-    errEl.textContent = 'Wachtwoord moet minimaal 6 tekens zijn.';
+  // Frontend validatie: min. 8 tekens, 1 hoofdletter, 1 cijfer
+  if (password.length < 8) {
+    errEl.textContent = 'Wachtwoord moet minimaal 8 tekens zijn.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!/[A-Z]/.test(password)) {
+    errEl.textContent = 'Wachtwoord moet minimaal 1 hoofdletter bevatten.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!/[0-9]/.test(password)) {
+    errEl.textContent = 'Wachtwoord moet minimaal 1 cijfer bevatten.';
     errEl.style.display = 'block';
     return;
   }
@@ -703,18 +704,36 @@ async function signup() {
   btn.disabled = true;
   btn.textContent = 'Registreren...';
 
-  const { error } = await _supabase.auth.signUp({ email, password });
-  if (error) {
-    errEl.textContent = error.message;
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName: email, lastName: '', email, password })
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      errEl.textContent = json.error || 'Registratie mislukt. Probeer het opnieuw.';
+      errEl.style.display = 'block';
+      errEl.style.background = '#FEF2F2';
+      errEl.style.borderColor = '#FCA5A5';
+      errEl.style.color = '#991B1B';
+      btn.disabled = false;
+      btn.textContent = 'Registreer';
+    } else {
+      errEl.style.display = 'block';
+      errEl.style.background = '#F0FDF4';
+      errEl.style.borderColor = '#BBF7D0';
+      errEl.style.color = '#15803D';
+      errEl.textContent = 'Account aangemaakt! Check je e-mail om te bevestigen, of log direct in.';
+      btn.disabled = false;
+      btn.textContent = 'Registreer';
+    }
+  } catch (e) {
+    errEl.textContent = 'Er is een netwerkfout opgetreden. Probeer het opnieuw.';
     errEl.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = 'Registreer';
-  } else {
-    errEl.style.display = 'block';
-    errEl.style.background = '#F0FDF4';
-    errEl.style.borderColor = '#BBF7D0';
-    errEl.style.color = '#15803D';
-    errEl.textContent = 'Account aangemaakt! Check je e-mail om te bevestigen, of log direct in.';
+    errEl.style.background = '#FEF2F2';
+    errEl.style.borderColor = '#FCA5A5';
+    errEl.style.color = '#991B1B';
     btn.disabled = false;
     btn.textContent = 'Registreer';
   }
@@ -756,13 +775,27 @@ function authHeader() {
 
 async function loadAccount() {
   try {
-    const res = await fetch('/api/user/profile', { headers: authHeader() });
-    if (res.status === 401) { showLogin(); return; }
-    const data = await res.json();
+    // Haal profiel en modulelijst parallel op
+    const [profileRes, modulesRes] = await Promise.all([
+      fetch('/api/user/profile', { headers: authHeader() }),
+      fetch('/api/modules', { headers: authHeader() })
+    ]);
+    if (profileRes.status === 401) { showLogin(); return; }
+    const data = await profileRes.json();
     if (!data || !data.profile || !Array.isArray(data.progress)) {
       throw new Error('Onverwacht antwoord van server');
     }
     const { profile, progress } = data;
+
+    // Bepaal totalModules dynamisch op basis van de modulelijst
+    let totalModules = 25; // fallback
+    if (modulesRes.ok) {
+      try {
+        const modulesData = await modulesRes.json();
+        const moduleList = Array.isArray(modulesData) ? modulesData : (modulesData.modules || []);
+        if (moduleList.length > 0) totalModules = moduleList.length;
+      } catch (_) { /* gebruik fallback */ }
+    }
 
     // Dedupliceer progress op genormaliseerde slug (strip datum-suffix zoals -20260401)
     const normalizeSlug = s => (s || '').replace(/-\d{8}$/, '');
@@ -783,7 +816,6 @@ async function loadAccount() {
     const completed = deduped.filter(p => p.completed).length;
     const scores = deduped.filter(p => p.score_pct > 0).map(p => p.score_pct);
     const avgScore = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
-    const totalModules = 25;
     const progPct = Math.round((completed / totalModules) * 100);
 
     document.getElementById('profileCard').innerHTML = `
@@ -883,33 +915,6 @@ async function loadAccount() {
   }
 }
 
-function loadCommunityToggle(enabled) {
-  updateCommunityToggleUI(enabled);
-}
-
-function updateCommunityToggleUI(enabled) {
-  const slider = document.getElementById('communitySlider');
-  const thumb = document.getElementById('communityThumb');
-  const statusText = document.getElementById('communityStatusText');
-  const toggle = document.getElementById('communityToggle');
-  if (toggle) toggle.checked = !!enabled;
-  if (statusText) statusText.textContent = enabled ? 'Ingeschakeld' : 'Uitgeschakeld';
-}
-
-async function setCommunityEnabled(enabled) {
-  try {
-    const res = await fetch('/api/admin/community', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...authHeader() },
-      body: JSON.stringify({ enabled })
-    });
-    if (!res.ok) throw new Error();
-    updateCommunityToggleUI(enabled);
-  } catch (e) {
-    console.error('Community toggle mislukt', e);
-  }
-}
-
 function renderSubscriptionSection(profile) {
   const status = profile.subscription_status || 'inactive';
   const isActive = status === 'active';
@@ -984,7 +989,7 @@ async function cancelSubscription() {
     msgEl.textContent = 'Je abonnement is opgezegd. Je behoudt toegang tot ' + cancelDate + '.';
     msgEl.style.display = 'block';
     // Herlaad sectie na 2 seconden
-    setTimeout(() => loadProfile(), 2000);
+    setTimeout(() => loadAccount(), 2000);
   } catch (e) {
     msgEl.style.color = '#DC2626';
     msgEl.textContent = e.message;
