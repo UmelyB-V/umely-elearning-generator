@@ -422,6 +422,26 @@ app.patch('/api/users/:userId/role', requireAuth, requireAdmin, async (req, res)
   res.json({ ok: true });
 });
 
+// ── Gebruiker verwijderen (admin) ──
+app.delete('/api/users/:userId', requireAuth, requireAdmin, async (req, res) => {
+  const { userId } = req.params;
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(userId)) {
+    return res.status(400).json({ error: 'Ongeldig gebruikers-ID.' });
+  }
+  if (userId === req.user.id) {
+    return res.status(400).json({ error: 'Je kunt je eigen account niet verwijderen.' });
+  }
+  try {
+    await supabase.from('user_progress').delete().eq('user_id', userId);
+    await supabase.from('profiles').delete().eq('id', userId);
+    const { error } = await supabaseAuth.auth.admin.deleteUser(userId);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Verwijderen mislukt.' });
+  }
+});
+
 // ── Voortgang opslaan ──
 app.post('/api/user/progress', requireAuth, async (req, res) => {
   console.log('[progress] POST ontvangen voor user:', req.user?.id, 'body:', JSON.stringify(req.body));

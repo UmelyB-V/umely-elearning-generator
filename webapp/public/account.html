@@ -1044,6 +1044,7 @@ async function loadUsers() {
             <th>Modules gestart</th>
             <th>Modules afgerond</th>
             <th>Gem. score</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -1053,11 +1054,12 @@ async function loadUsers() {
             const completed = progress.filter(p => p.completed).length;
             const scores = progress.filter(p => p.score_pct > 0).map(p => p.score_pct);
             const avg = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : '-';
+            const isSelf = _session && u.id === _session.user.id;
             return `
               <tr>
                 <td>${escapeHtml(u.email)}</td>
                 <td>
-                  <select class="role-select" data-userid="${escapeHtml(u.id)}" onchange="changeRole(this.dataset.userid, this.value)" ${_session && u.id === _session.user.id ? 'disabled title="Je kunt je eigen rol niet wijzigen"' : ''}>
+                  <select class="role-select" data-userid="${escapeHtml(u.id)}" onchange="changeRole(this.dataset.userid, this.value)" ${isSelf ? 'disabled title="Je kunt je eigen rol niet wijzigen"' : ''}>
                     <option value="user" ${u.role === 'user' ? 'selected' : ''}>Gebruiker</option>
                     <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
                   </select>
@@ -1065,6 +1067,7 @@ async function loadUsers() {
                 <td>${started}</td>
                 <td>${completed}</td>
                 <td>${avg}${avg !== '-' ? '%' : ''}</td>
+                <td>${isSelf ? '' : `<button onclick="deleteUser('${escapeHtml(u.id)}','${escapeHtml(u.email)}')" style="background:none;border:none;cursor:pointer;color:#B91C1C;font-size:1rem;padding:4px 8px;border-radius:6px;transition:background 0.15s;" title="Verwijder gebruiker" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='none'">&#128465;</button>`}</td>
               </tr>`;
           }).join('')}
         </tbody>
@@ -1090,6 +1093,23 @@ async function changeRole(userId, newRole) {
   } catch (e) {
     document.getElementById('usersTable').innerHTML = `<p style="color:#B91C1C;padding:12px;">${escapeHtml(e.message)}</p>`;
     setTimeout(loadUsers, 1500);
+  }
+}
+
+async function deleteUser(userId, email) {
+  if (!confirm(`Gebruiker "${email}" permanent verwijderen?\n\nDit verwijdert ook alle voortgangsdata en kan niet ongedaan gemaakt worden.`)) return;
+  try {
+    const res = await fetch(`/api/users/${userId}`, {
+      method: 'DELETE',
+      headers: authHeader()
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Verwijderen mislukt.');
+    }
+    loadUsers();
+  } catch (e) {
+    alert(e.message);
   }
 }
 
