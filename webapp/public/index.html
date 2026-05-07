@@ -355,7 +355,7 @@ async function showApp(session) {
     if (!profile || profile.role !== 'admin') {
       const allowed = ['/modules.html', '/account.html', '/pricing.html', '/'];
       const raw = new URLSearchParams(window.location.search).get('redirect') || '';
-      window.location.href = allowed.includes(raw) ? raw : '/modules.html';
+      window.location.href = allowed.includes(raw) ? raw : '/pricing.html';
       return;
     }
 
