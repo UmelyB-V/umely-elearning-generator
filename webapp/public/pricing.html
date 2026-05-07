@@ -101,6 +101,37 @@
   footer p { font-size: 13px; color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
   footer a { color: white; font-weight: 700; text-decoration: none; }
 
+  /* ── INLINE REGISTRATIEFORMULIER ── */
+  .reg-title { font-family: var(--font-h); font-size: 21px; font-weight: 700; color: var(--charcoal); margin-bottom: 5px; }
+  .reg-sub { font-size: 13px; color: var(--gray-text); margin-bottom: 20px; line-height: 1.5; }
+  .reg-field { margin-bottom: 12px; }
+  .reg-field label { display: block; font-size: 11px; font-weight: 700; color: var(--charcoal); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .reg-field input { width: 100%; padding: 11px 13px; border: 1.5px solid var(--gray-border); border-radius: 9px; font-family: var(--font-b); font-size: 14px; color: var(--charcoal); outline: none; transition: border-color 0.15s; background: white; }
+  .reg-field input:focus { border-color: var(--amber); }
+  .field-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pw-hints { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 5px; }
+  .pw-hint { display: flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; color: var(--gray-text); transition: color 0.2s; }
+  .pw-hint.ok { color: #16a34a; }
+  .pw-hint .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gray-border); flex-shrink: 0; transition: background 0.2s; }
+  .pw-hint.ok .dot { background: #16a34a; }
+  .terms-row { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 14px; }
+  .terms-row input[type="checkbox"] { width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--amber); margin-top: 2px; cursor: pointer; }
+  .terms-row label { font-size: 12px; color: var(--gray-text); line-height: 1.5; cursor: pointer; }
+  .terms-row label a { color: var(--amber); font-weight: 600; text-decoration: none; }
+  .btn-reg { width: 100%; padding: 13px; background: var(--gradient); color: white; border: none; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--font-b); transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-reg:hover:not(:disabled) { opacity: 0.88; }
+  .btn-reg:disabled { opacity: 0.6; cursor: not-allowed; }
+  .reg-error { background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; font-size: 12px; color: #991B1B; display: none; }
+  .login-hint { text-align: center; margin-top: 14px; font-size: 12px; color: var(--gray-text); }
+  .login-hint a { color: var(--amber); font-weight: 700; text-decoration: none; }
+  .verify-inline { text-align: center; padding: 16px 0; }
+  .verify-inline .vi-icon { font-size: 44px; margin-bottom: 14px; }
+  .verify-inline h3 { font-family: var(--font-h); font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .verify-inline p { font-size: 13px; color: var(--gray-text); line-height: 1.6; margin-bottom: 4px; }
+  .vi-email { display: inline-block; background: var(--gray-light); border: 1px solid var(--gray-border); border-radius: 6px; padding: 5px 12px; font-size: 13px; font-weight: 600; margin: 6px 0 14px; }
+  .vi-resend { font-size: 11px; color: var(--gray-text); margin-top: 10px; }
+  .vi-resend a { color: var(--amber); font-weight: 600; cursor: pointer; }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 700px) {
     .pricing-inner { grid-template-columns: 1fr; }
@@ -241,17 +272,8 @@
 <!-- PRICING -->
 <div class="pricing-wrap">
   <div class="pricing-inner">
-    <div class="pricing-left">
-      <div class="section-label">Toegang</div>
-      <h2>Eén abonnement, volledige toegang</h2>
-      <p>Maandelijks gefactureerd. Geen verborgen kosten, geen losse modules. Je hebt direct toegang tot alle beschikbare content na betaling.</p>
-      <div class="guarantee">
-        <div class="guarantee-icon">&#128274;</div>
-        <div>
-          <h4>Veilige betaling via Stripe</h4>
-          <p>Minimale termijn 3 maanden, daarna maandelijks opzegbaar via je account.</p>
-        </div>
-      </div>
+    <div class="pricing-left" id="left-panel">
+      <!-- gevuld door JS op basis van inlogstatus -->
     </div>
     <div>
       <div class="pricing-card">
@@ -313,6 +335,8 @@ const _cookieStorage = {
 
 let _supabase = null;
 let _session = null;
+let _signupEmail = '';
+let _signupPassword = '';
 
 async function init() {
   try {
@@ -322,7 +346,11 @@ async function init() {
     });
 
     const { data: { session } } = await _supabase.auth.getSession();
-    if (!session) return; // niet ingelogd: toon de pagina normaal
+
+    if (!session) {
+      renderLeft('unauth');
+      return;
+    }
 
     _session = session;
     document.getElementById('navLibrary').style.display = 'inline-flex';
@@ -340,15 +368,135 @@ async function init() {
         return;
       }
     }
+    renderLeft('auth-no-sub');
   } catch (e) {
     console.error('Init fout:', e);
+    renderLeft('unauth');
   }
 }
 
+function renderLeft(state) {
+  const panel = document.getElementById('left-panel');
+  if (state === 'unauth') {
+    panel.innerHTML = `
+      <p class="reg-title">Account aanmaken</p>
+      <p class="reg-sub">Maak je account aan en ga daarna direct naar de betaalpagina.</p>
+      <div id="reg-error" class="reg-error"></div>
+      <form onsubmit="submitSignup(event)">
+        <div class="field-row-2">
+          <div class="reg-field"><label>Voornaam</label><input id="reg-first" type="text" placeholder="Jan" autocomplete="given-name" required></div>
+          <div class="reg-field"><label>Achternaam</label><input id="reg-last" type="text" placeholder="Jansen" autocomplete="family-name" required></div>
+        </div>
+        <div class="reg-field"><label>E-mailadres</label><input id="reg-email" type="email" placeholder="naam@bedrijf.nl" autocomplete="email" required></div>
+        <div class="reg-field">
+          <label>Wachtwoord</label>
+          <input id="reg-pw" type="password" placeholder="••••••••" autocomplete="new-password" required oninput="checkPw()">
+          <div class="pw-hints">
+            <div class="pw-hint" id="ph-len"><div class="dot"></div>8+ tekens</div>
+            <div class="pw-hint" id="ph-upper"><div class="dot"></div>Hoofdletter</div>
+            <div class="pw-hint" id="ph-num"><div class="dot"></div>Cijfer</div>
+          </div>
+        </div>
+        <div class="terms-row">
+          <input type="checkbox" id="reg-terms" required>
+          <label for="reg-terms">Ik ga akkoord met de <a href="/voorwaarden.html" target="_blank">voorwaarden</a> en het <a href="/privacy.html" target="_blank">privacybeleid</a>.</label>
+        </div>
+        <button type="submit" class="btn-reg" id="reg-btn">Account aanmaken &#8594;</button>
+      </form>
+      <p class="login-hint">Al een account? <a href="/?redirect=/pricing.html">Inloggen</a></p>`;
+  } else if (state === 'verifying') {
+    panel.innerHTML = `
+      <div class="verify-inline">
+        <div class="vi-icon">&#128231;</div>
+        <h3>Controleer je inbox</h3>
+        <p>Verificatielink verstuurd naar:</p>
+        <div class="vi-email" id="vi-email-display"></div>
+        <p>Klik op de link in de mail om je account te activeren. Controleer ook je spammap.</p>
+        <p class="vi-resend">Geen mail? <a onclick="resendVerify(event)">Stuur opnieuw</a></p>
+        <p id="vi-resend-msg" style="display:none;font-size:11px;color:#16a34a;margin-top:8px;"></p>
+      </div>`;
+    document.getElementById('vi-email-display').textContent = _signupEmail;
+  } else {
+    panel.innerHTML = `
+      <div class="section-label">Toegang</div>
+      <h2 style="font-family:var(--font-h);font-size:clamp(20px,2.5vw,28px);font-weight:700;margin-bottom:10px;">Eén abonnement,<br>volledige toegang</h2>
+      <p style="font-size:14px;color:var(--gray-text);line-height:1.65;margin-bottom:20px;">Maandelijks gefactureerd. Geen verborgen kosten, geen losse modules. Je hebt direct toegang na betaling.</p>
+      <div class="guarantee">
+        <div class="guarantee-icon">&#128274;</div>
+        <div>
+          <h4>Veilige betaling via Stripe</h4>
+          <p>Minimale termijn 3 maanden, daarna maandelijks opzegbaar via je account.</p>
+        </div>
+      </div>`;
+  }
+}
+
+function checkPw() {
+  const pw = document.getElementById('reg-pw')?.value || '';
+  const toggle = (id, ok) => { const el = document.getElementById(id); if (el) { el.classList.toggle('ok', ok); } };
+  toggle('ph-len', pw.length >= 8);
+  toggle('ph-upper', /[A-Z]/.test(pw));
+  toggle('ph-num', /[0-9]/.test(pw));
+}
+
+async function submitSignup(e) {
+  e.preventDefault();
+  const firstName = document.getElementById('reg-first').value.trim();
+  const lastName = document.getElementById('reg-last').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-pw').value;
+  const errEl = document.getElementById('reg-error');
+  const btn = document.getElementById('reg-btn');
+  errEl.style.display = 'none';
+
+  if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+    errEl.textContent = 'Wachtwoord voldoet niet aan de vereisten.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-spinner"></span>Account aanmaken...';
+
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      btn.disabled = false;
+      btn.innerHTML = 'Account aanmaken &#8594;';
+      errEl.textContent = data.error || 'Er ging iets mis.';
+      errEl.style.display = 'block';
+      return;
+    }
+    _signupEmail = email;
+    _signupPassword = password;
+    renderLeft('verifying');
+  } catch (err) {
+    btn.disabled = false;
+    btn.innerHTML = 'Account aanmaken &#8594;';
+    errEl.textContent = 'Verbindingsfout. Probeer het opnieuw.';
+    errEl.style.display = 'block';
+  }
+}
+
+async function resendVerify(e) {
+  e.preventDefault();
+  const msg = document.getElementById('vi-resend-msg');
+  try {
+    await _supabase.auth.resend({ type: 'signup', email: _signupEmail });
+    msg.textContent = 'Mail opnieuw verstuurd.';
+    msg.style.display = 'block';
+  } catch { msg.textContent = 'Kon mail niet verzenden.'; msg.style.display = 'block'; }
+}
+
 async function startCheckout() {
-  // Niet ingelogd: stuur naar login, daarna terug naar pricing
   if (!_session) {
-    window.location.href = '/register.html?redirect=/pricing.html';
+    renderLeft('unauth');
+    document.getElementById('left-panel').scrollIntoView({ behavior: 'smooth' });
     return;
   }
 
