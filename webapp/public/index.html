@@ -353,7 +353,7 @@ async function showApp(session) {
       .single();
 
     if (!profile || profile.role !== 'admin') {
-      const allowed = ['/modules.html', '/account.html', '/pricing.html', '/community.html', '/'];
+      const allowed = ['/modules.html', '/account.html', '/pricing.html', '/'];
       const raw = new URLSearchParams(window.location.search).get('redirect') || '';
       window.location.href = allowed.includes(raw) ? raw : '/modules.html';
       return;

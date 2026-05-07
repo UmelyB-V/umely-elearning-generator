@@ -982,8 +982,6 @@ app.post('/api/user/usecase', requireAuth, async (req, res) => {
   res.json({ ok: true });
 });
 
-require('./community-routes')(app, supabase, requireAuth);
-
 // ── Handout route: serveert het boekje-formaat direct als statisch bestand ──
 app.get('/handout', (req, res) => {
   const path = require('path');

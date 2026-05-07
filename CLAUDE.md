@@ -43,8 +43,7 @@ umely-elearning-generator/
     └── public/
         ├── index.html         <- login UI
         ├── modules.html       <- modulebibliotheek
-        ├── account.html       <- gebruikersbeheer
-        └── community.html     <- community feature
+        └── account.html       <- gebruikersbeheer
 ```
 
 ## Modulebouwpipeline
@@ -243,8 +242,6 @@ Admins krijgen geen `protection.js` — zij kunnen de module normaal bekijken vo
 2. **Print block** — CSS `@media print` verbergt alle content, toont alleen een melding
 3. **Rechtermuisknop / selecteren / kopiëren** — geblokkeerd binnen `.screen`, `#app`, `.module-wrapper`
 4. **Devtools detectie** — bij >200px verschil tussen outer/innerWidth of Height: content wordt geblurred
-
-**Community-feature:** tabellen bestaan (`community_messages`, `community_profiles`, etc.) maar de feature is nog niet volledig actief in de webapp. Niet verwijderen — in ontwikkeling.
 
 **Legacy generator-bestanden:** `webapp/prompt.md` en `webapp/boilerplate.html` zijn overblijfsels van de oude generator waarbij Claude direct HTML genereerde via de webapp. Die workflow wordt niet meer gebruikt. Modules worden nu handmatig gebouwd in `module-content/` via deze CLAUDE.md als leidraad.
 
