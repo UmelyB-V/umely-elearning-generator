@@ -189,16 +189,8 @@ ${content
         </div>
       </div>
     </div>
-    <div style="background:rgba(255,133,20,0.07);border:1.5px solid rgba(255,133,20,0.25);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;">
-      <span style="font-size:2rem;flex-shrink:0">&#128172;</span>
-      <div>
-        <p style="font-weight:700;color:#2A221A;margin:0 0 0.2rem">Liever eerst een gesprek?</p>
-        <p style="color:rgba(42,34,26,0.7);font-size:0.9rem;margin:0">Sonny en het team helpen je bepalen wat AI voor jou of jouw organisatie kan betekenen. Gratis en vrijblijvend.</p>
-      </div>
-    </div>
     <div style="display:flex;flex-direction:column;gap:0.75rem;align-items:center;">
-      <a href="/pricing" style="display:block;width:100%;max-width:400px;box-sizing:border-box;background:var(--gradient);color:white;text-decoration:none;padding:16px 32px;border-radius:50px;font-weight:800;font-size:1.05rem;text-align:center;box-shadow:0 4px 20px rgba(255,133,20,0.35);">Bekijk de volledige e-learning &#8594;</a>
-      <a href="https://umely.ai" target="_blank" rel="noopener" style="display:block;width:100%;max-width:400px;box-sizing:border-box;background:transparent;color:#FF8514;text-decoration:none;padding:14px 32px;border-radius:50px;font-weight:700;font-size:0.95rem;text-align:center;border:1.5px solid #FF8514;">Plan een gratis gesprek</a>
+      <a href="https://umely.ai" target="_blank" rel="noopener" style="display:block;width:100%;max-width:400px;box-sizing:border-box;background:var(--gradient);color:white;text-decoration:none;padding:16px 32px;border-radius:50px;font-weight:800;font-size:1.05rem;text-align:center;box-shadow:0 4px 20px rgba(255,133,20,0.35);">Bekijk de volledige e-learning &#8594;</a>
     </div>
   </div>
   ` : ''}
