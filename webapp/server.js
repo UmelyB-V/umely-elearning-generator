@@ -434,7 +434,7 @@ app.delete('/api/users/:userId', requireAuth, requireAdmin, async (req, res) => 
   try {
     await supabase.from('user_progress').delete().eq('user_id', userId);
     await supabase.from('profiles').delete().eq('id', userId);
-    const { error } = await supabaseAuth.auth.admin.deleteUser(userId);
+    const { error } = await supabase.auth.admin.deleteUser(userId);
     if (error) return res.status(500).json({ error: error.message });
     res.json({ ok: true });
   } catch (e) {
