@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/logo-small.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account aanmaken | Umely E-learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --amber: #FF8514; --flame: #FF4D00;
+    --charcoal: #27292D; --warm-white: #FFF8F2;
+    --gray-text: #5A5550; --gray-border: #E8D9CC; --gray-light: #F5F0EA;
+    --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
+    --font-h: 'Arimo', sans-serif;
+    --font-b: 'Montserrat', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-b); background: var(--warm-white); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* ── LAYOUT ── */
+  .page { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+
+  /* ── LEFT PANEL ── */
+  .left { background: var(--charcoal); padding: 48px; display: flex; flex-direction: column; justify-content: space-between; }
+  .left-logo { display: flex; align-items: center; margin-bottom: 48px; }
+  .left-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .left h2 { font-family: var(--font-h); font-size: clamp(24px, 3vw, 34px); font-weight: 700; color: #FFF8F2; line-height: 1.2; margin-bottom: 16px; }
+  .left p { font-size: 15px; color: rgba(255,248,242,0.65); line-height: 1.7; margin-bottom: 32px; }
+  .left-perks { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+  .perk { display: flex; align-items: flex-start; gap: 12px; }
+  .perk-icon { width: 32px; height: 32px; background: rgba(255,133,20,0.18); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; }
+  .perk-text strong { display: block; color: #FFF8F2; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .perk-text span { font-size: 13px; color: rgba(255,248,242,0.55); }
+  .left-steps { border-top: 1px solid rgba(255,248,242,0.1); padding-top: 28px; }
+  .steps-label { font-size: 11px; color: rgba(255,248,242,0.4); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 14px; }
+  .steps { display: flex; gap: 0; align-items: center; }
+  .step { display: flex; align-items: center; gap: 8px; flex: 1; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .step.active .step-num { background: var(--gradient); color: white; }
+  .step.inactive .step-num { background: rgba(255,248,242,0.1); color: rgba(255,248,242,0.4); }
+  .step-label { font-size: 12px; font-weight: 600; }
+  .step.active .step-label { color: #FFF8F2; }
+  .step.inactive .step-label { color: rgba(255,248,242,0.4); }
+  .step-line { width: 24px; height: 1px; background: rgba(255,248,242,0.15); margin: 0 4px; flex-shrink: 0; }
+
+  /* ── RIGHT PANEL ── */
+  .right { background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 40px; }
+  .form-wrap { width: 100%; max-width: 400px; }
+  .form-wrap h1 { font-family: var(--font-h); font-size: 26px; font-weight: 700; color: var(--charcoal); margin-bottom: 6px; }
+  .form-wrap .form-subtitle { font-size: 14px; color: var(--gray-text); margin-bottom: 28px; line-height: 1.5; }
+
+  /* ── FORM FIELDS ── */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+  .field input {
+    width: 100%; padding: 12px 14px;
+    border: 2px solid var(--gray-border); border-radius: 10px;
+    font-family: var(--font-b); font-size: 15px; color: var(--charcoal);
+    outline: none; transition: border-color 0.15s; background: var(--warm-white);
+  }
+  .field input:focus { border-color: var(--amber); background: white; }
+  .field input.error { border-color: #EF4444; }
+  .optional-tag { font-size: 11px; color: var(--gray-text); font-weight: 400; margin-left: 4px; }
+
+  /* ── PASSWORD HINTS ── */
+  .pw-hints { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .pw-hint { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--gray-text); transition: color 0.2s; }
+  .pw-hint.ok { color: #16a34a; }
+  .pw-hint .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gray-border); transition: background 0.2s; flex-shrink: 0; }
+  .pw-hint.ok .dot { background: #16a34a; }
+
+  /* ── TERMS ── */
+  .terms-check { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; }
+  .terms-check input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--amber); cursor: pointer; margin-top: 2px; }
+  .terms-check label { font-size: 13px; color: var(--gray-text); line-height: 1.5; cursor: pointer; }
+  .terms-check label a { color: var(--amber); font-weight: 600; text-decoration: none; }
+  .terms-check label a:hover { text-decoration: underline; }
+
+  /* ── SUBMIT BUTTON ── */
+  .btn-submit {
+    width: 100%; padding: 15px; background: var(--gradient);
+    color: white; border: none; border-radius: 999px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: opacity 0.2s; font-family: var(--font-b);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-submit:hover:not(:disabled) { opacity: 0.88; }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+
+  /* ── ERROR / SUCCESS ── */
+  .error-msg { background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #991B1B; display: none; }
+  .login-link { text-align: center; margin-top: 20px; font-size: 13px; color: var(--gray-text); }
+  .login-link a { color: var(--amber); font-weight: 700; text-decoration: none; }
+  .login-link a:hover { text-decoration: underline; }
+
+  /* ── VERIFICATION STATE ── */
+  .verify-state { display: none; text-align: center; }
+  .verify-state .verify-icon { font-size: 52px; margin-bottom: 16px; }
+  .verify-state h2 { font-family: var(--font-h); font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .verify-state p { font-size: 14px; color: var(--gray-text); line-height: 1.6; margin-bottom: 8px; }
+  .verify-state .email-badge { display: inline-block; background: var(--warm-white); border: 1px solid var(--gray-border); border-radius: 8px; padding: 6px 14px; font-size: 14px; font-weight: 600; color: var(--charcoal); margin: 8px 0 20px; }
+  .btn-verify { width: 100%; padding: 14px; background: var(--gradient); color: white; border: none; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--font-b); transition: opacity 0.2s; }
+  .btn-verify:hover:not(:disabled) { opacity: 0.88; }
+  .btn-verify:disabled { opacity: 0.6; cursor: not-allowed; }
+  .resend-link { font-size: 12px; color: var(--gray-text); margin-top: 12px; }
+  .resend-link a { color: var(--amber); font-weight: 600; text-decoration: none; cursor: pointer; }
+  .resend-link a:hover { text-decoration: underline; }
+  #resendSuccessMsg { display: none; font-size: 12px; color: #15803D; margin-top: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 8px 12px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .page { grid-template-columns: 1fr; }
+    .left { display: none; }
+    .right { padding: 40px 24px; justify-content: flex-start; padding-top: 48px; }
+    .right::before {
+      content: '';
+      display: block;
+      background: url('/logo-small.png') center / 56px auto no-repeat;
+      filter: none;
+      width: 56px; height: 56px;
+      margin: 0 auto 24px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- LEFT PANEL -->
+  <div class="left">
+    <div class="left-logo">
+      <img src="/logo-small.png" alt="Umely" style="height:60px;filter:brightness(0) invert(1);">
+    </div>
+    <div class="left-content">
+      <h2>Leer werken met Claude AI, stap voor stap</h2>
+      <p>32 interactieve modules. Van jouw eerste prompt tot volledige automatisering. Praktisch, direct toepasbaar en altijd up-to-date.</p>
+      <div class="left-perks">
+        <div class="perk">
+          <div class="perk-icon">&#128218;</div>
+          <div class="perk-text">
+            <strong>32 interactieve modules</strong>
+            <span>Verdeeld over 5 leertrajecten, van basis tot expert</span>
+          </div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">&#9989;</div>
+          <div class="perk-text">
+            <strong>Kennischecks en quizzen</strong>
+            <span>Voortgang wordt automatisch opgeslagen per module</span>
+          </div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">&#127942;</div>
+          <div class="perk-text">
+            <strong>Officieel certificaat</strong>
+            <span>Ontvang je Umely-certificaat na de praktijktoets</span>
+          </div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">&#128640;</div>
+          <div class="perk-text">
+            <strong>Nieuwe modules direct beschikbaar</strong>
+            <span>Altijd toegang tot de nieuwste content</span>
+          </div>
+        </div>
+      </div>
+      <div class="left-steps">
+        <div class="steps-label">Jouw onboarding</div>
+        <div class="steps">
+          <div class="step active">
+            <div class="step-num">1</div>
+            <div class="step-label">Account</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step inactive">
+            <div class="step-num">2</div>
+            <div class="step-label">Betalen</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step inactive">
+            <div class="step-num">3</div>
+            <div class="step-label">Aan de slag</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right">
+    <div class="form-wrap">
+
+      <!-- REGISTRATIEFORMULIER -->
+      <div id="registerForm">
+        <h1>Account aanmaken</h1>
+        <p class="form-subtitle">Maak je account aan en ga daarna direct naar de betaalpagina.</p>
+
+        <div id="errorMsg" class="error-msg"></div>
+
+        <form id="regFormEl" onsubmit="submitSignup(); return false;">
+          <div class="field-row">
+            <div class="field">
+              <label for="firstName">Voornaam</label>
+              <input id="firstName" type="text" placeholder="Jan" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <label for="lastName">Achternaam</label>
+              <input id="lastName" type="text" placeholder="Jansen" autocomplete="family-name" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="organisation">Organisatie <span class="optional-tag">optioneel</span></label>
+            <input id="organisation" type="text" placeholder="Bedrijfsnaam" autocomplete="organization">
+          </div>
+
+          <div class="field">
+            <label for="regEmail">E-mailadres</label>
+            <input id="regEmail" type="email" placeholder="naam@bedrijf.nl" autocomplete="email" required>
+          </div>
+
+          <div class="field">
+            <label for="regPassword">Wachtwoord</label>
+            <input id="regPassword" type="password" placeholder="••••••••" autocomplete="new-password" required oninput="checkPwStrength()">
+            <div class="pw-hints">
+              <div class="pw-hint" id="hint-len"><div class="dot"></div>8+ tekens</div>
+              <div class="pw-hint" id="hint-upper"><div class="dot"></div>Hoofdletter</div>
+              <div class="pw-hint" id="hint-num"><div class="dot"></div>Cijfer</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="regPasswordConfirm">Wachtwoord bevestigen</label>
+            <input id="regPasswordConfirm" type="password" placeholder="••••••••" autocomplete="new-password" required>
+          </div>
+
+          <div class="terms-check">
+            <input type="checkbox" id="termsCheck" required>
+            <label for="termsCheck">Ik ga akkoord met de <a href="/voorwaarden.html" target="_blank">algemene voorwaarden</a> en het <a href="/privacy.html" target="_blank">privacybeleid</a> van Umely.</label>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            Account aanmaken
+          </button>
+        </form>
+
+        <p class="login-link">Al een account? <a href="/?redirect=/pricing.html">Inloggen</a></p>
+      </div>
+
+      <!-- VERIFICATIE STATE -->
+      <div id="verifyState" class="verify-state">
+        <div class="verify-icon">&#128231;</div>
+        <h2>Controleer je inbox</h2>
+        <p>We hebben een verificatielink gestuurd naar:</p>
+        <div class="email-badge" id="verifyEmailDisplay"></div>
+        <p style="font-size:13px;color:var(--gray-text);margin-bottom:20px;">Klik op de link in de mail om je account te activeren. Controleer ook je spam-map als je de mail niet ziet.</p>
+        <button class="btn-verify" id="verifyCheckBtn" onclick="checkVerification()">
+          Ik heb de link geklikt, ga verder
+        </button>
+        <p class="resend-link">
+          Geen mail ontvangen? <a onclick="resendVerification(event)">Stuur opnieuw</a>
+        </p>
+        <p id="resendSuccessMsg"></p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const _cookieStorage = {
+  getItem(key) {
+    const m = document.cookie.match('(^|;)\\s*' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*=\\s*([^;]+)');
+    return m ? decodeURIComponent(m.pop()) : null;
+  },
+  setItem(key, value) {
+    document.cookie = key + '=' + encodeURIComponent(value) + ';max-age=31536000;path=/;SameSite=Lax';
+  },
+  removeItem(key) {
+    document.cookie = key + '=;max-age=0;path=/;SameSite=Lax';
+  }
+};
+
+let _supabase = null;
+let _signupEmail = '';
+let _signupPassword = '';
+
+const redirectTarget = new URLSearchParams(window.location.search).get('redirect') || '/pricing.html';
+
+async function init() {
+  try {
+    const config = await fetch('/api/config').then(r => r.json());
+    _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, storage: _cookieStorage }
+    });
+    // Al ingelogd? Doorsturen
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (session) {
+      window.location.href = redirectTarget;
+    }
+  } catch (e) {
+    console.error('Init fout:', e);
+  }
+}
+
+function checkPwStrength() {
+  const pw = document.getElementById('regPassword').value;
+  toggle('hint-len', pw.length >= 8);
+  toggle('hint-upper', /[A-Z]/.test(pw));
+  toggle('hint-num', /[0-9]/.test(pw));
+}
+
+function toggle(id, ok) {
+  const el = document.getElementById(id);
+  el.classList.toggle('ok', ok);
+}
+
+async function submitSignup() {
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const organisation = document.getElementById('organisation').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const confirm = document.getElementById('regPasswordConfirm').value;
+  const terms = document.getElementById('termsCheck').checked;
+  const errEl = document.getElementById('errorMsg');
+  const btn = document.getElementById('submitBtn');
+
+  errEl.style.display = 'none';
+
+  if (!firstName || !lastName || !email || !password) {
+    return showError('Vul alle verplichte velden in.');
+  }
+  if (password !== confirm) {
+    return showError('De wachtwoorden komen niet overeen.');
+  }
+  if (password.length < 8) {
+    return showError('Wachtwoord moet minimaal 8 tekens zijn.');
+  }
+  if (!/[A-Z]/.test(password)) {
+    return showError('Wachtwoord moet minimaal 1 hoofdletter bevatten.');
+  }
+  if (!/[0-9]/.test(password)) {
+    return showError('Wachtwoord moet minimaal 1 cijfer bevatten.');
+  }
+  if (!terms) {
+    return showError('Ga akkoord met de voorwaarden om verder te gaan.');
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Account aanmaken...';
+
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, organisation, email, password })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      btn.disabled = false;
+      btn.innerHTML = 'Account aanmaken';
+      return showError(data.error || 'Er ging iets mis. Probeer het opnieuw.');
+    }
+
+    _signupEmail = email;
+    _signupPassword = password;
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('verifyEmailDisplay').textContent = email;
+    document.getElementById('verifyState').style.display = 'block';
+
+  } catch (e) {
+    btn.disabled = false;
+    btn.innerHTML = 'Account aanmaken';
+    showError('Verbindingsfout. Controleer je internetverbinding.');
+  }
+}
+
+async function checkVerification() {
+  const btn = document.getElementById('verifyCheckBtn');
+  btn.disabled = true;
+  btn.textContent = 'Controleren...';
+
+  try {
+    // Probeer in te loggen met het opgegeven wachtwoord
+    const { data, error } = await _supabase.auth.signInWithPassword({
+      email: _signupEmail,
+      password: _signupPassword
+    });
+    if (error) {
+      btn.disabled = false;
+      btn.textContent = 'Ik heb de link geklikt, ga verder';
+      // Geef duidelijke boodschap als niet geverifieerd
+      const msg = error.message.toLowerCase();
+      if (msg.includes('email') || msg.includes('confirm') || msg.includes('verif')) {
+        document.getElementById('resendSuccessMsg').style.display = 'block';
+        document.getElementById('resendSuccessMsg').style.color = '#991B1B';
+        document.getElementById('resendSuccessMsg').textContent = 'E-mailadres nog niet geverifieerd. Klik eerst op de link in de mail.';
+      }
+      return;
+    }
+    // Geverifieerd en ingelogd
+    window.location.href = redirectTarget;
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = 'Ik heb de link geklikt, ga verder';
+  }
+}
+
+async function resendVerification(e) {
+  e.preventDefault();
+  const successEl = document.getElementById('resendSuccessMsg');
+  successEl.style.color = '';
+  successEl.style.display = 'none';
+  try {
+    await _supabase.auth.resend({ type: 'signup', email: _signupEmail });
+    successEl.textContent = 'Verificatiemail opnieuw verzonden.';
+    successEl.style.display = 'block';
+  } catch (err) {
+    successEl.textContent = 'Kon mail niet opnieuw verzenden. Probeer het later opnieuw.';
+    successEl.style.display = 'block';
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+init();
+</script>
+</body>
+</html>

@@ -348,7 +348,7 @@ async function init() {
 async function startCheckout() {
   // Niet ingelogd: stuur naar login, daarna terug naar pricing
   if (!_session) {
-    window.location.href = '/?redirect=' + encodeURIComponent('/pricing.html');
+    window.location.href = '/register.html?redirect=/pricing.html';
     return;
   }
 

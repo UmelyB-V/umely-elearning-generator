@@ -854,6 +854,11 @@ async function loadModules() {
         if (profileRes.ok) {
           const { profile } = await profileRes.json();
           if (profile?.role !== 'admin') {
+            // Na Stripe checkout even wachten op webhook
+            if (new URLSearchParams(window.location.search).get('subscribed') === '1') {
+              await waitForSubscription();
+              return;
+            }
             window.location.href = '/pricing.html';
             return;
           }
@@ -1253,6 +1258,37 @@ async function subscribeNewsletter() {
   localStorage.setItem('umely_nl_shown', '1');
   document.getElementById('nlSuccess').style.display = 'block';
   setTimeout(() => closeNewsletter(), 2000);
+}
+
+async function waitForSubscription() {
+  document.body.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#FFF8F2;font-family:'Montserrat',sans-serif;text-align:center;padding:32px;">
+      <img src="/logo-small.png" alt="Umely" style="height:64px;margin-bottom:28px;">
+      <div style="width:40px;height:40px;border:4px solid #E8D9CC;border-top-color:#FF8514;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:24px;"></div>
+      <h2 style="font-family:'Arimo',sans-serif;font-size:22px;font-weight:700;color:#27292D;margin-bottom:8px;">Betaling verwerkt</h2>
+      <p id="waitMsg" style="font-size:14px;color:#5A5550;max-width:320px;line-height:1.6;">Je account wordt klaargezet. Dit duurt maar even...</p>
+      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+    </div>`;
+  const maxAttempts = 12;
+  for (let i = 0; i < maxAttempts; i++) {
+    await new Promise(r => setTimeout(r, 2500));
+    try {
+      const token = _session?.access_token;
+      if (!token) break;
+      const res = await fetch('/api/user/subscription', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (res.ok) {
+        const sub = await res.json();
+        if (sub.subscription_status === 'active') {
+          window.location.replace('/modules.html');
+          return;
+        }
+      }
+    } catch (e) {}
+  }
+  document.getElementById('waitMsg').innerHTML =
+    'Het duurt iets langer dan verwacht. <br><a href="/modules.html" style="color:#FF8514;font-weight:700;">Ververs de pagina</a> of <a href="mailto:info@umely.ai" style="color:#FF8514;font-weight:700;">neem contact op</a>.';
 }
 
 initAuth();

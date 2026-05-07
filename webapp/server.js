@@ -743,7 +743,7 @@ app.post('/api/auth/signup', rateLimit({
   message: { error: 'Te veel registratiepogingen. Probeer het over een uur opnieuw.' }
 }), async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, organisation } = req.body;
 
     // Validate input
     if (!firstName || !lastName || !email || !password) {
@@ -765,7 +765,7 @@ app.post('/api/auth/signup', rateLimit({
       email: email,
       password: password,
       options: {
-        data: { firstName, lastName },
+        data: { firstName, lastName, organisation: organisation || '' },
         emailRedirectTo: siteUrl + '/auth-callback.html'
       }
     });
