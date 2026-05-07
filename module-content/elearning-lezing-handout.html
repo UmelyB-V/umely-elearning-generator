@@ -1,6 +1,6 @@
 <!-- TITLE: AI-tools in de praktijk: Digitale Handout -->
-<!-- SCHERMEN: 'screen-welcome','screen-prompt','screen-typeless','screen-chatgptimage','screen-perplexity','screen-notebooklm','screen-claude','screen-quiz','screen-result' -->
-<!-- MODULE_TITELS: 'screen-welcome':'','screen-prompt':'Prompt Engineering','screen-typeless':'Typeless','screen-chatgptimage':'ChatGPT Image 2.0','screen-perplexity':'Perplexity en Comet','screen-notebooklm':'NotebookLM','screen-claude':'Claude','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
+<!-- SCHERMEN: 'screen-welcome','screen-prompt','screen-typeless','screen-chatgptimage','screen-perplexity','screen-notebooklm','screen-claude','screen-skills-cowork','screen-eindredacteur','screen-quiz','screen-result' -->
+<!-- MODULE_TITELS: 'screen-welcome':'','screen-prompt':'Prompt Engineering','screen-typeless':'Typeless','screen-chatgptimage':'ChatGPT Image 2.0','screen-perplexity':'Perplexity en Comet','screen-notebooklm':'NotebookLM','screen-claude':'Claude','screen-skills-cowork':'Skills, Cowork en Connectors','screen-eindredacteur':'Van producent naar eindredacteur','screen-quiz':'Afsluitquiz','screen-result':'Resultaat' -->
 
 <!-- QUIZ_START -->
 [
@@ -847,4 +847,166 @@
   </div>
 
   <div id="nav-screen-claude"></div>
+</div>
+
+<div id="screen-skills-cowork" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 7</div>
+    <h2>Claude trainen en verbinden</h2>
+  </div>
+
+  <div class="content-card">
+    <p>Claude is uit de doos al sterk. Maar pas als je hem inricht op jouw werkwijze en koppelt aan jouw systemen, wordt hij echt productief. Dat doe je via drie functies: Skills, Cowork en Connectors.</p>
+  </div>
+
+  <div class="content-card" style="margin-top:1rem;">
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Claude Skills: één keer instellen, altijd jouw stijl</h3>
+    <p style="margin-bottom:0.75rem;">Een Claude Skill is een instructiepakket dat je eenmalig schrijft en daarna altijd hergebruikt. Je beschrijft wie je bent, hoe je schrijft, welk format je wil en wat je nooit wil zien. Claude laadt die context automatisch voor elk nieuw gesprek.</p>
+    <div style="display:grid;gap:0.6rem;margin-top:0.75rem;">
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="color:#FF8514;font-size:1.1rem;flex-shrink:0;">&#128221;</span>
+        <div>
+          <strong>Schrijfstijl vastleggen</strong>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">Beschrijf hoe jij schrijft: direct, geen bullshit, altijd actief. Claude schrijft voortaan in jouw stem, zonder dat je het elke keer moet uitleggen.</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="color:#FF8514;font-size:1.1rem;flex-shrink:0;">&#127970;</span>
+        <div>
+          <strong>Werkcontext meegeven</strong>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">Vertel Claude jouw rol, je branche, je doelgroep en je vaste formats (bijv. offertestructuur). Claude gebruikt die context automatisch bij elke taak.</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="color:#FF8514;font-size:1.1rem;flex-shrink:0;">&#128683;</span>
+        <div>
+          <strong>Verboden zones instellen</strong>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">Dingen die je nooit wil: lange inleidingen, woorden die jij niet gebruikt, bullet points in formele teksten. Schrijf het één keer op in je Skill en Claude houdt er rekening mee.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-card" style="margin-top:1rem;">
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Cowork: taken delegeren aan Claude</h3>
+    <p style="margin-bottom:0.75rem;">Cowork is een functie in de Claude desktop-app waarmee Claude zelfstandig taken uitvoert op jouw computer. Je geeft een opdracht, Claude doet het werk: bestanden doorzoeken, tekst verwerken, gegevens samenvoegen.</p>
+    <div style="background:#27292D;border-radius:10px;padding:1rem;margin-top:0.5rem;">
+      <p style="color:#FF8514;font-weight:700;font-size:0.88rem;margin-bottom:0.5rem;font-family:'Arimo',sans-serif;">Voorbeeld</p>
+      <p style="color:#FFF8F2;font-size:0.9rem;line-height:1.6;">"Zoek alle e-mails van klant X uit de afgelopen maand, maak een overzicht van de openstaande actiepunten en sla dat op als een tekstbestand op mijn bureaublad."</p>
+      <p style="color:rgba(255,248,242,0.6);font-size:0.83rem;margin-top:0.5rem;">Claude voert dit stap voor stap uit, vraagt bevestiging bij twijfel en rapporteert wat hij heeft gedaan.</p>
+    </div>
+  </div>
+
+  <div class="content-card" style="margin-top:1rem;">
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Connectors: Claude koppelen aan jouw software</h3>
+    <p style="margin-bottom:0.75rem;">Met Claude Connectors koppel je Claude direct aan externe systemen: je agenda, je inbox, je CRM of andere apps. Claude heeft dan toegang tot echte, actuele informatie in plaats van wat jij typt.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.5rem;">
+      <div style="background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <p style="font-weight:700;font-size:0.88rem;margin-bottom:0.3rem;">Google Agenda</p>
+        <p style="font-size:0.83rem;color:rgba(42,34,26,0.7);">Claude ziet je afspraken en kan je week samenvatten, overlappingen signaleren of een planning voorstellen.</p>
+      </div>
+      <div style="background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <p style="font-weight:700;font-size:0.88rem;margin-bottom:0.3rem;">Gmail</p>
+        <p style="font-size:0.83rem;color:rgba(42,34,26,0.7);">Claude leest je inbox, markeert wat urgent is en stelt conceptreacties op zonder dat je alles hoeft te kopiëren.</p>
+      </div>
+      <div style="background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <p style="font-weight:700;font-size:0.88rem;margin-bottom:0.3rem;">Notion / ClickUp</p>
+        <p style="font-size:0.83rem;color:rgba(42,34,26,0.7);">Claude zoekt in je notities, maakt nieuwe pagina's aan of werkt takenlijsten bij vanuit een gesprek.</p>
+      </div>
+      <div style="background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <p style="font-weight:700;font-size:0.88rem;margin-bottom:0.3rem;">Microsoft 365</p>
+        <p style="font-size:0.83rem;color:rgba(42,34,26,0.7);">Claude werkt direct in Word, Excel en Outlook, zonder dat je van venster hoeft te wisselen.</p>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:1rem;">
+      <strong>Skills, Cowork en Connectors</strong> staan los van elkaar. Je kunt één gebruiken zonder de andere. Begin met een Skill als je wil dat Claude altijd in jouw stijl schrijft.
+    </div>
+  </div>
+
+  <div id="nav-screen-skills-cowork"></div>
+</div>
+
+<div id="screen-eindredacteur" class="screen">
+  <div class="module-header">
+    <div class="module-num">Onderdeel 8</div>
+    <h2>Van producent naar eindredacteur</h2>
+  </div>
+
+  <div class="content-card">
+    <p>AI neemt de productie over: schrijven, samenvatten, structureren, ontwerpen. Jouw rol verschuift daardoor. Je bent niet langer de persoon die iets maakt vanuit een leeg scherm. Je bent degene die de richting bepaalt, de kwaliteit beoordeelt en de eindverantwoordelijkheid draagt.</p>
+    <p style="margin-top:0.75rem;">Dat klinkt als minder werk. Maar het vraagt andere vaardigheden. Slechte eindredacteuren leveren slechte AI-output op, ook als het model uitstekend is.</p>
+  </div>
+
+  <div class="content-card" style="margin-top:1rem;">
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Wat verandert er?</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+      <div style="background:rgba(42,34,26,0.05);border-radius:10px;padding:1rem;">
+        <p style="font-weight:700;font-size:0.88rem;color:rgba(42,34,26,0.5);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.6rem;">Vroeger: producent</p>
+        <ul style="padding-left:1.1rem;font-size:0.86rem;line-height:2;color:#2A221A;">
+          <li>Schrijft de tekst zelf</li>
+          <li>Bedenkt de structuur</li>
+          <li>Zoekt de informatie op</li>
+          <li>Maakt het visueel</li>
+          <li>Tijdsinvestering: hoog</li>
+        </ul>
+      </div>
+      <div style="background:#27292D;border-radius:10px;padding:1rem;">
+        <p style="font-weight:700;font-size:0.88rem;color:#FF8514;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.6rem;">Nu: eindredacteur</p>
+        <ul style="padding-left:1.1rem;font-size:0.86rem;line-height:2;color:#FFF8F2;opacity:0.9;">
+          <li>Geeft de juiste opdracht</li>
+          <li>Beoordeelt het resultaat</li>
+          <li>Geeft gerichte feedback</li>
+          <li>Kiest, snijdt en combineert</li>
+          <li>Tijdsinvestering: laag</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-card" style="margin-top:1rem;">
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">De vaardigheden die je nu nodig hebt</h3>
+    <div style="display:grid;gap:0.6rem;">
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">01</span>
+        <div>
+          <strong>Kaders stellen</strong>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">Jij bepaalt het doel, de doelgroep, de toon, het format en de lengte. Hoe scherper jouw kader, hoe bruikbaarder het resultaat. Een goede brief is meer waard dan een vage prompt.</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">02</span>
+        <div>
+          <strong>Kwaliteitsoordeel</strong>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">Je moet weten wat goed is, ongeacht hoe het gemaakt is. Klopt de redenering? Past de toon? Is dit juridisch houdbaar? Vakinhoudelijke kennis blijft onvervangbaar.</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">03</span>
+        <div>
+          <strong>Gerichte feedback geven</strong>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">"Dit klopt niet" helpt AI niet. "De tweede alinea is te formeel voor onze doelgroep en mist een concrete vervolgstap" wel. Specifieke feedback levert betere herstelversies op.</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">04</span>
+        <div>
+          <strong>Selecteren en combineren</strong>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">Vraag drie versies op en kies de beste onderdelen uit elk. De inleiding van versie 1, de toon van versie 2, de conclusie van versie 3. Zo bouw je betere resultaten dan je met één poging bereikt.</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">05</span>
+        <div>
+          <strong>Systemen bouwen</strong>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">Elke taak die je meer dan twee keer doet, is een systeem waard. Een Skill voor jouw schrijfstijl. Een vaste prompt voor offertes. Een Project met klantcontext. Je investeert één keer en haalt er daarna tijdwinst uit.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box waarschuwing" style="margin-top:1rem;">
+    <strong>De valkuil:</strong> AI-output overnemen zonder te lezen. Jij blijft eindverantwoordelijk voor wat je verstuurt, publiceert of indient. Controleer altijd, ook als het er goed uitziet.
+  </div>
+
+  <div id="nav-screen-eindredacteur"></div>
 </div>
