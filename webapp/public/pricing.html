@@ -2,103 +2,113 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="icon" type="image/png" href="/logo-small.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/logo-small.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abonnement | Umely</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Umely E-learning | Leer werken met Claude AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --amber: #FF8514; --flame: #FF4D00;
     --charcoal: #27292D; --warm-white: #FFF8F2; --white: #FFFFFF;
-    --gray-text: #5A5A5A; --gray-border: #E8D9CC; --gray-light: #F5F0EA;
+    --gray-text: #5A5550; --gray-border: #E8D9CC; --gray-light: #F5F0EA;
     --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
+    --font-h: 'Arimo', sans-serif;
+    --font-b: 'Montserrat', sans-serif;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Inter', system-ui, sans-serif; background: var(--warm-white); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
+  body { font-family: var(--font-b); background: var(--warm-white); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
 
   /* ── HEADER ── */
   header { background: var(--charcoal); height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .logo { display: flex; align-items: center; gap: 8px; color: white; text-decoration: none; font-size: 18px; font-weight: 800; }
+  .logo { display: flex; align-items: center; gap: 8px; color: white; text-decoration: none; }
   .header-actions { display: flex; gap: 10px; align-items: center; }
-  .btn-sm { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; transition: all 0.15s; }
+  .btn-sm { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; transition: all 0.15s; font-family: var(--font-b); }
   .btn-ghost { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); border: 1.5px solid rgba(255,255,255,0.3); }
   .btn-ghost:hover { background: rgba(255,255,255,0.22); color: white; }
-  .btn-logout { background: none; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.3); padding: 7px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; display: none; transition: all 0.15s; }
+  .btn-logout { background: none; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.3); padding: 7px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; display: none; transition: all 0.15s; font-family: var(--font-b); }
   .btn-logout:hover { background: rgba(255,255,255,0.1); color: white; }
 
   /* ── MAIN ── */
-  main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 20px 80px; }
+  main { flex: 1; }
 
-  .pricing-intro { text-align: center; max-width: 520px; margin-bottom: 40px; }
-  .pricing-intro h1 { font-size: 32px; font-weight: 800; color: var(--charcoal); line-height: 1.2; margin-bottom: 12px; }
-  .pricing-intro p { font-size: 16px; color: var(--gray-text); line-height: 1.6; }
+  /* ── HERO ── */
+  .hero { background: var(--charcoal); padding: 72px 24px 80px; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(255,133,20,0.18); color: var(--amber); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 16px; border-radius: 50px; margin-bottom: 20px; border: 1px solid rgba(255,133,20,0.3); }
+  .hero h1 { font-family: var(--font-h); font-size: clamp(28px, 5vw, 48px); font-weight: 700; color: #FFF8F2; line-height: 1.15; margin-bottom: 16px; max-width: 680px; margin-left: auto; margin-right: auto; }
+  .hero p { font-size: clamp(15px, 2vw, 17px); color: rgba(255,248,242,0.72); line-height: 1.7; max-width: 520px; margin: 0 auto 36px; font-weight: 400; }
+  .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-family: var(--font-h); font-size: 32px; font-weight: 700; color: var(--amber); line-height: 1; }
+  .hero-stat .lbl { font-size: 12px; color: rgba(255,248,242,0.55); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ── SECTION GENERIC ── */
+  .section { padding: 64px 24px; max-width: 900px; margin: 0 auto; }
+  .section-label { font-size: 12px; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .section h2 { font-family: var(--font-h); font-size: clamp(22px, 3.5vw, 32px); font-weight: 700; color: var(--charcoal); margin-bottom: 8px; }
+  .section .sub { font-size: 15px; color: var(--gray-text); line-height: 1.65; margin-bottom: 36px; max-width: 560px; }
+
+  /* ── TRACKS ── */
+  .tracks { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .track-card { background: white; border-radius: 14px; padding: 20px; border: 1px solid var(--gray-border); }
+  .track-letter { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--gradient); border-radius: 10px; font-family: var(--font-h); font-size: 16px; font-weight: 700; color: white; margin-bottom: 12px; }
+  .track-card h3 { font-family: var(--font-h); font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .track-card p { font-size: 13px; color: var(--gray-text); line-height: 1.55; }
+  .track-count { font-size: 11px; font-weight: 700; color: var(--amber); margin-top: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ── BENEFITS ── */
+  .benefits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .benefit { display: flex; align-items: flex-start; gap: 14px; }
+  .benefit-icon { width: 40px; height: 40px; background: rgba(255,133,20,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+  .benefit h4 { font-family: var(--font-h); font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .benefit p { font-size: 13px; color: var(--gray-text); line-height: 1.5; }
+
+  /* ── PRICING SECTION ── */
+  .pricing-wrap { background: var(--gray-light); padding: 64px 24px; }
+  .pricing-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 48px; align-items: start; }
+  .pricing-left h2 { font-family: var(--font-h); font-size: clamp(22px, 3vw, 30px); font-weight: 700; margin-bottom: 12px; }
+  .pricing-left p { font-size: 15px; color: var(--gray-text); line-height: 1.65; margin-bottom: 24px; }
+  .guarantee { display: flex; align-items: flex-start; gap: 12px; background: white; border-radius: 12px; padding: 16px; border: 1px solid var(--gray-border); }
+  .guarantee-icon { font-size: 22px; flex-shrink: 0; }
+  .guarantee h4 { font-family: var(--font-h); font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .guarantee p { font-size: 13px; color: var(--gray-text); line-height: 1.5; }
 
   /* ── PRICING CARD ── */
-  .pricing-card {
-    background: var(--white);
-    border-radius: 24px;
-    box-shadow: 0 8px 40px rgba(39,41,45,0.12);
-    max-width: 440px;
-    width: 100%;
-    overflow: hidden;
-  }
-  .card-header {
-    background: var(--charcoal);
-    padding: 32px 36px;
-    text-align: center;
-  }
-  .card-header .plan-name { font-size: 13px; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .pricing-card { background: var(--white); border-radius: 24px; box-shadow: 0 8px 40px rgba(39,41,45,0.12); overflow: hidden; }
+  .card-header { background: var(--charcoal); padding: 28px 32px; text-align: center; }
+  .card-header .plan-name { font-size: 12px; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-family: var(--font-b); }
   .card-header .price-row { display: flex; align-items: flex-start; justify-content: center; gap: 4px; }
-  .card-header .currency { font-size: 22px; font-weight: 700; color: white; margin-top: 8px; }
-  .card-header .amount { font-size: 60px; font-weight: 800; color: white; line-height: 1; letter-spacing: -2px; }
-  .card-header .period { font-size: 16px; color: rgba(255,255,255,0.55); font-weight: 500; align-self: flex-end; padding-bottom: 6px; }
-
-  .card-body { padding: 32px 36px; }
-  .feature-list { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 12px; }
-  .feature-list li { display: flex; align-items: center; gap: 12px; font-size: 14.5px; color: var(--charcoal); font-weight: 500; }
-  .feature-list li .check { width: 22px; height: 22px; background: linear-gradient(135deg, #FF8514, #FF4D00); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .feature-list li .check svg { width: 11px; height: 11px; stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-
-  .btn-subscribe {
-    width: 100%;
-    padding: 16px;
-    background: var(--gradient);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
+  .card-header .currency { font-size: 20px; font-weight: 700; color: white; margin-top: 8px; font-family: var(--font-h); }
+  .card-header .amount { font-size: 56px; font-weight: 700; color: white; line-height: 1; letter-spacing: -2px; font-family: var(--font-h); }
+  .card-header .period { font-size: 15px; color: rgba(255,255,255,0.5); font-weight: 500; align-self: flex-end; padding-bottom: 5px; }
+  .card-body { padding: 28px 32px; }
+  .feature-list { list-style: none; margin-bottom: 24px; display: flex; flex-direction: column; gap: 11px; }
+  .feature-list li { display: flex; align-items: center; gap: 11px; font-size: 14px; color: var(--charcoal); font-weight: 500; }
+  .feature-list li .check { width: 20px; height: 20px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .feature-list li .check svg { width: 10px; height: 10px; stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .btn-subscribe { width: 100%; padding: 15px; background: var(--gradient); color: white; border: none; border-radius: 999px; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-b); }
   .btn-subscribe:hover:not(:disabled) { opacity: 0.88; }
   .btn-subscribe:disabled { opacity: 0.6; cursor: not-allowed; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .btn-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
-
-  .card-footer { padding: 0 36px 28px; text-align: center; }
-  .card-footer p { font-size: 12.5px; color: #AAA; line-height: 1.5; }
-
-  /* ── ERROR ── */
-  #errorMsg { display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 10px; padding: 12px 16px; margin-top: 16px; font-size: 13px; color: #991B1B; text-align: center; max-width: 440px; width: 100%; }
+  .card-footer { padding: 0 32px 24px; text-align: center; }
+  .card-footer p { font-size: 12px; color: #AAA; line-height: 1.5; }
+  #errorMsg { display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 10px; padding: 12px 16px; margin-top: 14px; font-size: 13px; color: #991B1B; text-align: center; }
 
   /* ── FOOTER ── */
   footer { padding: 28px 32px; text-align: center; background: var(--charcoal); }
   footer p { font-size: 13px; color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
   footer a { color: white; font-weight: 700; text-decoration: none; }
 
-  @media (max-width: 480px) {
-    .pricing-intro h1 { font-size: 24px; }
-    .pricing-card { border-radius: 16px; }
-    .card-header { padding: 24px 20px; }
-    .card-header .amount { font-size: 48px; }
-    .card-body { padding: 24px 20px; }
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .pricing-inner { grid-template-columns: 1fr; }
+    .pricing-left { text-align: center; }
+    .guarantee { text-align: left; }
+    .hero-stats { gap: 20px; }
+    .card-header { padding: 22px 20px; }
+    .card-body { padding: 22px 20px; }
     .card-footer { padding: 0 20px 20px; }
     header { padding: 0 16px; }
     .btn-sm span { display: none; }
@@ -109,63 +119,171 @@
 
 <header>
   <a class="logo" href="/">
-    <img src="/logo-small.png" alt="Umely" style="height:76px;filter:brightness(0) invert(1);">
+    <img src="/logo-small.png" alt="Umely" style="height:60px;filter:brightness(0) invert(1);">
   </a>
   <div class="header-actions">
-    <a class="btn-sm btn-ghost" href="/modules.html" id="navLibrary" style="display:none;">Bibliotheek</a>
-    <a class="btn-sm btn-ghost" href="/account.html" id="navAccount" style="display:none;">Mijn account</a>
+    <a class="btn-sm btn-ghost" href="/modules.html" id="navLibrary" style="display:none;"><span>Bibliotheek</span></a>
+    <a class="btn-sm btn-ghost" href="/account.html" id="navAccount" style="display:none;"><span>Mijn account</span></a>
     <button class="btn-logout" id="logoutBtn" onclick="logout()">Uitloggen</button>
   </div>
 </header>
 
-<main>
-  <div class="pricing-intro">
-    <h1>Toegang tot alle Umely e-learning modules</h1>
-    <p>Leer werken met Claude AI via praktische, interactieve modules. Altijd actueel, direct toepasbaar.</p>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Umely E-learning</div>
+  <h1>Van eerste prompt tot volledige AI-workflow</h1>
+  <p>Praktische, interactieve modules over Claude AI. Je leert stap voor stap: werken met Claude, tools koppelen, processen automatiseren en systemen bouwen die voor je werken.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">32</div><div class="lbl">modules</div></div>
+    <div class="hero-stat"><div class="num">5</div><div class="lbl">leertrajecten</div></div>
+    <div class="hero-stat"><div class="num">1</div><div class="lbl">certificaat</div></div>
   </div>
+</div>
 
-  <div class="pricing-card">
-    <div class="card-header">
-      <div class="plan-name">Umely E-learning</div>
-      <div class="price-row">
-        <span class="currency">&euro;</span>
-        <span class="amount">95</span>
-        <span class="period">/maand</span>
+<!-- LEERTRAJECTEN -->
+<div class="section">
+  <div class="section-label">Wat je leert</div>
+  <h2>Vijf leertrajecten, van basis tot expert</h2>
+  <p class="sub">Elk traject bouwt voort op het vorige. Je kunt je eigen tempo kiezen en je voortgang wordt bijgehouden.</p>
+  <div class="tracks">
+    <div class="track-card">
+      <div class="track-letter">A</div>
+      <h3>Claude begrijpen</h3>
+      <p>Wat is Claude, hoe werkt het ecosysteem en hoe schrijf je prompts die resultaat geven.</p>
+      <div class="track-count">4 modules</div>
+    </div>
+    <div class="track-card">
+      <div class="track-letter">B</div>
+      <h3>Veilig en verantwoord gebruiken</h3>
+      <p>Privacy, AVG, wat Claude niet kan en hoe je omgaat met fouten en beperkingen.</p>
+      <div class="track-count">4 modules</div>
+    </div>
+    <div class="track-card">
+      <div class="track-letter">C</div>
+      <h3>Claude-tools in de praktijk</h3>
+      <p>Web-app, desktop, Chrome, Cowork, Excel, PowerPoint, instellingen en organisatiebeheer.</p>
+      <div class="track-count">8 modules</div>
+    </div>
+    <div class="track-card">
+      <div class="track-letter">D</div>
+      <h3>Claude Code</h3>
+      <p>Werken met Claude Code, projectgeheugen opzetten via CLAUDE.md en Plan Mode gebruiken.</p>
+      <div class="track-count">5 modules</div>
+    </div>
+    <div class="track-card">
+      <div class="track-letter">E</div>
+      <h3>Automatisering en MCP</h3>
+      <p>MCP, Connectors, Skills bouwen, agentic workflows ontwerpen en je eerste portfolio-project.</p>
+      <div class="track-count">8 modules</div>
+    </div>
+    <div class="track-card" style="background:#27292D;border-color:#27292D;">
+      <div class="track-letter" style="background:rgba(255,133,20,0.2);color:var(--amber);">I</div>
+      <h3 style="color:#FFF8F2;">Afsluiting</h3>
+      <p style="color:rgba(255,248,242,0.65);">Eindopdracht, praktijktoets en het Umely-certificaat bij succesvolle afsluiting.</p>
+      <div class="track-count">3 modules</div>
+    </div>
+  </div>
+</div>
+
+<!-- WAT JE KRIJGT -->
+<div style="background:white;padding:1px 0;">
+  <div class="section">
+    <div class="section-label">Inbegrepen</div>
+    <h2>Alles wat je nodig hebt</h2>
+    <p class="sub">Geen losse video's, maar volledige interactieve modules met oefeningen, kennischecks en praktijkopdrachten.</p>
+    <div class="benefits-grid">
+      <div class="benefit">
+        <div class="benefit-icon">&#128218;</div>
+        <div>
+          <h4>32 interactieve modules</h4>
+          <p>Elke module heeft uitleg, oefeningen, een kennischeck en een afsluitquiz.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">&#9989;</div>
+        <div>
+          <h4>Kennischecks en quizzen</h4>
+          <p>Je toetst jezelf na elk onderdeel en na elke module. Voortgang wordt automatisch opgeslagen.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">&#128203;</div>
+        <div>
+          <h4>Praktijkopdrachten</h4>
+          <p>Elk traject sluit af met een leeropdracht die je die dag nog kunt toepassen.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">&#127942;</div>
+        <div>
+          <h4>Officieel certificaat</h4>
+          <p>Sluit de praktijktoets af en ontvang je persoonlijke Umely-certificaat.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">&#128640;</div>
+        <div>
+          <h4>Nieuwe modules direct beschikbaar</h4>
+          <p>Zodra er nieuwe modules zijn, staan ze automatisch in jouw bibliotheek.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">&#128241;</div>
+        <div>
+          <h4>Op elk apparaat</h4>
+          <p>Modules werken op desktop, tablet en telefoon. Geen app nodig, gewoon via de browser.</p>
+        </div>
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="card-body">
-      <ul class="feature-list">
-        <li>
-          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
-          Toegang tot alle beschikbare modules
-        </li>
-        <li>
-          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
-          Certificaten bij het behalen van modules
-        </li>
-        <li>
-          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
-          Nieuwe modules zodra ze beschikbaar zijn
-        </li>
-        <li>
-          <span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
-          Voortgangsbeheer en quizresultaten
-        </li>
-      </ul>
-
-      <button class="btn-subscribe" id="subscribeBtn" onclick="startCheckout()">
-        Nu abonneren
-      </button>
+<!-- PRICING -->
+<div class="pricing-wrap">
+  <div class="pricing-inner">
+    <div class="pricing-left">
+      <div class="section-label">Toegang</div>
+      <h2>Eén abonnement, volledige toegang</h2>
+      <p>Maandelijks gefactureerd. Geen verborgen kosten, geen losse modules. Je hebt direct toegang tot alle beschikbare content na betaling.</p>
+      <div class="guarantee">
+        <div class="guarantee-icon">&#128274;</div>
+        <div>
+          <h4>Veilige betaling via Stripe</h4>
+          <p>Minimale termijn 3 maanden, daarna maandelijks opzegbaar via je account.</p>
+        </div>
+      </div>
     </div>
-
-    <div class="card-footer">
-      <p>Maandelijks gefactureerd. Minimale termijn 3 maanden, daarna maandelijks opzegbaar. Veilige betaling via Stripe.</p>
+    <div>
+      <div class="pricing-card">
+        <div class="card-header">
+          <div class="plan-name">Umely E-learning</div>
+          <div class="price-row">
+            <span class="currency">&euro;</span>
+            <span class="amount">95</span>
+            <span class="period">/maand</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="feature-list">
+            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Toegang tot alle 32 modules</li>
+            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Kennischecks en afsluitquizzen</li>
+            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Praktijkopdrachten per traject</li>
+            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Certificaat bij afsluiting</li>
+            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Nieuwe modules zodra beschikbaar</li>
+            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Voortgang opgeslagen per module</li>
+          </ul>
+          <button class="btn-subscribe" id="subscribeBtn" onclick="startCheckout()">
+            Nu starten &#8594;
+          </button>
+          <div id="errorMsg"></div>
+        </div>
+        <div class="card-footer">
+          <p>Na betaling direct toegang. Minimaal 3 maanden, daarna maandelijks opzegbaar.</p>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div id="errorMsg"></div>
-</main>
+</div>
 
 <footer>
   <p>
@@ -204,18 +322,14 @@ async function init() {
     });
 
     const { data: { session } } = await _supabase.auth.getSession();
-    if (!session) {
-      window.location.href = '/?redirect=' + encodeURIComponent('/pricing.html');
-      return;
-    }
-    _session = session;
+    if (!session) return; // niet ingelogd: toon de pagina normaal
 
-    // Toon navigatie
+    _session = session;
     document.getElementById('navLibrary').style.display = 'inline-flex';
     document.getElementById('navAccount').style.display = 'inline-flex';
     document.getElementById('logoutBtn').style.display = 'block';
 
-    // Als al actief abonnement: doorsturen naar modules
+    // Al actief abonnement: doorsturen naar modules
     const subRes = await fetch('/api/user/subscription', {
       headers: { 'Authorization': 'Bearer ' + session.access_token }
     });
@@ -232,6 +346,7 @@ async function init() {
 }
 
 async function startCheckout() {
+  // Niet ingelogd: stuur naar login, daarna terug naar pricing
   if (!_session) {
     window.location.href = '/?redirect=' + encodeURIComponent('/pricing.html');
     return;
@@ -241,7 +356,7 @@ async function startCheckout() {
   const errEl = document.getElementById('errorMsg');
   errEl.style.display = 'none';
   btn.disabled = true;
-  btn.innerHTML = '<span class="btn-spinner"></span>Doorsturen...';
+  btn.innerHTML = '<span class="btn-spinner"></span>Doorsturen naar betaling...';
 
   try {
     const res = await fetch('/api/stripe/create-checkout', {
@@ -263,7 +378,7 @@ async function startCheckout() {
     errEl.textContent = e.message || 'Er ging iets mis. Probeer het opnieuw.';
     errEl.style.display = 'block';
     btn.disabled = false;
-    btn.innerHTML = 'Nu abonneren';
+    btn.innerHTML = 'Nu starten &#8594;';
   }
 }
 
