@@ -337,6 +337,7 @@ let _supabase = null;
 let _session = null;
 let _signupEmail = '';
 let _signupPassword = '';
+let _leftState = '';
 
 async function init() {
   try {
@@ -348,7 +349,7 @@ async function init() {
     const { data: { session } } = await _supabase.auth.getSession();
 
     if (!session) {
-      renderLeft('unauth');
+      renderLeft('landing');
       return;
     }
 
@@ -371,13 +372,24 @@ async function init() {
     renderLeft('auth-no-sub');
   } catch (e) {
     console.error('Init fout:', e);
-    renderLeft('unauth');
+    renderLeft('landing');
   }
 }
 
 function renderLeft(state) {
+  _leftState = state;
   const panel = document.getElementById('left-panel');
-  if (state === 'unauth') {
+  if (state === 'landing') {
+    panel.innerHTML = `
+      <p class="reg-title">Begin vandaag</p>
+      <p class="reg-sub">Leer werken met Claude AI via 32 praktijkgerichte modules. Op je eigen tempo, direct toepasbaar in je werk.</p>
+      <ul style="list-style:none;padding:0;margin:20px 0 0;display:flex;flex-direction:column;gap:10px;">
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--charcoal);font-weight:500;"><span style="width:20px;height:20px;border-radius:50%;background:var(--gradient);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 12 12" width="10" height="10"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none"/></svg></span>Klik op "Nu starten" om je account aan te maken</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--charcoal);font-weight:500;"><span style="width:20px;height:20px;border-radius:50%;background:var(--gradient);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 12 12" width="10" height="10"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none"/></svg></span>Verifieer je e-mailadres</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--charcoal);font-weight:500;"><span style="width:20px;height:20px;border-radius:50%;background:var(--gradient);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 12 12" width="10" height="10"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none"/></svg></span>Betaal en start direct</li>
+      </ul>
+      <p class="login-hint" style="margin-top:28px;">Al een account? <a href="/?redirect=/pricing.html">Inloggen</a></p>`;
+  } else if (state === 'form') {
     panel.innerHTML = `
       <p class="reg-title">Account aanmaken</p>
       <p class="reg-sub">Maak je account aan en ga daarna direct naar de betaalpagina.</p>
@@ -495,8 +507,11 @@ async function resendVerify(e) {
 
 async function startCheckout() {
   if (!_session) {
-    renderLeft('unauth');
+    if (_leftState !== 'form' && _leftState !== 'verifying') {
+      renderLeft('form');
+    }
     document.getElementById('left-panel').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => { document.getElementById('reg-first')?.focus(); }, 300);
     return;
   }
 
