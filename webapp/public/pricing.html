@@ -480,7 +480,12 @@ async function submitSignup(e) {
     if (!res.ok) {
       btn.disabled = false;
       btn.innerHTML = 'Account aanmaken &#8594;';
-      errEl.textContent = data.error || 'Er ging iets mis.';
+      const msg = data.error || 'Er ging iets mis.';
+      if (msg.includes('inlogknop')) {
+        errEl.innerHTML = msg.replace('Gebruik de inlogknop.', 'Gebruik de <a href="/?redirect=/pricing.html" style="color:var(--flame);font-weight:700;">inlogknop</a>.');
+      } else {
+        errEl.textContent = msg;
+      }
       errEl.style.display = 'block';
       return;
     }

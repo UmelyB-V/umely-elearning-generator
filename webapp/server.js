@@ -793,9 +793,23 @@ app.post('/api/auth/signup', rateLimit({
     if (error) {
       console.error('Signup error:', error);
       if (error.message.toLowerCase().includes('already registered') || error.message.toLowerCase().includes('already been registered')) {
-        return res.status(400).json({ error: 'Dit e-mailadres is al geregistreerd.' });
+        return res.status(400).json({ error: 'Dit e-mailadres is al geregistreerd. Gebruik de inlogknop.' });
       }
       return res.status(400).json({ error: error.message });
+    }
+
+    // Supabase geeft 200 terug bij repeated signup maar leegt identities — detecteer dit
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      return res.status(400).json({ error: 'Dit e-mailadres is al geregistreerd. Gebruik de inlogknop.' });
+    }
+
+    // Stuur verificatiemail opnieuw als nog niet bevestigd (vangt edge cases op)
+    if (data.user && !data.user.email_confirmed_at) {
+      try {
+        await supabaseAuth.auth.resend({ type: 'signup', email });
+      } catch (resendErr) {
+        console.error('Resend verificatiemail mislukt:', resendErr.message);
+      }
     }
 
     // Profiel aanmaken
