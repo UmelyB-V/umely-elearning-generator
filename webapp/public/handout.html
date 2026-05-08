@@ -1250,12 +1250,20 @@ input,textarea,select{font-size:16px}
 <div id="screen-result" class="screen">
   <div class="resultaat-hero">
     <div class="score-cirkel" id="score-display">...</div>
-    <h2 style="font-family:var(--font-h);margin-bottom:0.5rem;">Training afgerond!</h2>
+    <h2 style="font-family:var(--font-h);margin-bottom:0.5rem;" id="resultaat-titel">Afgerond!</h2>
     <p id="resultaat-boodschap" style="color:rgba(255,248,242,0.85);position:relative;"></p>
   </div>
+
   <div class="btn-wrap" style="justify-content:center;">
     <button class="btn btn-outline" onclick="herstart()">Opnieuw beginnen</button>
     <a class="btn" href="/pricing.html">Bekijk de volledige e-learning</a>
+  </div>
+
+  <div id="resultaat-cta" style="margin-top:2rem;background:white;border:1px solid #EAE6E0;border-radius:12px;padding:1.5rem;text-align:center;display:none;">
+    <p style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--amber);margin-bottom:0.5rem;">Wat nu?</p>
+    <p style="font-family:var(--font-h);font-size:1.2rem;font-weight:700;color:var(--fg);margin-bottom:0.5rem;">Ga verder met de volledige e-learning</p>
+    <p style="font-size:0.9rem;color:rgba(39,41,45,0.6);margin-bottom:1.25rem;">32 interactieve modules over Claude, automatisering en AI-workflows. Op jouw tempo.</p>
+    <a href="/pricing.html" class="btn" style="display:inline-flex;">Bekijk de plannen &#8594;</a>
   </div>
 </div>
 
@@ -1497,10 +1505,18 @@ function volgendeQuizVraag() { quizHuidig++; laadQuizVraag(); }
 function toonResultaat() {
   goTo('screen-result');
   const pct = Math.round((quizScore / quizVragen.length) * 100);
+  const geslaagd = pct >= 70;
   document.getElementById('score-display').textContent = pct + '%';
-  document.getElementById('resultaat-boodschap').textContent = pct >= 70
-    ? 'Gefeliciteerd! Je hebt de training succesvol afgerond.'
-    : 'Je score is ' + pct + '%. Probeer het nog eens!';
+  document.getElementById('score-display').style.background = geslaagd
+    ? 'var(--gradient)'
+    : 'linear-gradient(135deg, #f97316, #dc2626)';
+  document.getElementById('resultaat-titel').textContent = geslaagd
+    ? 'Goed gedaan!'
+    : 'Bijna!';
+  document.getElementById('resultaat-boodschap').textContent = geslaagd
+    ? 'Je hebt de handout succesvol afgerond.'
+    : 'Je score is ' + pct + '%. Doe de quiz opnieuw om je score te verbeteren.';
+  document.getElementById('resultaat-cta').style.display = 'block';
   if (typeof onQuizCompleted === 'function') onQuizCompleted(pct);
 }
 
