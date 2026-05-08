@@ -66,35 +66,40 @@
 
   /* ── PRICING SECTION ── */
   .pricing-wrap { background: var(--gray-light); padding: 64px 24px; }
-  .pricing-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 48px; align-items: start; }
-  .pricing-left h2 { font-family: var(--font-h); font-size: clamp(22px, 3vw, 30px); font-weight: 700; margin-bottom: 12px; }
-  .pricing-left p { font-size: 15px; color: var(--gray-text); line-height: 1.65; margin-bottom: 24px; }
-  .guarantee { display: flex; align-items: flex-start; gap: 12px; background: white; border-radius: 12px; padding: 16px; border: 1px solid var(--gray-border); }
+  .pricing-header { max-width: 960px; margin: 0 auto 40px; }
+  .guarantee { display: flex; align-items: flex-start; gap: 12px; background: white; border-radius: 12px; padding: 16px; border: 1px solid var(--gray-border); max-width: 500px; margin-top: 20px; }
   .guarantee-icon { font-size: 22px; flex-shrink: 0; }
   .guarantee h4 { font-family: var(--font-h); font-size: 14px; font-weight: 700; margin-bottom: 3px; }
   .guarantee p { font-size: 13px; color: var(--gray-text); line-height: 1.5; }
 
-  /* ── PRICING CARD ── */
-  .pricing-card { background: var(--white); border-radius: 24px; box-shadow: 0 8px 40px rgba(39,41,45,0.12); overflow: hidden; }
-  .card-header { background: var(--charcoal); padding: 28px 32px; text-align: center; }
-  .card-header .plan-name { font-size: 12px; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-family: var(--font-b); }
-  .card-header .price-row { display: flex; align-items: flex-start; justify-content: center; gap: 4px; }
-  .card-header .currency { font-size: 20px; font-weight: 700; color: white; margin-top: 8px; font-family: var(--font-h); }
-  .card-header .amount { font-size: 56px; font-weight: 700; color: white; line-height: 1; letter-spacing: -2px; font-family: var(--font-h); }
-  .card-header .period { font-size: 15px; color: rgba(255,255,255,0.5); font-weight: 500; align-self: flex-end; padding-bottom: 5px; }
-  .card-body { padding: 28px 32px; }
-  .feature-list { list-style: none; margin-bottom: 24px; display: flex; flex-direction: column; gap: 11px; }
-  .feature-list li { display: flex; align-items: center; gap: 11px; font-size: 14px; color: var(--charcoal); font-weight: 500; }
-  .feature-list li .check { width: 20px; height: 20px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .feature-list li .check svg { width: 10px; height: 10px; stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-  .btn-subscribe { width: 100%; padding: 15px; background: var(--gradient); color: white; border: none; border-radius: 999px; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-b); }
-  .btn-subscribe:hover:not(:disabled) { opacity: 0.88; }
-  .btn-subscribe:disabled { opacity: 0.6; cursor: not-allowed; }
+  /* ── 3-TIER PLAN CARDS ── */
+  .plans-grid { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+  .plan-card { background: white; border-radius: 20px; border: 2px solid var(--gray-border); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  .plan-card.featured { border-color: var(--amber); box-shadow: 0 8px 32px rgba(255,133,20,0.18); }
+  .plan-badge { position: absolute; top: 16px; right: 16px; background: var(--gradient); color: white; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 50px; }
+  .plan-header { padding: 24px 24px 16px; border-bottom: 1px solid var(--gray-border); }
+  .plan-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 10px; }
+  .plan-price-row { display: flex; align-items: flex-start; gap: 2px; margin-bottom: 4px; }
+  .plan-euro { font-size: 18px; font-weight: 700; color: var(--charcoal); font-family: var(--font-h); margin-top: 6px; }
+  .plan-amount { font-size: 42px; font-weight: 700; color: var(--charcoal); font-family: var(--font-h); line-height: 1; letter-spacing: -1px; }
+  .plan-period { font-size: 13px; color: var(--gray-text); align-self: flex-end; padding-bottom: 4px; }
+  .plan-sub { font-size: 12px; color: var(--gray-text); line-height: 1.5; margin-top: 4px; }
+  .plan-body { padding: 20px 24px 24px; flex: 1; display: flex; flex-direction: column; }
+  .plan-features { list-style: none; flex: 1; margin-bottom: 20px; display: flex; flex-direction: column; gap: 9px; }
+  .plan-features li { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: var(--charcoal); line-height: 1.4; }
+  .plan-features li .chk { width: 18px; height: 18px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .plan-features li .chk svg { width: 9px; height: 9px; stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .plan-features li.dim { color: var(--gray-text); }
+  .plan-features li.dim .chk { background: #D4C8BC; }
+  .btn-plan { width: 100%; padding: 13px; background: var(--gradient); color: white; border: none; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--font-b); transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-plan:hover:not(:disabled) { opacity: 0.88; }
+  .btn-plan:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-plan.ghost { background: none; border: 2px solid var(--charcoal); color: var(--charcoal); }
+  .btn-plan.ghost:hover { background: var(--charcoal); color: white; opacity: 1; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .btn-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
-  .card-footer { padding: 0 32px 24px; text-align: center; }
-  .card-footer p { font-size: 12px; color: #AAA; line-height: 1.5; }
-  #errorMsg { display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 10px; padding: 12px 16px; margin-top: 14px; font-size: 13px; color: #991B1B; text-align: center; }
+  .plan-note { font-size: 11px; color: #AAA; text-align: center; margin-top: 10px; line-height: 1.4; }
+  .plan-error { display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 8px; padding: 10px 12px; margin-top: 10px; font-size: 12px; color: #991B1B; text-align: center; }
 
   /* ── FOOTER ── */
   footer { padding: 28px 32px; text-align: center; background: var(--charcoal); }
@@ -133,16 +138,14 @@
   .vi-resend a { color: var(--amber); font-weight: 600; cursor: pointer; }
 
   /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .plans-grid { grid-template-columns: 1fr; max-width: 420px; }
+  }
   @media (max-width: 700px) {
-    .pricing-inner { grid-template-columns: 1fr; }
-    .pricing-left { text-align: center; }
-    .guarantee { text-align: left; }
     .hero-stats { gap: 20px; }
-    .card-header { padding: 22px 20px; }
-    .card-body { padding: 22px 20px; }
-    .card-footer { padding: 0 20px 20px; }
     header { padding: 0 16px; }
     .btn-sm span { display: none; }
+    .pricing-wrap { padding: 40px 16px; }
   }
 </style>
 </head>
@@ -270,40 +273,85 @@
 </div>
 
 <!-- PRICING -->
-<div class="pricing-wrap">
-  <div class="pricing-inner">
-    <div class="pricing-left" id="left-panel">
+<div class="pricing-wrap" id="pricing-section">
+  <div class="pricing-header">
+    <div id="left-panel">
       <!-- gevuld door JS op basis van inlogstatus -->
     </div>
-    <div>
-      <div class="pricing-card">
-        <div class="card-header">
-          <div class="plan-name">Umely E-learning</div>
-          <div class="price-row">
-            <span class="currency">&euro;</span>
-            <span class="amount">95</span>
-            <span class="period">/maand</span>
-          </div>
+  </div>
+  <div class="plans-grid">
+
+    <!-- GRATIS -->
+    <div class="plan-card">
+      <div class="plan-header">
+        <div class="plan-label">Gratis</div>
+        <div class="plan-price-row">
+          <span class="plan-euro">&euro;</span>
+          <span class="plan-amount">0</span>
         </div>
-        <div class="card-body">
-          <ul class="feature-list">
-            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Toegang tot alle 32 modules</li>
-            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Kennischecks en afsluitquizzen</li>
-            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Praktijkopdrachten per traject</li>
-            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Certificaat bij afsluiting</li>
-            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Nieuwe modules zodra beschikbaar</li>
-            <li><span class="check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Voortgang opgeslagen per module</li>
-          </ul>
-          <button class="btn-subscribe" id="subscribeBtn" onclick="startCheckout()">
-            Nu starten &#8594;
-          </button>
-          <div id="errorMsg"></div>
-        </div>
-        <div class="card-footer">
-          <p>Na betaling direct toegang. Minimaal 3 maanden, daarna maandelijks opzegbaar.</p>
-        </div>
+        <p class="plan-sub">Altijd gratis, geen creditcard vereist</p>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-features">
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Module A1: Wat is Claude?</li>
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Digitale handout (lezing)</li>
+          <li class="dim"><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Overige 31 modules</li>
+          <li class="dim"><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Certificaat</li>
+        </ul>
+        <button class="btn-plan ghost" id="freeBtn" onclick="choosePlan('gratis')">Gratis starten</button>
+        <div class="plan-error" id="freeError"></div>
       </div>
     </div>
+
+    <!-- SPOEDCURSUS -->
+    <div class="plan-card featured">
+      <div class="plan-badge">Populair</div>
+      <div class="plan-header">
+        <div class="plan-label">Spoedcursus</div>
+        <div class="plan-price-row">
+          <span class="plan-euro">&euro;</span>
+          <span class="plan-amount">195</span>
+        </div>
+        <p class="plan-sub">Eenmalige betaling &middot; 3 maanden toegang</p>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-features">
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Alle 32 interactieve modules</li>
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Kennischecks en afsluitquizzen</li>
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Praktijkopdrachten per traject</li>
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Officieel Umely-certificaat</li>
+        </ul>
+        <button class="btn-plan" id="spoedBtn" onclick="choosePlan('spoedcursus')">Spoedcursus starten &#8594;</button>
+        <p class="plan-note">Eenmalig &euro;195 &middot; 3 maanden toegang &middot; Geen verlenging</p>
+        <div class="plan-error" id="spoedError"></div>
+      </div>
+    </div>
+
+    <!-- JAARLIJKS -->
+    <div class="plan-card">
+      <div class="plan-badge" style="background:var(--charcoal);">Meeste waarde</div>
+      <div class="plan-header">
+        <div class="plan-label">Jaarlijks</div>
+        <div class="plan-price-row">
+          <span class="plan-euro">&euro;</span>
+          <span class="plan-amount">27<span style="font-size:22px;letter-spacing:0">,50</span></span>
+          <span class="plan-period">/maand</span>
+        </div>
+        <p class="plan-sub">&euro;330 per jaar &middot; Maandelijks gefactureerd</p>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-features">
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Alle 32 modules + nieuwe modules direct</li>
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Kennischecks, quizzen en certificaat</li>
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>AI-nieuwsbrief en tips &amp; tricks</li>
+          <li><span class="chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Persoonlijke support van het Umely-team</li>
+        </ul>
+        <button class="btn-plan" id="jaarBtn" onclick="choosePlan('jaarlijks')">Jaarlijks starten &#8594;</button>
+        <p class="plan-note">Maandelijks opzegbaar na 3 maanden &middot; Veilige betaling via Stripe</p>
+        <div class="plan-error" id="jaarError"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -336,8 +384,8 @@ const _cookieStorage = {
 let _supabase = null;
 let _session = null;
 let _signupEmail = '';
-let _signupPassword = '';
 let _leftState = '';
+let _pendingPlan = null;
 
 async function init() {
   try {
@@ -358,7 +406,6 @@ async function init() {
     document.getElementById('navAccount').style.display = 'inline-flex';
     document.getElementById('logoutBtn').style.display = 'block';
 
-    // Al actief abonnement: doorsturen naar modules
     const subRes = await fetch('/api/user/subscription', {
       headers: { 'Authorization': 'Bearer ' + session.access_token }
     });
@@ -368,8 +415,30 @@ async function init() {
         window.location.href = '/modules.html';
         return;
       }
+      if (sub.subscription_status === 'free') {
+        window.location.href = '/modules.html';
+        return;
+      }
     }
+
+    // Check of er een openstaand plan is (bijv. na e-mailverificatie)
+    const storedPlan = sessionStorage.getItem('selectedPlan');
+    if (storedPlan) {
+      sessionStorage.removeItem('selectedPlan');
+      _pendingPlan = storedPlan;
+      renderLeft('auth-no-sub');
+      if (storedPlan === 'gratis') {
+        activateFree();
+      } else {
+        startCheckout(storedPlan);
+      }
+      return;
+    }
+
     renderLeft('auth-no-sub');
+    setTimeout(() => {
+      document.getElementById('pricing-section').scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   } catch (e) {
     console.error('Init fout:', e);
     renderLeft('landing');
@@ -381,18 +450,20 @@ function renderLeft(state) {
   const panel = document.getElementById('left-panel');
   if (state === 'landing') {
     panel.innerHTML = `
-      <p class="reg-title">Begin vandaag</p>
-      <p class="reg-sub">Leer werken met Claude AI via 32 praktijkgerichte modules. Op je eigen tempo, direct toepasbaar in je werk.</p>
-      <ul style="list-style:none;padding:0;margin:20px 0 0;display:flex;flex-direction:column;gap:10px;">
-        <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--charcoal);font-weight:500;"><span style="width:20px;height:20px;border-radius:50%;background:var(--gradient);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 12 12" width="10" height="10"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none"/></svg></span>Klik op "Nu starten" om je account aan te maken</li>
-        <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--charcoal);font-weight:500;"><span style="width:20px;height:20px;border-radius:50%;background:var(--gradient);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 12 12" width="10" height="10"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none"/></svg></span>Verifieer je e-mailadres</li>
-        <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--charcoal);font-weight:500;"><span style="width:20px;height:20px;border-radius:50%;background:var(--gradient);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 12 12" width="10" height="10"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none"/></svg></span>Betaal en start direct</li>
-      </ul>
-      <p class="login-hint" style="margin-top:28px;">Al een account? <a href="/?redirect=/pricing.html">Inloggen</a></p>`;
+      <div class="section-label">Hoe het werkt</div>
+      <h2 style="font-family:var(--font-h);font-size:clamp(22px,3vw,30px);font-weight:700;margin-bottom:12px;color:var(--charcoal);">In drie stappen aan de slag</h2>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="width:28px;height:28px;border-radius:50%;background:var(--gradient);color:white;font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">1</span><span style="font-size:14px;color:var(--charcoal);font-weight:500;">Kies je plan hiernaast</span></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="width:28px;height:28px;border-radius:50%;background:var(--gradient);color:white;font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">2</span><span style="font-size:14px;color:var(--charcoal);font-weight:500;">Maak je account aan</span></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="width:28px;height:28px;border-radius:50%;background:var(--gradient);color:white;font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">3</span><span style="font-size:14px;color:var(--charcoal);font-weight:500;">Direct aan de slag</span></div>
+      </div>
+      <p class="login-hint" style="margin-top:0;">Al een account? <a href="/?redirect=/pricing.html">Inloggen</a></p>`;
   } else if (state === 'form') {
+    const planLabel = _pendingPlan === 'gratis' ? 'Gratis' : _pendingPlan === 'spoedcursus' ? 'Spoedcursus' : 'Jaarlijks';
     panel.innerHTML = `
+      <div class="section-label">Stap 1 van 2 &mdash; Account aanmaken</div>
       <p class="reg-title">Account aanmaken</p>
-      <p class="reg-sub">Maak je account aan en ga daarna direct naar de betaalpagina.</p>
+      <p class="reg-sub">Gekozen plan: <strong>${planLabel}</strong>. Na verificatie ga je direct door naar stap 2.</p>
       <div id="reg-error" class="reg-error"></div>
       <form onsubmit="submitSignup(event)">
         <div class="field-row-2">
@@ -420,24 +491,25 @@ function renderLeft(state) {
     panel.innerHTML = `
       <div class="verify-inline">
         <div class="vi-icon">&#128231;</div>
+        <div class="section-label">Stap 1 van 2 &mdash; Verificatie</div>
         <h3>Controleer je inbox</h3>
         <p>Verificatielink verstuurd naar:</p>
         <div class="vi-email" id="vi-email-display"></div>
-        <p>Klik op de link in de mail om je account te activeren. Controleer ook je spammap.</p>
+        <p>Klik op de link om je account te activeren. Je wordt daarna <strong>automatisch doorgestuurd</strong> naar stap 2.</p>
         <p class="vi-resend">Geen mail? <a onclick="resendVerify(event)">Stuur opnieuw</a></p>
         <p id="vi-resend-msg" style="display:none;font-size:11px;color:#16a34a;margin-top:8px;"></p>
       </div>`;
     document.getElementById('vi-email-display').textContent = _signupEmail;
   } else {
     panel.innerHTML = `
-      <div class="section-label">Toegang</div>
-      <h2 style="font-family:var(--font-h);font-size:clamp(20px,2.5vw,28px);font-weight:700;margin-bottom:10px;">Eén abonnement,<br>volledige toegang</h2>
-      <p style="font-size:14px;color:var(--gray-text);line-height:1.65;margin-bottom:20px;">Maandelijks gefactureerd. Geen verborgen kosten, geen losse modules. Je hebt direct toegang na betaling.</p>
+      <div class="section-label">Stap 2 van 2 &mdash; Kies je plan</div>
+      <h2 style="font-family:var(--font-h);font-size:clamp(20px,2.5vw,26px);font-weight:700;margin-bottom:10px;">Account aangemaakt!</h2>
+      <p style="font-size:14px;color:var(--gray-text);line-height:1.65;margin-bottom:20px;">Kies hiernaast je plan en ga direct aan de slag.</p>
       <div class="guarantee">
         <div class="guarantee-icon">&#128274;</div>
         <div>
           <h4>Veilige betaling via Stripe</h4>
-          <p>Minimale termijn 3 maanden, daarna maandelijks opzegbaar via je account.</p>
+          <p>Betaalde plannen: direct toegang na betaling. Gratis plan: direct beschikbaar.</p>
         </div>
       </div>`;
   }
@@ -445,7 +517,7 @@ function renderLeft(state) {
 
 function checkPw() {
   const pw = document.getElementById('reg-pw')?.value || '';
-  const toggle = (id, ok) => { const el = document.getElementById(id); if (el) { el.classList.toggle('ok', ok); } };
+  const toggle = (id, ok) => { const el = document.getElementById(id); if (el) el.classList.toggle('ok', ok); };
   toggle('ph-len', pw.length >= 8);
   toggle('ph-upper', /[A-Z]/.test(pw));
   toggle('ph-num', /[0-9]/.test(pw));
@@ -490,7 +562,6 @@ async function submitSignup(e) {
       return;
     }
     _signupEmail = email;
-    _signupPassword = password;
     renderLeft('verifying');
   } catch (err) {
     btn.disabled = false;
@@ -510,8 +581,10 @@ async function resendVerify(e) {
   } catch { msg.textContent = 'Kon mail niet verzenden.'; msg.style.display = 'block'; }
 }
 
-async function startCheckout() {
+function choosePlan(plan) {
+  _pendingPlan = plan;
   if (!_session) {
+    sessionStorage.setItem('selectedPlan', plan);
     if (_leftState !== 'form' && _leftState !== 'verifying') {
       renderLeft('form');
     }
@@ -519,34 +592,57 @@ async function startCheckout() {
     setTimeout(() => { document.getElementById('reg-first')?.focus(); }, 300);
     return;
   }
+  if (plan === 'gratis') {
+    activateFree();
+  } else {
+    startCheckout(plan);
+  }
+}
 
-  const btn = document.getElementById('subscribeBtn');
-  const errEl = document.getElementById('errorMsg');
-  errEl.style.display = 'none';
-  btn.disabled = true;
-  btn.innerHTML = '<span class="btn-spinner"></span>Doorsturen naar betaling...';
+async function activateFree() {
+  const btn = document.getElementById('freeBtn');
+  const errEl = document.getElementById('freeError');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="btn-spinner"></span>Activeren...'; }
+  if (errEl) errEl.style.display = 'none';
+  try {
+    const res = await fetch('/api/user/activate-free', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + _session.access_token }
+    });
+    if (!res.ok) {
+      const d = await res.json();
+      throw new Error(d.error || 'Activatie mislukt.');
+    }
+    window.location.href = '/modules.html?welcome=free';
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.innerHTML = 'Gratis starten'; }
+    if (errEl) { errEl.textContent = e.message; errEl.style.display = 'block'; }
+  }
+}
+
+async function startCheckout(plan) {
+  const btnId = plan === 'spoedcursus' ? 'spoedBtn' : 'jaarBtn';
+  const errId = plan === 'spoedcursus' ? 'spoedError' : 'jaarError';
+  const btn = document.getElementById(btnId);
+  const errEl = document.getElementById(errId);
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="btn-spinner"></span>Doorsturen...'; }
+  if (errEl) errEl.style.display = 'none';
 
   try {
     const res = await fetch('/api/stripe/create-checkout', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + _session.access_token
-      }
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _session.access_token },
+      body: JSON.stringify({ plan })
     });
-
     const data = await res.json();
-
-    if (!res.ok || !data.url) {
-      throw new Error(data.error || 'Kon betaalpagina niet openen.');
-    }
-
+    if (!res.ok || !data.url) throw new Error(data.error || 'Kon betaalpagina niet openen.');
     window.location.href = data.url;
   } catch (e) {
-    errEl.textContent = e.message || 'Er ging iets mis. Probeer het opnieuw.';
-    errEl.style.display = 'block';
-    btn.disabled = false;
-    btn.innerHTML = 'Nu starten &#8594;';
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = plan === 'spoedcursus' ? 'Spoedcursus starten &#8594;' : 'Jaarlijks starten &#8594;';
+    }
+    if (errEl) { errEl.textContent = e.message; errEl.style.display = 'block'; }
   }
 }
 

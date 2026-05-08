@@ -74,6 +74,27 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
     }
   }
 
+  // Spoedcursus: eenmalige betaling — 3 maanden toegang inschakelen
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    if (session.mode === 'payment' && session.customer && session.payment_status === 'paid') {
+      const endDate = new Date();
+      endDate.setMonth(endDate.getMonth() + 3);
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          subscription_status: 'active',
+          subscription_start: new Date().toISOString(),
+          subscription_end: endDate.toISOString()
+        })
+        .eq('stripe_customer_id', session.customer);
+      if (error) {
+        console.error('Webhook: spoedcursus activatie fout:', error.message);
+        return res.status(500).json({ error: 'Database update mislukt' });
+      }
+    }
+  }
+
   res.json({ received: true });
 });
 
@@ -200,22 +221,28 @@ app.get('/api/modules', requireAuth, requireSubscription, async (req, res) => {
     .eq('id', req.user.id)
     .single();
 
-  res.json({
-    role: profile?.role || 'user',
-    modules: data.map(m => ({
-      filename: m.filename,
-      slug: m.slug || m.filename.replace('.html', ''),
-      title: m.title,
-      date: m.created_date || m.created_at.slice(0, 10),
-      url: `/modules/${m.slug || m.filename.replace('.html', '')}`
-    }))
-  });
+  let modules = data.map(m => ({
+    filename: m.filename,
+    slug: m.slug || m.filename.replace('.html', ''),
+    title: m.title,
+    date: m.created_date || m.created_at.slice(0, 10),
+    url: `/modules/${m.slug || m.filename.replace('.html', '')}`
+  }));
+
+  if (req._freeUser) {
+    modules = modules.filter(m => FREE_MODULES.has(m.slug));
+  }
+
+  res.json({ role: profile?.role || 'user', modules, isFree: req._freeUser || false });
 });
 
 // ── Beveiligd HTML-endpoint (Bearer token vereist) ──
 app.get('/api/module-html/:slug', requireAuth, requireSubscription, async (req, res) => {
   if (!/^[a-z0-9-]{1,80}$/.test(req.params.slug)) {
     return res.status(400).json({ error: 'Ongeldige module-URL' });
+  }
+  if (req._freeUser && !FREE_MODULES.has(req.params.slug)) {
+    return res.status(402).json({ error: 'Upgrade vereist voor deze module', redirect: '/pricing.html' });
   }
   let { data, error } = await supabase
     .from('modules')
@@ -312,6 +339,9 @@ app.get('/modules/:slug', (req, res) => {
 </html>`);
 });
 
+// ── Free tier: toegestane modules ─────────────────────────────────────────────
+const FREE_MODULES = new Set(['elearning-a1-wat-is-claude', 'elearning-lezing-handout']);
+
 // ── Subscription middleware ──
 async function requireSubscription(req, res, next) {
   let { data, error } = await supabase
@@ -334,6 +364,13 @@ async function requireSubscription(req, res, next) {
 
   if (error) return res.status(500).json({ error: 'Profiel ophalen mislukt' });
   if (data?.role === 'admin' || data?.subscription_status === 'active') return next();
+
+  // Free tier: doorsturen maar markeren — individuele endpoints bepalen toegang
+  if (data?.subscription_status === 'free') {
+    req._freeUser = true;
+    return next();
+  }
+
   return res.status(402).json({ error: 'Actief abonnement vereist', redirect: '/pricing.html' });
 }
 
@@ -892,12 +929,31 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Interne serverfout' });
 });
 
+// ── Gratis plan activeren ──────────────────────────────────────────────────────
+app.post('/api/user/activate-free', requireAuth, async (req, res) => {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ subscription_status: 'free' })
+    .eq('id', req.user.id);
+  if (error) return res.status(500).json({ error: 'Activatie mislukt: ' + error.message });
+  res.json({ ok: true });
+});
+
 // ── Stripe: maak checkout sessie aan ──────────────────────────────────────────
+// Plans: 'spoedcursus' (eenmalig €195 / 3mnd) | 'jaarlijks' (€27,50/mnd)
+// Env vars: STRIPE_PRICE_SPOEDCURSUS, STRIPE_PRICE_JAARLIJKS
 app.post('/api/stripe/create-checkout', requireAuth, async (req, res) => {
   if (!stripe) return res.status(500).json({ error: 'Stripe niet geconfigureerd' });
 
+  const plan = req.body?.plan || 'jaarlijks';
+  const priceMap = {
+    spoedcursus: process.env.STRIPE_PRICE_SPOEDCURSUS,
+    jaarlijks: process.env.STRIPE_PRICE_JAARLIJKS || process.env.STRIPE_PRICE_ID
+  };
+  const priceId = priceMap[plan];
+  if (!priceId) return res.status(400).json({ error: `Geen Stripe price ID ingesteld voor plan '${plan}'.` });
+
   try {
-    // Haal bestaand stripe_customer_id op uit profiel
     const { data: profile, error: profileErr } = await supabase
       .from('profiles')
       .select('stripe_customer_id, email')
@@ -908,30 +964,35 @@ app.post('/api/stripe/create-checkout', requireAuth, async (req, res) => {
 
     let customerId = profile?.stripe_customer_id;
 
-    // Maak nieuwe Stripe customer aan als die nog niet bestaat
     if (!customerId) {
       const customer = await stripe.customers.create({
         email: profile?.email || req.user.email,
         metadata: { supabase_user_id: req.user.id }
       });
       customerId = customer.id;
-
-      // Sla customer ID op in profiel
       await supabase
         .from('profiles')
         .update({ stripe_customer_id: customerId })
         .eq('id', req.user.id);
     }
 
-    const session = await stripe.checkout.sessions.create({
+    const origin = req.headers.origin || '';
+    const sessionParams = {
       customer: customerId,
-      mode: 'subscription',
-      line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
-      success_url: process.env.STRIPE_SUCCESS_URL || `${req.headers.origin || ''}/modules.html?subscribed=1`,
-      cancel_url: process.env.STRIPE_CANCEL_URL || `${req.headers.origin || ''}/pricing.html`,
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: process.env.STRIPE_SUCCESS_URL || `${origin}/modules.html?subscribed=1`,
+      cancel_url: process.env.STRIPE_CANCEL_URL || `${origin}/pricing.html`,
       allow_promotion_codes: true
-    });
+    };
 
+    // Spoedcursus = eenmalige betaling; jaarlijks = abonnement
+    if (plan === 'spoedcursus') {
+      sessionParams.mode = 'payment';
+    } else {
+      sessionParams.mode = 'subscription';
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
     res.json({ url: session.url });
   } catch (err) {
     console.error('Stripe checkout fout:', err);
