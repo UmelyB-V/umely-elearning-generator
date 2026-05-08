@@ -168,11 +168,6 @@ footer a{color:var(--peach)}
 .btn-vorige{display:inline-block;background:transparent;border:2px solid var(--fg);color:var(--fg);font-family:var(--font-b);font-weight:700;font-size:0.95rem;padding:0.8rem 2rem;border-radius:var(--radius-pill);cursor:pointer;text-decoration:none;transition:all 0.2s}
 .btn-vorige:hover{background:var(--fg);color:var(--bg)}
 .nav-spacer{flex:1}
-/* ── MILESTONE TOAST ── */
-.milestone-toast{position:fixed;bottom:28px;right:28px;background:var(--fg);color:var(--bg);padding:14px 22px;border-radius:50px;font-family:var(--font-h);font-weight:700;font-size:0.95rem;box-shadow:0 6px 28px rgba(39,41,45,0.25),0 0 0 2px var(--amber);z-index:9999;transform:translateY(80px) scale(0.9);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;display:flex;align-items:center;gap:10px;max-width:300px}
-.milestone-toast.show{transform:translateY(0) scale(1);opacity:1}
-.milestone-toast .mt-icon{font-size:1.3rem}
-.milestone-toast .mt-pct{color:var(--amber)}
 /* ── KC CORRECT FLASH ── */
 @keyframes kcFlash{0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}70%{box-shadow:0 0 0 10px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
 .kc-optie.correct{animation:kcFlash 0.6s ease-out}
@@ -234,9 +229,6 @@ input,textarea,select{font-size:16px}
 
   /* Annotaties */
   .annotatie-figuur{min-height:150px}
-
-  /* Milestone toast boven home indicator */
-  .milestone-toast{bottom:calc(env(safe-area-inset-bottom) + 12px);right:16px;left:16px;max-width:none}
 
   /* Safe area header */
   header{padding-top:env(safe-area-inset-top)}
@@ -1288,39 +1280,12 @@ function goTo(screenId) {
   renderNavButtons(screenId);
 }
 
-var _milestoneShown = {25:false,50:false,75:false,100:false};
-
-function showMilestoneToast(pct) {
-  var msgs = {
-    25: {icon:'🔥', text:'25% klaar'},
-    50: {icon:'⚡', text:'Halverwege!'},
-    75: {icon:'🚀', text:'75%, bijna er!'},
-    100: {icon:'🏆', text:'Module voltooid!'}
-  };
-  var m = msgs[pct];
-  var el = document.createElement('div');
-  el.className = 'milestone-toast';
-  el.innerHTML = '<span class="mt-icon">'+m.icon+'</span><span><span class="mt-pct">'+pct+'%</span> &nbsp;'+m.text+'</span>';
-  document.body.appendChild(el);
-  setTimeout(function(){ el.classList.add('show'); }, 80);
-  setTimeout(function(){ el.classList.remove('show'); setTimeout(function(){ el.remove(); }, 400); }, 3200);
-}
-
 function updateProgress(screenId) {
   const idx = SCHERMEN.indexOf(screenId);
   const pct = idx < 0 ? 100 : Math.round((idx / (SCHERMEN.length - 1)) * 100);
   const bar = document.getElementById('progressBar');
   bar.style.width = pct + '%';
   document.getElementById('progressLabel').textContent = pct + '% voltooid';
-  // Milestone toasts (niet op welkomstscherm)
-  if (idx > 0) {
-    [25, 50, 75, 100].forEach(function(m) {
-      if (pct >= m && !_milestoneShown[m]) {
-        _milestoneShown[m] = true;
-        setTimeout(function(){ showMilestoneToast(m); }, 600);
-      }
-    });
-  }
   // Shimmer on completion
   if (pct >= 100) { bar.classList.add('shimmer'); } else { bar.classList.remove('shimmer'); }
 }
