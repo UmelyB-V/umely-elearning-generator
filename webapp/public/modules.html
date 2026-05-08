@@ -848,7 +848,7 @@ async function loadModules() {
       const sub = await subRes.json();
       // Admins hebben altijd toegang. Check rol eerst via modules endpoint wordt later gedaan,
       // maar we weten de rol pas na het laden. Geef users zonder actief abonnement geen toegang.
-      if (sub.subscription_status !== 'active') {
+      if (sub.subscription_status !== 'active' && sub.subscription_status !== 'free') {
         // Check of de gebruiker admin is via het profiel
         const profileRes = await fetch('/api/user/profile', { headers: authHeader() });
         if (profileRes.ok) {
@@ -883,6 +883,7 @@ async function loadModules() {
     userRole = json.role || 'user';
     allModules = json.modules || [];
 
+    if (json.isFree) showFreeBanner();
     updateSidebar();
     updateStats();
     showContinue();
@@ -917,6 +918,28 @@ async function loadModules() {
     document.getElementById('statsRow').style.display = 'grid';
   } catch (e) {
     grid.innerHTML = '<div class="empty-state"><p>Kon modules niet laden. Is de server actief?</p></div>';
+  }
+}
+
+// ── FREE TIER UPGRADE BANNER ──
+function showFreeBanner() {
+  const existing = document.getElementById('free-upgrade-banner');
+  if (existing) return;
+  const banner = document.createElement('div');
+  banner.id = 'free-upgrade-banner';
+  banner.style.cssText = 'background:linear-gradient(135deg,#FF8514,#FF4D00);color:white;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;';
+  banner.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">🎓</span>
+      <span style="font-size:14px;font-weight:600;">Je zit op het gratis plan &mdash; toegang tot module A1 en de handout.</span>
+    </div>
+    <a href="/pricing.html" style="background:white;color:#FF4D00;padding:8px 20px;border-radius:50px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;">Upgrade naar volledig &rarr;</a>
+  `;
+  const header = document.querySelector('header');
+  if (header && header.nextSibling) {
+    header.parentNode.insertBefore(banner, header.nextSibling);
+  } else {
+    document.body.prepend(banner);
   }
 }
 

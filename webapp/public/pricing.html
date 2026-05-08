@@ -416,7 +416,12 @@ async function init() {
         return;
       }
       if (sub.subscription_status === 'free') {
-        window.location.href = '/modules.html';
+        // Free user op pricing pagina: toon upgrade-weergave
+        renderLeft('upgrade');
+        markFreeCard();
+        setTimeout(() => {
+          document.getElementById('pricing-section').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
         return;
       }
     }
@@ -500,6 +505,12 @@ function renderLeft(state) {
         <p id="vi-resend-msg" style="display:none;font-size:11px;color:#16a34a;margin-top:8px;"></p>
       </div>`;
     document.getElementById('vi-email-display').textContent = _signupEmail;
+  } else if (state === 'upgrade') {
+    panel.innerHTML = `
+      <div class="section-label">Jouw huidige plan</div>
+      <h2 style="font-family:var(--font-h);font-size:clamp(20px,2.5vw,26px);font-weight:700;margin-bottom:10px;">Je zit op het gratis plan</h2>
+      <p style="font-size:14px;color:var(--gray-text);line-height:1.65;margin-bottom:20px;">Je hebt toegang tot module A1 en de handout. Kies een betaald plan voor toegang tot alle 32 modules, het certificaat en meer.</p>
+      <a href="/modules.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--amber);font-weight:700;text-decoration:none;margin-bottom:4px;">&#8592; Terug naar mijn bibliotheek</a>`;
   } else {
     panel.innerHTML = `
       <div class="section-label">Stap 2 van 2 &mdash; Kies je plan</div>
@@ -512,6 +523,15 @@ function renderLeft(state) {
           <p>Betaalde plannen: direct toegang na betaling. Gratis plan: direct beschikbaar.</p>
         </div>
       </div>`;
+  }
+}
+
+function markFreeCard() {
+  const freeBtn = document.getElementById('freeBtn');
+  if (freeBtn) {
+    freeBtn.textContent = 'Huidig plan';
+    freeBtn.disabled = true;
+    freeBtn.classList.add('ghost');
   }
 }
 
