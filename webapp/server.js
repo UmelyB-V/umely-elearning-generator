@@ -459,6 +459,37 @@ app.patch('/api/users/:userId/role', requireAuth, requireAdmin, async (req, res)
   res.json({ ok: true });
 });
 
+// ── Gebruiker handmatig toevoegen via invite (admin) ──
+app.post('/api/users/invite', requireAuth, requireAdmin, async (req, res) => {
+  const { email, subscription_status = 'active', role = 'user' } = req.body;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Ongeldig e-mailadres.' });
+  }
+  if (!['active', 'inactive'].includes(subscription_status)) {
+    return res.status(400).json({ error: 'Ongeldige subscription_status.' });
+  }
+  if (!['user', 'admin'].includes(role)) {
+    return res.status(400).json({ error: 'Ongeldige rol.' });
+  }
+  try {
+    const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
+      redirectTo: `${process.env.APP_URL || 'https://umely.ai'}/auth-callback.html?type=invite`
+    });
+    if (error) return res.status(400).json({ error: error.message });
+    const userId = data.user.id;
+    await supabase.schema('elearning').from('profiles').upsert({
+      id: userId,
+      email,
+      role,
+      subscription_status,
+      subscription_start: subscription_status === 'active' ? new Date().toISOString() : null
+    }, { onConflict: 'id' });
+    res.json({ ok: true, userId });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // ── Gebruiker verwijderen (admin) ──
 app.delete('/api/users/:userId', requireAuth, requireAdmin, async (req, res) => {
   const { userId } = req.params;

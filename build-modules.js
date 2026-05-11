@@ -115,7 +115,10 @@ ${sharedCSS}
     <span class="header-title" id="header-module-title"></span>
     <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
       <span id="progressLabel" style="font-size:0.8rem;color:rgba(255,248,242,0.8);font-weight:700;white-space:nowrap;">0% voltooid</span>
-      <a href="/modules.html" class="header-back" style="color:rgba(255,248,242,0.7);font-size:0.8rem;text-decoration:none;font-weight:600;padding:6px 14px;border:1.5px solid rgba(255,248,242,0.25);border-radius:50px;white-space:nowrap;transition:all 0.15s;">&#8592; Overzicht</a>
+      ${baseSlug === 'elearning-lezing-handout'
+    ? '<button onclick="goTo(\'screen-welcome\')" class="header-back" style="color:rgba(255,248,242,0.7);font-size:0.8rem;font-weight:600;padding:6px 14px;border:1.5px solid rgba(255,248,242,0.25);border-radius:50px;white-space:nowrap;transition:all 0.15s;background:transparent;cursor:pointer;font-family:Montserrat,sans-serif;">&#8592; Overzicht</button>'
+    : '<a href="/modules.html" class="header-back" style="color:rgba(255,248,242,0.7);font-size:0.8rem;text-decoration:none;font-weight:600;padding:6px 14px;border:1.5px solid rgba(255,248,242,0.25);border-radius:50px;white-space:nowrap;transition:all 0.15s;">&#8592; Overzicht</a>'
+  }
     </div>
   </div>
   <div style="background:rgba(255,248,242,0.12);height:8px;overflow:hidden;margin-top:0.5rem;">
@@ -133,8 +136,9 @@ ${content
 
 <!-- AFSLUITQUIZ -->
 <div id="screen-quiz" class="screen">
-  <div class="quiz-header">
-    <h2>Afsluitquiz</h2>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <h2 style="font-family:'Arimo',sans-serif;font-size:1.3rem;color:#27292D;margin:0;">Afsluitquiz</h2>
+    <button onclick="slaQuizOver()" style="background:rgba(39,41,45,0.07);border:1.5px solid rgba(39,41,45,0.2);border-radius:50px;color:rgba(39,41,45,0.6);font-family:Montserrat,sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;padding:6px 16px;">Overslaan &#8594;</button>
   </div>
   <div class="content-card">
     <div id="quiz-voortgang" class="quiz-voortgang">Vraag 1 van 5</div>
@@ -231,14 +235,23 @@ function onQuizCompleted(pct) {
   }
 }
 
+function slaQuizOver() {
+  var el = document.getElementById('score-display');
+  if (el) el.textContent = '-';
+  var msg = document.getElementById('resultaat-boodschap');
+  if (msg) msg.textContent = 'Je hebt de quiz overgeslagen.';
+  goTo('screen-result');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-  // Inject module name into all module headers
+  ${baseSlug !== 'elearning-lezing-handout' ? `
   document.querySelectorAll('.module-header').forEach(function(header) {
     var nameDiv = document.createElement('div');
     nameDiv.className = 'module-naam';
     nameDiv.textContent = ${JSON.stringify(title)};
     header.insertBefore(nameDiv, header.firstChild);
   });
+  ` : ''}
   // Inject nav-buttons class into each screen (except welcome, quiz, result)
   SCHERMEN.forEach(function(id) {
     if (id === 'screen-welcome' || id === 'screen-quiz' || id === 'screen-result') return;
@@ -265,6 +278,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const outputName = file.replace('.html', '-' + today + '.html');
   fs.writeFileSync(path.join(OUTPUT_DIR, outputName), html, 'utf8');
   console.log(`Gebouwd: ${outputName}`);
+
+  // Handout ook syncen naar webapp/public/handout.html (statische route /handout)
+  if (baseSlug === 'elearning-lezing-handout') {
+    const handoutPublic = path.join(__dirname, 'webapp', 'public', 'handout.html');
+    fs.writeFileSync(handoutPublic, html, 'utf8');
+    console.log(`Gesynchroniseerd: webapp/public/handout.html`);
+  }
 }
 
 console.log('\nKlaar!');

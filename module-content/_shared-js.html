@@ -10,40 +10,12 @@ function goTo(screenId) {
   renderNavButtons(screenId);
 }
 
-var _milestoneShown = {25:false,50:false,75:false,100:false};
-
-function showMilestoneToast(pct) {
-  var msgs = {
-    25: {icon:'🔥', text:'25% klaar'},
-    50: {icon:'⚡', text:'Halverwege!'},
-    75: {icon:'🚀', text:'75%, bijna er!'},
-    100: {icon:'🏆', text:'Module voltooid!'}
-  };
-  var m = msgs[pct];
-  var el = document.createElement('div');
-  el.className = 'milestone-toast';
-  el.innerHTML = '<span class="mt-icon">'+m.icon+'</span><span><span class="mt-pct">'+pct+'%</span> &nbsp;'+m.text+'</span>';
-  document.body.appendChild(el);
-  setTimeout(function(){ el.classList.add('show'); }, 80);
-  setTimeout(function(){ el.classList.remove('show'); setTimeout(function(){ el.remove(); }, 400); }, 3200);
-}
-
 function updateProgress(screenId) {
   const idx = SCHERMEN.indexOf(screenId);
   const pct = idx < 0 ? 100 : Math.round((idx / (SCHERMEN.length - 1)) * 100);
   const bar = document.getElementById('progressBar');
   bar.style.width = pct + '%';
   document.getElementById('progressLabel').textContent = pct + '% voltooid';
-  // Milestone toasts (niet op welkomstscherm)
-  if (idx > 0) {
-    [25, 50, 75, 100].forEach(function(m) {
-      if (pct >= m && !_milestoneShown[m]) {
-        _milestoneShown[m] = true;
-        setTimeout(function(){ showMilestoneToast(m); }, 600);
-      }
-    });
-  }
-  // Shimmer on completion
   if (pct >= 100) { bar.classList.add('shimmer'); } else { bar.classList.remove('shimmer'); }
 }
 

@@ -111,12 +111,20 @@
       <div class="spinner-wrap"><div class="spinner"></div></div>
     </div>
 
-    <!-- SUCCES -->
+    <!-- SUCCES: normale registratie -->
     <div id="successState" style="display:none;">
       <div class="icon">✅</div>
       <p class="title">E-mail bevestigd!</p>
       <p class="sub">Je account is geactiveerd. Je wordt doorgestuurd naar de betaalpagina.</p>
       <a href="/pricing.html" class="btn">Naar de betaalpagina</a>
+    </div>
+
+    <!-- SUCCES: uitgenodigd door admin -->
+    <div id="successInviteState" style="display:none;">
+      <div class="icon">✅</div>
+      <p class="title">Account aangemaakt!</p>
+      <p class="sub">Je wachtwoord is ingesteld. Je wordt doorgestuurd naar de e-learning.</p>
+      <a href="/modules.html" class="btn">Naar de modules</a>
     </div>
 
     <!-- VERLOPEN LINK -->
@@ -194,6 +202,8 @@ async function init() {
       return;
     }
 
+    const isInvite = params.get('type') === 'invite';
+
     // PKCE flow: wissel ?code= in voor sessie (met clock skew compensatie)
     if (code) {
       const { error } = await withClockSync(() => _supabase.auth.exchangeCodeForSession(code));
@@ -203,15 +213,19 @@ async function init() {
         show(isExpired ? 'expiredState' : 'invalidState');
         return;
       }
-      show('successState');
-      setTimeout(() => { window.location.href = '/pricing.html'; }, 2500);
+      if (isInvite) {
+        show('successInviteState');
+        setTimeout(() => { window.location.href = '/modules.html'; }, 2500);
+      } else {
+        show('successState');
+        setTimeout(() => { window.location.href = '/pricing.html'; }, 2500);
+      }
       return;
     }
 
     // Implicit flow: hash met access_token
     const hash = window.location.hash;
-    if (hash.includes('access_token') && hash.includes('type=signup')) {
-      // Wacht op SIGNED_IN event, maximaal 5 seconden
+    if (hash.includes('access_token') && (hash.includes('type=signup') || hash.includes('type=invite'))) {
       const signedIn = await new Promise(resolve => {
         const { data: { subscription } } = _supabase.auth.onAuthStateChange((event) => {
           if (event === 'SIGNED_IN') {
@@ -222,8 +236,10 @@ async function init() {
         setTimeout(() => { subscription.unsubscribe(); resolve(false); }, 5000);
       });
       if (signedIn) {
-        show('successState');
-        setTimeout(() => { window.location.href = '/pricing.html'; }, 2500);
+        const dest = isInvite || hash.includes('type=invite') ? '/modules.html' : '/pricing.html';
+        const stateId = (isInvite || hash.includes('type=invite')) ? 'successInviteState' : 'successState';
+        show(stateId);
+        setTimeout(() => { window.location.href = dest; }, 2500);
         return;
       }
     }
@@ -238,10 +254,9 @@ async function init() {
 }
 
 function show(id) {
-  document.getElementById('loadingState').style.display = 'none';
-  document.getElementById('successState').style.display = 'none';
-  document.getElementById('expiredState').style.display = 'none';
-  document.getElementById('invalidState').style.display = 'none';
+  ['loadingState','successState','successInviteState','expiredState','invalidState'].forEach(s => {
+    document.getElementById(s).style.display = 'none';
+  });
   document.getElementById(id).style.display = 'block';
 }
 

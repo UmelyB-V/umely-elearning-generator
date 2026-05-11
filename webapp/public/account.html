@@ -504,10 +504,45 @@
     <div class="content-section" id="section-gebruikers">
       <div id="adminSection" style="display:none;">
         <div class="section-card">
-          <div class="section-card-title">Gebruikersbeheer</div>
+          <div class="section-card-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <span>Gebruikersbeheer</span>
+            <button class="btn-sm btn-primary" onclick="openAddUserModal()">+ Gebruiker toevoegen</button>
+          </div>
           <div class="admin-card">
             <div id="usersTable" class="loading">Laden...</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: gebruiker toevoegen -->
+    <div id="addUserModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+      <div style="background:white;border-radius:16px;padding:2rem;width:100%;max-width:420px;margin:1rem;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+        <h3 style="font-family:'Arimo',sans-serif;margin:0 0 1.25rem;color:#27292D;font-size:1.2rem;">Gebruiker toevoegen</h3>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <div>
+            <label style="font-size:0.82rem;font-weight:700;color:#666;display:block;margin-bottom:0.3rem;">E-mailadres</label>
+            <input id="addUserEmail" type="email" placeholder="naam@bedrijf.nl" style="width:100%;box-sizing:border-box;padding:10px 14px;border:1.5px solid #E0E0E0;border-radius:8px;font-family:Montserrat,sans-serif;font-size:0.9rem;outline:none;">
+          </div>
+          <div>
+            <label style="font-size:0.82rem;font-weight:700;color:#666;display:block;margin-bottom:0.3rem;">Toegang</label>
+            <select id="addUserStatus" style="width:100%;box-sizing:border-box;padding:10px 14px;border:1.5px solid #E0E0E0;border-radius:8px;font-family:Montserrat,sans-serif;font-size:0.9rem;background:white;outline:none;">
+              <option value="active">Actief (volledige toegang)</option>
+              <option value="inactive">Inactief (geen toegang)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.82rem;font-weight:700;color:#666;display:block;margin-bottom:0.3rem;">Rol</label>
+            <select id="addUserRole" style="width:100%;box-sizing:border-box;padding:10px 14px;border:1.5px solid #E0E0E0;border-radius:8px;font-family:Montserrat,sans-serif;font-size:0.9rem;background:white;outline:none;">
+              <option value="user">Gebruiker</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <p id="addUserMsg" style="font-size:0.85rem;margin:0;min-height:1.2em;"></p>
+        </div>
+        <div style="display:flex;gap:0.75rem;margin-top:1.25rem;">
+          <button onclick="closeAddUserModal()" style="flex:1;padding:10px;border:1.5px solid #E0E0E0;border-radius:50px;background:none;font-family:Montserrat,sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;color:#666;">Annuleren</button>
+          <button onclick="submitAddUser()" id="addUserBtn" style="flex:1;padding:10px;border:none;border-radius:50px;background:linear-gradient(135deg,#FF8514,#FF4D00);color:white;font-family:Montserrat,sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;">Uitnodigen</button>
         </div>
       </div>
     </div>
@@ -1110,6 +1145,58 @@ async function deleteUser(userId, email) {
     loadUsers();
   } catch (e) {
     alert(e.message);
+  }
+}
+
+function openAddUserModal() {
+  document.getElementById('addUserEmail').value = '';
+  document.getElementById('addUserStatus').value = 'active';
+  document.getElementById('addUserRole').value = 'user';
+  document.getElementById('addUserMsg').textContent = '';
+  document.getElementById('addUserMsg').style.color = '';
+  document.getElementById('addUserModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('addUserEmail').focus(), 50);
+}
+
+function closeAddUserModal() {
+  document.getElementById('addUserModal').style.display = 'none';
+}
+
+async function submitAddUser() {
+  const email = document.getElementById('addUserEmail').value.trim();
+  const status = document.getElementById('addUserStatus').value;
+  const role = document.getElementById('addUserRole').value;
+  const msg = document.getElementById('addUserMsg');
+  const btn = document.getElementById('addUserBtn');
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.textContent = 'Voer een geldig e-mailadres in.';
+    msg.style.color = '#B91C1C';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Bezig...';
+  msg.textContent = '';
+
+  try {
+    const res = await fetch('/api/users/invite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
+      body: JSON.stringify({ email, subscription_status: status, role })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Uitnodigen mislukt.');
+    msg.textContent = 'Uitnodiging verstuurd naar ' + email;
+    msg.style.color = '#16a34a';
+    loadUsers();
+    setTimeout(closeAddUserModal, 1500);
+  } catch (e) {
+    msg.textContent = e.message;
+    msg.style.color = '#B91C1C';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Uitnodigen';
   }
 }
 

@@ -589,12 +589,23 @@
     <h2>NotebookLM: jouw eigen kennisbank</h2>
   </div>
 
-  <div class="content-card">
+  <div style="margin-bottom:1rem;">
+    <select onchange="if(this.value){var el=document.getElementById(this.value);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});this.value='';}" style="width:100%;padding:0.65rem 1rem;border:1.5px solid rgba(255,133,20,0.35);border-radius:8px;font-family:Montserrat,sans-serif;font-size:0.9rem;font-weight:600;color:#27292D;background:#FFF8F2;cursor:pointer;appearance:auto;">
+      <option value="">Spring naar sectie...</option>
+      <option value="nlm-sec-wat">Wat is NotebookLM?</option>
+      <option value="nlm-sec-functies">Wat kun je ermee?</option>
+      <option value="nlm-sec-account">Account aanmaken</option>
+      <option value="nlm-sec-aanlaan">Aan de slag: notebook aanmaken</option>
+      <option value="nlm-sec-tip">Praktijkvoorbeeld</option>
+    </select>
+  </div>
+
+  <div id="nlm-sec-wat" class="content-card">
     <p>NotebookLM is Google's AI-notitie- en onderzoeksplatform waarmee je eigen documenten koppelt aan een AI-assistent. Je uploadt jouw rapporten, beleidsstukken, presentaties of artikelen, en NotebookLM wordt er een slimme gesprekspartner over.</p>
     <p style="margin-top:0.75rem;">Alles is gebaseerd op de bronnen die <em>jij</em> uploadt. NotebookLM baseert zijn antwoorden uitsluitend op die bronnen en geeft bij elk antwoord een verwijzing terug naar de passage. Dat maakt het veel betrouwbaarder dan een gewone AI-chat.</p>
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
+  <div id="nlm-sec-functies" class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.6rem;">Wat kun je ermee?</h3>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
       <div style="background:rgba(255,133,20,0.06);border:1px solid rgba(255,133,20,0.2);border-radius:10px;padding:0.9rem;">
@@ -616,7 +627,7 @@
     </div>
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
+  <div id="nlm-sec-account" class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Account aanmaken</h3>
     <div class="stappen-lijst">
       <div class="stap-item">
@@ -636,7 +647,7 @@
     </div>
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
+  <div id="nlm-sec-aanlaan" class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Aan de slag: notebook aanmaken</h3>
     <div class="stappen-lijst">
       <div class="stap-item">
@@ -670,7 +681,7 @@
     </div>
   </div>
 
-  <div class="tip-box">
+  <div id="nlm-sec-tip" class="tip-box">
     <strong>Praktijkvoorbeeld:</strong> upload vijf klantrapportages, stel de vraag "Wat zijn de drie terugkerende knelpunten in alle rapporten?" en laat NotebookLM een managementbriefing schrijven. Genereer daarna een audio-overzicht om onderweg te beluisteren. Dit kost je 10 minuten in plaats van een halve dag lezen.
   </div>
 
@@ -684,35 +695,72 @@
     <h2>Claude: jouw AI-assistent voor dagelijks werk</h2>
   </div>
 
+  <div style="margin-bottom:1rem;">
+    <select onchange="if(this.value){var el=document.getElementById(this.value);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});this.value='';}" style="width:100%;padding:0.65rem 1rem;border:1.5px solid rgba(255,133,20,0.35);border-radius:8px;font-family:Montserrat,sans-serif;font-size:0.9rem;font-weight:600;color:#27292D;background:#FFF8F2;cursor:pointer;appearance:auto;">
+      <option value="">Spring naar sectie...</option>
+      <option value="claude-sec-waarom">Waarom Claude?</option>
+      <option value="claude-sec-account">Account aanmaken</option>
+      <option value="claude-sec-functies">Wat kun je met Claude doen?</option>
+      <option value="claude-sec-plannen">Zakelijk gebruik: welk plan?</option>
+      <option value="claude-sec-projects">Extra: Projects</option>
+      <option value="claude-sec-tool-keuze">Welke tool kies je wanneer?</option>
+    </select>
+  </div>
+
   <div class="content-card">
     <p>Claude is een AI-assistent gemaakt door Anthropic, een Amerikaans AI-veiligheidsbedrijf. Claude is ontworpen om eerlijk, behulpzaam en veilig te zijn. Je gebruikt Claude via je browser of de app op je telefoon of computer: ga naar claude.ai om te beginnen.</p>
     <p style="margin-top:0.75rem;">Claude is bijzonder sterk in redeneren, nuance en het verwerken van lange documenten. Dat maakt Claude de beste keuze voor schrijven, analyseren, samenvatten en sparren.</p>
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
-    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Waarom Claude?</h3>
-    <p style="margin-bottom:0.75rem;">Claude verschilt op vier punten van andere AI-tools:</p>
+  <div id="claude-sec-waarom" class="content-card" style="margin-top:1rem;">
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Waarom Claude? Vier redenen</h3>
+    <p style="margin-bottom:0.75rem;">Claude gaat verder dan ChatGPT op vier concrete punten:</p>
     <div style="display:grid;gap:0.6rem;">
-      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
-        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">01</span>
-        <div><strong>Sterker in redeneren en lange context</strong><p style="font-size:0.88rem;margin-top:0.25rem;">Claude heeft een groot contextvenster en is uitzonderlijk sterk in nuance, redeneren en het verwerken van lange documenten. Plak een compleet rapport erin en Claude begrijpt de samenhang.</p></div>
+      <div style="background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+          <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;">01</span>
+          <strong>Sterker base-model</strong>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+          <div style="background:rgba(39,41,45,0.05);border-radius:6px;padding:0.6rem;font-size:0.82rem;"><span style="font-weight:700;color:rgba(39,41,45,0.5);">ChatGPT</span><br>Sterk algemeen model, maar minder goed in nuance, redeneren en lange context.</div>
+          <div style="background:#27292D;border-radius:6px;padding:0.6rem;font-size:0.82rem;color:#FFF8F2;"><span style="font-weight:700;color:#FF8514;">Claude</span><br>Grotere context window. Uitzonderlijk sterk in redeneren, nuance en lange documenten.</div>
+        </div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
-        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">02</span>
-        <div><strong>Personalisatie via Skills</strong><p style="font-size:0.88rem;margin-top:0.25rem;">Claude Skills zijn voorinstellingen die Claude volledig trainen op hoe jij werkt: jouw toon, jouw format, jouw werkwijze. Zo hoef je je stijl niet elke keer opnieuw uit te leggen.</p></div>
+      <div style="background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+          <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;">02</span>
+          <strong>Personalisatie</strong>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+          <div style="background:rgba(39,41,45,0.05);border-radius:6px;padding:0.6rem;font-size:0.82rem;"><span style="font-weight:700;color:rgba(39,41,45,0.5);">ChatGPT</span><br>Beperkte aanpasbaarheid via system prompts en GPT-builder.</div>
+          <div style="background:#27292D;border-radius:6px;padding:0.6rem;font-size:0.82rem;color:#FFF8F2;"><span style="font-weight:700;color:#FF8514;">Claude</span><br>Claude Skills: volledig getraind op hoe jij werkt, jouw toon, format en werkwijze.</div>
+        </div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
-        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">03</span>
-        <div><strong>Verbonden met je computer en software</strong><p style="font-size:0.88rem;margin-top:0.25rem;">Via Claude Connectors en Cowork koppel je Claude direct aan je eigen software en computer. Claude leest je inbox, bekijkt je agenda en kan taken uitvoeren in jouw apps.</p></div>
+      <div style="background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+          <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;">03</span>
+          <strong>Integraties en Connectors</strong>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+          <div style="background:rgba(39,41,45,0.05);border-radius:6px;padding:0.6rem;font-size:0.82rem;"><span style="font-weight:700;color:rgba(39,41,45,0.5);">ChatGPT</span><br>GPT Actions beschikbaar, maar beperkt ecosysteem en moeilijker te configureren.</div>
+          <div style="background:#27292D;border-radius:6px;padding:0.6rem;font-size:0.82rem;color:#FFF8F2;"><span style="font-weight:700;color:#FF8514;">Claude</span><br>Claude Connectors + Cowork: directe koppeling met software én jouw eigen computer.</div>
+        </div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
-        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">04</span>
-        <div><strong>Native in Word, Excel en PowerPoint</strong><p style="font-size:0.88rem;margin-top:0.25rem;">Claude werkt direct binnen Microsoft Office-applicaties. Geen kopieren en plakken: Claude zit in je bestaande werkomgeving.</p></div>
+      <div style="background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+          <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;">04</span>
+          <strong>Documenten: PPT, Excel, Word</strong>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+          <div style="background:rgba(39,41,45,0.05);border-radius:6px;padding:0.6rem;font-size:0.82rem;"><span style="font-weight:700;color:rgba(39,41,45,0.5);">ChatGPT</span><br>Kan beperkt werken met documenten, geen native Office-integratie.</div>
+          <div style="background:#27292D;border-radius:6px;padding:0.6rem;font-size:0.82rem;color:#FFF8F2;"><span style="font-weight:700;color:#FF8514;">Claude</span><br>Native Claude in Excel, Word en PowerPoint. Werkt direct in jouw bestaande tools.</div>
+        </div>
       </div>
     </div>
+    <p style="margin-top:0.75rem;font-size:0.85rem;color:rgba(39,41,45,0.6);">Claude biedt meer controle, betere personalisatie en diepere integratie voor organisaties die AI serieus nemen.</p>
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
+  <div id="claude-sec-account" class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Account aanmaken</h3>
     <div class="stappen-lijst">
       <div class="stap-item">
@@ -742,7 +790,7 @@
     </div>
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
+  <div id="claude-sec-functies" class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Wat kun je met Claude doen?</h3>
     <div style="display:grid;gap:0.6rem;">
       <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
@@ -768,44 +816,56 @@
     </div>
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
+  <div id="claude-sec-plannen" class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Zakelijk gebruik: welk plan kies je?</h3>
-    <p>Gebruik je Claude voor klantdata of gevoelige bedrijfsinformatie? Dan maakt het verschil welk account je gebruikt.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-top:0.75rem;">
-      <div style="background:rgba(255,133,20,0.06);border:1px solid rgba(255,133,20,0.2);border-radius:10px;padding:1rem;">
-        <p style="font-weight:700;margin-bottom:0.5rem;font-family:'Arimo',sans-serif;">Gratis / Pro</p>
-        <ul style="padding-left:1.1rem;font-size:0.86rem;line-height:1.9;color:#2A221A;">
-          <li>Consumentenaccount</li>
-          <li>Data kan worden gebruikt voor AI-training</li>
-          <li>Geen verwerkersovereenkomst</li>
-          <li>Niet geschikt voor gevoelige bedrijfsdata</li>
-        </ul>
-      </div>
-      <div style="background:#27292D;border-radius:10px;padding:1rem;">
-        <p style="font-weight:700;color:#FF8514;margin-bottom:0.5rem;font-family:'Arimo',sans-serif;">Teams (aanbevolen)</p>
-        <ul style="padding-left:1.1rem;font-size:0.86rem;line-height:1.9;color:#FFF8F2;opacity:0.92;">
-          <li>Zakelijk account</li>
-          <li>Data standaard niet gebruikt voor training (vastgelegd in gebruiksvoorwaarden)</li>
-          <li>DPA beschikbaar op aanvraag (benodigd voor AVG-compliance)</li>
-          <li>ISO 27001 en SOC 2 gecertificeerd</li>
-        </ul>
-      </div>
-      <div style="background:#27292D;border-radius:10px;padding:1rem;">
-        <p style="font-weight:700;color:#FF8514;margin-bottom:0.5rem;font-family:'Arimo',sans-serif;">Enterprise</p>
-        <ul style="padding-left:1.1rem;font-size:0.86rem;line-height:1.9;color:#FFF8F2;opacity:0.92;">
-          <li>Voor grotere organisaties</li>
-          <li>Uitgebreide beveiligings- en compliancecontroles</li>
-          <li>SSO, auditlogs en beheerde toegang</li>
-          <li>Maatwerk SLA en ondersteuning</li>
-        </ul>
-      </div>
-    </div>
+    <p style="margin-bottom:0.75rem;">Gebruik je Claude voor klantdata of gevoelige bedrijfsinformatie? Dan maakt het verschil welk account je gebruikt. <strong>Zakelijk klantdata verwerken zonder Teams-abonnement is juridisch onvoldoende.</strong></p>
+    <table class="vergelijk-tabel" style="font-size:0.82rem;">
+      <thead>
+        <tr>
+          <th>Criterium</th>
+          <th>Pro (consument)</th>
+          <th style="color:#FFD964;">Teams (aanbevolen)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Juridische rol Anthropic</strong></td>
+          <td>Verwerkingsverantwoordelijke (consumentenrecht)</td>
+          <td>Verwerker, zakelijke verantwoordelijkheid bij jou</td>
+        </tr>
+        <tr>
+          <td><strong>Verwerkersovereenkomst (DPA)</strong></td>
+          <td>Niet beschikbaar</td>
+          <td>Automatisch inbegrepen incl. SCC's voor VS-transfers</td>
+        </tr>
+        <tr>
+          <td><strong>Data voor AI-training</strong></td>
+          <td>Mogelijk (opt-out vereist)</td>
+          <td>Nooit, contractueel vastgelegd</td>
+        </tr>
+        <tr>
+          <td><strong>Dataretentie</strong></td>
+          <td>Onduidelijk / consumentenbeleid</td>
+          <td>30 dagen (UI) of 7 dagen (API), dan automatisch gewist</td>
+        </tr>
+        <tr>
+          <td><strong>Certificeringen</strong></td>
+          <td>Niet van toepassing</td>
+          <td>ISO 27001, ISO 42001, SOC 2 Type I en II</td>
+        </tr>
+        <tr>
+          <td><strong>AVG-compliance</strong></td>
+          <td>Onvoldoende voor zakelijk klantdata</td>
+          <td>Solide basis voor zakelijke contexten</td>
+        </tr>
+      </tbody>
+    </table>
     <div class="tip-box waarschuwing" style="margin-top:0.75rem;">
-      <strong>Conclusie:</strong> upload geen klant- of persoonsdata via Gratis of Pro. Voor organisaties die met gevoelige informatie werken, is Teams of Enterprise de veilige keuze. Schakel voor AVG-compliance ook de DPA in via Anthropic.
+      <strong>Conclusie:</strong> upload geen klant- of persoonsdata via Gratis of Pro. Voor organisaties die met gevoelige informatie werken, is Teams of Enterprise de veilige keuze. Zie claude.ai voor actuele prijzen.
     </div>
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
+  <div id="claude-sec-projects" class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Extra: Projects</h3>
     <p>Met Projects in Claude kun je een vaste context instellen die Claude in elk gesprek onthoudt. Denk aan je functie, je bedrijf, je schrijfstijl of klantinformatie. Zo hoef je niet elke keer opnieuw uit te leggen wie je bent en wat je doet.</p>
     <p style="margin-top:0.5rem;">Je kunt ook documenten toevoegen aan een Project, zodat Claude altijd toegang heeft tot jouw eigen informatie.</p>
@@ -819,7 +879,7 @@
     <strong>Gebruik Claude niet voor:</strong> actuele nieuwsfeiten, live marktinformatie of recente gebeurtenissen. Voor die situaties is <strong>Perplexity</strong> de betere keuze: die zoekt live op het internet met bronvermelding.
   </div>
 
-  <div class="content-card" style="margin-top:1rem;">
+  <div id="claude-sec-tool-keuze" class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Welke tool kies je wanneer?</h3>
     <p>Gebruik dit overzicht als snelle naslag om de juiste tool te kiezen.</p>
     <div style="display:grid;gap:0.5rem;margin-top:0.75rem;">
@@ -888,12 +948,64 @@
   </div>
 
   <div class="content-card" style="margin-top:1rem;">
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.5rem;">Voorbeeldskills</h3>
+    <p style="font-size:0.9rem;margin-bottom:0.75rem;">Bijna al het repeterende werk dat jij achter een toetsenbord doet, is een kandidaat voor een Skill. Voorbeelden:</p>
+    <div style="display:grid;gap:0.5rem;">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0.75rem;align-items:start;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;white-space:nowrap;">PPT skill</span>
+        <div style="font-size:0.85rem;"><strong>"Maak een deck over Q3 resultaten in onze huisstijl"</strong><br><span style="color:rgba(39,41,45,0.6);">Slides in exacte huisstijl, iconen en AI-afbeeldingen, volledig geautomatiseerd.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0.75rem;align-items:start;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;white-space:nowrap;">Offerte skill</span>
+        <div style="font-size:0.85rem;"><strong>"Schrijf een offerte voor klant X, budget 8k, 3 maanden"</strong><br><span style="color:rgba(39,41,45,0.6);">Jouw tarieven en tone, klantgericht geformuleerd, direct te versturen.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0.75rem;align-items:start;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;white-space:nowrap;">Tone of voice</span>
+        <div style="font-size:0.85rem;"><strong>"Schrijf dit artikel in onze merkstijl: helder, direct, warm"</strong><br><span style="color:rgba(39,41,45,0.6);">Merkidentiteit bewaakt, consistent over alle content en kanalen.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0.75rem;align-items:start;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;white-space:nowrap;">E-mail skill</span>
+        <div style="font-size:0.85rem;"><strong>"Follow-up naar prospect die 2 weken stil is"</strong><br><span style="color:rgba(39,41,45,0.6);">Jouw schrijfstijl, correcte formaliteit, direct te versturen.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0.75rem;align-items:start;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;white-space:nowrap;">Social media</span>
+        <div style="font-size:0.85rem;"><strong>"LinkedIn post over onze nieuwe dienst, zakelijk maar menselijk"</strong><br><span style="color:rgba(39,41,45,0.6);">Per platform afgestemd, jouw stem niet AI-klank, haakjes en structuur.</span></div>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:0.75rem;">
+      <strong>Starten:</strong> gebruik de Claude Skill Creator in de Claude-app. Beschrijf wat je nodig hebt, test en geef feedback. Na een paar iteraties heb je een Skill die elke keer raak is.
+    </div>
+  </div>
+
+  <div class="content-card" style="margin-top:1rem;">
     <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Cowork: taken delegeren aan Claude</h3>
     <p style="margin-bottom:0.75rem;">Cowork is een functie in de Claude desktop-app waarmee Claude zelfstandig taken uitvoert op jouw computer. Je geeft een opdracht, Claude doet het werk: bestanden doorzoeken, tekst verwerken, gegevens samenvoegen.</p>
     <div style="background:#27292D;border-radius:10px;padding:1rem;margin-top:0.5rem;">
       <p style="color:#FF8514;font-weight:700;font-size:0.88rem;margin-bottom:0.5rem;font-family:'Arimo',sans-serif;">Voorbeeld</p>
       <p style="color:#FFF8F2;font-size:0.9rem;line-height:1.6;">"Zoek alle e-mails van klant X uit de afgelopen maand, maak een overzicht van de openstaande actiepunten en sla dat op als een tekstbestand op mijn bureaublad."</p>
       <p style="color:rgba(255,248,242,0.6);font-size:0.83rem;margin-top:0.5rem;">Claude voert dit stap voor stap uit, vraagt bevestiging bij twijfel en rapporteert wat hij heeft gedaan.</p>
+    </div>
+
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.1rem;margin:1.25rem 0 0.75rem;">Jouw dagplanning staat klaar</h3>
+    <p style="margin-bottom:0.75rem;font-size:0.9rem;">Een concreet voorbeeld: elke ochtend automatisch een dagplanning, samengesteld uit drie bronnen tegelijk.</p>
+    <div style="display:grid;gap:0.5rem;margin-bottom:1rem;">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0.75rem;align-items:start;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.8rem;padding:0.2rem 0.6rem;border-radius:6px;white-space:nowrap;">1 E-mail</span>
+        <div style="font-size:0.87rem;">Openstaande e-mails gelezen en samengevat, met een markering van wat vandaag actie vereist.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0.75rem;align-items:start;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.8rem;padding:0.2rem 0.6rem;border-radius:6px;white-space:nowrap;">2 Agenda</span>
+        <div style="font-size:0.87rem;">Bestaande afspraken en tijdblokken al in beeld, overlappingen gesignaleerd.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0.75rem;align-items:start;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.8rem;padding:0.2rem 0.6rem;border-radius:6px;white-space:nowrap;">3 ClickUp</span>
+        <div style="font-size:0.87rem;">Openstaande taken en deadlines van vandaag, geprioriteerd op urgentie.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+      <span style="display:inline-flex;align-items:center;gap:0.4rem;background:#27292D;color:#FFF8F2;font-size:0.82rem;font-weight:600;padding:0.35rem 0.8rem;border-radius:20px;">&#10003; Elke ochtend automatisch</span>
+      <span style="display:inline-flex;align-items:center;gap:0.4rem;background:#27292D;color:#FFF8F2;font-size:0.82rem;font-weight:600;padding:0.35rem 0.8rem;border-radius:20px;">&#10003; Geen handmatig plannen</span>
+      <span style="display:inline-flex;align-items:center;gap:0.4rem;background:#27292D;color:#FFF8F2;font-size:0.82rem;font-weight:600;padding:0.35rem 0.8rem;border-radius:20px;">&#10003; Volledig gesynchroniseerd</span>
     </div>
   </div>
 
@@ -964,48 +1076,55 @@
   </div>
 
   <div class="content-card" style="margin-top:1rem;">
-    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">De vaardigheden die je nu nodig hebt</h3>
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">De 3 skills die nu tellen</h3>
     <div style="display:grid;gap:0.6rem;">
       <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
         <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">01</span>
         <div>
-          <strong>Kaders stellen</strong>
-          <p style="font-size:0.88rem;margin-top:0.25rem;">Jij bepaalt het doel, de doelgroep, de toon, het format en de lengte. Hoe scherper jouw kader, hoe bruikbaarder het resultaat. Een goede brief is meer waard dan een vage prompt.</p>
+          <strong>Redactioneel strategisch oordeel</strong>
+          <p style="font-size:0.78rem;font-weight:700;color:#FF8514;margin:0.2rem 0 0.35rem;text-transform:uppercase;letter-spacing:0.05em;">Sturen op kwaliteit en richting</p>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">Niet alles wat AI maakt is goed genoeg. Jij bepaalt wat de boodschap is, of de output klopt en wat er mist. Dat vraagt domeinkennis én het lef om bij te sturen.</p>
         </div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
         <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">02</span>
         <div>
-          <strong>Kwaliteitsoordeel</strong>
-          <p style="font-size:0.88rem;margin-top:0.25rem;">Je moet weten wat goed is, ongeacht hoe het gemaakt is. Klopt de redenering? Past de toon? Is dit juridisch houdbaar? Vakinhoudelijke kennis blijft onvervangbaar.</p>
+          <strong>Interpersoonlijke vaardigheden</strong>
+          <p style="font-size:0.78rem;font-weight:700;color:#FF8514;margin:0.2rem 0 0.35rem;text-transform:uppercase;letter-spacing:0.05em;">Mensen meenemen en verbinden</p>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">AI vervangt geen vertrouwen. Samenwerken, draagvlak creëren en helder communiceren blijven puur mensenwerk, ook als AI de helft schrijft.</p>
         </div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
         <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">03</span>
         <div>
-          <strong>Gerichte feedback geven</strong>
-          <p style="font-size:0.88rem;margin-top:0.25rem;">"Dit klopt niet" helpt AI niet. "De tweede alinea is te formeel voor onze doelgroep en mist een concrete vervolgstap" wel. Specifieke feedback levert betere herstelversies op.</p>
-        </div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
-        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">04</span>
-        <div>
-          <strong>Selecteren en combineren</strong>
-          <p style="font-size:0.88rem;margin-top:0.25rem;">Vraag drie versies op en kies de beste onderdelen uit elk. De inleiding van versie 1, de toon van versie 2, de conclusie van versie 3. Zo bouw je betere resultaten dan je met één poging bereikt.</p>
-        </div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
-        <span style="background:#FF8514;color:#fff;font-weight:800;font-size:0.78rem;padding:0.2rem 0.5rem;border-radius:6px;flex-shrink:0;margin-top:0.1rem;">05</span>
-        <div>
-          <strong>Systemen bouwen</strong>
-          <p style="font-size:0.88rem;margin-top:0.25rem;">Elke taak die je meer dan twee keer doet, is een systeem waard. Een Skill voor jouw schrijfstijl. Een vaste prompt voor offertes. Een Project met klantcontext. Je investeert één keer en haalt er daarna tijdwinst uit.</p>
+          <strong>Aanpassingsvermogen</strong>
+          <p style="font-size:0.78rem;font-weight:700;color:#FF8514;margin:0.2rem 0 0.35rem;text-transform:uppercase;letter-spacing:0.05em;">Meebewegen met verandering</p>
+          <p style="font-size:0.88rem;margin-top:0.25rem;">De tools veranderen continu. Professionals die snel leren, durven loslaten en openstaan voor nieuwe werkwijzen blijven relevant. Wie vasthoudt aan hoe het was, valt achter.</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="tip-box waarschuwing" style="margin-top:1rem;">
-    <strong>De valkuil:</strong> AI-output overnemen zonder te lezen. Jij blijft eindverantwoordelijk voor wat je verstuurt, publiceert of indient. Controleer altijd, ook als het er goed uitziet.
+    <strong>Jouw rol verdwijnt niet, maar hij verandert wel drastisch.</strong> AI doet het zware werk. Jij beoordeelt, stuurt bij en geeft richting. Dat betekent: overnemen zonder lezen is de grootste valkuil. Jij blijft altijd eindverantwoordelijk.
+  </div>
+
+  <div class="content-card" style="margin-top:1rem;">
+    <h3 style="font-family:'Arimo',sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Wat moet jij nu doen?</h3>
+    <div style="display:grid;gap:0.6rem;">
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="color:#FF8514;font-size:1.1rem;flex-shrink:0;">&#128640;</span>
+        <div><strong>Adopteer en experimenteer</strong><p style="font-size:0.88rem;margin-top:0.25rem;">Begin klein met AI-tools en ontdek wat werkt voor jouw organisatie. Je hoeft niet alles tegelijk.</p></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="color:#FF8514;font-size:1.1rem;flex-shrink:0;">&#128172;</span>
+        <div><strong>Leer prompten</strong><p style="font-size:0.88rem;margin-top:0.25rem;">De taal van AI leren spreken is de sleutel tot betere resultaten. Gebruik het prompt-model uit onderdeel 1 als vertrekpunt.</p></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,133,20,0.06);border-radius:8px;padding:0.75rem;">
+        <span style="color:#FF8514;font-size:1.1rem;flex-shrink:0;">&#9881;</span>
+        <div><strong>Automatiseer repeterende taken</strong><p style="font-size:0.88rem;margin-top:0.25rem;">Identificeer herhaaltaken en gebruik AI om ze sneller en foutloos te automatiseren. Elke taak die je meer dan twee keer doet, is een kandidaat.</p></div>
+      </div>
+    </div>
   </div>
 
   <div id="nav-screen-eindredacteur"></div>
