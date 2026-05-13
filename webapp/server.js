@@ -51,26 +51,34 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
       updateData.subscription_start = startDate;
     }
 
-    const { error } = await supabase
+    const { error, count } = await supabase
       .from('profiles')
       .update(updateData)
-      .eq('stripe_customer_id', subscription.customer);
+      .eq('stripe_customer_id', subscription.customer)
+      .select('id', { count: 'exact', head: true });
 
     if (error) {
       console.error('Webhook: subscription update fout:', error.message);
       return res.status(500).json({ error: 'Database update mislukt' });
     }
+    if (count === 0) {
+      console.error('Webhook: geen profiel gevonden voor stripe_customer_id:', subscription.customer);
+    }
   }
 
   if (event.type === 'customer.subscription.deleted') {
-    const { error } = await supabase
+    const { error, count } = await supabase
       .from('profiles')
       .update({ subscription_status: 'inactive', subscription_end: null })
-      .eq('stripe_customer_id', subscription.customer);
+      .eq('stripe_customer_id', subscription.customer)
+      .select('id', { count: 'exact', head: true });
 
     if (error) {
       console.error('Webhook: subscription delete fout:', error.message);
       return res.status(500).json({ error: 'Database update mislukt' });
+    }
+    if (count === 0) {
+      console.error('Webhook: geen profiel gevonden voor stripe_customer_id:', subscription.customer);
     }
   }
 
@@ -78,19 +86,24 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     if (session.mode === 'payment' && session.customer && session.payment_status === 'paid') {
-      const endDate = new Date();
+      const startDate = new Date(session.created * 1000);
+      const endDate = new Date(session.created * 1000);
       endDate.setMonth(endDate.getMonth() + 3);
-      const { error } = await supabase
+      const { error, count } = await supabase
         .from('profiles')
         .update({
           subscription_status: 'active',
-          subscription_start: new Date().toISOString(),
+          subscription_start: startDate.toISOString(),
           subscription_end: endDate.toISOString()
         })
-        .eq('stripe_customer_id', session.customer);
+        .eq('stripe_customer_id', session.customer)
+        .select('id', { count: 'exact', head: true });
       if (error) {
         console.error('Webhook: spoedcursus activatie fout:', error.message);
         return res.status(500).json({ error: 'Database update mislukt' });
+      }
+      if (count === 0) {
+        console.error('Webhook: geen profiel gevonden voor stripe_customer_id:', session.customer);
       }
     }
   }
@@ -115,7 +128,7 @@ app.use((req, res, next) => {
     "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net",
     "frame-ancestors 'none'"
   ].join('; '));
-  const origin = process.env.ALLOWED_ORIGIN || '*';
+  const origin = process.env.ALLOWED_ORIGIN || process.env.APP_URL || 'https://umely.ai';
   res.setHeader('Access-Control-Allow-Origin', origin);
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
@@ -141,6 +154,9 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, { db: { schema: 'elearning' } });
 // Aparte client met anon key voor signUp — service role key negeert emailRedirectTo
 const supabaseAuth = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+// ── Free tier: toegestane modules ─────────────────────────────────────────────
+const FREE_MODULES = new Set(['elearning-a1-wat-is-claude', 'elearning-lezing-handout']);
 
 // ── Auth middleware ──
 async function requireAuth(req, res, next) {
@@ -288,7 +304,14 @@ app.get('/modules/:slug', (req, res) => {
 <script>
 (async () => {
   const config = await fetch('/api/config').then(r => r.json());
-  const _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+  const _cs = {
+    getItem(k) { for (const c of document.cookie.split(';')) { const i = c.indexOf('='); if (i < 0) continue; if (c.slice(0, i).trim() === k) return decodeURIComponent(c.slice(i + 1)); } return null; },
+    setItem(k, v) { document.cookie = k + '=' + encodeURIComponent(v) + ';max-age=31536000;path=/;SameSite=Lax'; },
+    removeItem(k) { document.cookie = k + '=;max-age=0;path=/;SameSite=Lax'; }
+  };
+  const _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
+    auth: { persistSession: true, autoRefreshToken: true, storage: _cs }
+  });
   const { data: { session } } = await _supabase.auth.getSession();
   if (!session) {
     window.location.href = '/?redirect=' + encodeURIComponent('/modules/${slug}');
@@ -338,9 +361,6 @@ app.get('/modules/:slug', (req, res) => {
 </body>
 </html>`);
 });
-
-// ── Free tier: toegestane modules ─────────────────────────────────────────────
-const FREE_MODULES = new Set(['elearning-a1-wat-is-claude', 'elearning-lezing-handout']);
 
 // ── Subscription middleware ──
 async function requireSubscription(req, res, next) {
@@ -477,13 +497,17 @@ app.post('/api/users/invite', requireAuth, requireAdmin, async (req, res) => {
     });
     if (error) return res.status(400).json({ error: error.message });
     const userId = data.user.id;
-    await supabase.schema('elearning').from('profiles').upsert({
+    const { error: profileErr } = await supabase.schema('elearning').from('profiles').upsert({
       id: userId,
       email,
       role,
       subscription_status,
       subscription_start: subscription_status === 'active' ? new Date().toISOString() : null
     }, { onConflict: 'id' });
+    if (profileErr) {
+      console.error('Invite: profiel aanmaken mislukt:', profileErr.message);
+      return res.status(500).json({ error: 'Uitnodiging verstuurd maar profiel aanmaken mislukt: ' + profileErr.message });
+    }
     res.json({ ok: true, userId });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -512,7 +536,6 @@ app.delete('/api/users/:userId', requireAuth, requireAdmin, async (req, res) => 
 
 // ── Voortgang opslaan ──
 app.post('/api/user/progress', requireAuth, async (req, res) => {
-  console.log('[progress] POST ontvangen voor user:', req.user?.id, 'body:', JSON.stringify(req.body));
   const { module_slug, score_pct, completed } = req.body;
   if (!module_slug) return res.status(400).json({ error: 'module_slug is verplicht.' });
 
@@ -689,7 +712,14 @@ app.get('/admin/review', (req, res) => {
 <script>
 (async () => {
   const config = await fetch('/api/config').then(r => r.json());
-  const _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+  const _cs = {
+    getItem(k) { for (const c of document.cookie.split(';')) { const i = c.indexOf('='); if (i < 0) continue; if (c.slice(0, i).trim() === k) return decodeURIComponent(c.slice(i + 1)); } return null; },
+    setItem(k, v) { document.cookie = k + '=' + encodeURIComponent(v) + ';max-age=31536000;path=/;SameSite=Lax'; },
+    removeItem(k) { document.cookie = k + '=;max-age=0;path=/;SameSite=Lax'; }
+  };
+  const _supabase = supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
+    auth: { persistSession: true, autoRefreshToken: true, storage: _cs }
+  });
   const { data: { session } } = await _supabase.auth.getSession();
   if (!session) { window.location.href = '/account.html?redirect=/admin/review'; return; }
   const res = await fetch('/admin/review-data', { headers: { 'Authorization': 'Bearer ' + session.access_token } });
@@ -1101,6 +1131,7 @@ app.get('/api/user/usecase', requireAuth, async (req, res) => {
 app.post('/api/user/usecase', requireAuth, async (req, res) => {
   const { use_case } = req.body;
   if (!use_case || !use_case.trim()) return res.status(400).json({ error: 'use_case is verplicht.' });
+  if (use_case.trim().length > 2000) return res.status(400).json({ error: 'use_case mag maximaal 2000 tekens zijn.' });
   const { error } = await supabase
     .from('profiles')
     .upsert({ id: req.user.id, email: req.user.email, use_case: use_case.trim() }, { onConflict: 'id' });

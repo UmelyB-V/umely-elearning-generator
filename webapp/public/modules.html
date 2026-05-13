@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="/logo-small.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>E-learning Bibliotheek | Umely</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
@@ -21,7 +21,7 @@
   --gradient: linear-gradient(135deg, #FF8514, #FF4D00);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', system-ui, sans-serif; background: var(--warm-white); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
+body { font-family: 'Montserrat', system-ui, sans-serif; background: var(--warm-white); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
 html, body { overflow-x: hidden; }
 
 /* ── AUTH OVERLAY ── */
@@ -32,7 +32,7 @@ html, body { overflow-x: hidden; }
 .auth-card .auth-logo p { font-size: 14px; color: var(--gray-text); }
 .auth-field { margin-bottom: 14px; }
 .auth-field label { display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
-.auth-field input { width: 100%; padding: 12px 16px; border: 2px solid var(--gray-border); border-radius: 10px; font-family: 'Inter', system-ui, sans-serif; font-size: 16px; color: var(--charcoal); outline: none; transition: border-color 0.15s; }
+.auth-field input { width: 100%; padding: 12px 16px; border: 2px solid var(--gray-border); border-radius: 10px; font-family: 'Montserrat', system-ui, sans-serif; font-size: 16px; color: var(--charcoal); outline: none; transition: border-color 0.15s; }
 .auth-field input:focus { border-color: var(--amber); }
 #authError { display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; color: #991B1B; }
 #loginBtn { width: 100%; padding: 14px; background: var(--gradient); color: white; border: none; border-radius: 50px; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; margin-top: 6px; }
@@ -111,7 +111,7 @@ header { background: var(--charcoal); height: 64px; padding: 0 24px; display: fl
 .section-title { font-size: 17px; font-weight: 800; color: var(--charcoal); }
 .search-input-wrap { position: relative; }
 .search-input-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
-#searchInput { padding: 8px 14px 8px 36px; border: 1.5px solid var(--gray-border); border-radius: 50px; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; color: var(--charcoal); background: white; outline: none; width: 200px; transition: border-color 0.15s; }
+#searchInput { padding: 8px 14px 8px 36px; border: 1.5px solid var(--gray-border); border-radius: 50px; font-family: 'Montserrat', system-ui, sans-serif; font-size: 13px; color: var(--charcoal); background: white; outline: none; width: 200px; transition: border-color 0.15s; }
 #searchInput:focus { border-color: var(--amber); }
 #searchInput::placeholder { color: #BBB; }
 
@@ -192,7 +192,7 @@ header { background: var(--charcoal); height: 64px; padding: 0 24px; display: fl
 .newsletter-modal h2 { font-size: 21px; font-weight: 800; color: var(--charcoal); margin-bottom: 8px; }
 .newsletter-modal p { font-size: 14px; color: var(--gray-text); line-height: 1.6; margin-bottom: 20px; }
 .nl-email-row { display: flex; gap: 8px; margin-bottom: 12px; }
-.nl-email-row input { flex: 1; padding: 12px 16px; border: 2px solid var(--gray-border); border-radius: 50px; font-size: 14px; font-family: 'Inter', system-ui, sans-serif; color: var(--charcoal); outline: none; transition: border-color 0.15s; }
+.nl-email-row input { flex: 1; padding: 12px 16px; border: 2px solid var(--gray-border); border-radius: 50px; font-size: 14px; font-family: 'Montserrat', system-ui, sans-serif; color: var(--charcoal); outline: none; transition: border-color 0.15s; }
 .nl-email-row input:focus { border-color: var(--amber); }
 .nl-submit { padding: 12px 22px; background: var(--gradient); color: white; border: none; border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
 .nl-submit:hover { opacity: 0.88; }
@@ -608,6 +608,7 @@ let _session  = null;
 let allModules = [];
 let activeFilter = 'all';
 let userRole = 'user';
+let _gridListenerAttached = false;
 
 // ── PROGRESS TRACKING ──
 function getOpened() { try { return JSON.parse(localStorage.getItem(OPENED_KEY)) || []; } catch { return []; } }
@@ -890,6 +891,8 @@ async function loadModules() {
     renderGrid();
 
     // Event delegation voor module-klik en admin-acties (eenmalig registreren)
+    if (!_gridListenerAttached) {
+    _gridListenerAttached = true;
     document.getElementById('grid').addEventListener('click', (e) => {
       // Admin: rename
       const renameBtn = e.target.closest('[data-action="rename"]');
@@ -913,6 +916,7 @@ async function loadModules() {
         trackOpen(link.dataset.slug, link.dataset.title, link.dataset.url, link.dataset.cat);
       }
     });
+    } // end _gridListenerAttached
 
     document.getElementById('searchInput').style.display = '';
     document.getElementById('statsRow').style.display = 'grid';
@@ -1025,7 +1029,7 @@ function saveOpenCats() {
 function renderModuleCard(m) {
   const cat = getCat(m.slug) || 'a';
   const label = getCatLabel(m.slug);
-  const wasOpened = !isCompleted(m.slug) && supabaseProgress[m.slug] != null;
+  const wasOpened = !isCompleted(m.slug) && supabaseProgress[normalizeSlug(m.slug)] != null;
   const done = isCompleted(m.slug);
   const score = getScore(m.slug);
   const barWidth = done ? (score ?? 100) : (wasOpened ? 10 : 0);

@@ -425,7 +425,14 @@ body {
   try {
     const cfgRes = await fetch('/api/config');
     const cfg = await cfgRes.json();
-    supabaseClient = supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+    const _cs = {
+      getItem(k) { for (const c of document.cookie.split(';')) { const i = c.indexOf('='); if (i < 0) continue; if (c.slice(0, i).trim() === k) return decodeURIComponent(c.slice(i + 1)); } return null; },
+      setItem(k, v) { document.cookie = k + '=' + encodeURIComponent(v) + ';max-age=31536000;path=/;SameSite=Lax'; },
+      removeItem(k) { document.cookie = k + '=;max-age=0;path=/;SameSite=Lax'; }
+    };
+    supabaseClient = supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, storage: _cs }
+    });
   } catch(e) {
     showError('Kon verbinding niet maken. Probeer opnieuw.');
     return;
