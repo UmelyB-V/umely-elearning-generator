@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
@@ -28,11 +28,11 @@ header{position:sticky;top:0;z-index:100;background:var(--fg);border-bottom:none
 .btn:hover{opacity:0.9;transform:translateY(-1px)}
 .btn-outline{background:transparent;border:2px solid var(--fg);color:var(--fg)}
 .btn-outline:hover{background:var(--fg);color:var(--bg);opacity:1}
-.welcome-hero{background:var(--fg);color:var(--bg);border-radius:var(--radius);padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
-.welcome-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:260px;height:260px;background:radial-gradient(circle,rgba(255,133,20,0.35) 0%,transparent 70%);border-radius:50%}
-.welcome-hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,77,0,0.2) 0%,transparent 70%);border-radius:50%}
-.welcome-hero h1{font-family:var(--font-h);font-size:2.2rem;margin-bottom:0.75rem;position:relative}
-.welcome-hero p{color:rgba(255,248,242,0.85);font-size:1.05rem;position:relative}
+.welcome-umely{background:var(--fg);color:var(--bg);border-radius:var(--radius);padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.welcome-umely::before{content:'';position:absolute;top:-80px;right:-80px;width:260px;height:260px;background:radial-gradient(circle,rgba(255,133,20,0.35) 0%,transparent 70%);border-radius:50%}
+.welcome-umely::after{content:'';position:absolute;bottom:-60px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,77,0,0.2) 0%,transparent 70%);border-radius:50%}
+.welcome-umely h1{font-family:var(--font-h);font-size:2.2rem;margin-bottom:0.75rem;position:relative}
+.welcome-umely p{color:rgba(255,248,242,0.85);font-size:1.05rem;position:relative}
 .welcome-badge{display:inline-block;background:rgba(255,248,242,0.15);color:var(--gold);font-family:var(--font-h);font-weight:700;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.25rem 0.8rem;border-radius:var(--radius-pill);margin-bottom:1rem;position:relative}
 .leerdoelen{background:var(--bg);border:none;box-shadow:0 1px 4px rgba(39,41,45,0.08);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}
 .leerdoelen h3{font-family:var(--font-h);font-size:1rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);margin-bottom:1rem}
@@ -154,8 +154,8 @@ header{position:sticky;top:0;z-index:100;background:var(--fg);border-bottom:none
 .quiz-feedback{margin-top:1rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.9rem;display:none}
 .quiz-feedback.correct{display:block;color:#16a34a;background:rgba(34,197,94,0.12);border:1px solid #22c55e}
 .quiz-feedback.fout{display:block;color:#dc2626;background:rgba(239,68,68,0.12);border:1px solid #ef4444}
-.resultaat-hero{background:var(--fg);color:var(--bg);border-radius:var(--radius);padding:2.5rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden}
-.resultaat-hero::before{content:'';position:absolute;bottom:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,133,20,0.3) 0%,transparent 70%);border-radius:50%}
+.resultaat-umely{background:var(--fg);color:var(--bg);border-radius:var(--radius);padding:2.5rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.resultaat-umely::before{content:'';position:absolute;bottom:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,133,20,0.3) 0%,transparent 70%);border-radius:50%}
 .score-cirkel{width:100px;height:100px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-family:var(--font-h);font-size:1.8rem;font-weight:700;color:var(--bg);position:relative}
 .certificaat{background:var(--bg);border:2px solid var(--amber);border-radius:var(--radius);padding:2rem;text-align:center;margin-bottom:1.5rem}
 .certificaat-title{font-family:var(--font-h);font-size:1rem;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem}
@@ -186,9 +186,9 @@ input,textarea,select{font-size:16px}
   html,body{overflow-x:hidden;max-width:100vw}
 
   /* Welcome scherm */
-  .welcome-hero{padding:1.5rem 1.25rem}
-  .welcome-hero h1{font-size:1.5rem}
-  .welcome-hero p{font-size:0.95rem}
+  .welcome-umely{padding:1.5rem 1.25rem}
+  .welcome-umely h1{font-size:1.5rem}
+  .welcome-umely p{font-size:0.95rem}
 
   /* Screen padding */
   .screen{padding:0 1rem 3rem}
@@ -200,7 +200,7 @@ input,textarea,select{font-size:16px}
   /* Content cards */
   .content-card{padding:1.25rem}
   .kennischeck{padding:1.25rem}
-  .resultaat-hero{padding:1.5rem}
+  .resultaat-umely{padding:1.5rem}
   .scenario-blok{padding:1rem}
 
   /* Knoppen */
@@ -255,7 +255,7 @@ input,textarea,select{font-size:16px}
 
 /* Extra small screens (iPhone SE etc) */
 @media(max-width:380px){
-  .welcome-hero h1{font-size:1.3rem}
+  .welcome-umely h1{font-size:1.3rem}
   .module-header h2{font-size:1.1rem}
   .screen{padding:0 0.75rem 2.5rem}
   .nav-buttons .btn,.nav-buttons .btn-vorige{font-size:0.8rem;padding:0.65rem 0.75rem}
@@ -266,7 +266,7 @@ input,textarea,select{font-size:16px}
   body { background: white !important; }
   .screen { display: none !important; }
   #screen-result { display: block !important; max-width: 680px !important; margin: 0 auto !important; padding: 20mm !important; }
-  .resultaat-hero { display: none !important; }
+  .resultaat-umely { display: none !important; }
   .certificaat { display: block !important; border: 2px solid #FF8514 !important; box-shadow: none !important; page-break-inside: avoid; }
 }
 </style>
@@ -291,7 +291,7 @@ input,textarea,select{font-size:16px}
 
 <!-- WELKOMSTSCHERM -->
 <div id="screen-welcome" class="screen start">
-  <div class="welcome-hero">
+  <div class="welcome-umely">
     <div class="welcome-badge">Umely Workshop Handout</div>
     <p>Dit is jouw digitale naslagwerk na de workshop. Alle tools, tips en technieken die je hebt gezien, overzichtelijk op één plek. Klik direct naar het onderdeel dat je zoekt, of doorloop alles van voren af aan.</p>
   </div>
@@ -1062,7 +1062,7 @@ input,textarea,select{font-size:16px}
         <tr>
           <td><strong>Verwerkersovereenkomst (DPA)</strong></td>
           <td>Niet beschikbaar</td>
-          <td>Beschikbaar op aanvraag (benodigd voor AVG-compliance bij gebruik van persoonsgegevens)</td>
+          <td>Automatisch inbegrepen (incl. SCC's voor overdrachten naar de VS)</td>
         </tr>
         <tr>
           <td><strong>Data voor AI-training</strong></td>
@@ -1375,7 +1375,7 @@ input,textarea,select{font-size:16px}
 
 <!-- RESULTAAT -->
 <div id="screen-result" class="screen">
-  <div class="resultaat-hero">
+  <div class="resultaat-umely">
     <div class="score-cirkel" id="score-display">...</div>
     <h2 style="font-family:var(--font-h);margin-bottom:0.5rem;">Training afgerond!</h2>
     <p id="resultaat-boodschap" style="color:rgba(255,248,242,0.85);position:relative;"></p>
